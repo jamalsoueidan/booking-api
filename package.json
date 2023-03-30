@@ -1,0 +1,26 @@
+{
+  "name": "booking-api",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build",
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0-alpha.7",
+    "@jamalsoueidan/backend.services.staff": "^0.0.4",
+    "@jamalsoueidan/pkg.backend-types": "^0.0.2",
+    "@types/jsonwebtoken": "^9.0.1",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.8.4",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.x",
+    "typescript": "^4.0.0"
+  },
+  "main": "dist/src/functions/*.js"
+}
