@@ -3,7 +3,6 @@ import {
   StaffServiceCreateNewPassword,
   StaffServiceLogin,
 } from "@jamalsoueidan/backend.services.staff";
-
 import { z } from "zod";
 import { jwtCreateToken } from "../../lib/jwt";
 
@@ -11,43 +10,39 @@ export const ShopSchema = z.object({
   shop: z.string(),
 });
 
-export const StaffServiceLoginAndCreateTokenSchema = ShopSchema.extend({
+export const AuthServiceLoginSchema = ShopSchema.extend({
   identification: z.string(),
   password: z.string(),
 });
 
-export type StaffServiceLoginAndCreateTokenProps = z.infer<
-  typeof StaffServiceLoginAndCreateTokenSchema
->;
+export type AuthServiceLoginProps = z.infer<typeof AuthServiceLoginSchema>;
 
-export const StaffServiceLoginAndCreateToken = async (
-  props: StaffServiceLoginAndCreateTokenProps
-) => {
-  StaffServiceLoginAndCreateTokenSchema.parse(props);
+export const AuthServiceLogin = async (props: AuthServiceLoginProps) => {
+  AuthServiceLoginSchema.parse(props);
   const staff = await StaffServiceLogin(props);
   if (!staff) {
-    throw new Error("wrong user/password");
+    throw new Error("identification or password is incorrect");
   }
   return { token: jwtCreateToken(staff) };
 };
 
-export const StaffServiceReceivePasswordSchema = ShopSchema.extend({
+export const AuthServiceReceivePasswordSchema = ShopSchema.extend({
   phone: z.string(),
 });
 
-export type StaffServiceReceivePasswordProps = z.infer<
-  typeof StaffServiceReceivePasswordSchema
+export type AuthServiceReceivePasswordProps = z.infer<
+  typeof AuthServiceReceivePasswordSchema
 >;
 
-export const StaffServiceReceivePassword = async (
-  props: StaffServiceReceivePasswordProps
+export const AuthServiceReceivePassword = async (
+  props: AuthServiceReceivePasswordProps
 ) => {
-  StaffServiceReceivePasswordSchema.parse(props);
+  AuthServiceReceivePasswordSchema.parse(props);
 
   const staff = await StaffModel.findOne(props);
 
   if (!staff) {
-    throw { message: "phone number not exist" };
+    throw new Error("phone number not exist");
   }
 
   const password = await StaffServiceCreateNewPassword(staff);

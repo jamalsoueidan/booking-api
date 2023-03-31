@@ -1,0 +1,13 @@
+description: Bad Request
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: array
+          items:
+            $ref: "../schemas/zod-issue-code.yaml"

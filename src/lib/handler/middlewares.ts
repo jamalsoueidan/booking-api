@@ -5,6 +5,7 @@ import {
   HttpResponseInit,
   InvocationContext,
 } from "@azure/functions";
+import { ZodError } from "zod";
 import { connect } from "../db";
 import { jwtDecode, jwtGetToken } from "../jwt";
 
@@ -26,74 +27,109 @@ export const _ =
       // connect db
       await connect();
 
-      // build object {query,body,session}
-      const object = await buildObjectController(request);
-
-      // go through each controller method
       for (const handler of middlewares) {
-        const response = isInternal(handler)
+        const response = isAzureHandler(handler)
           ? await handler(request, context)
-          : await handler(object);
+          : await executeControllerWithParams(request, handler);
 
-        // any response from handler, send back to user and exist
         if (response) {
           return { jsonBody: { payload: response, success: true } };
         }
       }
-    } catch (error) {
-      // try to create different custom httpError with specific errors like HttpUnauthorize or HttpError, httpValidation
-      // context.log("error", error);
-      const props: HttpResponseInit = { status: 402 };
-      if (typeof error === "object")
-        props.jsonBody = { payload: { error }, success: false };
+    } catch (err: unknown) {
+      const props: HttpResponseInit = {};
+      if (err instanceof Error) {
+        props.jsonBody = { error: err.message, success: false };
+        props.status = 404;
+      }
+
+      if (err instanceof ZodError) {
+        props.jsonBody = { error: err.issues, success: false };
+        props.status = 400;
+      }
+
       return props;
     }
 
-    return { status: 404, jsonBody: { test: "a" } };
+    return { status: 404 };
   };
 
-const buildObjectController = async (request: HttpRequest) => {
-  try {
+const executeControllerWithParams = async (
+  request: HttpRequest,
+  handler: Function
+) => {
+  const shop = request.headers.get("shop") || request.query.get("shop") || null;
+
+  const getSession = async () => {
     const token = jwtGetToken(request.headers);
-    const session = token ? await jwtDecode(token) : {};
-    const shop =
-      request.headers.get("shop") || request.query.get("shop") || null;
+    return token ? await jwtDecode(token) : {};
+  };
 
+  const getQueries = () => {
     const queryUsed = Object.fromEntries(request.query.entries());
-    const query =
-      Object.keys(queryUsed).length > 0 ? { ...queryUsed, shop } : {};
+    return Object.keys(queryUsed).length > 0 ? { ...queryUsed, shop } : {};
+  };
 
-    const body = request.bodyUsed
-      ? { ...((await request.json()) as object), shop }
-      : {};
+  const getBody = async () => {
+    try {
+      const bodyData = (await request.json()) as object;
+      return { ...bodyData, shop };
+    } catch (error) {
+      throw new Error("Require body");
+    }
+  };
 
-    return {
-      query,
-      body,
-      session,
-    };
-  } catch (error) {
-    console.log(error);
+  const requiredParams = getFunctionParameters(handler);
+  const params: { [key: string]: any } = {};
+
+  if (requiredParams.includes("query")) {
+    params.query = getQueries();
   }
+  if (requiredParams.includes("body")) {
+    params.body = await getBody();
+  }
+  if (requiredParams.includes("session")) {
+    params.session = await getSession();
+  }
+
+  return handler(params);
 };
 
-// figure out if this is internal endpoint handler?
-const isInternal = (controller: any): controller is MiddlewareHandlerAzure => {
-  const params = getParamNames(controller);
-  return params.includes("request");
-};
+const isAzureHandler = (handler: any): handler is MiddlewareHandlerAzure =>
+  parameterExists(handler, "request");
 
-// get method params
-const getParamNames = (func: Function) => {
-  const funcStr = func.toString();
-  const paramMatch = funcStr.match(/\(([^)]*)\)/);
-  if (!paramMatch) {
+const getFunctionParameters = (functionToCheck: Function): string[] => {
+  const functionAsString = functionToCheck.toString();
+  const functionParameters =
+    functionAsString.match(/function\s.*?\(([^)]*)\)/)?.[1] ||
+    functionAsString.match(/(?:\s|^)\(([^)]*)\)\s*=>/)?.[1] ||
+    functionAsString.match(/(?:\s|^)([^=]*?)\s*=>/)?.[1];
+
+  if (!functionParameters) {
     return [];
   }
-  const paramNames = paramMatch[1]
-    .replace(/\/\*.*?\*\//g, "") // Remove comments.
-    .replace(/\s+/g, "") // Remove spaces.
-    .split(",");
 
-  return paramNames;
+  return functionParameters
+    .replace(/[{}]/g, "") // Remove curly brackets
+    .split(",")
+    .map((param) => param.trim())
+    .filter((param) => param.length > 0);
+};
+
+const parameterExists = (
+  functionToCheck: Function,
+  paramName: string
+): boolean => {
+  const functionAsString = functionToCheck.toString();
+  const parameterRegex = new RegExp(`\\b${paramName}\\b`, "g");
+  const functionParameters =
+    functionAsString.match(/function\s.*?\(([^)]*)\)/)?.[1] ||
+    functionAsString.match(/(?:\s|^)\(([^)]*)\)\s*=>/)?.[1] ||
+    functionAsString.match(/(?:\s|^)([^=]*?)\s*=>/)?.[1];
+
+  if (!functionParameters) {
+    return false;
+  }
+
+  return parameterRegex.test(functionParameters);
 };

@@ -1,0 +1,18 @@
+get:
+  summary: Receive account settings
+  description: This endpoint receives a account settings.
+  responses:
+    "200":
+      description: Receive account settings
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              payload:
+                $ref: "../../schemas/staff.yaml"
+  security:
+    - BearerAuth: []

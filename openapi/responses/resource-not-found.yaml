@@ -1,0 +1,12 @@
+description: Resource not Found
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: Resource not found

@@ -1,0 +1,38 @@
+type: object
+properties:
+  active:
+    type: boolean
+    default: true
+  address:
+    type: string
+  avatar:
+    type: string
+  email:
+    type: string
+    uniqueItems: true
+  fullname:
+    type: string
+  group:
+    type: string
+    default: all
+  language:
+    type: string
+    default: da
+  password:
+    type: string
+    default: 12345678
+  phone:
+    type: string
+  position:
+    type: string
+  postal:
+    type: integer
+  role:
+    type: integer
+    default: 0 # Assuming StaffRole.user is 0
+    enum: [0, 1, 2] # Replace with actual StaffRoleValues
+  shop:
+    type: string
+  timeZone:
+    type: string
+    default: Europe/Copenhagen

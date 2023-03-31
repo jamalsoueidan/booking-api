@@ -1,0 +1,6 @@
+name: shop
+in: header
+description: Shop value
+required: true
+schema:
+  type: string
