@@ -1,7 +1,5 @@
 import { app } from "@azure/functions";
 import { _ } from "../lib/handler/middlewares";
-import { jwtVerify } from "../lib/jwt";
-import { getAccount } from "./account/account.controller";
 import {
   login,
   passwordPhone,
@@ -18,11 +16,4 @@ app.http("password-phone", {
   authLevel: "anonymous",
   route: "password-phone",
   handler: _(passwordPhone),
-});
-
-app.http("account", {
-  methods: ["POST"],
-  authLevel: "anonymous",
-  route: "account",
-  handler: _(jwtVerify, getAccount),
 });

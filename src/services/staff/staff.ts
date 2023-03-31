@@ -4,42 +4,47 @@ import {
   StaffServiceLogin,
 } from "@jamalsoueidan/backend.services.staff";
 
-import { ShopQuery } from "@jamalsoueidan/pkg.backend-types";
 import { z } from "zod";
 import { jwtCreateToken } from "../../lib/jwt";
 
-export type StaffServiceLoginAndCreateTokenProps = {
-  identification: string;
-  password: string;
-};
+export const ShopSchema = z.object({
+  shop: z.string(),
+});
+
+export const StaffServiceLoginAndCreateTokenSchema = ShopSchema.extend({
+  identification: z.string(),
+  password: z.string(),
+});
+
+export type StaffServiceLoginAndCreateTokenProps = z.infer<
+  typeof StaffServiceLoginAndCreateTokenSchema
+>;
 
 export const StaffServiceLoginAndCreateToken = async (
-  props: StaffServiceLoginAndCreateTokenProps & ShopQuery
+  props: StaffServiceLoginAndCreateTokenProps
 ) => {
+  StaffServiceLoginAndCreateTokenSchema.parse(props);
   const staff = await StaffServiceLogin(props);
   if (!staff) {
     throw new Error("wrong user/password");
   }
-  return jwtCreateToken(staff);
+  return { token: jwtCreateToken(staff) };
 };
 
-export const StaffServiceReceivePasswordProps = z.object({
-  shop: z.string(),
+export const StaffServiceReceivePasswordSchema = ShopSchema.extend({
   phone: z.string(),
 });
 
 export type StaffServiceReceivePasswordProps = z.infer<
-  typeof StaffServiceReceivePasswordProps
+  typeof StaffServiceReceivePasswordSchema
 >;
 
-export const StaffServiceReceivePassword = async ({
-  shop,
-  phone,
-}: StaffServiceReceivePasswordProps) => {
-  const staff = await StaffModel.findOne({
-    shop,
-    phone,
-  });
+export const StaffServiceReceivePassword = async (
+  props: StaffServiceReceivePasswordProps
+) => {
+  StaffServiceReceivePasswordSchema.parse(props);
+
+  const staff = await StaffModel.findOne(props);
 
   if (!staff) {
     throw { message: "phone number not exist" };

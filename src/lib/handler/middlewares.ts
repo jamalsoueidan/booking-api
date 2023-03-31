@@ -58,13 +58,17 @@ const buildObjectController = async (request: HttpRequest) => {
     const session = token ? await jwtDecode(token) : {};
     const shop =
       request.headers.get("shop") || request.query.get("shop") || null;
-    const query = Object.fromEntries(request.query.entries());
-    const body = request.bodyUsed ? await request.json() : {};
+
+    const queryUsed = Object.fromEntries(request.query.entries());
+    const query =
+      Object.keys(queryUsed).length > 0 ? { ...queryUsed, shop } : {};
+
+    const body = request.bodyUsed
+      ? { ...((await request.json()) as object), shop }
+      : {};
+
     return {
-      query: {
-        shop,
-        ...query,
-      },
+      query,
       body,
       session,
     };
