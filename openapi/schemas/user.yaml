@@ -31,8 +31,13 @@ properties:
     type: integer
     default: 0 # Assuming StaffRole.user is 0
     enum: [0, 1, 2] # Replace with actual StaffRoleValues
-  shop:
-    type: string
   timeZone:
     type: string
     default: Europe/Copenhagen
+required:
+  - fullname
+  - email
+  - phone
+  - postal
+  - position
+  - avatar

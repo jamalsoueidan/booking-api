@@ -1,16 +1,12 @@
-import {
-  StaffModel,
-  StaffServiceCreateNewPassword,
-  StaffServiceLogin,
-} from "@jamalsoueidan/backend.services.staff";
 import { z } from "zod";
-import { jwtCreateToken } from "../../lib/jwt";
+import { jwtCreateToken } from "../../library/jwt";
+import { UserModel } from "../user/user.model";
+import {
+  UserServiceCreateNewPassword,
+  UserServiceLogin,
+} from "../user/user.service";
 
-export const ShopSchema = z.object({
-  shop: z.string(),
-});
-
-export const AuthServiceLoginSchema = ShopSchema.extend({
+export const AuthServiceLoginSchema = z.object({
   identification: z.string(),
   password: z.string(),
 });
@@ -19,14 +15,14 @@ export type AuthServiceLoginProps = z.infer<typeof AuthServiceLoginSchema>;
 
 export const AuthServiceLogin = async (props: AuthServiceLoginProps) => {
   AuthServiceLoginSchema.parse(props);
-  const staff = await StaffServiceLogin(props);
-  if (!staff) {
+  const user = await UserServiceLogin(props);
+  if (!user) {
     throw new Error("identification or password is incorrect");
   }
-  return { token: jwtCreateToken(staff) };
+  return { token: jwtCreateToken(user) };
 };
 
-export const AuthServiceReceivePasswordSchema = ShopSchema.extend({
+export const AuthServiceReceivePasswordSchema = z.object({
   phone: z.string(),
 });
 
@@ -39,16 +35,16 @@ export const AuthServiceReceivePassword = async (
 ) => {
   AuthServiceReceivePasswordSchema.parse(props);
 
-  const staff = await StaffModel.findOne(props);
+  const user = await UserModel.findOne(props);
 
-  if (!staff) {
+  if (!user) {
     throw new Error("phone number not exist");
   }
 
-  const password = await StaffServiceCreateNewPassword(staff);
+  const password = await UserServiceCreateNewPassword(user);
 
   /*SmsDkApiSend({
-      receiver: staff.phone,
+      receiver: user.phone,
       message: `Din adgangskode: ${password}`,
     });*/
 

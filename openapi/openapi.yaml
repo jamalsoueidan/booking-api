@@ -3,7 +3,7 @@ info:
   version: 1.0.0
   title: Booking Shopify Api
 servers:
-  - url: http://localhost:7071/api/
+  - url: http://localhost:7071/api
 components:
   securitySchemes:
     BearerAuth:
@@ -12,27 +12,26 @@ components:
       bearerFormat: JWT
 
   responses:
-    ResourceNotFoundRequest:
-      $ref: "./responses/resource-not-found.yaml"
+    MesssageErrorResponse:
+      $ref: "./responses/error.yaml"
 
-    BadRequest:
-      $ref: "./responses/bad.yaml"
+    ValidationErrorResponse:
+      $ref: "./responses/validation.yaml"
 
-  parameters:
-    shop:
-      $ref: "./parameters/shop.yaml"
   schemas:
-    ZodIssueCode:
-      $ref: "./schemas/zod-issue-code.yaml"
-
-    Staff:
-      $ref: "./schemas/staff.yaml"
+    ZodErrors:
+      $ref: "./schemas/zod-errors.yaml"
+    User:
+      $ref: "./schemas/user.yaml"
 paths:
   /auth/login:
     $ref: "./paths/auth/login.yaml"
 
   /auth/receive-password:
     $ref: "./paths/auth/receive-password.yaml"
+
+  /auth/create-user:
+    $ref: "./paths/auth/create-user.yaml"
 
   /my/account:
     $ref: "./paths/my/account.yaml"

@@ -1,4 +1,4 @@
-description: Bad Request
+description: Message Error
 content:
   application/json:
     schema:
@@ -8,6 +8,5 @@ content:
           type: boolean
           example: false
         error:
-          type: array
-          items:
-            $ref: "../schemas/zod-issue-code.yaml"
+          type: string
+          example: "An error message"

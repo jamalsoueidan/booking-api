@@ -1,8 +1,6 @@
 post:
   summary: Logs in a user
   description: This endpoint return to you token for authentication.
-  parameters:
-    - $ref: "../../parameters/shop.yaml"
   requestBody:
     required: true
     content:
@@ -12,8 +10,10 @@ post:
           properties:
             identification:
               type: string
+              example: 31317428
             password:
               type: string
+              example: "code"
           required:
             - identification
             - password
@@ -32,17 +32,10 @@ post:
                 type: string
                 example: Token to be saved in browser
     "400":
-      $ref: "../../responses/bad.yaml"
-    "404":
-      description: Incorrect identification
+      description: Bad Request
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-                example: false
-              error:
-                type: string
-                example: identification or password wrong
+            oneOf:
+              - $ref: "../../responses/error.yaml"
+              - $ref: "../../responses/validation.yaml"

@@ -1,29 +1,29 @@
 import { app } from "@azure/functions";
+import { _ } from "../library/handler";
 import {
-  createStaff,
-  login,
-  passwordPhone,
-} from "../controllers/auth.controller";
-import { _ } from "../lib/handler/middlewares";
+  AuthControllerCreateUser,
+  AuthControllerLogin,
+  AuthControllerReceivePassword,
+} from "./auth/auth.controller";
 
-app.http("login", {
+app.http("authLogin", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "auth/login",
-  handler: _(login),
+  handler: _(AuthControllerLogin),
 });
 
-app.http("receivePassword", {
+app.http("authRceivePassword", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "auth/receive-password",
-  handler: _(passwordPhone),
+  handler: _(AuthControllerReceivePassword),
 });
 
-/* should have authLEVEL API-key */
-app.http("createStaff", {
+// should have authLEVEL API-key
+app.http("authCreateUser", {
   methods: ["POST"],
   authLevel: "anonymous", // only for testing
-  route: "auth/create-staff",
-  handler: _(createStaff),
+  route: "auth/create-user",
+  handler: _(AuthControllerCreateUser),
 });

@@ -1,6 +1,6 @@
-name: shop
+name: apikey
 in: header
-description: Shop value
+description: Apikey value
 required: true
 schema:
   type: string

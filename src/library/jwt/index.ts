@@ -1,23 +1,21 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { AppSession, Staff, StaffRole } from "@jamalsoueidan/pkg.backend-types";
 import { sign, verify } from "jsonwebtoken";
+import { AuthSession } from "../../functions/auth/auth.types";
+import { User, UserRole } from "../../functions/user/user.types";
 
 const secretOrPrivateKey = process.env["TokenSecret"] || "k12pke1p2ek12";
 const options = { expiresIn: "1h" };
 
-export const jwtCreateToken = (
-  staff: Pick<Staff, "_id" | "shop" | "role" | "group">
-) => {
+export const jwtCreateToken = (user: Pick<User, "_id" | "role" | "group">) => {
   return sign(
     {
-      staff: staff._id.toString(),
-      shop: staff.shop,
-      role: staff.role,
-      group: staff.group,
-      isOwner: staff.role === StaffRole.owner,
-      isAdmin: staff.role === StaffRole.admin,
-      isUser: staff.role === StaffRole.user,
-    } as AppSession,
+      user: user._id.toString(),
+      role: user.role,
+      group: user.group,
+      isOwner: user.role === UserRole.owner,
+      isAdmin: user.role === UserRole.admin,
+      isUser: user.role === UserRole.user,
+    } as AuthSession,
     secretOrPrivateKey,
     options
   );

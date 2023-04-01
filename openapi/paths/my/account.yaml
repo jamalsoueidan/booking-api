@@ -13,6 +13,6 @@ get:
                 type: boolean
                 example: true
               payload:
-                $ref: "../../schemas/staff.yaml"
+                $ref: "../../schemas/user.yaml"
   security:
     - BearerAuth: []

@@ -1,37 +1,37 @@
 import { app } from "@azure/functions";
+import { _ } from "../library/handler";
+import { jwtVerify } from "../library/jwt";
 import {
-  getAccount,
-  getSettings,
-  updateAccount,
-  updateSettings,
-} from "../controllers/my.controller";
-import { _ } from "../lib/handler/middlewares";
-import { jwtVerify } from "../lib/jwt";
+  MyControllerGetAccount,
+  MyControllerGetSettings,
+  MyControllerUpdateAccount,
+  MyControllerUpdateSettings,
+} from "./my/my.controller";
 
-app.http("accountPost", {
+app.http("myAccountUpdate", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "my/account",
-  handler: _(jwtVerify, updateAccount),
+  handler: _(jwtVerify, MyControllerUpdateAccount),
 });
 
-app.http("accountGet", {
+app.http("myAccountRead", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "my/account",
-  handler: _(jwtVerify, getAccount),
+  handler: _(jwtVerify, MyControllerGetAccount),
 });
 
-app.http("settingsPost", {
+app.http("mySettingsUpdate", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "my/settings",
-  handler: _(jwtVerify, updateSettings),
+  handler: _(jwtVerify, MyControllerUpdateSettings),
 });
 
-app.http("settingsGet", {
+app.http("mySettingsRead", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "my/settings",
-  handler: _(jwtVerify, getSettings),
+  handler: _(jwtVerify, MyControllerGetSettings),
 });

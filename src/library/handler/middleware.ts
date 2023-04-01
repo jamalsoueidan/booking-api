@@ -6,29 +6,27 @@ import {
   InvocationContext,
 } from "@azure/functions";
 import { ZodError } from "zod";
-import { connect } from "../db";
 import { jwtDecode, jwtGetToken } from "../jwt";
+import { connect } from "../mongoose";
 
-export type MiddlewareHandlerAzure = (
+export type AzureHandler = (
   request: HttpRequest,
   context: InvocationContext
 ) => FunctionResult<HttpResponseInit | HttpResponse | void>;
 
-export type MiddlewareHandlerExternal = (props: any) => unknown;
+export type CustomHandler = (props: any) => unknown;
 
-export type MiddlewareHandlerFunction =
-  | MiddlewareHandlerAzure
-  | MiddlewareHandlerExternal;
+export type MiddlewareFunctions = AzureHandler | CustomHandler;
 
 export const _ =
-  (...middlewares: MiddlewareHandlerFunction[]) =>
+  (...middlewares: MiddlewareFunctions[]) =>
   async (request: HttpRequest, context: InvocationContext) => {
     try {
       // connect db
       await connect();
 
       for (const handler of middlewares) {
-        const response = isAzureHandler(handler)
+        let response = isAzureHandler(handler)
           ? await handler(request, context)
           : await executeControllerWithParams(request, handler);
 
@@ -40,14 +38,12 @@ export const _ =
       const props: HttpResponseInit = {};
       if (err instanceof Error) {
         props.jsonBody = { error: err.message, success: false };
-        props.status = 404;
       }
 
       if (err instanceof ZodError) {
         props.jsonBody = { error: err.issues, success: false };
-        props.status = 400;
       }
-
+      props.status = 400;
       return props;
     }
 
@@ -58,8 +54,6 @@ const executeControllerWithParams = async (
   request: HttpRequest,
   handler: Function
 ) => {
-  const shop = request.headers.get("shop") || request.query.get("shop") || null;
-
   const getSession = async () => {
     const token = jwtGetToken(request.headers);
     return token ? await jwtDecode(token) : {};
@@ -67,13 +61,13 @@ const executeControllerWithParams = async (
 
   const getQueries = () => {
     const queryUsed = Object.fromEntries(request.query.entries());
-    return Object.keys(queryUsed).length > 0 ? { ...queryUsed, shop } : {};
+    return Object.keys(queryUsed).length > 0 ? queryUsed : {};
   };
 
   const getBody = async () => {
     try {
       const bodyData = (await request.json()) as object;
-      return { ...bodyData, shop };
+      return bodyData;
     } catch (error) {
       throw new Error("Require body");
     }
@@ -95,7 +89,7 @@ const executeControllerWithParams = async (
   return handler(params);
 };
 
-const isAzureHandler = (handler: any): handler is MiddlewareHandlerAzure =>
+const isAzureHandler = (handler: any): handler is AzureHandler =>
   parameterExists(handler, "request");
 
 const getFunctionParameters = (functionToCheck: Function): string[] => {
@@ -120,16 +114,6 @@ const parameterExists = (
   functionToCheck: Function,
   paramName: string
 ): boolean => {
-  const functionAsString = functionToCheck.toString();
-  const parameterRegex = new RegExp(`\\b${paramName}\\b`, "g");
-  const functionParameters =
-    functionAsString.match(/function\s.*?\(([^)]*)\)/)?.[1] ||
-    functionAsString.match(/(?:\s|^)\(([^)]*)\)\s*=>/)?.[1] ||
-    functionAsString.match(/(?:\s|^)([^=]*?)\s*=>/)?.[1];
-
-  if (!functionParameters) {
-    return false;
-  }
-
-  return parameterRegex.test(functionParameters);
+  const functionParameters = getFunctionParameters(functionToCheck);
+  return functionParameters.includes(paramName);
 };
