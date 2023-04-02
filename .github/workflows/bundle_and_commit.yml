@@ -2,8 +2,6 @@ name: Bundle and Commit
 
 on:
   pull_request:
-    branches:
-      - main
 
 jobs:
   build-and-commit:
