@@ -1,0 +1,32 @@
+name: Bundle and Commit
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: Install dependencies and run bundle
+      run: |
+        npm ci
+        npm run bundle
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "jamal@soueidan.com"
+        git config --local user.name "jamalsoueidan"
+        git add -A
+        git commit -m "Bundle and commit updated code" || exit 0
+        git push
