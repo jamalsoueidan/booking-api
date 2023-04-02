@@ -2,6 +2,8 @@
 
 I have developed two applications that use Azure Function API endpoints.
 
+The API specification can be seen hosted at [https://jamalsoueidan.github.io/booking-shopify-api](https://jamalsoueidan.github.io/booking-shopify-api).
+
 I am moving the API endpoints from Node/Express, which are hosted on Heroku, to Azure Functions. This allows me to primarily focus on the endpoints, rather than managing the Node Express server with its associated plugins and middleware.
 
 ## 1. Create local.settings.json
