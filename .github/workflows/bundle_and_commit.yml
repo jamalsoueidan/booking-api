@@ -11,12 +11,12 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: ./.github/actions/checkout
+      uses: actions/checkout@v2
       with:
-        ref: ${{ github.head_ref }}
+        fetch-depth: 0
 
     - name: Set up Node.js
-      uses: ./.github/actions/setup-node
+      uses: actions/setup-node@v2
       with:
         node-version: 14
 
@@ -26,9 +26,9 @@ jobs:
         npm run bundle
 
     - name: Commit and push changes
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add -A
-        git commit -m "Bundle and commit updated code" || exit 0
-        git push origin ${{ github.head_ref }}
+      uses: EndBug/add-and-commit@v7.2.1
+      with:
+        author_name: GitHub Action
+        author_email: action@github.com
+        message: "Bundle and commit updated code"
+        branch: ${{ github.head_ref }}
