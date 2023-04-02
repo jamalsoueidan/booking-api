@@ -8,28 +8,28 @@ import {
   UserControllerUpdate,
 } from "./user/user.controller";
 
-app.http("getAllUser", {
+app.http("userGetAll", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "user",
   handler: _(jwtVerify, UserControllerGetAllUsers),
 });
 
-app.http("createUser", {
+app.http("userCreate", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "user",
   handler: _(jwtVerify, onlyAdmin, UserControllerCreate),
 });
 
-app.http("getUserById", {
+app.http("userGetById", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "user/:id",
   handler: _(jwtVerify, UserControllerGetById),
 });
 
-app.http("updateUser", {
+app.http("userUpdateById", {
   methods: ["PUT"],
   authLevel: "anonymous",
   route: "user/:id",
