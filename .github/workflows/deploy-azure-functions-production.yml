@@ -1,4 +1,4 @@
-name: Deploy to Azure Function App
+name: Deploy to Azure Function App (Production)
 
 on:
   push:
