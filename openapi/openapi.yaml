@@ -30,8 +30,8 @@ paths:
   /auth/receive-password:
     $ref: "./paths/auth/receive-password.yaml"
 
-  /auth/create-user:
-    $ref: "./paths/auth/create-user.yaml"
+  /create-user:
+    $ref: "./paths/user/create-user.yaml"
 
   /my/account:
     $ref: "./paths/my/account.yaml"

@@ -1,10 +1,9 @@
+import { compare } from "bcryptjs";
+import { generate } from "generate-password";
 import { z } from "zod";
 import { jwtCreateToken } from "../../library/jwt";
-import { UserModel } from "../user/user.model";
-import {
-  UserServiceCreateNewPassword,
-  UserServiceLogin,
-} from "../user/user.service";
+import { AuthModel } from "./auth.model";
+import { AuthCreateBodyRequest } from "./auth.types";
 
 export const AuthServiceLoginSchema = z.object({
   identification: z.string(),
@@ -15,11 +14,22 @@ export type AuthServiceLoginProps = z.infer<typeof AuthServiceLoginSchema>;
 
 export const AuthServiceLogin = async (props: AuthServiceLoginProps) => {
   AuthServiceLoginSchema.parse(props);
-  const user = await UserServiceLogin(props);
-  if (!user) {
+
+  const auth = await AuthModel.findOne({
+    $or: [{ phone: props.identification }, { email: props.identification }],
+    active: true,
+  });
+
+  if (!auth) {
     throw new Error("identification or password is incorrect");
   }
-  return { token: jwtCreateToken(user) };
+
+  const correctPassword = await compare(props.password, auth.password || "");
+  if (!correctPassword) {
+    throw new Error("identification or password is incorrect");
+  }
+
+  return { token: jwtCreateToken(auth.toJSON()) };
 };
 
 export const AuthServiceReceivePasswordSchema = z.object({
@@ -35,13 +45,21 @@ export const AuthServiceReceivePassword = async (
 ) => {
   AuthServiceReceivePasswordSchema.parse(props);
 
-  const user = await UserModel.findOne(props);
+  const user = await AuthModel.findOne(props);
 
   if (!user) {
     throw new Error("phone number not exist");
   }
 
-  const password = await UserServiceCreateNewPassword(user);
+  const password = generate({
+    length: 6,
+    numbers: true,
+    symbols: false,
+    uppercase: false,
+  });
+
+  user.password = password;
+  user.save();
 
   /*SmsDkApiSend({
       receiver: user.phone,
@@ -55,3 +73,6 @@ export const AuthServiceReceivePassword = async (
       : {}),
   };
 };
+
+export const AuthServiceCreate = (body: AuthCreateBodyRequest) =>
+  AuthModel.create(body);

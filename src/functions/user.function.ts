@@ -1,8 +1,7 @@
 import { app } from "@azure/functions";
-import { _, onlyAdmin } from "../library/handler";
-import { jwtVerify } from "../library/jwt";
 import {
-  UserControllerCreate,
+  UserControllerCreateUser,
+  UserControllerCreateUserApi,
   UserControllerGetAllUsers,
   UserControllerGetById,
   UserControllerUpdate,
@@ -12,26 +11,33 @@ app.http("userGetAll", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "user",
-  handler: _(jwtVerify, UserControllerGetAllUsers),
+  handler: UserControllerGetAllUsers,
 });
 
-app.http("userCreate", {
+app.http("userCreateUser", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "user",
-  handler: _(jwtVerify, onlyAdmin, UserControllerCreate),
+  handler: UserControllerCreateUser,
+});
+
+app.http("userCreateUserApi", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "create-user",
+  handler: UserControllerCreateUserApi,
 });
 
 app.http("userGetById", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "user/:id",
-  handler: _(jwtVerify, UserControllerGetById),
+  handler: UserControllerGetById,
 });
 
 app.http("userUpdateById", {
   methods: ["PUT"],
   authLevel: "anonymous",
   route: "user/:id",
-  handler: _(jwtVerify, onlyAdmin, UserControllerUpdate),
+  handler: UserControllerUpdate,
 });

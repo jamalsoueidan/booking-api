@@ -1,0 +1,253 @@
+openapi: 3.0.2
+info:
+  version: 1.0.0
+  title: Booking Shopify Api
+servers:
+  - url: 'http://localhost:7071/api'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    MesssageErrorResponse:
+      description: Message Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: An error message
+    ValidationErrorResponse:
+      description: Validation Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ZodErrors'
+  schemas:
+    ZodErrors:
+      type: object
+      properties:
+        path:
+          type: array
+          items:
+            type: string
+        message:
+          type: string
+        code:
+          type: string
+        expected:
+          type: string
+        received:
+          type: number
+      required:
+        - path
+        - message
+        - code
+    User:
+      type: object
+      properties:
+        active:
+          type: boolean
+          default: true
+        address:
+          type: string
+        avatar:
+          type: string
+        email:
+          type: string
+          uniqueItems: true
+        fullname:
+          type: string
+        group:
+          type: string
+          default: all
+        language:
+          type: string
+          default: da
+        password:
+          type: string
+          default: 12345678
+        phone:
+          type: string
+        position:
+          type: string
+        postal:
+          type: integer
+        role:
+          type: integer
+          default: 0
+          enum:
+            - 0
+            - 1
+            - 2
+        timeZone:
+          type: string
+          default: Europe/Copenhagen
+      required:
+        - fullname
+        - email
+        - phone
+        - postal
+        - position
+        - avatar
+paths:
+  /auth/login:
+    post:
+      summary: Logs in a user
+      description: This endpoint return to you token for authentication.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                identification:
+                  type: string
+                  example: 31317428
+                password:
+                  type: string
+                  example: code
+              required:
+                - identification
+                - password
+      responses:
+        '200':
+          description: Login success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  token:
+                    type: string
+                    example: Token to be saved in browser
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/responses/MesssageErrorResponse'
+                  - $ref: '#/components/responses/ValidationErrorResponse'
+  /auth/receive-password:
+    post:
+      summary: Receive password
+      description: This endpoint receives a password using a phone number provided in the request body.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone:
+                  type: string
+                  example: 31317428
+                  description: The phone number associated with the password
+              required:
+                - phone
+      responses:
+        '200':
+          description: Password received successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Password received successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/responses/MesssageErrorResponse'
+                  - $ref: '#/components/responses/ValidationErrorResponse'
+  /create-user:
+    post:
+      summary: Create user with api key
+      description: This endpoint create new user with api key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    fullname:
+                      $ref: '#/components/schemas/User/properties/fullname'
+                    email:
+                      $ref: '#/components/schemas/User/properties/email'
+                    phone:
+                      $ref: '#/components/schemas/User/properties/phone'
+                    postal:
+                      $ref: '#/components/schemas/User/properties/postal'
+                    position:
+                      $ref: '#/components/schemas/User/properties/position'
+                    avatar:
+                      $ref: '#/components/schemas/User/properties/position'
+      responses:
+        '200':
+          description: Receive user that are created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/responses/MesssageErrorResponse'
+                  - $ref: '#/components/responses/ValidationErrorResponse'
+  /my/account:
+    get:
+      summary: Receive account settings
+      description: This endpoint receives a account settings.
+      responses:
+        '200':
+          description: Receive account settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    $ref: '#/components/schemas/User'
+      security:
+        - BearerAuth: []

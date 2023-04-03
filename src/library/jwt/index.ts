@@ -1,20 +1,22 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { sign, verify } from "jsonwebtoken";
-import { AuthSession } from "../../functions/auth/auth.types";
-import { User, UserRole } from "../../functions/user/user.types";
+import { Auth, AuthRole, AuthSession } from "../../functions/auth/auth.types";
 
 const secretOrPrivateKey = process.env["TokenSecret"] || "k12pke1p2ek12";
 const options = { expiresIn: "1h" };
 
-export const jwtCreateToken = (user: Pick<User, "_id" | "role" | "group">) => {
+// we should consider moving these methods to auth folder
+
+export const jwtCreateToken = (auth: Auth) => {
   return sign(
     {
-      user: user._id.toString(),
-      role: user.role,
-      group: user.group,
-      isOwner: user.role === UserRole.owner,
-      isAdmin: user.role === UserRole.admin,
-      isUser: user.role === UserRole.user,
+      authId: auth._id,
+      userId: auth.userId,
+      role: auth.role,
+      group: auth.group,
+      isOwner: auth.role === AuthRole.owner,
+      isAdmin: auth.role === AuthRole.admin,
+      isUser: auth.role === AuthRole.user,
     } as AuthSession,
     secretOrPrivateKey,
     options

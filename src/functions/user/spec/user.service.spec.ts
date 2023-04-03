@@ -1,4 +1,4 @@
-import { createUser } from "../user.jest";
+import { createUser } from "../../../library/jest/helpers";
 import {
   UserServiceCreate,
   UserServiceFindAll,
@@ -6,7 +6,7 @@ import {
   UserServiceGetById,
   UserServiceGetUserIdsbyGroup,
 } from "../user.service";
-import { User, UserRole, UserUpdateBody } from "../user.types";
+import { User, UserUpdateBody } from "../user.types";
 
 require("../../../library/jest/mongoose/mongodb.jest");
 
@@ -18,11 +18,9 @@ const user: Omit<User, "_id"> = {
   fullname: "jamasdeidan",
   group: "a",
   language: "da",
-  password: "12345678",
   phone: "+4531317428",
   position: "1",
   postal: 8000,
-  role: UserRole.admin,
   timeZone: "Europe/Copenhagen",
 };
 
@@ -70,11 +68,10 @@ describe("UserService test", () => {
   it("Should return all user in the same group", async () => {
     const userGroupA = await createUser({
       group: "a",
-      role: UserRole.user,
     });
 
-    await createUser({ group: "a", role: UserRole.owner });
-    await createUser({ group: "a", role: UserRole.admin });
+    await createUser({ group: "a" });
+    await createUser({ group: "a" });
     const userGroupB = await createUser({ group: "b" });
 
     let users = await UserServiceGetUserIdsbyGroup({
