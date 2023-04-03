@@ -1,4 +1,4 @@
-name: Bundle and Commit
+name: Bundle openapi.yaml and generate API documentation
 
 on:
   pull_request:
