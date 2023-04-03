@@ -26,8 +26,3 @@ Assign the correct value to all env values.
 ## 2. To enable V4 you have to add this env to your Azure Function App
 
 To enable your V4 programming model app to run in Azure, you need to add a new application setting named AzureWebJobsFeatureFlags with a value of EnableWorkerIndexing. This setting is already in your local.settings.json file.
-
-## Todo
-
-Auto generate openapi to github pages:
-<https://github.com/peter-evans/swagger-github-pages>
