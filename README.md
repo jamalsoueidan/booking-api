@@ -27,4 +27,17 @@ Assign the correct value to all env values.
 
 To enable your V4 programming model app to run in Azure, you need to add a new application setting named AzureWebJobsFeatureFlags with a value of EnableWorkerIndexing. This setting is already in your local.settings.json file.
 
-## run test
+## OpenAPI fragments and components
+
+These files are part of the OpenAPI definition but not yet bundled together. These individual files contain different parts of the API specification, such as paths, schemas, or security definitions. These components are organized in a modular way, making it easier to maintain and update the API documentation.
+
+### Bundle openapi
+
+npm run bundle
+
+The API specification can be seen hosted at
+[https://jamalsoueidan.github.io/booking-shopify-api](https://jamalsoueidan.github.io/booking-shopify-api).
+
+The api openapi file is hosted here:
+missing file
+
