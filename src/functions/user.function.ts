@@ -21,6 +21,7 @@ app.http("userCreateUser", {
   handler: UserControllerCreateUser,
 });
 
+// should have authLEVEL API-key
 app.http("userCreateUserApi", {
   methods: ["POST"],
   authLevel: "anonymous",

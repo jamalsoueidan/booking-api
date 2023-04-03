@@ -37,3 +37,12 @@ These files are part of the OpenAPI definition but not yet bundled together. The
 
 npm run bundle
 
+## Github Actions for pull request:
+
+1. Running all specs (jest)
+2. Bundle openapi fragments and generating the api documentation page
+
+## Github actions for main branch:
+
+1. Deploy docs folder to pages
+2. Deploy Azure functions to production

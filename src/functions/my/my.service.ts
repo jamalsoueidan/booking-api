@@ -7,7 +7,7 @@ import {
 import { UserUpdateBody, UserUpdateBodySchema } from "../user/user.types";
 
 export const MyServiceGetSettingsSchema = z.object({
-  user: z.string(),
+  userId: z.string(),
 });
 
 export type MyServiceGetSettingsQuery = z.infer<
@@ -15,7 +15,7 @@ export type MyServiceGetSettingsQuery = z.infer<
 >;
 
 export const MyServiceGetSettings = (query: MyServiceGetSettingsQuery) => {
-  const { user: id } = MyServiceGetSettingsSchema.parse(query);
+  const { userId: id } = MyServiceGetSettingsSchema.parse(query);
   const user = UserModel.findById(id, "_id language timeZone");
   if (!user) {
     throw new Error("user with this id does not exist");
@@ -24,7 +24,7 @@ export const MyServiceGetSettings = (query: MyServiceGetSettingsQuery) => {
 };
 
 export const MyServiceUpdateSettingsQuerySchema = z.object({
-  user: z.string(),
+  userId: z.string(),
 });
 
 export type MyServiceUpdateSettingsQuery = z.infer<
@@ -46,14 +46,14 @@ export const MyServiceUpdateSettings = async (
 ) => {
   MyServiceUpdateSettingsQuerySchema.parse(query);
   MyServiceUpdateSettingsBodySchema.parse(query);
-  return UserModel.findByIdAndUpdate({ _id: query.user }, body, {
+  return UserModel.findByIdAndUpdate({ _id: query.userId }, body, {
     new: true,
     fields: "_id language timeZone",
   });
 };
 
 export const MyServiceGetAccountSchema = z.object({
-  user: z.string(),
+  userId: z.string(),
 });
 
 export type MyServiceGetAccountQuery = z.infer<
@@ -61,12 +61,12 @@ export type MyServiceGetAccountQuery = z.infer<
 >;
 
 export const MyServiceGetAccount = (query: MyServiceGetAccountQuery) => {
-  const { user } = MyServiceGetAccountSchema.parse(query);
-  return UserServiceGetById({ _id: user });
+  const { userId } = MyServiceGetAccountSchema.parse(query);
+  return UserServiceGetById({ _id: userId });
 };
 
 export const MyServiceUpdateAccountQuerySchema = z.object({
-  user: z.string(),
+  userId: z.string(),
 });
 
 export type MyServiceUpdateAccountQuery = z.infer<
@@ -80,7 +80,7 @@ export const MyServiceUpdateAccount = (
   query: MyServiceUpdateAccountQuery,
   body: MyServiceUpdateAccountBody
 ) => {
-  const { user } = MyServiceUpdateAccountQuerySchema.parse(query);
+  const { userId } = MyServiceUpdateAccountQuerySchema.parse(query);
   const newBody = MyServiceUpdateAccountBodySchema.parse(body);
-  return UserServiceFindByIdAndUpdate(user, newBody);
+  return UserServiceFindByIdAndUpdate(userId, newBody);
 };
