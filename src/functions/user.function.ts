@@ -1,3 +1,5 @@
+import "module-alias/register";
+
 import { app } from "@azure/functions";
 import {
   UserControllerCreateUser,

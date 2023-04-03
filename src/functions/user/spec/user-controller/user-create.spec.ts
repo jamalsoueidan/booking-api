@@ -1,18 +1,18 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { faker } from "@faker-js/faker";
+import { AuthRole } from "~/functions/auth/auth.types";
+import {
+  UserControllerCreateUser,
+  UserControllerCreateUserApi,
+} from "~/functions/user/user.controller";
+import { UserCreateBody } from "~/functions/user/user.types";
 import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
-} from "../../../../library/jest/azure";
-import { AuthRole } from "../../../auth/auth.types";
-import {
-  UserControllerCreateUser,
-  UserControllerCreateUserApi,
-} from "../../user.controller";
-import { UserCreateBody } from "../../user.types";
+} from "~/library/jest/azure";
 
-require("../../../../library/jest/mongoose/mongodb.jest");
+require("~/library/jest/mongoose/mongodb.jest");
 
 describe("Shopify: user create route test", () => {
   let context: InvocationContext;

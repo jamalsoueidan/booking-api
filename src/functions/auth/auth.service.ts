@@ -1,7 +1,7 @@
 import { compare } from "bcryptjs";
 import { generate } from "generate-password";
 import { z } from "zod";
-import { jwtCreateToken } from "../../library/jwt";
+import { jwtCreateToken } from "~/library/jwt";
 import { AuthModel } from "./auth.model";
 import { AuthCreateBodyRequest } from "./auth.types";
 
