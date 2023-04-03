@@ -30,21 +30,3 @@ jobs:
           app-name: booking-shopify-api
           package: .
           publish-profile: ${{ secrets.AZURE_FUNCTION_APP_PUBLISH_PROFILE_PRODUCTION }}
-
-      - name: Install Azure CLI
-        run: |
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-      - name: Login to Azure
-        env:
-          AZURE_CREDS: ${{ secrets.AZURE_FUNCTION_APP_PUBLISH_PROFILE_PRODUCTION }}
-        run: |
-          az login --service-principal --username "$(echo $AZURE_CREDS | grep -oP '(?<=<userName>).*(?=</userName>)')" --password "$(echo $AZURE_CREDS | grep -oP '(?<=<password>).*(?=</password>)')" --tenant "$(echo $AZURE_CREDS | grep -oP '(?<=<tenant>).*(?=</tenant>)')"
-
-      - name: Show HTTP Triggers
-        run: |
-          functionNameList=$(az functionapp function list --name booking-shopify-api --resource-group bookingshopifyapi --output tsv --query '[].name')
-          for functionName in $functionNameList; do
-            echo "Function: $functionName"
-            az functionapp function show --name booking-shopify-api --resource-group bookingshopifyapi --function-name $functionName --output json | jq '.config.bindings[] | select(.type=="httpTrigger") | {authLevel: .authLevel, methods: .methods, route: .route}'
-          done
