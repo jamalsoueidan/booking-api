@@ -1,4 +1,4 @@
-import { HandlerProps } from "../../library/handler";
+import { HandlerProps } from "~/library/handler";
 import {
   AuthServiceLogin,
   AuthServiceLoginProps,
