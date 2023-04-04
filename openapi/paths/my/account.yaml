@@ -16,6 +16,7 @@ get:
                 $ref: "../../schemas/user.yaml"
   security:
     - BearerAuth: []
+
 put:
   summary: Update my-account data
   description: This endpoint update account
