@@ -19,6 +19,7 @@ export const UserServiceFindByIdAndUpdate = async (
   if (!user) {
     throw new Error("User not found");
   }
+  // needs to update auth model (phone or email)
   return user;
 };
 
