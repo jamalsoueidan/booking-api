@@ -1,9 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { AuthServiceCreate } from "../../../functions/auth/auth.service";
-import { AuthRole } from "../../../functions/auth/auth.types";
-import { UserServiceCreate } from "../../../functions/user/user.service";
-import { User, UserCreateBody } from "../../../functions/user/user.types";
-import { jwtCreateToken } from "../../jwt";
+import { AuthRole, AuthServiceCreate } from "~/functions/auth";
+import { User, UserServiceCreate } from "~/functions/user";
+import { jwtCreateToken } from "~/library/jwt";
 
 export const createUser = (props: Partial<User> = {}) =>
   UserServiceCreate({
@@ -22,18 +20,11 @@ export const createUser = (props: Partial<User> = {}) =>
   });
 
 export const login = async (role: AuthRole) => {
-  const newUser: UserCreateBody = {
-    active: true,
-    address: "asdiojdsajioadsoji",
-    avatar: "http://",
+  const newUser = {
     email: faker.internet.email(),
     fullname: faker.name.fullName(),
-    group: "test",
-    language: "da",
+    group: "all",
     phone: "007",
-    position: "2",
-    postal: 8000,
-    timeZone: "Europe/Copenhagen",
   };
 
   const user = await createUser(newUser);

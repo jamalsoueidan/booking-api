@@ -79,22 +79,12 @@ components:
         language:
           type: string
           default: da
-        password:
-          type: string
-          default: 12345678
         phone:
           type: string
         position:
           type: string
         postal:
           type: integer
-        role:
-          type: integer
-          default: 0
-          enum:
-            - 0
-            - 1
-            - 2
         timeZone:
           type: string
           default: Europe/Copenhagen
@@ -190,6 +180,136 @@ paths:
   /create-user:
     post:
       summary: Create user with api key
+      description: 'This endpoint is special and should be used to create new user with api key, and not logged in user.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    fullname:
+                      $ref: '#/components/schemas/User/properties/fullname'
+                    email:
+                      $ref: '#/components/schemas/User/properties/email'
+                    phone:
+                      $ref: '#/components/schemas/User/properties/phone'
+                    postal:
+                      $ref: '#/components/schemas/User/properties/postal'
+                    position:
+                      $ref: '#/components/schemas/User/properties/position'
+                    avatar:
+                      $ref: '#/components/schemas/User/properties/avatar'
+      responses:
+        '200':
+          description: Receive user that are created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/responses/MesssageErrorResponse'
+                  - $ref: '#/components/responses/ValidationErrorResponse'
+  /my-account:
+    get:
+      summary: Receive my logged in account data
+      description: This endpoint receives a account data.
+      responses:
+        '200':
+          description: Receive account settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    $ref: '#/components/schemas/User'
+      security:
+        - BearerAuth: []
+    post:
+      summary: Update user by id
+      description: This endpoint update user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    fullname:
+                      $ref: '#/components/schemas/User/properties/fullname'
+                    email:
+                      $ref: '#/components/schemas/User/properties/email'
+                    phone:
+                      $ref: '#/components/schemas/User/properties/phone'
+                    postal:
+                      $ref: '#/components/schemas/User/properties/postal'
+                    position:
+                      $ref: '#/components/schemas/User/properties/position'
+                    avatar:
+                      $ref: '#/components/schemas/User/properties/position'
+      responses:
+        '200':
+          description: Receive user that are updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/responses/MesssageErrorResponse'
+                  - $ref: '#/components/responses/ValidationErrorResponse'
+      security:
+        - BearerAuth: []
+  /user:
+    get:
+      summary: Get a list of users
+      description: 'This endpoint gets all users, in case you are logged in as admin or user, only same group'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+      security:
+        - BearerAuth: []
+    post:
+      summary: Create user
       description: This endpoint create new user with api key
       requestBody:
         required: true
@@ -232,13 +352,15 @@ paths:
                 oneOf:
                   - $ref: '#/components/responses/MesssageErrorResponse'
                   - $ref: '#/components/responses/ValidationErrorResponse'
-  /my/account:
+      security:
+        - BearerAuth: []
+  '/user/{id}':
     get:
-      summary: Receive account settings
-      description: This endpoint receives a account settings.
+      summary: Get user by id
+      description: This endpoint gets user object
       responses:
         '200':
-          description: Receive account settings
+          description: OK
           content:
             application/json:
               schema:
@@ -249,5 +371,58 @@ paths:
                     example: true
                   payload:
                     $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/responses/MesssageErrorResponse'
+      security:
+        - BearerAuth: []
+    post:
+      summary: Update user by id
+      description: This endpoint update user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    fullname:
+                      $ref: '#/components/schemas/User/properties/fullname'
+                    email:
+                      $ref: '#/components/schemas/User/properties/email'
+                    phone:
+                      $ref: '#/components/schemas/User/properties/phone'
+                    postal:
+                      $ref: '#/components/schemas/User/properties/postal'
+                    position:
+                      $ref: '#/components/schemas/User/properties/position'
+                    avatar:
+                      $ref: '#/components/schemas/User/properties/position'
+      responses:
+        '200':
+          description: Receive user that are updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/responses/MesssageErrorResponse'
+                  - $ref: '#/components/responses/ValidationErrorResponse'
       security:
         - BearerAuth: []

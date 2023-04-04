@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-require('./mongodb.jest')
+require("./mongodb.jest");
 
-describe('mongodb testing library', () => {
+describe("jest/mongoose", () => {
   it("should be connected", async () => {
-    expect(mongoose.connection.readyState).toBe(1)
+    expect(mongoose.connection.readyState).toBe(1);
   });
-})
+});

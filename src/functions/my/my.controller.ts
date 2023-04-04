@@ -1,32 +1,29 @@
-import { HandlerProps } from "../../library/handler";
-import { AuthSession } from "../auth/auth.types";
-import {
-  UserSettingsUpdateBodyRequest,
-  UserUpdateBody,
-} from "../user/user.types";
+import { SessionKey, _ } from "~/library/handler";
+import { jwtVerify } from "~/library/jwt";
+
+import { User } from "../user";
 import {
   MyServiceGetAccount,
-  MyServiceGetSettings,
   MyServiceUpdateAccount,
-  MyServiceUpdateSettings,
+  MyServiceUpdateAccountBody,
 } from "./my.service";
 
-export const MyControllerGetSettings = ({
-  session,
-}: HandlerProps<never, never, AuthSession>) => MyServiceGetSettings(session);
+export type MyControllerGetAccountResponse = User;
 
-export const MyControllerUpdateSettings = async ({
-  body,
-  session,
-}: HandlerProps<never, UserSettingsUpdateBodyRequest, AuthSession>) =>
-  MyServiceUpdateSettings(session, body);
+export const MyControllerGetAccount = _(
+  jwtVerify,
+  ({ session }: SessionKey<{}>) => MyServiceGetAccount({ _id: session.userId })
+);
 
-export const MyControllerGetAccount = ({
-  session,
-}: HandlerProps<never, never, AuthSession>) => MyServiceGetAccount(session);
+export type MyControllerUpdateAccountRequest = {
+  body: MyControllerUpdateAccountBody;
+};
 
-export const MyControllerUpdateAccount = ({
-  body,
-  session,
-}: HandlerProps<never, UserUpdateBody, AuthSession>) =>
-  MyServiceUpdateAccount(session, body);
+export type MyControllerUpdateAccountResponse = User;
+export type MyControllerUpdateAccountBody = MyServiceUpdateAccountBody;
+
+export const MyControllerUpdateAccount = _(
+  jwtVerify,
+  ({ body, session }: SessionKey<MyControllerUpdateAccountRequest>) =>
+    MyServiceUpdateAccount({ _id: session.userId }, body)
+);

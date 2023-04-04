@@ -57,19 +57,34 @@ export class MockHttpRequest extends HttpRequest {
   text = jest.fn(async () => "");
 }
 
-export type Options = {
-  role: AuthRole;
+type PickByValueType<T, ValueType> = Pick<
+  T,
+  { [K in keyof T]-?: T[K] extends ValueType ? K : never }[keyof T]
+>;
+
+export type HandlerProps<
+  T extends {
+    query?: any;
+    body?: any;
+    params?: any;
+  }
+> = PickByValueType<T, object> & {
+  headers?: any;
+  login?: AuthRole;
 };
 
-export async function createHttpRequest(
-  init: HttpRequestObject = {},
-  options?: Options
-): Promise<HttpRequest> {
-  if (options?.role) {
-    const token = await login(options.role);
-    init.headers = { ...init?.headers, authorization: `Bearer: ${token}` };
+export async function createHttpRequest<
+  T extends {
+    query?: any;
+    body?: any;
+    params?: any;
+  } = {}
+>(props: HandlerProps<T>): Promise<HttpRequest> {
+  if (props?.login) {
+    const token = await login(props.login);
+    props.headers = { ...props?.headers, authorization: `Bearer: ${token}` };
   }
-  return new MockHttpRequest(init);
+  return new MockHttpRequest(props);
 }
 
 export class MockInvocationContext extends InvocationContext {

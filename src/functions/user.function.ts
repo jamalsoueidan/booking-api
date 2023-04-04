@@ -7,7 +7,7 @@ import {
   UserControllerGetAllUsers,
   UserControllerGetById,
   UserControllerUpdate,
-} from "./user/user.controller";
+} from "./user";
 
 app.http("userGetAll", {
   methods: ["GET"],
@@ -34,13 +34,13 @@ app.http("userCreateUserApi", {
 app.http("userGetById", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "user/:id",
+  route: "user/{_id?}",
   handler: UserControllerGetById,
 });
 
 app.http("userUpdateById", {
   methods: ["PUT"],
   authLevel: "anonymous",
-  route: "user/:id",
+  route: "user/{_id?}",
   handler: UserControllerUpdate,
 });

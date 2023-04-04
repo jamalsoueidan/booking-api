@@ -1,7 +1,7 @@
 import "module-alias/register";
 
 import { app } from "@azure/functions";
-import { _ } from "../library/handler";
+import { _ } from "~/library/handler";
 import {
   AuthControllerLogin,
   AuthControllerReceivePassword,

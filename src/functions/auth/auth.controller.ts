@@ -1,16 +1,30 @@
-import { HandlerProps } from "~/library/handler";
 import {
   AuthServiceLogin,
-  AuthServiceLoginProps,
   AuthServiceReceivePassword,
   AuthServiceReceivePasswordProps,
 } from "./auth.service";
 
+export type AuthControllerLoginRequest = {
+  body: AuthControllerLoginBody;
+};
+export interface AuthControllerLoginBody {
+  identification: string;
+  password: string;
+}
+
+export interface AuthControllerLoginResponse {
+  token: string;
+}
+
 export const AuthControllerLogin = ({
   body,
-}: HandlerProps<unknown, AuthServiceLoginProps>) => AuthServiceLogin(body);
+}: AuthControllerLoginRequest): Promise<AuthControllerLoginResponse> =>
+  AuthServiceLogin(body);
+
+export type AuthControllerReceivePasswordRequest = {
+  body: AuthServiceReceivePasswordProps;
+};
 
 export const AuthControllerReceivePassword = ({
   body,
-}: HandlerProps<unknown, AuthServiceReceivePasswordProps>) =>
-  AuthServiceReceivePassword(body);
+}: AuthControllerReceivePasswordRequest) => AuthServiceReceivePassword(body);

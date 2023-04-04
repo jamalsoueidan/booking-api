@@ -18,19 +18,12 @@ properties:
   language:
     type: string
     default: da
-  password:
-    type: string
-    default: 12345678
   phone:
     type: string
   position:
     type: string
   postal:
     type: integer
-  role:
-    type: integer
-    default: 0 # Assuming StaffRole.user is 0
-    enum: [0, 1, 2] # Replace with actual StaffRoleValues
   timeZone:
     type: string
     default: Europe/Copenhagen

@@ -1,0 +1,25 @@
+get:
+  summary: Get user by id
+  description: This endpoint gets user object
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              payload:
+                $ref: "../../schemas/user.yaml"
+    "400":
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "../../responses/error.yaml"
+  security:
+    - BearerAuth: []

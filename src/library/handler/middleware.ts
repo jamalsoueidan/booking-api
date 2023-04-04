@@ -78,6 +78,9 @@ const executeControllerWithParams = async (
 
   if (requiredParams.includes("query")) {
     params.query = getQueries();
+    if (request.params) {
+      params.query = { ...params.query, ...request.params };
+    }
   }
   if (requiredParams.includes("body")) {
     params.body = await getBody();

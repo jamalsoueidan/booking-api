@@ -1,0 +1,4 @@
+get:
+  $ref: "./get-by-id.yaml#/get"
+post:
+  $ref: "./update.yaml#/post"

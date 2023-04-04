@@ -1,6 +1,6 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { sign, verify } from "jsonwebtoken";
-import { Auth, AuthRole, AuthSession } from "../../functions/auth/auth.types";
+import { Auth, AuthRole, AuthSession } from "~/functions/auth/auth.types";
 
 const secretOrPrivateKey = process.env["TokenSecret"] || "k12pke1p2ek12";
 const options = { expiresIn: "1h" };
