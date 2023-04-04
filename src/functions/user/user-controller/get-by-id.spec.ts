@@ -1,10 +1,5 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { AuthRole } from "~/functions/auth";
-import {
-  UserControllerGetById,
-  UserControllerGetByIdRequest,
-  UserControllerGetByIdResponse,
-} from "~/functions/user/user-controller/get-by-id";
 import { User } from "~/functions/user/user.types";
 import {
   HttpErrorResponse,
@@ -13,6 +8,11 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 import { createUser } from "~/library/jest/helpers";
+import {
+  UserControllerGetById,
+  UserControllerGetByIdRequest,
+  UserControllerGetByIdResponse,
+} from "./get-by-id";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -62,7 +62,7 @@ describe("UserControllerGetById", () => {
   it("User: Should NOT be able to get by id in the other group", async () => {
     request = await createHttpRequest<UserControllerGetByIdRequest>({
       login: AuthRole.user,
-      query: { _id: correctUserGroup._id },
+      query: { _id: incorretUserGroup._id },
     });
 
     const res: HttpErrorResponse = await UserControllerGetById(

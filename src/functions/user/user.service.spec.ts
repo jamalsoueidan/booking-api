@@ -5,8 +5,8 @@ import {
   UserServiceFindByIdAndUpdate,
   UserServiceGetById,
   UserServiceGetUserIdsbyGroup,
-} from "../user.service";
-import { User } from "../user.types";
+} from "./user.service";
+import { User } from "./user.types";
 
 require("~/library/jest/mongoose/mongodb.jest");
 

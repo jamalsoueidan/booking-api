@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { SessionKey, _, onlyAdmin } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 import { UserServiceFindByIdAndUpdate } from "../user.service";
@@ -9,23 +8,29 @@ export type UserControllerUpdateRequest = {
   body: UserControllerUpdateBody;
 };
 
-export const UserUpdateBodySchema = UserSchema.omit({
+export type UserControllerUpdateResponse = User;
+
+export type UserControllerUpdateBody = Partial<User>;
+
+export const UserControllerUpdateSchema = UserSchema.pick({
   _id: true,
 });
-
-export type UserControllerUpdateBody = Partial<
-  z.infer<typeof UserUpdateBodySchema>
->;
-
 export type UserControllerUpdateQuery = Pick<User, "_id">;
 
 export const UserControllerUpdate = _(
   jwtVerify,
   onlyAdmin,
   ({ query, body, session }: SessionKey<UserControllerUpdateRequest>) => {
+    const validateQueryData = UserControllerUpdateSchema.parse(query);
     if (session.isAdmin) {
-      body.group = session.group;
+      return UserServiceFindByIdAndUpdate(
+        { ...validateQueryData, group: session.group },
+        {
+          ...body,
+          group: session.group,
+        }
+      );
     }
-    return UserServiceFindByIdAndUpdate(query._id, body);
+    return UserServiceFindByIdAndUpdate(validateQueryData, body);
   }
 );

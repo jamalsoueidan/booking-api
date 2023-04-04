@@ -6,13 +6,21 @@ export const UserServiceCreate = (body: Omit<User, "_id">) =>
 
 export const UserServiceFindAll = (props: any = {}) => UserModel.find(props);
 
-export const UserServiceFindByIdAndUpdate = (
-  _id: string,
+type UserServiceFindByIdAndUpdateQuery = Pick<User, "_id"> &
+  Partial<Pick<User, "group">>;
+
+export const UserServiceFindByIdAndUpdate = async (
+  query: UserServiceFindByIdAndUpdateQuery,
   body: Partial<Omit<User, "_id">>
-) =>
-  UserModel.findByIdAndUpdate(_id, body, {
+) => {
+  const user = await UserModel.findOneAndUpdate(query, body, {
     new: true,
   });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user;
+};
 
 export const UserServiceGetUserIdsbyGroup = async ({
   group,

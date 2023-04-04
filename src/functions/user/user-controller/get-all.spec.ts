@@ -1,16 +1,16 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { AuthRole } from "~/functions/auth";
 import {
-  UserControllerGetAllUsers,
-  UserControllerGetAllUsersRequest,
-  UserControllerGetAllUsersResponse,
-} from "~/functions/user/user-controller/get-all";
-import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
 import { createUser } from "~/library/jest/helpers";
+import {
+  UserControllerGetAllUsers,
+  UserControllerGetAllUsersRequest,
+  UserControllerGetAllUsersResponse,
+} from "./get-all";
 
 require("~/library/jest/mongoose/mongodb.jest");
 

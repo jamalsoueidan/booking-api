@@ -7,7 +7,7 @@ import {
   UserControllerGetAllUsers,
   UserControllerGetById,
   UserControllerUpdate,
-} from "./user/user.controller";
+} from "./user";
 
 app.http("userGetAll", {
   methods: ["GET"],

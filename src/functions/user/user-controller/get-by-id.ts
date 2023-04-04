@@ -6,8 +6,7 @@ import { User, UserSchema } from "../user.types";
 
 export const UserServiceGetUserByIdSchema = UserSchema.pick({
   _id: true,
-  group: true,
-}).partial({ group: true });
+});
 
 export type UserServiceGetUserByIdQuery = z.infer<
   typeof UserServiceGetUserByIdSchema
@@ -25,12 +24,12 @@ export const UserControllerGetById = _(
     query,
     session,
   }: SessionKey<UserControllerGetByIdRequest>): Promise<UserControllerGetByIdResponse> => {
+    const validateData = UserServiceGetUserByIdSchema.parse(query);
+
     if (session.isAdmin || session.isUser) {
-      // only allow view user in same group
-      query.group = session.group;
+      return UserServiceGetById({ ...validateData, group: session.group });
     }
 
-    const validateData = UserServiceGetUserByIdSchema.parse(query);
     return UserServiceGetById(validateData);
   }
 );

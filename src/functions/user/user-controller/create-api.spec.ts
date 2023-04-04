@@ -1,15 +1,15 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { faker } from "@faker-js/faker";
 import {
-  UserControllerCreateUserApi,
-  UserControllerCreateUserApiRequest,
-  UserControllerCreateUserBody,
-} from "~/functions/user/user-controller";
-import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
+import { UserControllerCreateUserBody } from "./create";
+import {
+  UserControllerCreateUserApi,
+  UserControllerCreateUserApiRequest,
+} from "./create-api";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
