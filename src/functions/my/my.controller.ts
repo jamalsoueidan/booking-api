@@ -1,29 +1,29 @@
-import {
-  UserSettingsUpdateBodyRequest,
-  UserUpdateBody,
-} from "~/functions/user";
-import { SessionKey } from "~/library/handler";
+import { SessionKey, _ } from "~/library/handler";
+import { jwtVerify } from "~/library/jwt";
+
+import { User } from "../user";
 import {
   MyServiceGetAccount,
-  MyServiceGetSettings,
   MyServiceUpdateAccount,
-  MyServiceUpdateSettings,
+  MyServiceUpdateAccountBody,
 } from "./my.service";
 
-export const MyControllerGetSettings = ({ session }: SessionKey<{}>) =>
-  MyServiceGetSettings(session);
+export type MyControllerGetAccountResponse = User;
 
-export const MyControllerUpdateSettings = async ({
-  body,
-  session,
-}: SessionKey<{ body: UserSettingsUpdateBodyRequest }>) =>
-  MyServiceUpdateSettings(session, body);
+export const MyControllerGetAccount = _(
+  jwtVerify,
+  ({ session }: SessionKey<{}>) => MyServiceGetAccount({ _id: session.userId })
+);
 
-export const MyControllerGetAccount = ({ session }: SessionKey<{}>) =>
-  MyServiceGetAccount(session);
+export type MyControllerUpdateAccountRequest = {
+  body: MyControllerUpdateAccountBody;
+};
 
-export const MyControllerUpdateAccount = ({
-  body,
-  session,
-}: SessionKey<{ body: UserUpdateBody }>) =>
-  MyServiceUpdateAccount(session, body);
+export type MyControllerUpdateAccountResponse = User;
+export type MyControllerUpdateAccountBody = MyServiceUpdateAccountBody;
+
+export const MyControllerUpdateAccount = _(
+  jwtVerify,
+  ({ body, session }: SessionKey<MyControllerUpdateAccountRequest>) =>
+    MyServiceUpdateAccount({ _id: session.userId }, body)
+);

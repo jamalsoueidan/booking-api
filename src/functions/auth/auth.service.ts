@@ -3,7 +3,7 @@ import { generate } from "generate-password";
 import { z } from "zod";
 import { jwtCreateToken } from "~/library/jwt";
 import { AuthModel } from "./auth.model";
-import { AuthCreateBodyRequest } from "./auth.types";
+import { Auth } from "./auth.types";
 
 export const AuthServiceLoginSchema = z.object({
   identification: z.string(),
@@ -74,5 +74,11 @@ export const AuthServiceReceivePassword = async (
   };
 };
 
+export type AuthCreateBodyRequest = Omit<Auth, "_id" | "password">;
+
 export const AuthServiceCreate = (body: AuthCreateBodyRequest) =>
   AuthModel.create(body);
+
+/*export const AuthServiceUpdate = (body: AuthCreateBodyRequest) => {
+  AuthModel.create(body);
+}*/

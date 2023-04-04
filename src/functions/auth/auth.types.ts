@@ -33,22 +33,3 @@ export interface AuthSession {
   isAdmin: boolean;
   isUser: boolean;
 }
-
-export interface AuthLoginBodyRequest {
-  identification: string;
-  password: string;
-}
-
-export interface AuthLoginResponse {
-  token: string;
-}
-
-export interface AuthCreateBodyRequest {
-  email: string;
-  phone: string;
-  role: AuthRole;
-  group: string;
-  userId: string;
-}
-
-export type AuthCreateResponse = Auth;

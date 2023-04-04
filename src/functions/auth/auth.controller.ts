@@ -1,19 +1,30 @@
 import {
   AuthServiceLogin,
-  AuthServiceLoginProps,
   AuthServiceReceivePassword,
   AuthServiceReceivePasswordProps,
 } from "./auth.service";
 
 export type AuthControllerLoginRequest = {
-  body: AuthServiceLoginProps;
+  body: AuthControllerLoginBody;
 };
-export const AuthControllerLogin = ({ body }: AuthControllerLoginRequest) =>
+export interface AuthControllerLoginBody {
+  identification: string;
+  password: string;
+}
+
+export interface AuthControllerLoginResponse {
+  token: string;
+}
+
+export const AuthControllerLogin = ({
+  body,
+}: AuthControllerLoginRequest): Promise<AuthControllerLoginResponse> =>
   AuthServiceLogin(body);
 
 export type AuthControllerReceivePasswordRequest = {
   body: AuthServiceReceivePasswordProps;
 };
+
 export const AuthControllerReceivePassword = ({
   body,
 }: AuthControllerReceivePasswordRequest) => AuthServiceReceivePassword(body);
