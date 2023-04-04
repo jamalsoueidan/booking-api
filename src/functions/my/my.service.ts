@@ -1,10 +1,11 @@
 import { z } from "zod";
-import { UserModel } from "../user/user.model";
 import {
+  UserModel,
   UserServiceFindByIdAndUpdate,
   UserServiceGetById,
-} from "../user/user.service";
-import { UserUpdateBody, UserUpdateBodySchema } from "../user/user.types";
+  UserUpdateBody,
+  UserUpdateBodySchema,
+} from "../user";
 
 export const MyServiceGetSettingsSchema = z.object({
   userId: z.string(),

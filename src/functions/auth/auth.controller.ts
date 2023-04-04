@@ -1,4 +1,3 @@
-import { HandlerProps } from "~/library/handler";
 import {
   AuthServiceLogin,
   AuthServiceLoginProps,
@@ -6,11 +5,15 @@ import {
   AuthServiceReceivePasswordProps,
 } from "./auth.service";
 
-export const AuthControllerLogin = ({
-  body,
-}: HandlerProps<unknown, AuthServiceLoginProps>) => AuthServiceLogin(body);
+export type AuthControllerLoginRequest = {
+  body: AuthServiceLoginProps;
+};
+export const AuthControllerLogin = ({ body }: AuthControllerLoginRequest) =>
+  AuthServiceLogin(body);
 
+export type AuthControllerReceivePasswordRequest = {
+  body: AuthServiceReceivePasswordProps;
+};
 export const AuthControllerReceivePassword = ({
   body,
-}: HandlerProps<unknown, AuthServiceReceivePasswordProps>) =>
-  AuthServiceReceivePassword(body);
+}: AuthControllerReceivePasswordRequest) => AuthServiceReceivePassword(body);

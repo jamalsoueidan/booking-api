@@ -1,9 +1,8 @@
-import { HandlerProps } from "../../library/handler";
-import { AuthSession } from "../auth/auth.types";
 import {
   UserSettingsUpdateBodyRequest,
   UserUpdateBody,
-} from "../user/user.types";
+} from "~/functions/user";
+import { SessionKey } from "~/library/handler";
 import {
   MyServiceGetAccount,
   MyServiceGetSettings,
@@ -11,22 +10,20 @@ import {
   MyServiceUpdateSettings,
 } from "./my.service";
 
-export const MyControllerGetSettings = ({
-  session,
-}: HandlerProps<never, never, AuthSession>) => MyServiceGetSettings(session);
+export const MyControllerGetSettings = ({ session }: SessionKey<{}>) =>
+  MyServiceGetSettings(session);
 
 export const MyControllerUpdateSettings = async ({
   body,
   session,
-}: HandlerProps<never, UserSettingsUpdateBodyRequest, AuthSession>) =>
+}: SessionKey<{ body: UserSettingsUpdateBodyRequest }>) =>
   MyServiceUpdateSettings(session, body);
 
-export const MyControllerGetAccount = ({
-  session,
-}: HandlerProps<never, never, AuthSession>) => MyServiceGetAccount(session);
+export const MyControllerGetAccount = ({ session }: SessionKey<{}>) =>
+  MyServiceGetAccount(session);
 
 export const MyControllerUpdateAccount = ({
   body,
   session,
-}: HandlerProps<never, UserUpdateBody, AuthSession>) =>
+}: SessionKey<{ body: UserUpdateBody }>) =>
   MyServiceUpdateAccount(session, body);

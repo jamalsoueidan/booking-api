@@ -1,12 +1,15 @@
-import { AuthSession } from "../../functions/auth/auth.types";
+import { AuthSession } from "~/functions/auth/auth.types";
 
-export type HandlerProps<Q = never, B = never, S = AuthSession> = Pick<
-  {
-    query: Q;
-    body: B;
-    session: S;
-  },
-  | (Q extends object ? "query" : never)
-  | (B extends object ? "body" : never)
-  | (S extends object ? "session" : never)
+type PickByValueType<T, ValueType> = Pick<
+  T,
+  { [K in keyof T]-?: T[K] extends ValueType ? K : never }[keyof T]
 >;
+
+export type SessionKey<
+  T extends {
+    query?: any;
+    body?: any;
+  }
+> = PickByValueType<T, object> & {
+  session: AuthSession;
+};

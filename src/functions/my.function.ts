@@ -1,7 +1,7 @@
 import { app } from "@azure/functions";
 import "module-alias/register";
-import { _ } from "../library/handler";
-import { jwtVerify } from "../library/jwt";
+import { _ } from "~/library/handler";
+import { jwtVerify } from "~/library/jwt";
 import {
   MyControllerGetAccount,
   MyControllerGetSettings,

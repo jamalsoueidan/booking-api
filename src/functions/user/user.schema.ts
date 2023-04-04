@@ -7,7 +7,10 @@ export interface IUserDocument extends IUser, Document {}
 
 export interface IUserModel extends Model<IUserDocument> {}
 
-export const UserSchema = new mongoose.Schema<IUserDocument, IUserModel>({
+export const UserMongooseSchema = new mongoose.Schema<
+  IUserDocument,
+  IUserModel
+>({
   active: { default: true, type: Boolean },
   address: String,
   avatar: { required: true, type: String },

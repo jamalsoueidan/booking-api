@@ -1,22 +1,14 @@
 import { UserModel } from "./user.model";
-import {
-  UserCreateBody,
-  UserCreateBodySchema,
-  UserServiceGetUserByIdQuery,
-  UserServiceGetUserIdsbyGroupProps,
-  UserUpdateBody,
-} from "./user.types";
+import { User } from "./user.types";
 
-export const UserServiceCreate = (body: UserCreateBody) => {
-  const schema = UserCreateBodySchema.parse(body);
-  return UserModel.create(schema);
-};
+export const UserServiceCreate = (body: Omit<User, "_id">) =>
+  UserModel.create(body);
 
 export const UserServiceFindAll = (props: any = {}) => UserModel.find(props);
 
 export const UserServiceFindByIdAndUpdate = (
   _id: string,
-  body: UserUpdateBody
+  body: Partial<Omit<User, "_id">>
 ) =>
   UserModel.findByIdAndUpdate(_id, body, {
     new: true,
@@ -24,15 +16,20 @@ export const UserServiceFindByIdAndUpdate = (
 
 export const UserServiceGetUserIdsbyGroup = async ({
   group,
-}: UserServiceGetUserIdsbyGroupProps): Promise<Array<string>> => {
+}: {
+  group: string;
+}): Promise<Array<string>> => {
   const users = await UserModel.find({ group }, "");
   return users.map((user: any) => user.id);
 };
 
-export const UserServiceGetById = async (
-  filter: UserServiceGetUserByIdQuery
-) => {
-  const user = await UserModel.findOne(filter);
+type UserServiceGetByIdProps = {
+  _id: string;
+  group?: string;
+};
+
+export const UserServiceGetById = async (props: UserServiceGetByIdProps) => {
+  const user = await UserModel.findOne(props);
   if (!user) {
     throw new Error("no user found");
   }

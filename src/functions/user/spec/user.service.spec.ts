@@ -1,4 +1,4 @@
-import { createUser } from "../../../library/jest/helpers";
+import { createUser } from "~/library/jest/helpers";
 import {
   UserServiceCreate,
   UserServiceFindAll,
@@ -6,9 +6,9 @@ import {
   UserServiceGetById,
   UserServiceGetUserIdsbyGroup,
 } from "../user.service";
-import { User, UserUpdateBody } from "../user.types";
+import { User } from "../user.types";
 
-require("../../../library/jest/mongoose/mongodb.jest");
+require("~/library/jest/mongoose/mongodb.jest");
 
 const user: Omit<User, "_id"> = {
   active: true,
@@ -24,10 +24,10 @@ const user: Omit<User, "_id"> = {
   timeZone: "Europe/Copenhagen",
 };
 
-describe("UserService test", () => {
+describe("UserService", () => {
   it("Should create a user", async () => {
-    const createSetting = await UserServiceCreate(user);
-    expect(createSetting).not.toBeNull();
+    const newUser = await UserServiceCreate(user);
+    expect(newUser).not.toBeNull();
   });
 
   it("Should get list of user", async () => {
@@ -41,7 +41,7 @@ describe("UserService test", () => {
     const allUser = await UserServiceFindAll();
     const oneUser = allUser.pop();
 
-    const body: UserUpdateBody = {
+    const body = {
       fullname: "jamal soueidan",
       email: "asd@asd.dk",
       phone: "31317428",
