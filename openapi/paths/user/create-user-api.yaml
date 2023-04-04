@@ -20,7 +20,7 @@ post:
                 position:
                   $ref: "../../schemas/user.yaml#/properties/position"
                 avatar:
-                  $ref: "../../schemas/user.yaml#/properties/position"
+                  $ref: "../../schemas/user.yaml#/properties/avatar"
 
   responses:
     "200":
@@ -43,5 +43,3 @@ post:
             oneOf:
               - $ref: "../../responses/error.yaml"
               - $ref: "../../responses/validation.yaml"
-  security:
-    - BearerAuth: []

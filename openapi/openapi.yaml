@@ -31,7 +31,13 @@ paths:
     $ref: "./paths/auth/receive-password.yaml"
 
   /create-user:
-    $ref: "./paths/user/create-user.yaml"
+    $ref: "./paths/user/create-user-api.yaml"
 
-  /my/account:
+  /my-account:
     $ref: "./paths/my/account.yaml"
+
+  /user:
+    $ref: "./paths/user/user.yaml"
+
+  /user/{id}:
+    $ref: "./paths/user/user-id.yaml"

@@ -1,6 +1,6 @@
 post:
-  summary: Create user with api key
-  description: This endpoint create new user with api key
+  summary: Update user by id
+  description: This endpoint update user
   requestBody:
     required: true
     content:
@@ -24,7 +24,7 @@ post:
 
   responses:
     "200":
-      description: Receive user that are created
+      description: Receive user that are updated
       content:
         application/json:
           schema:
