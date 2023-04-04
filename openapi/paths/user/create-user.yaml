@@ -1,5 +1,5 @@
 post:
-  summary: Create user with api key
+  summary: Create user
   description: This endpoint create new user with api key
   requestBody:
     required: true

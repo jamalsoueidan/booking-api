@@ -1,6 +1,6 @@
 post:
   summary: Create user with api key
-  description: This endpoint create new user with api key
+  description: This endpoint is special and should be used to create new user with api key, and not logged in user.
   requestBody:
     required: true
     content:
