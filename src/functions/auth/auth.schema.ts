@@ -16,7 +16,7 @@ export const AuthSchema = new mongoose.Schema<IAuthDocument, IAuthModel>({
     type: String,
     unique: true,
   },
-  phone: { required: true, type: String },
+  phone: { required: true, type: String, unique: true },
   role: {
     default: AuthRole.user,
     enum: AuthRoleValues,
@@ -30,7 +30,7 @@ export const AuthSchema = new mongoose.Schema<IAuthDocument, IAuthModel>({
   },
   userId: {
     index: true,
-    ref: "staff",
+    ref: "user",
     type: Schema.Types.ObjectId,
     required: true,
   },
