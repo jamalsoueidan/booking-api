@@ -1,9 +1,9 @@
 get:
-  summary: Receive my logged in account data
-  description: This endpoint receives a account data.
+  summary: Get my-account data
+  description: This endpoint get account data.
   responses:
     "200":
-      description: Receive account settings
+      description: Receive account data
       content:
         application/json:
           schema:
@@ -16,9 +16,9 @@ get:
                 $ref: "../../schemas/user.yaml"
   security:
     - BearerAuth: []
-post:
-  summary: Update user by id
-  description: This endpoint update user
+put:
+  summary: Update my-account data
+  description: This endpoint update account
   requestBody:
     required: true
     content:
