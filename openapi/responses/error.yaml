@@ -1,12 +1,8 @@
-description: Message Error
-content:
-  application/json:
-    schema:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: false
-        error:
-          type: string
-          example: "An error message"
+type: object
+properties:
+  success:
+    type: boolean
+    example: false
+  error:
+    type: string
+    example: "An error message"
