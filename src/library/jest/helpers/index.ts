@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { AuthRole, AuthServiceCreate } from "~/functions/auth";
+import { AuthModel, AuthRole } from "~/functions/auth";
 import { User, UserServiceCreate } from "~/functions/user";
 import { jwtCreateToken } from "~/library/jwt";
 
@@ -22,14 +22,19 @@ export const createUser = (props: Partial<User> = {}) =>
   UserServiceCreate(getUserObject(props));
 
 export const login = async (role: AuthRole) => {
-  const newUser = {
+  const newUser = getUserObject({
     email: faker.internet.email(),
     fullname: faker.name.fullName(),
     group: "all",
     phone: "31317428",
-  };
+  });
 
-  const user = await createUser(newUser);
-  const auth = await AuthServiceCreate({ ...newUser, role, userId: user._id });
-  return jwtCreateToken(auth.toJSON());
+  const user = await UserServiceCreate(newUser, role);
+  const auth = await AuthModel.findOne({ userId: user._id });
+
+  if (!auth) {
+    return {};
+  }
+
+  return jwtCreateToken(auth?.toJSON());
 };

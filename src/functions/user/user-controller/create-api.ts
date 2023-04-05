@@ -1,4 +1,4 @@
-import { AuthRole, AuthServiceCreate } from "~/functions/auth";
+import { AuthRole } from "~/functions/auth";
 import { _ } from "~/library/handler";
 import { UserServiceCreate } from "../user.service";
 import {
@@ -12,15 +12,6 @@ export type UserControllerCreateUserApiRequest =
 export const UserControllerCreateUserApi = _(
   async ({ body }: UserControllerCreateUserApiRequest) => {
     const validateBody = UserControllerCreateUserSchema.parse(body);
-
-    const user = await UserServiceCreate(validateBody);
-    // figure out how to move this out so user doesn't know anything about auth service
-    await AuthServiceCreate({
-      ...validateBody,
-      userId: user._id,
-      role: AuthRole.owner,
-    });
-
-    return user;
+    return UserServiceCreate(validateBody, AuthRole.owner);
   }
 );
