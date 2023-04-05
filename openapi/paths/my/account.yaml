@@ -1,4 +1,5 @@
 get:
+  operationId: getMyAccount
   summary: Get my-account data
   description: This endpoint get account data.
   responses:
