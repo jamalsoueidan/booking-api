@@ -11,55 +11,107 @@ components:
       scheme: bearer
       bearerFormat: JWT
   responses:
-    MesssageErrorResponse:
-      description: Message error response
+    ErrorResponse:
+      description: 'Error happened, either message error or validation error'
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-                example: false
-              error:
-                $ref: '#/components/schemas/MessageError'
-    ValidationErrorResponse:
-      description: Validation error response
+            $ref: '#/components/schemas/ErrorModel'
+    UserResponse:
+      description: Response with UserModel payload
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-                example: false
-              error:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/UserResponse'
+    UsersResponse:
+      description: Response with Array of UserModel payload
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UsersResponse'
   schemas:
+    ErrorModel:
+      oneOf:
+        - $ref: '#/components/schemas/MessageError'
+        - $ref: '#/components/schemas/ValidationError'
     ValidationError:
       type: object
       properties:
-        path:
+        success:
+          type: boolean
+          example: false
+        error:
           type: array
           items:
-            type: string
+            type: object
+            properties:
+              path:
+                type: array
+                items:
+                  type: string
+              message:
+                type: string
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: number
+            required:
+              - path
+              - message
+              - code
+    MessageError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: error message
+    AuthLoginResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        token:
+          type: string
+          example: Token to be saved in browser
+      required:
+        - success
+        - token
+    AuthLoginRequest:
+      type: object
+      properties:
+        identification:
+          type: string
+          example: 31317428
+        password:
+          type: string
+          example: code
+      required:
+        - identification
+        - password
+    AuthPasswordResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
         message:
           type: string
-        code:
+          example: Password received successfully
+    AuthPasswordRequest:
+      type: object
+      properties:
+        phone:
           type: string
-        expected:
-          type: string
-        received:
-          type: number
+          example: 31317428
+          description: The phone number associated with the password
       required:
-        - path
-        - message
-        - code
-    MessageError:
-      type: string
-      example: An error message
+        - phone
     UserModel:
       type: object
       properties:
@@ -98,21 +150,28 @@ components:
         - postal
         - position
         - avatar
-    AuthLoginSuccess:
+    UserResponse:
       type: object
       properties:
         success:
           type: boolean
           example: true
-        token:
-          type: string
-          example: Token to be saved in browser
-      required:
-        - success
-        - token
+        payload:
+          $ref: '#/components/schemas/UserModel'
+    UsersResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserModel'
 paths:
   /auth/login:
     post:
+      operationId: login
       summary: Logs in a user
       description: This endpoint return to you token for authentication.
       requestBody:
@@ -120,34 +179,19 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                identification:
-                  type: string
-                  example: 31317428
-                password:
-                  type: string
-                  example: code
-              required:
-                - identification
-                - password
+              $ref: '#/components/schemas/AuthLoginRequest'
       responses:
         '200':
           description: Login success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthLoginSuccess'
+                $ref: '#/components/schemas/AuthLoginResponse'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
-                  - $ref: '#/components/responses/ValidationErrorResponse/content/application~1json/schema'
+          $ref: '#/components/responses/ErrorResponse'
   /auth/receive-password:
     post:
+      operationId: receivePassword
       summary: Receive password
       description: This endpoint receives a password using a phone number provided in the request body.
       requestBody:
@@ -155,38 +199,19 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                phone:
-                  type: string
-                  example: 31317428
-                  description: The phone number associated with the password
-              required:
-                - phone
+              $ref: '#/components/schemas/AuthPasswordRequest'
       responses:
         '200':
           description: Password received successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: Password received successfully
+                $ref: '#/components/schemas/AuthPasswordResponse'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
-                  - $ref: '#/components/responses/ValidationErrorResponse/content/application~1json/schema'
+          $ref: '#/components/responses/ErrorResponse'
   /create-user:
     post:
+      operationId: createUserApi
       summary: Create user with api key
       description: 'This endpoint is special and should be used to create new user with api key, and not logged in user.'
       requestBody:
@@ -197,42 +222,17 @@ paths:
               $ref: '#/components/schemas/UserModel'
       responses:
         '200':
-          description: Receive user that are created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  payload:
-                    $ref: '#/components/schemas/UserModel'
+          $ref: '#/components/responses/UserResponse'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
-                  - $ref: '#/components/responses/ValidationErrorResponse/content/application~1json/schema'
+          $ref: '#/components/responses/ErrorResponse'
   /my-account:
     get:
+      operationId: getMyAccount
       summary: Get my-account data
       description: This endpoint get account data.
       responses:
         '200':
-          description: Receive account data
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  payload:
-                    $ref: '#/components/schemas/UserModel'
+          $ref: '#/components/responses/UserResponse'
       security:
         - BearerAuth: []
     put:
@@ -246,49 +246,23 @@ paths:
               $ref: '#/components/schemas/UserModel'
       responses:
         '200':
-          description: Receive user that are updated
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  payload:
-                    $ref: '#/components/schemas/UserModel'
+          $ref: '#/components/responses/UserResponse'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
-                  - $ref: '#/components/responses/ValidationErrorResponse/content/application~1json/schema'
+          $ref: '#/components/responses/ErrorResponse'
       security:
         - BearerAuth: []
   /user:
     get:
+      operationId: getAllUsers
       summary: Get a list of users
       description: 'This endpoint gets all users, in case you are logged in as admin or user, only same group'
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  payload:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/UserModel'
+          $ref: '#/components/responses/UsersResponse'
       security:
         - BearerAuth: []
     post:
+      operationId: createUser
       summary: Create user
       description: This endpoint create new user with api key
       requestBody:
@@ -299,15 +273,9 @@ paths:
               $ref: '#/components/schemas/UserModel'
       responses:
         '200':
-          $ref: '#/paths/~1create-user/post/responses/200'
+          $ref: '#/components/responses/UserResponse'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
-                  - $ref: '#/components/responses/ValidationErrorResponse/content/application~1json/schema'
+          $ref: '#/components/responses/ErrorResponse'
       security:
         - BearerAuth: []
   '/user/{id}':
@@ -319,31 +287,18 @@ paths:
         schema:
           type: string
     get:
+      operationId: getUser
       summary: Get user by id
       description: This endpoint gets user object
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  payload:
-                    $ref: '#/components/schemas/UserModel'
+          $ref: '#/components/responses/UserResponse'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
+          $ref: '#/components/responses/ErrorResponse'
       security:
         - BearerAuth: []
     put:
+      operationId: updateUser
       summary: Update user by id
       description: This endpoint update user
       requestBody:
@@ -354,24 +309,8 @@ paths:
               $ref: '#/components/schemas/UserModel'
       responses:
         '200':
-          description: Receive user that are updated
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  payload:
-                    $ref: '#/components/schemas/UserModel'
+          $ref: '#/components/responses/UserResponse'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
-                  - $ref: '#/components/responses/ValidationErrorResponse/content/application~1json/schema'
+          $ref: '#/components/responses/ErrorResponse'
       security:
         - BearerAuth: []

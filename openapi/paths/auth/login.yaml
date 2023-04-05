@@ -1,4 +1,5 @@
 post:
+  operationId: login
   summary: Logs in a user
   description: This endpoint return to you token for authentication.
   requestBody:
@@ -6,29 +7,13 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            identification:
-              type: string
-              example: 31317428
-            password:
-              type: string
-              example: "code"
-          required:
-            - identification
-            - password
+          $ref: "./schemas/login-request.yaml"
   responses:
     "200":
       description: Login success
       content:
         application/json:
           schema:
-            $ref: "./schemas/login-success.yaml"
+            $ref: "./schemas/login-response.yaml"
     "400":
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - $ref: "../../responses/error.yaml"
-              - $ref: "../../responses/validation.yaml"
+      $ref: "../../responses/error.yaml"

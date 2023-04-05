@@ -1,4 +1,5 @@
 post:
+  operationId: createUser
   summary: Create user
   description: This endpoint create new user with api key
   requestBody:
@@ -12,12 +13,7 @@ post:
     "200":
       $ref: "./responses/user-response.yaml"
     "400":
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - $ref: "../../responses/error.yaml"
-              - $ref: "../../responses/validation.yaml"
+      $ref: "../../responses/error.yaml"
+
   security:
     - BearerAuth: []

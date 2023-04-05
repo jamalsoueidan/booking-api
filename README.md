@@ -56,3 +56,8 @@ let responseJson = pm.response.json();
 let token = responseJson.payload.token;
 pm.environment.set("bearerToken", token);
 ```
+
+## Todo
+
+openapi to use-query
+https://xata.io/blog/openapi-typesafe-react-query-hooks

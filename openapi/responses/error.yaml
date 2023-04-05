@@ -1,7 +1,5 @@
-type: object
-properties:
-  success:
-    type: boolean
-    example: false
-  error:
-    $ref: "../schemas/message-error.yaml"
+description: Error happened, either message error or validation error
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/error-model.yaml"

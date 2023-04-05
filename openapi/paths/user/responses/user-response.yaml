@@ -1,11 +1,5 @@
-description: Receive user that are created
+description: Response with UserModel payload
 content:
   application/json:
     schema:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: "../schemas/user.yaml"
+      $ref: "../schemas/user-response.yaml"

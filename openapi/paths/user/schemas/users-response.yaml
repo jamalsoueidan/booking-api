@@ -2,8 +2,8 @@ type: object
 properties:
   success:
     type: boolean
-    example: false
-  error:
+    example: true
+  payload:
     type: array
     items:
-      $ref: "../schemas/validation-error.yaml"
+      $ref: "../schemas/user.yaml"
