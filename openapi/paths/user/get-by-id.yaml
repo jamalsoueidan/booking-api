@@ -15,11 +15,6 @@ get:
               payload:
                 $ref: "./schemas/user.yaml"
     "400":
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - $ref: "../../responses/error.yaml"
+      $ref: "../../responses/error.yaml"
   security:
     - BearerAuth: []

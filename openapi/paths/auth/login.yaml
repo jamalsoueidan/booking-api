@@ -25,10 +25,4 @@ post:
           schema:
             $ref: "./schemas/login-success.yaml"
     "400":
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - $ref: "../../responses/error.yaml"
-              - $ref: "../../responses/validation.yaml"
+      $ref: "../../responses/error.yaml"

@@ -1,18 +1,26 @@
 type: object
 properties:
-  path:
+  success:
+    type: boolean
+    example: false
+  error:
     type: array
     items:
-      type: string
-  message:
-    type: string
-  code:
-    type: string
-  expected:
-    type: string
-  received:
-    type: number
-required:
-  - path
-  - message
-  - code
+      type: object
+      properties:
+        path:
+          type: array
+          items:
+            type: string
+        message:
+          type: string
+        code:
+          type: string
+        expected:
+          type: string
+        received:
+          type: number
+      required:
+        - path
+        - message
+        - code

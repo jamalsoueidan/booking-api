@@ -41,12 +41,6 @@ put:
               payload:
                 $ref: "../user/schemas/user.yaml"
     "400":
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - $ref: "../../responses/error.yaml"
-              - $ref: "../../responses/validation.yaml"
+      $ref: "../../responses/error.yaml"
   security:
     - BearerAuth: []
