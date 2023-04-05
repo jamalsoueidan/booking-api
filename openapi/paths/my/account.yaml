@@ -13,7 +13,7 @@ get:
                 type: boolean
                 example: true
               payload:
-                $ref: "../../schemas/user.yaml"
+                $ref: "../user/schemas/user.yaml"
   security:
     - BearerAuth: []
 
@@ -25,7 +25,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: "../../schemas/user.yaml"
+          $ref: "../user/schemas/user.yaml"
 
   responses:
     "200":
@@ -39,7 +39,7 @@ put:
                 type: boolean
                 example: true
               payload:
-                $ref: "../../schemas/user.yaml"
+                $ref: "../user/schemas/user.yaml"
     "400":
       description: Bad Request
       content:

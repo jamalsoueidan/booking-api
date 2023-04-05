@@ -15,6 +15,6 @@ get:
               payload:
                 type: array
                 items:
-                  $ref: "../../schemas/user.yaml"
+                  $ref: "./schemas/user.yaml"
   security:
     - BearerAuth: []

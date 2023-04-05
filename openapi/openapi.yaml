@@ -13,16 +13,28 @@ components:
 
   responses:
     MesssageErrorResponse:
-      $ref: "./responses/error.yaml"
+      description: Message error response
+      content:
+        application/json:
+          schema:
+            $ref: "./responses/error.yaml"
 
     ValidationErrorResponse:
-      $ref: "./responses/validation.yaml"
+      description: Validation error response
+      content:
+        application/json:
+          schema:
+            $ref: "./responses/validation.yaml"
 
   schemas:
-    ZodErrors:
-      $ref: "./schemas/zod-errors.yaml"
-    User:
-      $ref: "./schemas/user.yaml"
+    ValidationError:
+      $ref: "./schemas/validation-error.yaml"
+    MessageError:
+      $ref: "./schemas/message-error.yaml"
+    UserModel:
+      $ref: "./paths/user/schemas/user.yaml"
+    AuthLoginSuccess:
+      $ref: "./paths/auth/schemas/login-success.yaml"
 paths:
   /auth/login:
     $ref: "./paths/auth/login.yaml"

@@ -6,4 +6,4 @@ properties:
   error:
     type: array
     items:
-      $ref: "../schemas/zod-errors.yaml"
+      $ref: "../schemas/validation-error.yaml"

@@ -7,5 +7,5 @@ parameters:
       type: string
 get:
   $ref: "./get-by-id.yaml#/get"
-post:
+put:
   $ref: "./update.yaml#/put"

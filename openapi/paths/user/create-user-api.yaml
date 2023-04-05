@@ -6,21 +6,11 @@ post:
     content:
       application/json:
         schema:
-          $ref: "../../schemas/user.yaml"
+          $ref: "./schemas/user.yaml"
 
   responses:
     "200":
-      description: Receive user that are created
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-                example: true
-              payload:
-                $ref: "../../schemas/user.yaml"
+      $ref: "./responses/user-response.yaml"
     "400":
       description: Bad Request
       content:

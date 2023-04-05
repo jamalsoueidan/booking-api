@@ -23,19 +23,12 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-                example: true
-              token:
-                type: string
-                example: Token to be saved in browser
+            $ref: "./schemas/login-success.yaml"
     "400":
       description: Bad Request
       content:
         application/json:
           schema:
             oneOf:
-              - $ref: "../../responses/validation.yaml"
               - $ref: "../../responses/error.yaml"
+              - $ref: "../../responses/validation.yaml"

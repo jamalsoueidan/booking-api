@@ -4,5 +4,4 @@ properties:
     type: boolean
     example: false
   error:
-    type: string
-    example: "An error message"
+    $ref: "../schemas/message-error.yaml"
