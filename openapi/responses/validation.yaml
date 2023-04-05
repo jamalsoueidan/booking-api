@@ -1,13 +1,9 @@
-description: Validation Error
-content:
-  application/json:
-    schema:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: false
-        error:
-          type: array
-          items:
-            $ref: "../schemas/zod-errors.yaml"
+type: object
+properties:
+  success:
+    type: boolean
+    example: false
+  error:
+    type: array
+    items:
+      $ref: "../schemas/validation-error.yaml"

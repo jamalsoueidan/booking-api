@@ -13,7 +13,7 @@ get:
                 type: boolean
                 example: true
               payload:
-                $ref: "../../schemas/user.yaml"
+                $ref: "./schemas/user.yaml"
     "400":
       description: Bad Request
       content:

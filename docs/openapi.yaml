@@ -12,7 +12,7 @@ components:
       bearerFormat: JWT
   responses:
     MesssageErrorResponse:
-      description: Message Error
+      description: Message error response
       content:
         application/json:
           schema:
@@ -22,10 +22,9 @@ components:
                 type: boolean
                 example: false
               error:
-                type: string
-                example: An error message
+                $ref: '#/components/schemas/MessageError'
     ValidationErrorResponse:
-      description: Validation Error
+      description: Validation error response
       content:
         application/json:
           schema:
@@ -37,9 +36,9 @@ components:
               error:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ZodErrors'
+                  $ref: '#/components/schemas/ValidationError'
   schemas:
-    ZodErrors:
+    ValidationError:
       type: object
       properties:
         path:
@@ -58,7 +57,10 @@ components:
         - path
         - message
         - code
-    User:
+    MessageError:
+      type: string
+      example: An error message
+    UserModel:
       type: object
       properties:
         active:
@@ -81,6 +83,7 @@ components:
           default: da
         phone:
           type: string
+          uniqueItems: true
         position:
           type: string
         postal:
@@ -95,6 +98,18 @@ components:
         - postal
         - position
         - avatar
+    AuthLoginSuccess:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        token:
+          type: string
+          example: Token to be saved in browser
+      required:
+        - success
+        - token
 paths:
   /auth/login:
     post:
@@ -122,22 +137,15 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  token:
-                    type: string
-                    example: Token to be saved in browser
+                $ref: '#/components/schemas/AuthLoginSuccess'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse'
-                  - $ref: '#/components/responses/ValidationErrorResponse'
+                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
+                  - $ref: '#/components/responses/ValidationErrorResponse/content/application~1json/schema'
   /auth/receive-password:
     post:
       summary: Receive password
@@ -175,8 +183,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse'
-                  - $ref: '#/components/responses/ValidationErrorResponse'
+                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
+                  - $ref: '#/components/responses/ValidationErrorResponse/content/application~1json/schema'
   /create-user:
     post:
       summary: Create user with api key
@@ -186,21 +194,7 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - type: object
-                  properties:
-                    fullname:
-                      $ref: '#/components/schemas/User/properties/fullname'
-                    email:
-                      $ref: '#/components/schemas/User/properties/email'
-                    phone:
-                      $ref: '#/components/schemas/User/properties/phone'
-                    postal:
-                      $ref: '#/components/schemas/User/properties/postal'
-                    position:
-                      $ref: '#/components/schemas/User/properties/position'
-                    avatar:
-                      $ref: '#/components/schemas/User/properties/avatar'
+              $ref: '#/components/schemas/UserModel'
       responses:
         '200':
           description: Receive user that are created
@@ -213,15 +207,15 @@ paths:
                     type: boolean
                     example: true
                   payload:
-                    $ref: '#/components/schemas/User'
+                    $ref: '#/components/schemas/UserModel'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse'
-                  - $ref: '#/components/responses/ValidationErrorResponse'
+                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
+                  - $ref: '#/components/responses/ValidationErrorResponse/content/application~1json/schema'
   /my-account:
     get:
       summary: Get my-account data
@@ -238,7 +232,7 @@ paths:
                     type: boolean
                     example: true
                   payload:
-                    $ref: '#/components/schemas/User'
+                    $ref: '#/components/schemas/UserModel'
       security:
         - BearerAuth: []
     put:
@@ -249,21 +243,7 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - type: object
-                  properties:
-                    fullname:
-                      $ref: '#/components/schemas/User/properties/fullname'
-                    email:
-                      $ref: '#/components/schemas/User/properties/email'
-                    phone:
-                      $ref: '#/components/schemas/User/properties/phone'
-                    postal:
-                      $ref: '#/components/schemas/User/properties/postal'
-                    position:
-                      $ref: '#/components/schemas/User/properties/position'
-                    avatar:
-                      $ref: '#/components/schemas/User/properties/position'
+              $ref: '#/components/schemas/UserModel'
       responses:
         '200':
           description: Receive user that are updated
@@ -276,15 +256,15 @@ paths:
                     type: boolean
                     example: true
                   payload:
-                    $ref: '#/components/schemas/User'
+                    $ref: '#/components/schemas/UserModel'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse'
-                  - $ref: '#/components/responses/ValidationErrorResponse'
+                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
+                  - $ref: '#/components/responses/ValidationErrorResponse/content/application~1json/schema'
       security:
         - BearerAuth: []
   /user:
@@ -305,7 +285,7 @@ paths:
                   payload:
                     type: array
                     items:
-                      $ref: '#/components/schemas/User'
+                      $ref: '#/components/schemas/UserModel'
       security:
         - BearerAuth: []
     post:
@@ -316,42 +296,18 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - type: object
-                  properties:
-                    fullname:
-                      $ref: '#/components/schemas/User/properties/fullname'
-                    email:
-                      $ref: '#/components/schemas/User/properties/email'
-                    phone:
-                      $ref: '#/components/schemas/User/properties/phone'
-                    postal:
-                      $ref: '#/components/schemas/User/properties/postal'
-                    position:
-                      $ref: '#/components/schemas/User/properties/position'
-                    avatar:
-                      $ref: '#/components/schemas/User/properties/position'
+              $ref: '#/components/schemas/UserModel'
       responses:
         '200':
-          description: Receive user that are created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  payload:
-                    $ref: '#/components/schemas/User'
+          $ref: '#/paths/~1create-user/post/responses/200'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse'
-                  - $ref: '#/components/responses/ValidationErrorResponse'
+                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
+                  - $ref: '#/components/responses/ValidationErrorResponse/content/application~1json/schema'
       security:
         - BearerAuth: []
   '/user/{id}':
@@ -377,17 +333,17 @@ paths:
                     type: boolean
                     example: true
                   payload:
-                    $ref: '#/components/schemas/User'
+                    $ref: '#/components/schemas/UserModel'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse'
+                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
       security:
         - BearerAuth: []
-    post:
+    put:
       summary: Update user by id
       description: This endpoint update user
       requestBody:
@@ -395,21 +351,7 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - type: object
-                  properties:
-                    fullname:
-                      $ref: '#/components/schemas/User/properties/fullname'
-                    email:
-                      $ref: '#/components/schemas/User/properties/email'
-                    phone:
-                      $ref: '#/components/schemas/User/properties/phone'
-                    postal:
-                      $ref: '#/components/schemas/User/properties/postal'
-                    position:
-                      $ref: '#/components/schemas/User/properties/position'
-                    avatar:
-                      $ref: '#/components/schemas/User/properties/position'
+              $ref: '#/components/schemas/UserModel'
       responses:
         '200':
           description: Receive user that are updated
@@ -422,14 +364,14 @@ paths:
                     type: boolean
                     example: true
                   payload:
-                    $ref: '#/components/schemas/User'
+                    $ref: '#/components/schemas/UserModel'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/responses/MesssageErrorResponse'
-                  - $ref: '#/components/responses/ValidationErrorResponse'
+                  - $ref: '#/components/responses/MesssageErrorResponse/content/application~1json/schema'
+                  - $ref: '#/components/responses/ValidationErrorResponse/content/application~1json/schema'
       security:
         - BearerAuth: []

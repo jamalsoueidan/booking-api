@@ -20,6 +20,7 @@ properties:
     default: da
   phone:
     type: string
+    uniqueItems: true
   position:
     type: string
   postal:

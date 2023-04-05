@@ -1,8 +1,20 @@
+import { AuthRole, AuthServiceCreate, AuthServiceUpdate } from "../auth";
 import { UserModel } from "./user.model";
 import { User } from "./user.types";
 
-export const UserServiceCreate = (body: Omit<User, "_id">) => {
-  return UserModel.create(body);
+export const UserServiceCreate = async (
+  body: Omit<User, "_id">,
+  role: AuthRole = AuthRole.user
+) => {
+  const user = await UserModel.create(body);
+
+  await AuthServiceCreate({
+    ...body,
+    userId: user._id,
+    role,
+  });
+
+  return user;
 };
 
 export const UserServiceFindAll = (props: any = {}) => UserModel.find(props);
@@ -20,7 +32,12 @@ export const UserServiceFindByIdAndUpdate = async (
   if (!user) {
     throw new Error("User not found");
   }
-  // needs to update auth model (phone or email)
+
+  await AuthServiceUpdate(
+    { userId: user._id },
+    { email: user.email, phone: user.phone, group: user.group }
+  );
+
   return user;
 };
 

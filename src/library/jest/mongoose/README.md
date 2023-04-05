@@ -3,5 +3,5 @@
 Then just use the models normally.
 
 ```ts
-require("@jamalsoueidan/bit-dev.testing-library.mongodb/mongodb.jest");
+require("./mongodb.jest");
 ```
