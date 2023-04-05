@@ -29,7 +29,7 @@ export const UserMongooseSchema = new mongoose.Schema<
     index: true,
     type: String,
   },
-  phone: { required: true, type: String },
+  phone: { required: true, type: String, unique: true },
   position: { required: true, type: String }, // makeup? hair?
   postal: {
     index: true,

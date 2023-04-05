@@ -44,3 +44,15 @@ npm run bundle
 
 1. Deploy docs folder to pages
 2. Deploy Azure functions to production
+
+## Postman
+
+In case you need to import openapi def in postman you can use this script to set token in your env after login.
+
+Please create new environment or else below code will not work.
+
+```js
+let responseJson = pm.response.json();
+let token = responseJson.payload.token;
+pm.environment.set("bearerToken", token);
+```

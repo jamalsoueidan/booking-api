@@ -224,11 +224,11 @@ paths:
                   - $ref: '#/components/responses/ValidationErrorResponse'
   /my-account:
     get:
-      summary: Receive my logged in account data
-      description: This endpoint receives a account data.
+      summary: Get my-account data
+      description: This endpoint get account data.
       responses:
         '200':
-          description: Receive account settings
+          description: Receive account data
           content:
             application/json:
               schema:
@@ -241,9 +241,9 @@ paths:
                     $ref: '#/components/schemas/User'
       security:
         - BearerAuth: []
-    post:
-      summary: Update user by id
-      description: This endpoint update user
+    put:
+      summary: Update my-account data
+      description: This endpoint update account
       requestBody:
         required: true
         content:
@@ -355,6 +355,13 @@ paths:
       security:
         - BearerAuth: []
   '/user/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: The ID of the user
+        required: true
+        schema:
+          type: string
     get:
       summary: Get user by id
       description: This endpoint gets user object

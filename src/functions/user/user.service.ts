@@ -1,8 +1,9 @@
 import { UserModel } from "./user.model";
 import { User } from "./user.types";
 
-export const UserServiceCreate = (body: Omit<User, "_id">) =>
-  UserModel.create(body);
+export const UserServiceCreate = (body: Omit<User, "_id">) => {
+  return UserModel.create(body);
+};
 
 export const UserServiceFindAll = (props: any = {}) => UserModel.find(props);
 

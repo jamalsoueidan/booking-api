@@ -1,11 +1,11 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { faker } from "@faker-js/faker";
 import { AuthRole } from "~/functions/auth";
 import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
+import { getUserObject } from "~/library/jest/helpers";
 import {
   UserControllerCreateUser,
   UserControllerCreateUserBody,
@@ -22,19 +22,7 @@ describe("UserControllerCreateUser", () => {
 
   beforeEach(() => {
     context = createContext();
-    newUser = {
-      active: true,
-      address: "asdiojdsajioadsoji",
-      avatar: "http://",
-      email: faker.internet.email(),
-      fullname: faker.name.fullName(),
-      group: "all",
-      language: "da",
-      phone: "+4531317411",
-      position: "2",
-      postal: 8000,
-      timeZone: "Europe/Copenhagen",
-    };
+    newUser = getUserObject();
   });
 
   it("Owner: Should be able to create user for all groups", async () => {

@@ -3,10 +3,10 @@ import { z } from "zod";
 export const UserSchema = z.object({
   _id: z.string(),
   fullname: z.string(),
-  email: z.string(),
-  phone: z.string(),
+  email: z.string().email({ message: "Invalid email address" }),
+  phone: z.string().transform((str) => str.replace(/\+/g, "")),
   active: z.boolean().default(true),
-  avatar: z.string(),
+  avatar: z.string().url({ message: "Invalid url" }),
   position: z.string(),
   postal: z.number(),
   address: z.string(),

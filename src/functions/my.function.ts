@@ -6,7 +6,7 @@ import {
 } from "./my/my.controller";
 
 app.http("myAccountUpdate", {
-  methods: ["POST"],
+  methods: ["PUT"],
   authLevel: "anonymous",
   route: "my-account",
   handler: MyControllerUpdateAccount,

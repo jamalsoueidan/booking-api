@@ -72,6 +72,7 @@ describe("UserService", () => {
 
     await createUser({ group: "a" });
     await createUser({ group: "a" });
+
     const userGroupB = await createUser({ group: "b" });
 
     let users = await UserServiceGetUserIdsbyGroup({

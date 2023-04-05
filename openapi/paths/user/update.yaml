@@ -1,4 +1,4 @@
-post:
+put:
   summary: Update user by id
   description: This endpoint update user
   requestBody:
