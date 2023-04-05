@@ -3,17 +3,7 @@ get:
   description: This endpoint get account data.
   responses:
     "200":
-      description: Receive account data
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-                example: true
-              payload:
-                $ref: "../user/schemas/user.yaml"
+      $ref: "../user/responses/user-response.yaml"
   security:
     - BearerAuth: []
 
@@ -29,17 +19,7 @@ put:
 
   responses:
     "200":
-      description: Receive user that are updated
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-                example: true
-              payload:
-                $ref: "../user/schemas/user.yaml"
+      $ref: "../user/responses/user-response.yaml"
     "400":
       $ref: "../../responses/error.yaml"
   security:

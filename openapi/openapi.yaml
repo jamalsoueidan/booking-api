@@ -14,18 +14,38 @@ components:
   responses:
     ErrorResponse:
       $ref: "./responses/error.yaml"
+    UserResponse:
+      $ref: "./paths/user/responses/user-response.yaml"
+    UsersResponse:
+      $ref: "./paths/user/responses/users-response.yaml"
 
   schemas:
+    # errors
     ErrorModel:
       $ref: "./schemas/error-model.yaml"
     ValidationError:
       $ref: "./schemas/validation-error.yaml"
     MessageError:
       $ref: "./schemas/message-error.yaml"
+
+    # auth
+    AuthLoginResponse:
+      $ref: "./paths/auth/schemas/login-response.yaml"
+    AuthLoginRequest:
+      $ref: "./paths/auth/schemas/login-request.yaml"
+    AuthPasswordResponse:
+      $ref: "./paths/auth/schemas/receive-password-response.yaml"
+    AuthPasswordRequest:
+      $ref: "./paths/auth/schemas/receive-password-request.yaml"
+
+    # user
     UserModel:
       $ref: "./paths/user/schemas/user.yaml"
-    AuthLoginSuccess:
-      $ref: "./paths/auth/schemas/login-success.yaml"
+    UserResponse:
+      $ref: "./paths/user/schemas/user-response.yaml"
+    UsersResponse:
+      $ref: "./paths/user/schemas/users-response.yaml"
+
 paths:
   /auth/login:
     $ref: "./paths/auth/login.yaml"

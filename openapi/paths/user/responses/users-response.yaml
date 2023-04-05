@@ -1,0 +1,5 @@
+description: Response with Array of UserModel payload
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/users-response.yaml"

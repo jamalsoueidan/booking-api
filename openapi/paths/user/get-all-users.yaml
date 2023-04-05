@@ -3,18 +3,6 @@ get:
   description: This endpoint gets all users, in case you are logged in as admin or user, only same group
   responses:
     "200":
-      description: OK
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-                example: true
-              payload:
-                type: array
-                items:
-                  $ref: "./schemas/user.yaml"
+      $ref: "./responses/users-response.yaml"
   security:
     - BearerAuth: []

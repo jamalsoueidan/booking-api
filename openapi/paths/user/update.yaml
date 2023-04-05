@@ -10,17 +10,7 @@ put:
 
   responses:
     "200":
-      description: Receive user that are updated
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-                example: true
-              payload:
-                $ref: "./schemas/user.yaml"
+      $ref: "./responses/user-response.yaml"
     "400":
       $ref: "../../responses/error.yaml"
   security:
