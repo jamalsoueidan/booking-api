@@ -13,8 +13,6 @@ export const TagKeys = Object.values(Tag).filter(
   (x, i, a) => a.indexOf(x) === i
 );
 
-const date = z.string().pipe(z.coerce.date());
-
 export const ShiftSchema = z.object({
   _id: z.string(),
   end: z.coerce.date(),
