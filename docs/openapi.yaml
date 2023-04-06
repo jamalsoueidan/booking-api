@@ -2,6 +2,15 @@ openapi: 3.0.2
 info:
   version: 1.0.0
   title: Booking Shopify Api
+  license:
+    name: MIT
+    url: 'http://'
+  x-tagGroups:
+    - name: all api endpoints
+      tags:
+        - Auth
+        - My Account
+        - User
 servers:
   - url: 'http://localhost:7071/api'
 components:
@@ -10,6 +19,12 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      flows: null
+      scopes:
+        'read:user': Access user data
+        'read:admin': Access admin data
+        'write:user': Modify user data
+        'write:admin': Modify admin data
   responses:
     ErrorResponse:
       description: 'Error happened, either message error or validation error'
@@ -171,6 +186,8 @@ components:
 paths:
   /auth/login:
     post:
+      tags:
+        - Auth
       operationId: login
       summary: Logs in a user
       description: This endpoint return to you token for authentication.
@@ -189,8 +206,11 @@ paths:
                 $ref: '#/components/schemas/AuthLoginResponse'
         '400':
           $ref: '#/components/responses/ErrorResponse'
+      security: []
   /auth/receive-password:
     post:
+      tags:
+        - Auth
       operationId: receivePassword
       summary: Receive password
       description: This endpoint receives a password using a phone number provided in the request body.
@@ -209,8 +229,11 @@ paths:
                 $ref: '#/components/schemas/AuthPasswordResponse'
         '400':
           $ref: '#/components/responses/ErrorResponse'
-  /create-user:
+      security: []
+  /user/create-user-api:
     post:
+      tags:
+        - User
       operationId: createUserApi
       summary: Create user with api key
       description: 'This endpoint is special and should be used to create new user with api key, and not logged in user.'
@@ -225,8 +248,11 @@ paths:
           $ref: '#/components/responses/UserResponse'
         '400':
           $ref: '#/components/responses/ErrorResponse'
+      security: []
   /my-account:
     get:
+      tags:
+        - My Account
       operationId: getMyAccount
       summary: Get my-account data
       description: This endpoint get account data.
@@ -236,6 +262,9 @@ paths:
       security:
         - BearerAuth: []
     put:
+      tags:
+        - My Account
+      operationId: updateMyAccount
       summary: Update my-account data
       description: This endpoint update account
       requestBody:
@@ -251,9 +280,11 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
       security:
         - BearerAuth: []
-  /user:
+  /users:
     get:
-      operationId: getAllUsers
+      tags:
+        - User
+      operationId: usersGetAll
       summary: Get a list of users
       description: 'This endpoint gets all users, in case you are logged in as admin or user, only same group'
       responses:
@@ -261,7 +292,10 @@ paths:
           $ref: '#/components/responses/UsersResponse'
       security:
         - BearerAuth: []
+  /user:
     post:
+      tags:
+        - User
       operationId: createUser
       summary: Create user
       description: This endpoint create new user with api key
@@ -277,7 +311,9 @@ paths:
         '400':
           $ref: '#/components/responses/ErrorResponse'
       security:
-        - BearerAuth: []
+        - BearerAuth:
+            - owner
+            - admin
   '/user/{id}':
     parameters:
       - name: id
@@ -287,6 +323,8 @@ paths:
         schema:
           type: string
     get:
+      tags:
+        - User
       operationId: getUser
       summary: Get user by id
       description: This endpoint gets user object
@@ -298,6 +336,8 @@ paths:
       security:
         - BearerAuth: []
     put:
+      tags:
+        - User
       operationId: updateUser
       summary: Update user by id
       description: This endpoint update user
@@ -313,4 +353,13 @@ paths:
         '400':
           $ref: '#/components/responses/ErrorResponse'
       security:
-        - BearerAuth: []
+        - BearerAuth:
+            - owner
+            - admin
+tags:
+  - name: Auth
+    description: Login and reset password
+  - name: My Account
+    description: Logged in user can receive his data
+  - name: User
+    description: Manage users when logged in.
