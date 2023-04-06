@@ -38,5 +38,5 @@ export const login = async (role: AuthRole) => {
     return {};
   }
 
-  return jwtCreateToken(auth?.toJSON());
+  return { token: jwtCreateToken(auth?.toJSON()), user, auth };
 };

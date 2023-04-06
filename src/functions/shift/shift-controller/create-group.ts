@@ -3,7 +3,7 @@ import { _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 import { ShiftRestrictUser } from "../shift-middleware/shift-restrictions";
 import { ShiftServiceCreateGroup } from "../shift.service";
-import { Shift, ShiftDaysEnum, ShiftSchema } from "../shift.types";
+import { Shift, ShiftDaysSchema, ShiftSchema } from "../shift.types";
 
 export type ShiftControllerCreateGroupRequest = {
   query: ShiftControllerCreateGroupQuery;
@@ -15,7 +15,7 @@ export const ShiftControllerCreateGroupBodySchema = ShiftSchema.pick({
   start: true,
   end: true,
 }).extend({
-  days: z.array(ShiftDaysEnum),
+  days: ShiftDaysSchema,
 });
 
 export type ShiftControllerCreateGroupBody = z.infer<

@@ -31,7 +31,7 @@ describe("UserControllerGetAllUsers", () => {
     });
 
     request = await createHttpRequest<UserControllerGetAllUsersRequest>({
-      login: AuthRole.owner,
+      loginAs: AuthRole.owner,
     });
 
     const res: HttpSuccessResponse<UserControllerGetAllUsersResponse> =
@@ -49,7 +49,7 @@ describe("UserControllerGetAllUsers", () => {
     });
 
     request = await createHttpRequest<UserControllerGetAllUsersRequest>({
-      login: AuthRole.user,
+      loginAs: AuthRole.user,
     });
 
     const res: HttpSuccessResponse<UserControllerGetAllUsersResponse> =
@@ -67,7 +67,7 @@ describe("UserControllerGetAllUsers", () => {
     });
 
     request = await createHttpRequest<UserControllerGetAllUsersRequest>({
-      login: AuthRole.admin,
+      loginAs: AuthRole.admin,
     });
 
     const res: HttpSuccessResponse<UserControllerGetAllUsersResponse> =

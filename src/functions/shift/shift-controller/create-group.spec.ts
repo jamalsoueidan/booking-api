@@ -8,7 +8,7 @@ import {
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
-import { createUser } from "~/library/jest/helpers";
+import { createUser, login } from "~/library/jest/helpers";
 import { Tag } from "../shift.types";
 import {
   ShiftControllerCreateGroup,
@@ -45,7 +45,7 @@ describe("ShiftControllerCreateGroup", () => {
         start,
         tag,
       },
-      login: AuthRole.owner,
+      loginAs: AuthRole.owner,
     });
 
     const res: HttpSuccessResponse<ShiftControllerCreateGroupResponse> =
@@ -75,7 +75,7 @@ describe("ShiftControllerCreateGroup", () => {
         }),
         tag,
       },
-      login: AuthRole.owner,
+      loginAs: AuthRole.owner,
     });
 
     const res: HttpSuccessResponse<ShiftControllerCreateGroupResponse> =
@@ -95,9 +95,72 @@ describe("ShiftControllerCreateGroup", () => {
         days: [],
         end: "",
         start: "",
+        tag: "",
+      },
+      loginAs: AuthRole.owner,
+    });
+
+    const res: HttpErrorResponse = await ShiftControllerCreateGroup(
+      request,
+      context
+    );
+
+    expect(res.jsonBody?.success).toBeFalsy();
+    expect(res.jsonBody?.error.length).toEqual(4);
+  });
+
+  it("User: Should able to create group for himself", async () => {
+    const { token, user } = await login(AuthRole.user);
+
+    request = await createHttpRequest<ShiftControllerCreateGroupRequest>({
+      query: {
+        userId: user?._id,
+      },
+      body: {
+        days: ["monday", "tuesday"],
+        end: set(new Date(), {
+          hours: 16,
+          date: 25,
+          month: 10,
+        }),
+        start: set(new Date(), {
+          hours: 10,
+          date: 25,
+          month: 9,
+        }),
         tag,
       },
-      login: AuthRole.owner,
+      token,
+    });
+
+    const res: HttpSuccessResponse<ShiftControllerCreateGroupResponse> =
+      await ShiftControllerCreateGroup(request, context);
+
+    expect(res.jsonBody?.success).toBeTruthy();
+    expect(res.jsonBody).toHaveProperty("payload");
+    expect(res.jsonBody?.payload.length).toEqual(8);
+  });
+
+  it("User: Should not able to create group for other", async () => {
+    request = await createHttpRequest<ShiftControllerCreateGroupRequest>({
+      query: {
+        userId: user._id,
+      },
+      body: {
+        days: ["monday", "tuesday"],
+        end: set(new Date(), {
+          hours: 16,
+          date: 25,
+          month: 10,
+        }),
+        start: set(new Date(), {
+          hours: 10,
+          date: 25,
+          month: 9,
+        }),
+        tag,
+      },
+      loginAs: AuthRole.user,
     });
 
     const res: HttpErrorResponse = await ShiftControllerCreateGroup(
@@ -107,108 +170,51 @@ describe("ShiftControllerCreateGroup", () => {
 
     expect(res.jsonBody?.success).toBeFalsy();
   });
-});
-
-/*describe("Application: schedule create group route test", () => {
-  it("User: Should able to create group for himself", async () => {
-    const loggedInUser = await createUser({
-      group,
-      role: UserRole.user,
-    });
-
-    const request = createAppExpress(scheduleRouteCreateGroup, loggedInUser);
-    const res = await request
-      .post(`/schedules/group?user=${loggedInUser.id}`)
-      .send({
-        days: ["thursday"],
-        end,
-        start,
-        tag,
-      })
-      .set("Accept", "application/json");
-
-    expect(res.statusCode).toBe(200);
-    expect(res.body.success).toBeTruthy();
-    expect(res.body.payload.length).toBeGreaterThan(1);
-  });
-
-  it("User: Should not able to create group for other", async () => {
-    const loggedInUser = await createUser({
-      group,
-      role: UserRole.user,
-    });
-
-    const user = await createUser({
-      group,
-      role: UserRole.user,
-    });
-
-    const request = createAppExpress(scheduleRouteCreateGroup, loggedInUser);
-    const res = await request
-      .post(`/schedules/group?user=${user.id}`)
-      .send({
-        days: ["thursday"],
-        end,
-        start,
-        tag,
-      })
-      .set("Accept", "application/json");
-
-    expect(res.statusCode).toBe(400);
-    expect(res.body.success).toBeFalsy();
-  });
 
   it("Admin: Should be able to create group for user in the same group", async () => {
-    const loggedInUser = await createUser({
-      group,
-      role: UserRole.admin,
-    });
-
-    const user = await createUser({
-      group,
-      role: UserRole.user,
-    });
-
-    const request = createAppExpress(scheduleRouteCreateGroup, loggedInUser);
-    const res = await request
-      .post(`/schedules/group?user=${user.id}`)
-      .send({
-        days: ["monday"],
+    request = await createHttpRequest<ShiftControllerCreateGroupRequest>({
+      query: {
+        userId: user._id,
+      },
+      body: {
+        days: ["thursday", "friday"],
         end,
         start,
         tag,
-      })
-      .set("Accept", "application/json");
+      },
+      loginAs: AuthRole.admin,
+    });
 
-    expect(res.statusCode).toBe(200);
-    expect(res.body.success).toBeTruthy();
-    expect(res.body.payload.length).toBeGreaterThan(1);
+    const res: HttpSuccessResponse<ShiftControllerCreateGroupResponse> =
+      await ShiftControllerCreateGroup(request, context);
+
+    expect(res.jsonBody?.success).toBeTruthy();
+    expect(res.jsonBody).toHaveProperty("payload");
+    expect(res.jsonBody?.payload.length).toEqual(4);
   });
 
   it("Admin: Should NOT be able to create group user in other group", async () => {
-    const loggedInUser = await createUser({
-      group,
-      role: UserRole.admin,
-    });
-
-    const user = await createUser({
-      group: "b",
-      role: UserRole.user,
-    });
-
-    const request = createAppExpress(scheduleRouteCreateGroup, loggedInUser);
-    const res = await request
-      .post(`/schedules/group?user=${user.id}`)
-      .send({
-        days: ["tuesday"],
+    const user = await createUser({ group: "another" });
+    request = await createHttpRequest<ShiftControllerCreateGroupRequest>({
+      query: {
+        userId: user._id,
+      },
+      body: {
+        days: ["thursday", "friday"],
         end,
         start,
         tag,
-      })
-      .set("Accept", "application/json");
+      },
+      loginAs: AuthRole.admin,
+    });
 
-    expect(res.statusCode).toBe(400);
-    expect(res.body.success).toBeFalsy();
+    const res: HttpErrorResponse = await ShiftControllerCreateGroup(
+      request,
+      context
+    );
+
+    expect(res.jsonBody?.success).toBeFalsy();
+    expect(res.jsonBody).toHaveProperty("error");
+    expect(typeof res.jsonBody?.error).toBe("string");
   });
 });
-*/

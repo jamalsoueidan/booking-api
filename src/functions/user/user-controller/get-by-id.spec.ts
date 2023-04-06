@@ -33,7 +33,7 @@ describe("UserControllerGetById", () => {
 
   it("Owner: Should be able to get user by id in all groups", async () => {
     request = await createHttpRequest<UserControllerGetByIdRequest>({
-      login: AuthRole.owner,
+      loginAs: AuthRole.owner,
       query: { _id: incorretUserGroup._id },
     });
 
@@ -47,7 +47,7 @@ describe("UserControllerGetById", () => {
 
   it("User: Should be able to get user by id in the same group", async () => {
     request = await createHttpRequest<UserControllerGetByIdRequest>({
-      login: AuthRole.user,
+      loginAs: AuthRole.user,
       query: { _id: correctUserGroup._id },
     });
 
@@ -61,7 +61,7 @@ describe("UserControllerGetById", () => {
 
   it("User: Should NOT be able to get by id in the other group", async () => {
     request = await createHttpRequest<UserControllerGetByIdRequest>({
-      login: AuthRole.user,
+      loginAs: AuthRole.user,
       query: { _id: incorretUserGroup._id },
     });
 
@@ -76,7 +76,7 @@ describe("UserControllerGetById", () => {
 
   it("Admin: Should be able to get user by id in the same group", async () => {
     request = await createHttpRequest<UserControllerGetByIdRequest>({
-      login: AuthRole.admin,
+      loginAs: AuthRole.admin,
       query: { _id: correctUserGroup._id },
     });
 
@@ -90,7 +90,7 @@ describe("UserControllerGetById", () => {
 
   it("Admin: Should NOT be able to get user by id in the other group", async () => {
     request = await createHttpRequest<UserControllerGetByIdRequest>({
-      login: AuthRole.admin,
+      loginAs: AuthRole.admin,
       query: { _id: incorretUserGroup._id },
     });
 

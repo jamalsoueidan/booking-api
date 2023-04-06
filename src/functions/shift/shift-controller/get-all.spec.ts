@@ -35,7 +35,7 @@ describe("ShiftControllerGetAllUsers", () => {
         end: shift.end,
         userId: shift.userId.toString(),
       },
-      login: AuthRole.owner,
+      loginAs: AuthRole.owner,
     });
 
     const res: HttpSuccessResponse<ShiftControllerGetAllResponse> =
@@ -48,7 +48,7 @@ describe("ShiftControllerGetAllUsers", () => {
 
   it("Should throw error when any param is missing", async () => {
     request = await createHttpRequest({
-      login: AuthRole.owner,
+      loginAs: AuthRole.owner,
     });
 
     const res: HttpErrorResponse = await ShiftControllerGetAll(
@@ -69,7 +69,7 @@ describe("ShiftControllerGetAllUsers", () => {
         end: shift.end,
         userId: shift.userId.toString(),
       },
-      login: AuthRole.user,
+      loginAs: AuthRole.user,
     });
 
     const res: HttpSuccessResponse<ShiftControllerGetAllResponse> =
@@ -89,7 +89,7 @@ describe("ShiftControllerGetAllUsers", () => {
         end: shift.end,
         userId: shift.userId.toString(),
       },
-      login: AuthRole.user,
+      loginAs: AuthRole.user,
     });
 
     const res: HttpErrorResponse = await ShiftControllerGetAll(
@@ -110,7 +110,7 @@ describe("ShiftControllerGetAllUsers", () => {
         end: shift.end,
         userId: shift.userId.toString(),
       },
-      login: AuthRole.admin,
+      loginAs: AuthRole.admin,
     });
 
     const res: HttpSuccessResponse<ShiftControllerGetAllResponse> =
@@ -130,7 +130,7 @@ describe("ShiftControllerGetAllUsers", () => {
         end: shift.end,
         userId: shift.userId.toString(),
       },
-      login: AuthRole.admin,
+      loginAs: AuthRole.admin,
     });
 
     const res: HttpErrorResponse = await ShiftControllerGetAll(

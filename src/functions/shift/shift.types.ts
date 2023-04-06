@@ -13,26 +13,14 @@ export const TagKeys = Object.values(Tag).filter(
   (x, i, a) => a.indexOf(x) === i
 );
 
-const date = z
-  .string()
-  .refine(
-    (value) => {
-      const date = new Date(value);
-      return !isNaN(date.getTime());
-    },
-    {
-      message: "Invalid date string",
-      path: [],
-    }
-  )
-  .transform((value) => new Date(value));
+const date = z.string().pipe(z.coerce.date());
 
 export const ShiftSchema = z.object({
   _id: z.string(),
-  end: date,
+  end: z.coerce.date(),
   groupId: z.string().optional(),
   userId: z.string(),
-  start: date,
+  start: z.coerce.date(),
   tag: z.nativeEnum(Tag),
 });
 
@@ -46,5 +34,7 @@ export const ShiftDaysEnum = z.enum([
   "friday",
   "saturday",
 ]);
+
+export const ShiftDaysSchema = z.array(ShiftDaysEnum).nonempty();
 
 export type ShiftDaysInterval = z.infer<typeof ShiftDaysEnum>;
