@@ -76,7 +76,7 @@ describe("shift service test", () => {
     const end = addHours(start, 1);
     const updated = await ShiftServiceUpdate(
       {
-        shift: shift._id,
+        _id: shift._id,
         userId: user._id,
       },
       {
@@ -174,7 +174,7 @@ describe("shift service test", () => {
     );
 
     const destroyed = await ShiftServiceDestroy({
-      shift: shift._id.toString(),
+      _id: shift._id.toString(),
       userId: user._id.toString(),
     });
 

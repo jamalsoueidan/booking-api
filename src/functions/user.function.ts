@@ -12,7 +12,7 @@ import {
 app.http("userGetAll", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "user",
+  route: "users",
   handler: UserControllerGetAllUsers,
 });
 
@@ -27,7 +27,7 @@ app.http("userCreateUser", {
 app.http("userCreateUserApi", {
   methods: ["POST"],
   authLevel: "anonymous",
-  route: "create-user",
+  route: "user/create-user-api",
   handler: UserControllerCreateUserApi,
 });
 

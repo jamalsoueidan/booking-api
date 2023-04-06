@@ -9,7 +9,10 @@ export interface IShiftDocument extends IShift, Document {}
 
 export interface IShiftModel extends Model<IShiftDocument> {}
 
-export const ShiftSchema = new mongoose.Schema<IShiftDocument, IShiftModel>({
+export const ShiftMongooseSchema = new mongoose.Schema<
+  IShiftDocument,
+  IShiftModel
+>({
   end: {
     index: true,
     required: true,

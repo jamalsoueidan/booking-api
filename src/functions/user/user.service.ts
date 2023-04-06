@@ -62,3 +62,15 @@ export const UserServiceGetById = async (props: UserServiceGetByIdProps) => {
   }
   return user;
 };
+
+type UserServiceBelongsToSameGroup = {
+  userId: string;
+  group: string;
+};
+
+export const UserServiceBelongsToSameGroup = async (
+  props: UserServiceBelongsToSameGroup
+) => {
+  const user = await UserModel.findById(props.userId, "group");
+  return user?.group === props.group;
+};

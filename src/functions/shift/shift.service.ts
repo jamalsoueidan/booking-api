@@ -9,30 +9,19 @@ import {
 } from "./shift.helper";
 import { ShiftModel } from "./shift.model";
 import { IShift } from "./shift.schema";
-import {
-  ShiftServiceCreateGroupBodyProps,
-  ShiftServiceCreateGroupProps,
-  ShiftServiceCreateProps,
-  ShiftServiceDaysInterval,
-  ShiftServiceDestroyGroupProps,
-  ShiftServiceDestroyGroupReturn,
-  ShiftServiceDestroyProps,
-  ShiftServiceDestroyReturn,
-  ShiftServiceGetAllProps,
-  ShiftServiceGetGroupProps,
-  ShiftServiceGetGroupReturn,
-  ShiftServiceUpdateGroupBodyProps,
-  ShiftServiceUpdateGroupQueryProps,
-  ShiftServiceUpdateProps,
-  Tag,
-} from "./shift.types";
+import { Shift, ShiftDaysInterval, Tag } from "./shift.types";
+
+// for single shift, not in group
+type ShiftBody = Pick<Shift, "tag" | "start" | "end">;
+
+type ShiftServiceGetAllProps = Pick<Shift, "userId" | "start" | "end">;
 
 export const ShiftServiceGetAll = ({
   userId,
   start,
   end,
-}: ShiftServiceGetAllProps) =>
-  ShiftModel.find({
+}: ShiftServiceGetAllProps) => {
+  return ShiftModel.find({
     end: {
       $lt: DateHelpers.closeOfDay(end),
     },
@@ -41,23 +30,35 @@ export const ShiftServiceGetAll = ({
       $gte: DateHelpers.beginningOfDay(start),
     },
   });
+};
+
+type ShiftServiceCreateQueryProps = Pick<Shift, "userId">;
+type ShiftServiceCreateBodyProps = ShiftBody;
 
 export const ShiftServiceCreate = async (
-  query: ShiftServiceCreateProps["query"],
-  body: ShiftServiceCreateProps["body"]
-) =>
-  ShiftModel.create({
+  query: ShiftServiceCreateQueryProps,
+  body: ShiftServiceCreateBodyProps
+) => {
+  return ShiftModel.create({
     end: resetTime(body.end),
     userId: query.userId,
     start: resetTime(body.start),
     tag: body.tag,
   });
+};
+
+type ShiftServiceUpdateProps = {
+  _id: string;
+  userId: string;
+};
+
+type ShiftServiceUpdateBodyProps = Omit<ShiftBody, "tag">;
 
 export const ShiftServiceUpdate = (
-  { shift: _id, userId }: ShiftServiceUpdateProps["query"],
-  body: ShiftServiceUpdateProps["body"]
-) =>
-  ShiftModel.findOneAndUpdate(
+  { _id, userId }: ShiftServiceUpdateProps,
+  body: ShiftServiceUpdateBodyProps
+) => {
+  return ShiftModel.findOneAndUpdate(
     { _id, userId },
     {
       end: resetTime(body.end),
@@ -67,27 +68,41 @@ export const ShiftServiceUpdate = (
       returnOriginal: false,
     }
   );
+};
+
+type ShiftServiceDestroyProps = Pick<Shift, "_id" | "userId">;
+
+type ShiftServiceDestroyReturn = {
+  acknowledged: boolean;
+  deletedCount: number;
+};
 
 export const ShiftServiceDestroy = async ({
-  shift,
+  _id,
   userId,
-}: ShiftServiceDestroyProps): Promise<ShiftServiceDestroyReturn> =>
-  ShiftModel.deleteOne({ _id: shift, userId });
+}: ShiftServiceDestroyProps): Promise<ShiftServiceDestroyReturn> => {
+  return ShiftModel.deleteOne({ _id, userId });
+};
+
+type ShiftServiceGetGroupProps = {
+  groupId: string;
+  userId: string;
+};
+
+type ShiftServiceGroupBody = ShiftBody & {
+  days: Array<ShiftDaysInterval>;
+};
 
 export const ShiftServiceGetGroup = async (
   query: ShiftServiceGetGroupProps
 ) => {
   const shifts = await ShiftModel.find(query).sort({ start: "asc" }); // sort is important to generate the body for editing group
-  return shifts.reduce<ShiftServiceGetGroupReturn>(
-    (
-      body: ShiftServiceCreateGroupBodyProps,
-      shift: IShift,
-      currentIndex: number
-    ) => {
+  return shifts.reduce<ShiftServiceGroupBody>(
+    (body: ShiftServiceGroupBody, shift: IShift, currentIndex: number) => {
       const day = format(
         shift.start,
         "EEEE"
-      ).toLowerCase() as ShiftServiceDaysInterval;
+      ).toLowerCase() as ShiftDaysInterval;
       if (!body.days.includes(day)) {
         body.days.push(day);
       }
@@ -108,9 +123,13 @@ export const ShiftServiceGetGroup = async (
   );
 };
 
+type ShiftServiceCreateGroupQuery = {
+  userId: string;
+};
+
 export const ShiftServiceCreateGroup = async (
-  query: ShiftServiceCreateGroupProps["query"],
-  body: ShiftServiceCreateGroupProps["body"]
+  query: ShiftServiceCreateGroupQuery,
+  body: ShiftServiceGroupBody
 ) => {
   const { userId } = query;
   const groupId = new Date().getTime().toString();
@@ -130,6 +149,9 @@ export const ShiftServiceCreateGroup = async (
   return shifts;
 };
 
+type ShiftServiceUpdateGroupQueryProps = ShiftServiceGetGroupProps;
+type ShiftServiceUpdateGroupBodyProps = ShiftServiceGroupBody;
+
 export const ShiftServiceUpdateGroup = async (
   query: ShiftServiceUpdateGroupQueryProps,
   body: ShiftServiceUpdateGroupBodyProps
@@ -138,9 +160,18 @@ export const ShiftServiceUpdateGroup = async (
   return ShiftServiceCreateGroup(query, body);
 };
 
+type ShiftServiceDestroyGroupProps = {
+  groupId: string;
+  userId: string;
+};
+
+type ShiftServiceDestroyGroupReturn = {
+  acknowledged: boolean;
+  deletedCount: number;
+};
+
 export const ShiftServiceDestroyGroup = async (
   query: ShiftServiceDestroyGroupProps
 ): Promise<ShiftServiceDestroyGroupReturn> => {
-  const { userId, groupId } = query;
-  return ShiftModel.deleteMany({ groupId, userId });
+  return ShiftModel.deleteMany(query);
 };
