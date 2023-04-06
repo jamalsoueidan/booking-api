@@ -21,7 +21,6 @@ describe("ShiftControllerGetAllUsers", () => {
   let request: HttpRequest;
 
   const tag = Tag.all_day;
-  const group = "a";
 
   beforeEach(() => {
     context = createContext();

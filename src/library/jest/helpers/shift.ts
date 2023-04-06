@@ -1,4 +1,4 @@
-import { addHours, addWeeks, set, setHours } from "date-fns";
+import { addHours, addWeeks, setHours } from "date-fns";
 import { AuthRole } from "~/functions/auth";
 import {
   ShiftServiceCreate,
@@ -11,14 +11,11 @@ import { DEFAULT_GROUP, createUser } from "./user";
 
 type PartialRequired<T, K extends keyof T> = Partial<T> & Required<Pick<T, K>>;
 
-const resetTime = (date: Date) =>
-  set(date, { minutes: 0, seconds: 0, milliseconds: 0 });
-
 export const createShift = async ({
   userId,
   tag,
-  start = resetTime(new Date()),
-  end = resetTime(addHours(new Date(), 5)),
+  start = setHours(new Date(), 10),
+  end = addHours(setHours(new Date(), 10), 5),
 }: ShiftServiceCreateQueryProps &
   PartialRequired<ShiftServiceCreateBodyProps, "tag">) => {
   return ShiftServiceCreate(
@@ -70,7 +67,6 @@ export const createUserWithShiftGroup = async ({
   const shifts = await createShiftGroup({
     userId: "a",
     tag,
-    end: new Date(),
   });
   return { shifts, user };
 };

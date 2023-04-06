@@ -13,12 +13,26 @@ export const TagKeys = Object.values(Tag).filter(
   (x, i, a) => a.indexOf(x) === i
 );
 
+const date = z
+  .string()
+  .refine(
+    (value) => {
+      const date = new Date(value);
+      return !isNaN(date.getTime());
+    },
+    {
+      message: "Invalid date string",
+      path: [],
+    }
+  )
+  .transform((value) => new Date(value));
+
 export const ShiftSchema = z.object({
   _id: z.string(),
-  end: z.string().transform((value) => new Date(value)),
+  end: date,
   groupId: z.string().optional(),
   userId: z.string(),
-  start: z.string().transform((value) => new Date(value)),
+  start: date,
   tag: z.nativeEnum(Tag),
 });
 

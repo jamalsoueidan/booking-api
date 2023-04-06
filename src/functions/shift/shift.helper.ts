@@ -27,7 +27,7 @@ export const createDateTime = (date: Date, time: Date) =>
   resetTime(new Date(`${format(date, "yyyy-MM-dd")} ${format(time, "pp")}`));
 
 export const resetTime = (value: Date) =>
-  setSeconds(setMilliseconds(value, 0), 0);
+  setMinutes(setSeconds(setMilliseconds(value, 0), 0), 0);
 
 export const handleWinterSummerTime = (
   range: ShiftServiceRange,
