@@ -70,7 +70,8 @@ export type HandlerProps<
   }
 > = PickByValueType<T, object> & {
   headers?: any;
-  login?: AuthRole;
+  loginAs?: AuthRole;
+  token?: string;
 };
 
 export async function createHttpRequest<
@@ -80,9 +81,15 @@ export async function createHttpRequest<
     params?: any;
   } = {}
 >(props: HandlerProps<T>): Promise<HttpRequest> {
-  if (props?.login) {
-    const token = await login(props.login);
+  if (props?.loginAs) {
+    const { token } = await login(props.loginAs);
     props.headers = { ...props?.headers, authorization: `Bearer: ${token}` };
+  }
+  if (props?.token) {
+    props.headers = {
+      ...props?.headers,
+      authorization: `Bearer: ${props.token}`,
+    };
   }
   return new MockHttpRequest(props);
 }

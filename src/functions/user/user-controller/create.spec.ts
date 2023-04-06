@@ -28,7 +28,7 @@ describe("UserControllerCreateUser", () => {
   it("Owner: Should be able to create user for all groups", async () => {
     request = await createHttpRequest<UserControllerCreateUserRequest>({
       body: newUser,
-      login: AuthRole.owner,
+      loginAs: AuthRole.owner,
     });
 
     const res: HttpSuccessResponse<UserControllerCreateUserResponse> =
@@ -42,7 +42,7 @@ describe("UserControllerCreateUser", () => {
   it("User: Should not able to create user", async () => {
     request = await createHttpRequest<UserControllerCreateUserRequest>({
       body: newUser,
-      login: AuthRole.user,
+      loginAs: AuthRole.user,
     });
 
     const res: HttpSuccessResponse<UserControllerCreateUserResponse> =
@@ -55,7 +55,7 @@ describe("UserControllerCreateUser", () => {
   it("Admin: Should be able to create user in the same group", async () => {
     request = await createHttpRequest<UserControllerCreateUserRequest>({
       body: newUser,
-      login: AuthRole.admin,
+      loginAs: AuthRole.admin,
     });
 
     const res: HttpSuccessResponse<UserControllerCreateUserResponse> =
@@ -69,7 +69,7 @@ describe("UserControllerCreateUser", () => {
   it("Admin: Should NOT be able to create user in other group", async () => {
     request = await createHttpRequest<UserControllerCreateUserRequest>({
       body: { ...newUser, group: "another" },
-      login: AuthRole.admin,
+      loginAs: AuthRole.admin,
     });
 
     const res: HttpSuccessResponse<UserControllerCreateUserResponse> =

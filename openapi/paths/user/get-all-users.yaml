@@ -1,5 +1,7 @@
 get:
-  operationId: getAllUsers
+  tags:
+    - User
+  operationId: usersGetAll
   summary: Get a list of users
   description: This endpoint gets all users, in case you are logged in as admin or user, only same group
   responses:

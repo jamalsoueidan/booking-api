@@ -1,4 +1,0 @@
-get:
-  $ref: "./get-all-users.yaml#/get"
-post:
-  $ref: "./create-user.yaml#/post"

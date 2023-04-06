@@ -24,7 +24,7 @@ describe("MyControllerGetAccount", () => {
 
   it("Should be able to get my user data", async () => {
     request = await createHttpRequest({
-      login: AuthRole.user,
+      loginAs: AuthRole.user,
     });
 
     const res: HttpSuccessResponse = await MyControllerGetAccount(
@@ -38,7 +38,7 @@ describe("MyControllerGetAccount", () => {
 
   it("Should be able to update my user data", async () => {
     request = await createHttpRequest<MyControllerUpdateAccountRequest>({
-      login: AuthRole.user,
+      loginAs: AuthRole.user,
       body: {
         fullname: "hej med dig",
       },

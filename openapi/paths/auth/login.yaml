@@ -1,4 +1,6 @@
 post:
+  tags:
+    - Auth
   operationId: login
   summary: Logs in a user
   description: This endpoint return to you token for authentication.
@@ -17,3 +19,4 @@ post:
             $ref: "./schemas/login-response.yaml"
     "400":
       $ref: "../../responses/error.yaml"
+  security: []

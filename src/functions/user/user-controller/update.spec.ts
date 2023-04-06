@@ -32,7 +32,7 @@ describe("UserControllerUpdateRequest", () => {
 
   it("Owner: Should be able to update staff for all groups", async () => {
     request = await createHttpRequest<UserControllerUpdateRequest>({
-      login: AuthRole.owner,
+      loginAs: AuthRole.owner,
       query: {
         _id: incorretUserGroup._id,
       },
@@ -52,7 +52,7 @@ describe("UserControllerUpdateRequest", () => {
 
   it("User: Should not able to update other staff", async () => {
     request = await createHttpRequest<UserControllerUpdateRequest>({
-      login: AuthRole.user,
+      loginAs: AuthRole.user,
       query: {
         _id: incorretUserGroup._id,
       },
@@ -71,7 +71,7 @@ describe("UserControllerUpdateRequest", () => {
 
   it("Admin: Should be able to update staff in the same group", async () => {
     request = await createHttpRequest<UserControllerUpdateRequest>({
-      login: AuthRole.admin,
+      loginAs: AuthRole.admin,
       query: {
         _id: correctUserGroup._id,
       },
@@ -90,7 +90,7 @@ describe("UserControllerUpdateRequest", () => {
 
   it("Admin: Should NOT be able to update staff in other group", async () => {
     request = await createHttpRequest<UserControllerUpdateRequest>({
-      login: AuthRole.admin,
+      loginAs: AuthRole.admin,
       query: {
         _id: incorretUserGroup._id,
       },

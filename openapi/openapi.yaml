@@ -2,6 +2,15 @@ openapi: 3.0.2
 info:
   version: 1.0.0
   title: Booking Shopify Api
+  license:
+    name: MIT
+    url: http://
+  x-tagGroups:
+    - name: all api endpoints
+      tags:
+        - Auth
+        - My Account
+        - User
 servers:
   - url: http://localhost:7071/api
 components:
@@ -53,14 +62,25 @@ paths:
   /auth/receive-password:
     $ref: "./paths/auth/receive-password.yaml"
 
-  /create-user:
+  /user/create-user-api:
     $ref: "./paths/user/create-user-api.yaml"
 
   /my-account:
     $ref: "./paths/my/account.yaml"
 
+  /users:
+    $ref: "./paths/user/get-all-users.yaml"
+
   /user:
-    $ref: "./paths/user/user.yaml"
+    $ref: "./paths/user/create-user.yaml"
 
   /user/{id}:
     $ref: "./paths/user/user-id.yaml"
+
+tags:
+  - name: Auth
+    description: Login and reset password
+  - name: My Account
+    description: Logged in user can receive his data
+  - name: User
+    description: Manage users when logged in.
