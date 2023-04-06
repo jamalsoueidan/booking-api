@@ -19,12 +19,6 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      flows: null
-      scopes:
-        'read:user': Access user data
-        'read:admin': Access admin data
-        'write:user': Modify user data
-        'write:admin': Modify admin data
   responses:
     ErrorResponse:
       description: 'Error happened, either message error or validation error'
