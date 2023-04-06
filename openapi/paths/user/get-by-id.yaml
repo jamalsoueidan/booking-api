@@ -1,4 +1,6 @@
 get:
+  tags:
+    - User
   operationId: getUser
   summary: Get user by id
   description: This endpoint gets user object

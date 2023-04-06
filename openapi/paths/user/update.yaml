@@ -1,4 +1,6 @@
 put:
+  tags:
+    - User
   operationId: updateUser
   summary: Update user by id
   description: This endpoint update user
@@ -15,4 +17,6 @@ put:
     "400":
       $ref: "../../responses/error.yaml"
   security:
-    - BearerAuth: []
+    - BearerAuth:
+        - owner
+        - admin

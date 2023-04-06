@@ -1,4 +1,6 @@
 get:
+  tags:
+    - My Account
   operationId: getMyAccount
   summary: Get my-account data
   description: This endpoint get account data.
@@ -9,6 +11,8 @@ get:
     - BearerAuth: []
 
 put:
+  tags:
+    - My Account
   operationId: updateMyAccount
   summary: Update my-account data
   description: This endpoint update account

@@ -5,6 +5,12 @@ info:
   license:
     name: MIT
     url: http://
+  x-tagGroups:
+    - name: all api endpoints
+      tags:
+        - Auth
+        - My Account
+        - User
 servers:
   - url: http://localhost:7071/api
 components:
@@ -13,6 +19,12 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      flows:
+      scopes:
+        read:user: Access user data
+        read:admin: Access admin data
+        write:user: Modify user data
+        write:admin: Modify admin data
 
   responses:
     ErrorResponse:
@@ -70,3 +82,11 @@ paths:
 
   /user/{id}:
     $ref: "./paths/user/user-id.yaml"
+
+tags:
+  - name: Auth
+    description: Login and reset password
+  - name: My Account
+    description: Logged in user can receive his data
+  - name: User
+    description: Manage users when logged in.
