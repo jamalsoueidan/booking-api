@@ -15,10 +15,10 @@ export const TagKeys = Object.values(Tag).filter(
 
 export const ShiftSchema = z.object({
   _id: z.string(),
-  end: z.date(),
+  end: z.string().transform((value) => new Date(value)),
   groupId: z.string().optional(),
   userId: z.string(),
-  start: z.date(),
+  start: z.string().transform((value) => new Date(value)),
   tag: z.nativeEnum(Tag),
 });
 

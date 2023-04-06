@@ -7,16 +7,18 @@ export type SessionRequest = {
   };
 };
 
-export const UserCannotModifyOtherUser = async ({
+export const ShiftRestrictUser = async ({
   query,
   session,
 }: SessionKey<SessionRequest>) => {
   if (session.isUser && query.userId !== session.userId) {
-    throw { access: "not allowed to modifiy other user" };
+    throw new Error("not allowed to modifiy other user");
   }
+
+  await ShiftRestrictGroup({ query, session });
 };
 
-export const AcessOnlySameGroup = async ({
+export const ShiftRestrictGroup = async ({
   query,
   session,
 }: SessionKey<SessionRequest>) => {
@@ -26,7 +28,7 @@ export const AcessOnlySameGroup = async ({
       group: session.group,
     });
     if (!belongToSameGroup) {
-      throw { access: "not allowed to modifiy staff in other groups" };
+      throw new Error("not allowed to modifiy staff in other groups");
     }
   }
 };

@@ -32,8 +32,8 @@ export const ShiftServiceGetAll = ({
   });
 };
 
-type ShiftServiceCreateQueryProps = Pick<Shift, "userId">;
-type ShiftServiceCreateBodyProps = ShiftBody;
+export type ShiftServiceCreateQueryProps = Pick<Shift, "userId">;
+export type ShiftServiceCreateBodyProps = ShiftBody;
 
 export const ShiftServiceCreate = async (
   query: ShiftServiceCreateQueryProps,

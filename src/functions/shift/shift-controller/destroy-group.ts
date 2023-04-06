@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
+import { ShiftRestrictUser } from "../shift-middleware/shift-restrictions";
 import { ShiftServiceDestroyGroup } from "../shift.service";
 import { Shift, ShiftSchema } from "../shift.types";
 
@@ -22,6 +23,7 @@ export type ShiftControllerDestroyGroupResponse = Array<Omit<Shift, "_id">>;
 
 export const ShiftControllerDestroyGroup = _(
   jwtVerify,
+  ShiftRestrictUser,
   async ({ query }: ShiftControllerDestroyGroupRequest) => {
     const validateQuery = ShiftControllerDestroyGroupQuerySchema.parse(query);
     return ShiftServiceDestroyGroup(validateQuery);

@@ -12,7 +12,9 @@ import {
   setSeconds,
   subHours,
 } from "date-fns";
-import { Shift, ShiftServiceRange } from "./shift.types";
+import { Shift } from "./shift.types";
+
+type ShiftServiceRange = Pick<Shift, "start" | "end">;
 
 export const getDaysFromRange = (days: string[], range: ShiftServiceRange) => {
   const daysOfInterval = eachDayOfInterval(range);

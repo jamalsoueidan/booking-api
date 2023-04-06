@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
+import { ShiftRestrictUser } from "../shift-middleware/shift-restrictions";
 import { ShiftServiceUpdate } from "../shift.service";
 import { Shift, ShiftSchema } from "../shift.types";
 
@@ -32,6 +33,7 @@ export type ShiftControllerUpdateResponse = Array<Shift>;
 
 export const ShiftControllerUpdate = _(
   jwtVerify,
+  ShiftRestrictUser,
   async ({ query, body }: ShiftControllerUpdateRequest) => {
     const validateQuery = ShiftControllerUpdateQuerySchema.parse(query);
     const validateBody = ShiftControllerUpdateBodySchema.parse(body);

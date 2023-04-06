@@ -2,6 +2,7 @@ import { z } from "zod";
 import { UserServiceBelongsToSameGroup } from "~/functions/user";
 import { SessionKey, _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
+import { ShiftRestrictGroup } from "../shift-middleware/shift-restrictions";
 import { ShiftServiceGetAll } from "../shift.service";
 import { Shift, ShiftSchema } from "../shift.types";
 
@@ -23,6 +24,7 @@ export type ShiftControllerGetAllResponse = Array<Shift>;
 
 export const ShiftControllerGetAll = _(
   jwtVerify,
+  ShiftRestrictGroup,
   async ({ query, session }: SessionKey<ShiftControllerGetAllRequest>) => {
     const { end, userId, start } = ShiftControllerGetAllSchema.parse(query);
     if (!session.isOwner) {
