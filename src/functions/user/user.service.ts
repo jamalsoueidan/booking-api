@@ -46,8 +46,8 @@ export const UserServiceGetUserIdsbyGroup = async ({
 }: {
   group: string;
 }): Promise<Array<string>> => {
-  const users = await UserModel.find({ group }, "");
-  return users.map((user: any) => user.id);
+  const users = await UserModel.find({ group }, "_id");
+  return users.map(({ _id }) => _id);
 };
 
 type UserServiceGetByIdProps = {
@@ -56,7 +56,7 @@ type UserServiceGetByIdProps = {
 };
 
 export const UserServiceGetById = async (props: UserServiceGetByIdProps) => {
-  const user = await UserModel.findOne(props);
+  const user = await UserModel.findOne(props).lean();
   if (!user) {
     throw new Error("no user found");
   }
