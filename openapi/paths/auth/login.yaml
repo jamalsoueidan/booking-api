@@ -17,3 +17,4 @@ post:
             $ref: "./schemas/login-response.yaml"
     "400":
       $ref: "../../responses/error.yaml"
+  security: []

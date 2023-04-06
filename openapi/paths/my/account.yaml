@@ -9,6 +9,7 @@ get:
     - BearerAuth: []
 
 put:
+  operationId: updateMyAccount
   summary: Update my-account data
   description: This endpoint update account
   requestBody:

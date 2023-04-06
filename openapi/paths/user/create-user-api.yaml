@@ -14,3 +14,4 @@ post:
       $ref: "./responses/user-response.yaml"
     "400":
       $ref: "../../responses/error.yaml"
+  security: []
