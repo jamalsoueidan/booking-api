@@ -30,7 +30,7 @@ describe("ShiftControllerDestroy", () => {
     context = createContext();
   });
 
-  it("Should be able to delete shift for user", async () => {
+  it("Owner: Should be able to delete shift for any user", async () => {
     const { user, shift } = await createUserWithShift({ tag });
 
     request = await createHttpRequest<ShiftControllerDestroyRequest>({

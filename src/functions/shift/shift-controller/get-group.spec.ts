@@ -25,7 +25,7 @@ describe("ShiftControllerGetGroup", () => {
     context = createContext();
   });
 
-  it("Should be able to get group", async () => {
+  it("Owner: Should be able to get group", async () => {
     const { user, shifts } = await createUserWithShiftGroup({ tag });
 
     request = await createHttpRequest<ShiftControllerGetGroupRequest>({

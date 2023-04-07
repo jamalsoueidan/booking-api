@@ -30,7 +30,7 @@ describe("ShiftControllerDestroyGroup", () => {
   beforeEach(() => {
     context = createContext();
   });
-  it("Should be able to delete group for all users", async () => {
+  it("Owner: Should be able to delete group for any user", async () => {
     const { user, shifts } = await createUserWithShiftGroup({ tag });
 
     request = await createHttpRequest<ShiftControllerDestroyGroupRequest>({
