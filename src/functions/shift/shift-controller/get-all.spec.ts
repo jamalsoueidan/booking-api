@@ -16,7 +16,7 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("ShiftControllerGetAllUsers", () => {
+describe("ShiftControllerGetAll", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 

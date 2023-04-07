@@ -65,7 +65,7 @@ export const createUserWithShiftGroup = async ({
 }: CreateUserWithShiftProps) => {
   const user = await createUser({ group });
   const shifts = await createShiftGroup({
-    userId: "a",
+    userId: user._id.toString(),
     tag,
   });
   return { shifts, user };
