@@ -33,5 +33,5 @@ jobs:
         with:
           author_name: GitHub Action
           author_email: action@github.com
-          message: "Bundle and commit updated code"
+          message: "Bundle openapi.yml and commit updated code"
           branch: ${{ github.head_ref }}
