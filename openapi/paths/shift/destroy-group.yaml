@@ -1,0 +1,14 @@
+delete:
+  tags:
+    - Shift
+  operationId: destroyShiftGroup
+  summary: DEL Delete shift group
+  description: This endpoint delete shift group
+  responses:
+    "200":
+      $ref: "./responses/shift-destroy.yaml"
+    "400":
+      $ref: "../../responses/error.yaml"
+
+  security:
+    - BearerAuth: []

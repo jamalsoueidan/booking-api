@@ -2,14 +2,14 @@ post:
   tags:
     - User
   operationId: createUserApi
-  summary: Create user with api key
+  summary: POST Create user [api]
   description: This endpoint is special and should be used to create new user with api key, and not logged in user.
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          $ref: "./schemas/user.yaml"
+          $ref: "./schemas/user-create.yaml"
 
   responses:
     "200":

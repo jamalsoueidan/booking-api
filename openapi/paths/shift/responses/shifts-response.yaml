@@ -1,0 +1,5 @@
+description: Response with Array of ShiftModel payload
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/shifts-response.yaml"

@@ -2,7 +2,7 @@ get:
   tags:
     - User
   operationId: getUser
-  summary: Get user by id
+  summary: GET Get user
   description: This endpoint gets user object
   responses:
     "200":

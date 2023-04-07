@@ -1,0 +1,21 @@
+put:
+  tags:
+    - Shift
+  operationId: updateShiftGroup
+  summary: PUT Update shift group
+  description: This endpoint update shift group
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./schemas/shift-create-group.yaml"
+
+  responses:
+    "200":
+      $ref: "./responses/shift-response.yaml"
+    "400":
+      $ref: "../../responses/error.yaml"
+
+  security:
+    - BearerAuth: []

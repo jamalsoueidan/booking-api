@@ -4,4 +4,4 @@ properties:
     type: boolean
     example: true
   payload:
-    $ref: "../schemas/user-model.yaml"
+    $ref: "../schemas/shift-model.yaml"
