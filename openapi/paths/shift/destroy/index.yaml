@@ -6,9 +6,13 @@ delete:
   description: This endpoint delete shift
   responses:
     "200":
-      $ref: "./responses/shift-destroy.yaml"
+      description: "response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
     "400":
-      $ref: "../../responses/error.yaml"
+      $ref: "../../../responses/error.yaml"
 
   security:
     - BearerAuth: []

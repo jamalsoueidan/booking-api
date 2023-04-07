@@ -1,0 +1,18 @@
+parameters:
+  - name: id
+    in: path
+    description: The ID of the user
+    required: true
+    schema:
+      type: string
+  - name: userId
+    in: path
+    description: The ID of the user
+    required: true
+    schema:
+      type: string
+
+put:
+  $ref: "./update/index.yaml#/put"
+delete:
+  $ref: "./destroy/index.yaml#/delete"

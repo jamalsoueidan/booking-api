@@ -1,0 +1,16 @@
+get:
+  tags:
+    - Shift
+  operationId: getShiftGroup
+  summary: GET Get shift group
+  description: This endpoint get shift group by id
+  responses:
+    "200":
+      description: "get shift group"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+
+  security:
+    - BearerAuth: []

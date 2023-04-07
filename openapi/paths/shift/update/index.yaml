@@ -9,13 +9,17 @@ put:
     content:
       application/json:
         schema:
-          $ref: "./schemas/shift-create.yaml"
+          $ref: "./body.yaml"
 
   responses:
     "200":
-      $ref: "./responses/shift-response.yaml"
+      description: ""
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
     "400":
-      $ref: "../../responses/error.yaml"
+      $ref: "../../../responses/error.yaml"
 
   security:
     - BearerAuth: []
