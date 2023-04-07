@@ -1,6 +1,7 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { AuthRole } from "~/functions/auth";
 import {
+  HttpErrorResponse,
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
@@ -20,10 +21,7 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-const group = "a";
-const tag = Tag.all_day;
-
-describe("ShiftControllerGetGroup", () => {
+describe("ShiftControllerDestroyGroup", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
@@ -88,8 +86,10 @@ describe("ShiftControllerGetGroup", () => {
       loginAs: AuthRole.user,
     });
 
-    const res: HttpSuccessResponse<ShiftControllerDestroyGroupResponse> =
-      await ShiftControllerDestroyGroup(request, context);
+    const res: HttpErrorResponse = await ShiftControllerDestroyGroup(
+      request,
+      context
+    );
 
     expect(res.jsonBody?.success).toBeFalsy();
   });
@@ -130,8 +130,10 @@ describe("ShiftControllerGetGroup", () => {
       loginAs: AuthRole.admin,
     });
 
-    const res: HttpSuccessResponse<ShiftControllerDestroyGroupResponse> =
-      await ShiftControllerDestroyGroup(request, context);
+    const res: HttpErrorResponse = await ShiftControllerDestroyGroup(
+      request,
+      context
+    );
 
     expect(res.jsonBody?.success).toBeFalsy();
   });
