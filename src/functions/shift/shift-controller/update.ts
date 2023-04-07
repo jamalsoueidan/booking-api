@@ -29,7 +29,7 @@ export type ShiftControllerUpdateQuery = z.infer<
   typeof ShiftControllerUpdateQuerySchema
 >;
 
-export type ShiftControllerUpdateResponse = Array<Shift>;
+export type ShiftControllerUpdateResponse = Shift;
 
 export const ShiftControllerUpdate = _(
   jwtVerify,

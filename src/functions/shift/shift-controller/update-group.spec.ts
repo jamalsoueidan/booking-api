@@ -21,13 +21,11 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-const group = "a";
-const tag = Tag.all_day;
 const date = setHours(new Date(), 12);
 const start = date;
 const end = addMonths(setHours(date, 15), 1);
 
-describe("Shopify: shift update group route test", () => {
+describe("ShiftControllerUpdateGroup", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
@@ -37,7 +35,7 @@ describe("Shopify: shift update group route test", () => {
     context = createContext();
   });
 
-  it("Admin: Should be able to update group for user", async () => {
+  it("Owner: Should be able to update group for any user", async () => {
     const { user, shifts } = await createUserWithShiftGroup({ tag });
 
     request = await createHttpRequest<ShiftControllerUpdateGroupRequest>({
