@@ -11,8 +11,10 @@
     "prestart": "npm run build",
     "start": "func start",
     "test": "jest --verbose",
-    "bundle": "npx swagger-cli bundle openapi/openapi.yaml -t yaml -o docs/openapi.yaml && npx @redocly/cli build-docs docs/openapi.yaml -o docs/index.html --title 'Openapi 3.0 Api Documentation'",
-    "generate": "npm run bundle && npx openapi-codegen gen bookingApi"
+    "bundle-openapi": "npx swagger-cli bundle openapi/openapi.yaml -t yaml -o docs/openapi.yaml",
+    "validate-openapi": "npx swagger-cli validate docs/openapi.yaml",
+    "generate-docs": "npx @redocly/cli build-docs docs/openapi.yaml -o docs/index.html --title 'Booking Api Documentation'",
+    "generate-ts": "npm run bundle && npx openapi-codegen gen bookingApi"
   },
   "dependencies": {
     "@azure/functions": "^4.0.0-alpha.9",
