@@ -72,7 +72,7 @@ export const ShiftServiceUpdate = (
 
 type ShiftServiceDestroyProps = Pick<Shift, "_id" | "userId">;
 
-type ShiftServiceDestroyReturn = {
+export type ShiftServiceDestroyReturn = {
   acknowledged: boolean;
   deletedCount: number;
 };
@@ -165,7 +165,7 @@ type ShiftServiceDestroyGroupProps = {
   userId: string;
 };
 
-type ShiftServiceDestroyGroupReturn = {
+export type ShiftServiceDestroyGroupReturn = {
   acknowledged: boolean;
   deletedCount: number;
 };

@@ -1,0 +1,25 @@
+put:
+  tags:
+    - Shift
+  operationId: updateShift
+  summary: PUT Update shift
+  description: This endpoint update shift
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./body.yaml"
+
+  responses:
+    "200":
+      description: ""
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../responses/error.yaml"
+
+  security:
+    - BearerAuth: []

@@ -1,0 +1,23 @@
+type: object
+properties:
+  end:
+    type: string
+    format: date-time
+  start:
+    type: string
+    format: date-time
+  tag:
+    type: string
+    enum:
+      - "weekday"
+      - "weekend"
+      - "all_day"
+      - "end_of_week"
+      - "start_of_week"
+      - "middle_of_week"
+
+required:
+  - end
+  - userId
+  - start
+  - tag

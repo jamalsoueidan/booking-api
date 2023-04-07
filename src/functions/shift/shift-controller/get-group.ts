@@ -3,7 +3,7 @@ import { _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 import { ShiftRestrictUser } from "../shift-middleware/shift-restrictions";
 import { ShiftServiceGetGroup } from "../shift.service";
-import { Shift, ShiftSchema } from "../shift.types";
+import { Shift, ShiftDaysInterval, ShiftSchema } from "../shift.types";
 
 export type ShiftControllerGetGroupRequest = {
   query: ShiftControllerGetGroupQuery;
@@ -17,7 +17,12 @@ export type ShiftControllerGetGroupQuery = z.infer<
   typeof ShiftControllerGetGroupSchema
 >;
 
-export type ShiftControllerGetGroupResponse = Array<Shift>;
+export type ShiftControllerGetGroupResponse = Pick<
+  Shift,
+  "tag" | "start" | "end"
+> & {
+  days: Array<ShiftDaysInterval>;
+};
 
 export const ShiftControllerGetGroup = _(
   jwtVerify,

@@ -1,0 +1,25 @@
+parameters:
+  - name: userId
+    in: path
+    description: The ID of the user
+    required: true
+    schema:
+      type: string
+get:
+  tags:
+    - Shift
+  operationId: getAllShifts
+  summary: GET Get all shifts
+  description: This endpoint get all shifts
+  responses:
+    "200":
+      description: "Response ShiftDestroyGroup model"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../responses/error.yaml"
+
+  security:
+    - BearerAuth: []

@@ -56,7 +56,7 @@ describe("ShiftControllerCreateGroup", () => {
     expect(res.jsonBody?.payload.length).toEqual(4);
   });
 
-  it("Should handle winter time when creating group", async () => {
+  it("All: Should handle winter time when creating group", async () => {
     request = await createHttpRequest<ShiftControllerCreateGroupRequest>({
       query: {
         userId: user._id,
@@ -86,7 +86,7 @@ describe("ShiftControllerCreateGroup", () => {
     expect(res.jsonBody?.payload.length).toEqual(8);
   });
 
-  it("Should NOT be able to create group with invalid props", async () => {
+  it("All: Should NOT be able to create group with invalid props", async () => {
     request = await createHttpRequest<any>({
       query: {
         userId: user._id,

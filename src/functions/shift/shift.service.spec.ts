@@ -28,7 +28,7 @@ require("~/library/jest/mongoose/mongodb.jest");
 
 const tag = Tag.weekday;
 
-describe("shift service test", () => {
+describe("ShiftService", () => {
   let user: User;
 
   beforeEach(async () => {

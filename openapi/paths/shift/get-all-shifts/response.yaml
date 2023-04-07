@@ -4,4 +4,6 @@ properties:
     type: boolean
     example: true
   payload:
-    $ref: "../schemas/user-model.yaml"
+    type: array
+    items:
+      $ref: "./payload.yaml"

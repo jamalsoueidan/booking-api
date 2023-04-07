@@ -2,14 +2,14 @@ put:
   tags:
     - User
   operationId: updateUser
-  summary: Update user by id
+  summary: PUT Update user
   description: This endpoint update user
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          $ref: "./schemas/user.yaml"
+          $ref: "./schemas/user-create.yaml"
 
   responses:
     "200":

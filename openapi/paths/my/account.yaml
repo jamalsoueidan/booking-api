@@ -21,7 +21,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: "../user/schemas/user.yaml"
+          $ref: "../user/schemas/user-model.yaml"
 
   responses:
     "200":

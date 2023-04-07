@@ -1,0 +1,10 @@
+type: object
+properties:
+  acknowledged:
+    type: boolean
+  deletedCount:
+    type: number
+
+required:
+  - acknowledged
+  - deletedCount

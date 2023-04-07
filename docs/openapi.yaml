@@ -11,6 +11,7 @@ info:
         - Auth
         - My Account
         - User
+        - Shift
 servers:
   - url: 'http://localhost:7071/api'
 components:
@@ -121,9 +122,49 @@ components:
           description: The phone number associated with the password
       required:
         - phone
+    UserCreateOrUpdateModel:
+      type: object
+      properties:
+        active:
+          type: boolean
+          default: true
+        address:
+          type: string
+        avatar:
+          type: string
+        email:
+          type: string
+          uniqueItems: true
+        fullname:
+          type: string
+        group:
+          type: string
+          default: all
+        language:
+          type: string
+          default: da
+        phone:
+          type: string
+          uniqueItems: true
+        position:
+          type: string
+        postal:
+          type: integer
+        timeZone:
+          type: string
+          default: Europe/Copenhagen
+      required:
+        - fullname
+        - email
+        - phone
+        - postal
+        - position
+        - avatar
     UserModel:
       type: object
       properties:
+        _id:
+          type: string
         active:
           type: boolean
           default: true
@@ -177,6 +218,257 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserModel'
+    ShiftCreateBody:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+        tag:
+          type: string
+          enum:
+            - weekday
+            - weekend
+            - all_day
+            - end_of_week
+            - start_of_week
+            - middle_of_week
+      required:
+        - end
+        - userId
+        - start
+        - tag
+    ShiftCreate:
+      type: object
+      properties:
+        _id:
+          type: string
+        end:
+          type: string
+          format: date-time
+        userId:
+          type: string
+        start:
+          type: string
+          format: date-time
+        tag:
+          type: string
+          enum:
+            - weekday
+            - weekend
+            - all_day
+            - end_of_week
+            - start_of_week
+            - middle_of_week
+      required:
+        - _id
+        - end
+        - userId
+        - start
+        - tag
+    ShiftCreateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/ShiftCreate'
+    ShiftCreateGroupBody:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+        day:
+          type: string
+          enum:
+            - monday
+            - tuesday
+            - wednesday
+            - thursday
+            - friday
+            - saturday
+        tag:
+          type: string
+          enum:
+            - weekday
+            - weekend
+            - all_day
+            - end_of_week
+            - start_of_week
+            - middle_of_week
+      required:
+        - end
+        - userId
+        - start
+        - day
+        - tag
+    ShiftCreateGroup:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        groupId:
+          type: string
+        userId:
+          type: string
+        start:
+          type: string
+          format: date-time
+        tag:
+          type: string
+          enum:
+            - weekday
+            - weekend
+            - all_day
+            - end_of_week
+            - start_of_week
+            - middle_of_week
+        day:
+          type: array
+          items:
+            type: string
+            enum:
+              - monday
+              - tuesday
+              - wednesday
+              - thursday
+              - friday
+              - saturday
+      required:
+        - _id
+        - end
+        - groupId
+        - userId
+        - start
+        - tag
+        - day
+    ShiftCreateGroupResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/ShiftCreateGroup'
+    ShiftDestroy:
+      type: object
+      properties:
+        acknowledged:
+          type: boolean
+        deletedCount:
+          type: number
+      required:
+        - acknowledged
+        - deletedCount
+    ShiftDestroyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/ShiftDestroy'
+    ShiftDestroyGroup:
+      type: object
+      properties:
+        acknowledged:
+          type: boolean
+        deletedCount:
+          type: number
+      required:
+        - acknowledged
+        - deletedCount
+    ShiftDestroyGroupResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/ShiftDestroyGroup'
+    ShiftGetAll:
+      type: object
+      properties:
+        _id:
+          type: string
+        end:
+          type: string
+          format: date-time
+        userId:
+          type: string
+        start:
+          type: string
+          format: date-time
+        tag:
+          type: string
+          enum:
+            - weekday
+            - weekend
+            - all_day
+            - end_of_week
+            - start_of_week
+            - middle_of_week
+      required:
+        - _id
+        - end
+        - userId
+        - start
+        - tag
+    ShiftGetAllResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShiftGetAll'
+    ShiftGetGroup:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        groupId:
+          type: string
+        userId:
+          type: string
+        start:
+          type: string
+          format: date-time
+        tag:
+          type: string
+          enum:
+            - weekday
+            - weekend
+            - all_day
+            - end_of_week
+            - start_of_week
+            - middle_of_week
+      required:
+        - _id
+        - end
+        - userId
+        - start
+        - tag
+    ShiftGetGroupResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/ShiftGetGroup'
 paths:
   /auth/login:
     post:
@@ -224,25 +516,6 @@ paths:
         '400':
           $ref: '#/components/responses/ErrorResponse'
       security: []
-  /user/create-user-api:
-    post:
-      tags:
-        - User
-      operationId: createUserApi
-      summary: Create user with api key
-      description: 'This endpoint is special and should be used to create new user with api key, and not logged in user.'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserModel'
-      responses:
-        '200':
-          $ref: '#/components/responses/UserResponse'
-        '400':
-          $ref: '#/components/responses/ErrorResponse'
-      security: []
   /my-account:
     get:
       tags:
@@ -279,26 +552,45 @@ paths:
       tags:
         - User
       operationId: usersGetAll
-      summary: Get a list of users
+      summary: GET All users
       description: 'This endpoint gets all users, in case you are logged in as admin or user, only same group'
       responses:
         '200':
           $ref: '#/components/responses/UsersResponse'
       security:
         - BearerAuth: []
+  /user/create-user-api:
+    post:
+      tags:
+        - User
+      operationId: createUserApi
+      summary: 'POST Create user [api]'
+      description: 'This endpoint is special and should be used to create new user with api key, and not logged in user.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateOrUpdateModel'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security: []
   /user:
     post:
       tags:
         - User
       operationId: createUser
-      summary: Create user
+      summary: POST Create user
       description: This endpoint create new user with api key
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserModel'
+              $ref: '#/components/schemas/UserCreateOrUpdateModel'
       responses:
         '200':
           $ref: '#/components/responses/UserResponse'
@@ -320,7 +612,7 @@ paths:
       tags:
         - User
       operationId: getUser
-      summary: Get user by id
+      summary: GET Get user
       description: This endpoint gets user object
       responses:
         '200':
@@ -333,14 +625,14 @@ paths:
       tags:
         - User
       operationId: updateUser
-      summary: Update user by id
+      summary: PUT Update user
       description: This endpoint update user
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserModel'
+              $ref: '#/components/schemas/UserCreateOrUpdateModel'
       responses:
         '200':
           $ref: '#/components/responses/UserResponse'
@@ -350,10 +642,351 @@ paths:
         - BearerAuth:
             - owner
             - admin
+  '/user/{userId}/shift-group':
+    parameters:
+      - name: userId
+        in: path
+        description: The ID of the user
+        required: true
+        schema:
+          type: string
+    post:
+      tags:
+        - Shift
+      operationId: createShiftGroup
+      summary: POST Create shift group
+      description: This endpoint create new shift group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShiftCreateGroupBody'
+      responses:
+        '200':
+          description: Response with ..
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftCreateGroupResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth: []
+  '/user/{userId}/shifts':
+    parameters:
+      - name: userId
+        in: path
+        description: The ID of the user
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Shift
+      operationId: getAllShifts
+      summary: GET Get all shifts
+      description: This endpoint get all shifts
+      responses:
+        '200':
+          description: Response ShiftDestroyGroup model
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftGetAllResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth: []
+  '/user/{userId}/shift':
+    parameters:
+      - name: userId
+        in: path
+        description: The ID of the user
+        required: true
+        schema:
+          type: string
+    post:
+      tags:
+        - Shift
+      operationId: createShift
+      summary: POST Create shift
+      description: This endpoint create new shift
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShiftCreateBody'
+      responses:
+        '200':
+          description: Response with Array of ShiftModel payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftCreateResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth: []
+  '/user/{userId}/shift-group/{groupId}':
+    parameters:
+      - name: userId
+        in: path
+        description: The ID of the user
+        required: true
+        schema:
+          type: string
+      - name: groupId
+        in: path
+        description: The ID of the group
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Shift
+      operationId: getShiftGroup
+      summary: GET Get shift group
+      description: This endpoint get shift group by id
+      responses:
+        '200':
+          description: get shift group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftGetGroupResponse'
+      security:
+        - BearerAuth: []
+    put:
+      tags:
+        - Shift
+      operationId: updateShiftGroup
+      summary: PUT Update shift group
+      description: This endpoint update shift group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                end:
+                  type: string
+                  format: date-time
+                start:
+                  type: string
+                  format: date-time
+                day:
+                  type: string
+                  enum:
+                    - monday
+                    - tuesday
+                    - wednesday
+                    - thursday
+                    - friday
+                    - saturday
+                tag:
+                  type: string
+                  enum:
+                    - weekday
+                    - weekend
+                    - all_day
+                    - end_of_week
+                    - start_of_week
+                    - middle_of_week
+              required:
+                - end
+                - userId
+                - start
+                - day
+                - tag
+      responses:
+        '200':
+          description: Response with updated model
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    type: object
+                    properties:
+                      end:
+                        type: string
+                        format: date-time
+                      groupId:
+                        type: string
+                      userId:
+                        type: string
+                      start:
+                        type: string
+                        format: date-time
+                      tag:
+                        type: string
+                        enum:
+                          - weekday
+                          - weekend
+                          - all_day
+                          - end_of_week
+                          - start_of_week
+                          - middle_of_week
+                      day:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - monday
+                            - tuesday
+                            - wednesday
+                            - thursday
+                            - friday
+                            - saturday
+                    required:
+                      - _id
+                      - end
+                      - groupId
+                      - userId
+                      - start
+                      - tag
+                      - day
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Shift
+      operationId: destroyShiftGroup
+      summary: DEL Delete shift group
+      description: This endpoint delete shift group
+      responses:
+        '200':
+          description: Response ShiftDestroyGroup model
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftDestroyGroupResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth: []
+  '/user/{userId}/shift/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: The ID of the user
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The ID of the user
+        required: true
+        schema:
+          type: string
+    put:
+      tags:
+        - Shift
+      operationId: updateShift
+      summary: PUT Update shift
+      description: This endpoint update shift
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                end:
+                  type: string
+                  format: date-time
+                start:
+                  type: string
+                  format: date-time
+                tag:
+                  type: string
+                  enum:
+                    - weekday
+                    - weekend
+                    - all_day
+                    - end_of_week
+                    - start_of_week
+                    - middle_of_week
+              required:
+                - end
+                - userId
+                - start
+                - tag
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      end:
+                        type: string
+                        format: date-time
+                      userId:
+                        type: string
+                      start:
+                        type: string
+                        format: date-time
+                      tag:
+                        type: string
+                        enum:
+                          - weekday
+                          - weekend
+                          - all_day
+                          - end_of_week
+                          - start_of_week
+                          - middle_of_week
+                    required:
+                      - _id
+                      - end
+                      - userId
+                      - start
+                      - tag
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Shift
+      operationId: destroyShift
+      summary: DEL Delete shift
+      description: This endpoint delete shift
+      responses:
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftDestroyResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth: []
 tags:
   - name: Auth
     description: Login and reset password
   - name: My Account
-    description: Logged in user can receive his data
+    description: Manage logged in user data.
   - name: User
-    description: Manage users when logged in.
+    description: Manage users..
+  - name: Shift
+    description: Manage shifts for user.

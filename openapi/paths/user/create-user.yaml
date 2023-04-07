@@ -2,14 +2,14 @@ post:
   tags:
     - User
   operationId: createUser
-  summary: Create user
+  summary: POST Create user
   description: This endpoint create new user with api key
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          $ref: "./schemas/user.yaml"
+          $ref: "./schemas/user-create.yaml"
 
   responses:
     "200":

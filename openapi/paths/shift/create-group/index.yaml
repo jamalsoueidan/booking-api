@@ -1,0 +1,33 @@
+parameters:
+  - name: userId
+    in: path
+    description: The ID of the user
+    required: true
+    schema:
+      type: string
+post:
+  tags:
+    - Shift
+  operationId: createShiftGroup
+  summary: POST Create shift group
+  description: This endpoint create new shift group
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./body.yaml"
+
+  responses:
+    "200":
+      description: "Response with .."
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+
+    "400":
+      $ref: "../../../responses/error.yaml"
+
+  security:
+    - BearerAuth: []

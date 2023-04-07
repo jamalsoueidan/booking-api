@@ -2,8 +2,11 @@ import { z } from "zod";
 import { _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 import { ShiftRestrictUser } from "../shift-middleware/shift-restrictions";
-import { ShiftServiceDestroy } from "../shift.service";
-import { Shift, ShiftSchema } from "../shift.types";
+import {
+  ShiftServiceDestroy,
+  ShiftServiceDestroyReturn,
+} from "../shift.service";
+import { ShiftSchema } from "../shift.types";
 
 export type ShiftControllerDestroyRequest = {
   query: ShiftControllerDestroyQuery;
@@ -18,7 +21,7 @@ export type ShiftControllerDestroyQuery = z.infer<
   typeof ShiftControllerDestroyQuerySchema
 >;
 
-export type ShiftControllerDestroyResponse = Array<Omit<Shift, "_id">>;
+export type ShiftControllerDestroyResponse = ShiftServiceDestroyReturn;
 
 export const ShiftControllerDestroy = _(
   jwtVerify,

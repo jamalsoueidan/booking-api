@@ -11,6 +11,7 @@ info:
         - Auth
         - My Account
         - User
+        - Shift
 servers:
   - url: http://localhost:7071/api
 components:
@@ -48,39 +49,91 @@ components:
       $ref: "./paths/auth/schemas/receive-password-request.yaml"
 
     # user
+    UserCreateOrUpdateModel:
+      $ref: "./paths/user/schemas/user-create.yaml"
     UserModel:
-      $ref: "./paths/user/schemas/user.yaml"
+      $ref: "./paths/user/schemas/user-model.yaml"
     UserResponse:
       $ref: "./paths/user/schemas/user-response.yaml"
     UsersResponse:
       $ref: "./paths/user/schemas/users-response.yaml"
 
+    # shift
+    ShiftCreateBody:
+      $ref: "./paths/shift/create/body.yaml"
+    ShiftCreate:
+      $ref: "./paths/shift/create/payload.yaml"
+    ShiftCreateResponse:
+      $ref: "./paths/shift/create/response.yaml"
+    ShiftCreateGroupBody:
+      $ref: "./paths/shift/create-group/body.yaml"
+    ShiftCreateGroup:
+      $ref: "./paths/shift/create-group/payload.yaml"
+    ShiftCreateGroupResponse:
+      $ref: "./paths/shift/create-group/response.yaml"
+    ShiftDestroy:
+      $ref: "./paths/shift/destroy/payload.yaml"
+    ShiftDestroyResponse:
+      $ref: "./paths/shift/destroy/response.yaml"
+    ShiftDestroyGroup:
+      $ref: "./paths/shift/destroy-group/payload.yaml"
+    ShiftDestroyGroupResponse:
+      $ref: "./paths/shift/destroy-group/response.yaml"
+    ShiftGetAll:
+      $ref: "./paths/shift/get-all-shifts/payload.yaml"
+    ShiftGetAllResponse:
+      $ref: "./paths/shift/get-all-shifts/response.yaml"
+    ShiftGetGroup:
+      $ref: "./paths/shift/get-group/payload.yaml"
+    ShiftGetGroupResponse:
+      $ref: "./paths/shift/get-group/response.yaml"
 paths:
+  # auth
   /auth/login:
     $ref: "./paths/auth/login.yaml"
 
   /auth/receive-password:
     $ref: "./paths/auth/receive-password.yaml"
 
-  /user/create-user-api:
-    $ref: "./paths/user/create-user-api.yaml"
-
+  # my account
   /my-account:
     $ref: "./paths/my/account.yaml"
 
+  # user
   /users:
     $ref: "./paths/user/get-all-users.yaml"
+
+  /user/create-user-api:
+    $ref: "./paths/user/create-user-api.yaml"
 
   /user:
     $ref: "./paths/user/create-user.yaml"
 
   /user/{id}:
-    $ref: "./paths/user/user-id.yaml"
+    $ref: "./paths/user/get-by-id-or-update-user.yaml"
+
+  # shift
+  /user/{userId}/shift-group:
+    $ref: "./paths/shift/create-group/index.yaml"
+
+  /user/{userId}/shifts:
+    $ref: "./paths/shift/get-all-shifts/index.yaml"
+
+  /user/{userId}/shift:
+    $ref: "./paths/shift/create/index.yaml"
+
+  /user/{userId}/shift-group/{groupId}:
+    $ref: "./paths/shift/group.yaml"
+
+  /user/{userId}/shift/{id}:
+    $ref: "./paths/shift/shift.yaml"
 
 tags:
   - name: Auth
     description: Login and reset password
   - name: My Account
-    description: Logged in user can receive his data
+    description: Manage logged in user data.
   - name: User
-    description: Manage users when logged in.
+    description: Manage users..
+  - name: Shift
+    description: Manage shifts for user.

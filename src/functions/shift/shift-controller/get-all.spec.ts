@@ -16,7 +16,7 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("ShiftControllerGetAllUsers", () => {
+describe("ShiftControllerGetAll", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
@@ -26,7 +26,7 @@ describe("ShiftControllerGetAllUsers", () => {
     context = createContext();
   });
 
-  it("The Owner should be able to get all shifts for specific user", async () => {
+  it("Owner: Should be able to get all shifts for any user", async () => {
     const { shift } = await createUserWithShift({ tag });
 
     request = await createHttpRequest<ShiftControllerGetAllRequest>({
@@ -46,7 +46,7 @@ describe("ShiftControllerGetAllUsers", () => {
     expect(res.jsonBody?.payload.length).toEqual(1);
   });
 
-  it("Should throw error when any param is missing", async () => {
+  it("All: Should throw error when any param is missing", async () => {
     request = await createHttpRequest({
       loginAs: AuthRole.owner,
     });
