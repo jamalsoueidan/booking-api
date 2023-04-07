@@ -1,4 +1,4 @@
-name: Validate openapi definition
+name: Bundle openapi.yml and validate openapi definition
 
 on:
   pull_request:
@@ -22,5 +22,5 @@ jobs:
       - name: Install dependencies and run bundle openapi
         run: |
           npm ci
-          npm run bundle
+          npm run bundle-openapi
           npm run validate-openapi
