@@ -43,7 +43,7 @@ export const _ =
       if (err instanceof ZodError) {
         props.jsonBody = { error: err.issues, success: false };
       }
-      props.status = 400;
+      props.status = 200;
       return props;
     }
 

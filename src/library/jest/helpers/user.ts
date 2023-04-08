@@ -20,8 +20,9 @@ export const getUserObject = (props: Partial<User> = {}) => ({
   ...props,
 });
 
-export const createUser = (props: Partial<User> = {}) =>
-  UserServiceCreate(getUserObject(props));
+export const createUser = (props: Partial<User> = {}) => {
+  return UserServiceCreate(getUserObject(props));
+};
 
 export const login = async (role: AuthRole) => {
   const newUser = getUserObject({
