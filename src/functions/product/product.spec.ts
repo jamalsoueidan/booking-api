@@ -4,7 +4,7 @@ import { Tag } from "../shift";
 import { User } from "../user";
 import { IProductDocument } from "./product.schema";
 import {
-  ProductServiceGetAvailableUser,
+  ProductServiceGetAvailableUsers,
   ProductServiceGetById,
   ProductServiceUpdate,
 } from "./product.service";
@@ -43,12 +43,11 @@ describe("ProductService", () => {
 
     const duration = 50;
     const buffertime = 100;
-    const updated = await ProductServiceUpdate(query, {
+    const updated = await ProductServiceUpdate(query.id, {
       buffertime,
       duration,
     });
 
-    expect(updated.modifiedCount).toEqual(1);
     const updateProduct = await ProductServiceGetById(query);
 
     expect(updateProduct?.duration).toEqual(duration);
@@ -92,7 +91,7 @@ describe("ProductService", () => {
       tag,
     });
 
-    const userToAdd = await ProductServiceGetAvailableUser();
+    const userToAdd = await ProductServiceGetAvailableUsers();
     expect(userToAdd.length).toEqual(3);
 
     const pickUser = userToAdd[0];
@@ -100,15 +99,15 @@ describe("ProductService", () => {
       id: product._id.toString(),
     };
 
-    let updated = await ProductServiceUpdate(query, {
+    let updated = await ProductServiceUpdate(query.id, {
       users: [{ userId: pickUser._id, tag: pickUser.tags[0] }],
     });
-    expect(updated.modifiedCount).toEqual(1);
+    expect(updated?.users.length).toEqual(1);
 
     let updatedProduct = await ProductServiceGetById(query);
     expect(updatedProduct?.users.length).toEqual(1);
 
-    updated = await ProductServiceUpdate(query, {
+    updated = await ProductServiceUpdate(query.id, {
       users: [],
     });
 
