@@ -13,7 +13,7 @@ info:
         - User
         - Shift
 servers:
-  - url: http://localhost:7071/api
+  - url: https://booking-shopify-api.azurewebsites.net/api
 components:
   securitySchemes:
     BearerAuth:
