@@ -1,20 +1,28 @@
-import { _ } from "~/library/handler";
+import { SessionKey, _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 import {
   ProductServiceGetAll,
   ProductServiceGetAllProps,
+  ProductServiceGetAllReturn,
 } from "../product.service";
-import { Product } from "../product.types";
 
 export type ProductControllerGetAllRequest = {
-  query?: ProductServiceGetAllProps;
+  query: ProductServiceGetAllProps;
 };
 
-export type ProductControllerGetAllResponse = Array<Product>;
+export type ProductControllerGetAllResponse = ProductServiceGetAllReturn;
 
 export const ProductControllerGetAll = _(
   jwtVerify,
-  ({ query }: ProductControllerGetAllRequest) => {
+  ({ query, session }: SessionKey<ProductControllerGetAllRequest>) => {
+    if (!session.isOwner) {
+      if (session.isUser) {
+        query.userId = session.userId;
+      }
+
+      query.group = session.group;
+    }
+
     return ProductServiceGetAll(query);
   }
 );

@@ -13,11 +13,17 @@ export type ProductServiceGetAllProps = {
   userId?: string;
 };
 
+export type ProductServiceGetAllReturn = Array<
+  Omit<Product, "users"> & {
+    users: Array<User & { userId: string; tag: Tag }>;
+  }
+>;
+
 export const ProductServiceGetAll = async ({
   userId,
   group,
 }: ProductServiceGetAllProps = {}) => {
-  return ProductModel.aggregate<Array<Product>>(
+  return ProductModel.aggregate<Array<ProductServiceGetAllReturn>>(
     createProductPipeline(group, userId)
   );
 };

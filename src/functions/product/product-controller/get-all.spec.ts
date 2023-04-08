@@ -8,13 +8,17 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 import {
+  DEFAULT_GROUP,
   createProduct,
   createShift,
   createUser,
   createUserWithShift,
   login,
 } from "~/library/jest/helpers";
-import { ProductServiceUpdate } from "../product.service";
+import {
+  ProductServiceGetAllReturn,
+  ProductServiceUpdate,
+} from "../product.service";
 import {
   ProductControllerGetAll,
   ProductControllerGetAllRequest,
@@ -24,7 +28,17 @@ import {
 require("~/library/jest/mongoose/mongodb.jest");
 
 const productId = 123456789;
-const tag = Tag.all_day;
+
+const getAllGroups = (products: ProductServiceGetAllReturn) => {
+  return products.reduce((acc, product) => {
+    product.users.forEach((user) => {
+      if (!acc.includes(user.group)) {
+        acc.push(user.group);
+      }
+    });
+    return acc;
+  }, [] as string[]).length;
+};
 
 describe("ProductControllerGetAll", () => {
   let context: InvocationContext;
@@ -60,6 +74,7 @@ describe("ProductControllerGetAll", () => {
     });
 
     request = await createHttpRequest<ProductControllerGetAllRequest>({
+      query: {},
       loginAs: AuthRole.owner,
     });
 
@@ -99,15 +114,16 @@ describe("ProductControllerGetAll", () => {
     });
 
     request = await createHttpRequest<ProductControllerGetAllRequest>({
+      query: {},
       token,
     });
 
     const res: HttpSuccessResponse<ProductControllerGetAllResponse> =
       await ProductControllerGetAll(request, context);
 
-    // check if any user belongs to another group in the response
+    expect(getAllGroups(res.jsonBody?.payload || [])).toBe(1);
     expect(res.jsonBody?.success).toBeTruthy();
-    expect(res.jsonBody?.payload.length).toBe(2);
+    expect(res.jsonBody?.payload.length).toBe(1);
   });
 
   it("Admin: Should be able to get all product that belongs to all user", async () => {
@@ -126,6 +142,11 @@ describe("ProductControllerGetAll", () => {
       tag,
     });
 
+    const { user: user2 } = await createUserWithShift({
+      group: DEFAULT_GROUP,
+      tag,
+    });
+
     await ProductServiceUpdate(product1?._id, {
       users: [
         { userId: user._id, tag },
@@ -134,18 +155,27 @@ describe("ProductControllerGetAll", () => {
     });
 
     await ProductServiceUpdate(product2?._id, {
-      users: [{ userId: user._id, tag }],
+      users: [
+        { userId: user._id, tag },
+        { userId: user2._id, tag },
+      ],
     });
 
     request = await createHttpRequest<ProductControllerGetAllRequest>({
+      query: {},
       token,
     });
 
     const res: HttpSuccessResponse<ProductControllerGetAllResponse> =
       await ProductControllerGetAll(request, context);
 
-    console.log(JSON.stringify(res.jsonBody?.payload));
+    expect(getAllGroups(res.jsonBody?.payload || [])).toBe(1);
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody?.payload.length).toBe(2);
+
+    const product = res.jsonBody?.payload.find(
+      ({ productId }) => productId === 893232
+    );
+    expect(product?.users[0].fullname).toEqual(user2.fullname);
   });
 });
