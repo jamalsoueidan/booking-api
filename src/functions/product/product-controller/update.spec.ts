@@ -170,7 +170,7 @@ describe("ProductControllerUpdate", () => {
     expect(res.jsonBody?.payload?.users.length).toBe(2);
 
     // make sure that rest of the users is not overwriten in other groups
-    const getProductInternal = await ProductServiceGetById(product._id);
+    const getProductInternal = await ProductServiceGetById({ id: product._id });
     expect(getProductInternal?.users.length).toBe(3);
   });
 });

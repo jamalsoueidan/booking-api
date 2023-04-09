@@ -88,7 +88,7 @@ describe("ProductControllerGetAvailableUsers", () => {
     expect(res.jsonBody?.success).toBeFalsy();
   });
 
-  it("Admin: Should be able to get all product that belongs to all user", async () => {
+  it("Admin: Should be able to get all available users in the same group that doesn't belong yet to product", async () => {
     const { token, user: loggedInUser } = await login(AuthRole.admin);
     await createShift({
       userId: loggedInUser?._id.toString(),

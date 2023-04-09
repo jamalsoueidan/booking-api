@@ -38,11 +38,24 @@ export const ProductServiceGetById = async ({
   id,
   group,
 }: ProductServiceGetByIdProps) => {
+  // if group is
+  if (!group) {
+    const product = await ProductModel.findOne({
+      _id: new mongoose.Types.ObjectId(id),
+      "users.0": { $exists: false }, // if product contains zero staff, then just return the product, no need for aggreation
+    });
+
+    if (product) {
+      return product.toJSON() as ProductServiceGetByIdReturn;
+    }
+  }
+
   const pipeline = createProductPipeline(group);
   pipeline.unshift({ $match: { _id: new mongoose.Types.ObjectId(id) } });
   const products = await ProductModel.aggregate<ProductServiceGetByIdReturn>(
     pipeline
   );
+
   return products?.length > 0 ? products[0] : null;
 };
 
@@ -73,7 +86,7 @@ export const ProductServiceUpdate = async (
     active = false;
   }
 
-  return ProductModel.updateOne(
+  return ProductModel.findOneAndUpdate(
     {
       _id: new mongoose.Types.ObjectId(id),
     },

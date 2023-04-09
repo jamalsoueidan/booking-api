@@ -32,7 +32,6 @@ describe("ProductService", () => {
     };
 
     const findProduct = await ProductServiceGetById(query);
-
     expect(findProduct?.productId).toEqual(productId);
   });
 

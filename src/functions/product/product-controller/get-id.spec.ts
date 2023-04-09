@@ -95,7 +95,7 @@ describe("ProductControllerGetById", () => {
     expect(res.jsonBody?.payload.productId).toBe(product.productId);
   });
 
-  it("User: Should be able to get product that no co-worker/user belongs to same group", async () => {
+  it("User: Should NOT be able to get product that he doesn't belongs to or his group.", async () => {
     const { token } = await login(AuthRole.user);
 
     const { user: user1 } = await createUserWithShift({
