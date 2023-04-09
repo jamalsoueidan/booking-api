@@ -12,6 +12,7 @@ info:
         - My Account
         - User
         - Shift
+        - Product
 servers:
   - url: https://booking-shopify-api.azurewebsites.net/api
 components:
@@ -24,10 +25,6 @@ components:
   responses:
     ErrorResponse:
       $ref: "./responses/error.yaml"
-    UserResponse:
-      $ref: "./paths/user/responses/user-response.yaml"
-    UsersResponse:
-      $ref: "./paths/user/responses/users-response.yaml"
 
   schemas:
     # errors
@@ -49,14 +46,32 @@ components:
       $ref: "./paths/auth/schemas/receive-password-request.yaml"
 
     # user
-    UserCreateOrUpdateModel:
-      $ref: "./paths/user/schemas/user-create.yaml"
-    UserModel:
-      $ref: "./paths/user/schemas/user-model.yaml"
-    UserResponse:
-      $ref: "./paths/user/schemas/user-response.yaml"
-    UsersResponse:
-      $ref: "./paths/user/schemas/users-response.yaml"
+    UserCreateBody:
+      $ref: "./paths/user/create/body.yaml"
+    UserCreate:
+      $ref: "./paths/user/create/payload.yaml"
+    UserCreateResponse:
+      $ref: "./paths/user/create/response.yaml"
+    UserCreateApiBody:
+      $ref: "./paths/user/create-api/body.yaml"
+    UserCreateApi:
+      $ref: "./paths/user/create-api/payload.yaml"
+    UserCreateResponseApi:
+      $ref: "./paths/user/create-api/response.yaml"
+    UserGetAll:
+      $ref: "./paths/user/get-all/payload.yaml"
+    UserGetAllResponse:
+      $ref: "./paths/user/get-all/response.yaml"
+    UserGetById:
+      $ref: "./paths/user/get-by-id/payload.yaml"
+    UserGetByIdResponse:
+      $ref: "./paths/user/get-by-id/response.yaml"
+    UserUpdateBody:
+      $ref: "./paths/user/update/body.yaml"
+    UserUpdate:
+      $ref: "./paths/user/update/payload.yaml"
+    UserUpdateResponse:
+      $ref: "./paths/user/update/response.yaml"
 
     # shift
     ShiftCreateBody:
@@ -87,6 +102,31 @@ components:
       $ref: "./paths/shift/get-group/payload.yaml"
     ShiftGetGroupResponse:
       $ref: "./paths/shift/get-group/response.yaml"
+
+    # product
+    ProductGetAll:
+      $ref: "./paths/product/get-all/payload.yaml"
+    ProductGetAllUser:
+      $ref: "./paths/product/get-all/user.yaml"
+    ProductGetAllResponse:
+      $ref: "./paths/product/get-all/response.yaml"
+    ProductGetAvailableUsers:
+      $ref: "./paths/product/get-available-users/payload.yaml"
+    ProductGetAvailableUsersResponse:
+      $ref: "./paths/product/get-available-users/response.yaml"
+    ProductUpdateBody:
+      $ref: "./paths/product/update/body.yaml"
+    ProductUpdateUser:
+      $ref: "./paths/product/update/user.yaml"
+    ProductUpdateResponse:
+      $ref: "./paths/product/update/response.yaml"
+    ProductGetById:
+      $ref: "./paths/product/get-by-id/payload.yaml"
+    ProductGetByIdUser:
+      $ref: "./paths/product/get-by-id/user.yaml"
+    ProductGetByIdResponse:
+      $ref: "./paths/product/get-by-id/response.yaml"
+
 paths:
   # auth
   /auth/login:
@@ -101,16 +141,7 @@ paths:
 
   # user
   /users:
-    $ref: "./paths/user/get-all-users.yaml"
-
-  /user/create-user-api:
-    $ref: "./paths/user/create-user-api.yaml"
-
-  /user:
-    $ref: "./paths/user/create-user.yaml"
-
-  /user/{id}:
-    $ref: "./paths/user/get-by-id-or-update-user.yaml"
+    $ref: "./paths/user/get-all/index.yaml"
 
   # shift
   /user/{userId}/shift-group:
@@ -128,6 +159,16 @@ paths:
   /user/{userId}/shift/{id}:
     $ref: "./paths/shift/shift.yaml"
 
+  # product
+  /products:
+    $ref: "./paths/product/get-all/index.yaml"
+
+  /products/get-available-users:
+    $ref: "./paths/product/get-available-users/index.yaml"
+
+  /products/{id}:
+    $ref: "./paths/product/product.yaml"
+
 tags:
   - name: Auth
     description: Login and reset password
@@ -137,3 +178,5 @@ tags:
     description: Manage users..
   - name: Shift
     description: Manage shifts for user.
+  - name: Product
+    description: Manage products

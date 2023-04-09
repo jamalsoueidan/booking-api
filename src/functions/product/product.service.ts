@@ -1,74 +1,70 @@
 import { startOfToday } from "date-fns";
 import mongoose, { PipelineStage } from "mongoose";
+import { z } from "zod";
 import { ShiftModel, Tag } from "../shift";
 import { User } from "../user";
 import { createProductPipeline } from "./product.helper";
 import { ProductModel } from "./product.model";
-import { Product } from "./product.types";
+import { Product, ProductServiceUpdateBodyZodSchema } from "./product.types";
 
-type ProductServiceGetAllProps = {
+export type ProductServiceGetAllProps = {
   group?: string;
   userId?: string;
 };
 
+export type ProductServiceGetAllProduct = Omit<Product, "users"> & {
+  users: Array<User & { userId: string; tag: Tag }>;
+};
+
+export type ProductServiceGetAllReturn = Array<ProductServiceGetAllProduct>;
+
 export const ProductServiceGetAll = async ({
   userId,
   group,
-}: ProductServiceGetAllProps) => {
-  return ProductModel.aggregate(createProductPipeline(group, userId));
+}: ProductServiceGetAllProps = {}) => {
+  return ProductModel.aggregate<ProductServiceGetAllProduct>(
+    createProductPipeline(group, userId)
+  );
 };
 
-type ProductServiceGetByIdProps = {
+export type ProductServiceGetByIdProps = {
   group?: string;
   id: string;
 };
+
+export type ProductServiceGetByIdReturn = ProductServiceGetAllProduct;
 
 export const ProductServiceGetById = async ({
   id,
   group,
 }: ProductServiceGetByIdProps) => {
-  const product = await ProductModel.findOne({
-    _id: new mongoose.Types.ObjectId(id),
-    "user.0": { $exists: false }, // if product contains zero user, then just return the product, no need for aggreation
-  });
+  // if group is
+  if (!group) {
+    const product = await ProductModel.findOne({
+      _id: new mongoose.Types.ObjectId(id),
+      "users.0": { $exists: false }, // if product contains zero staff, then just return the product, no need for aggreation
+    });
 
-  if (product) {
-    return product;
+    if (product) {
+      return product.toJSON() as ProductServiceGetByIdReturn;
+    }
   }
 
   const pipeline = createProductPipeline(group);
   pipeline.unshift({ $match: { _id: new mongoose.Types.ObjectId(id) } });
+  const products = await ProductModel.aggregate<ProductServiceGetByIdReturn>(
+    pipeline
+  );
 
-  const products = await ProductModel.aggregate<Product>(pipeline);
-  return products.length > 0 ? products[0] : null;
+  return products?.length > 0 ? products[0] : null;
 };
 
-type ProductServiceUpdateQueryProps = {
-  id: string;
-};
-
-type ProductServiceUpdateBodyStaffProperty = {
-  userId: string;
-  tag: Tag;
-};
-
-type ProductServiceUpdateBodyProps = Partial<
-  Pick<Product, "duration" | "buffertime" | "active">
-> & {
-  users?: ProductServiceUpdateBodyStaffProperty[];
-};
-
-type ProductServiceUpdateReturn = {
-  acknowledged: boolean;
-  modifiedCount: number;
-  upsertedCount: number;
-  matchedCount: number;
-};
+export type ProductServiceUpdateReturn = ProductServiceGetByIdReturn;
 
 export const ProductServiceUpdate = async (
-  query: ProductServiceUpdateQueryProps,
-  body: ProductServiceUpdateBodyProps
-): Promise<ProductServiceUpdateReturn> => {
+  id: string,
+  body: Partial<z.infer<typeof ProductServiceUpdateBodyZodSchema>>
+) => {
   const { users, ...properties } = body;
 
   const newStaffier =
@@ -79,7 +75,7 @@ export const ProductServiceUpdate = async (
 
   // turn active ON=true first time customer add user to product
   const product = await ProductModel.findById(
-    new mongoose.Types.ObjectId(query.id)
+    new mongoose.Types.ObjectId(id)
   ).lean();
 
   let { active } = properties;
@@ -90,9 +86,9 @@ export const ProductServiceUpdate = async (
     active = false;
   }
 
-  return ProductModel.updateOne(
+  return ProductModel.findOneAndUpdate(
     {
-      _id: new mongoose.Types.ObjectId(query.id),
+      _id: new mongoose.Types.ObjectId(id),
     },
     {
       $set: { ...properties, active, users: newStaffier },
@@ -103,18 +99,12 @@ export const ProductServiceUpdate = async (
   );
 };
 
-type ProductServiceGetAvailableStaffReturn = User & {
+export type ProductServiceGetAvailableUser = User & {
   tags: Tag[];
 };
 
-type ProductServiceGetAvailableStaffProps = {
-  group?: string;
-};
-
 // @description return all user that don't belong yet to the product
-export const ProductServiceGetAvailableUser = ({
-  group,
-}: ProductServiceGetAvailableStaffProps = {}) => {
+export const ProductServiceGetAvailableUsers = (group?: string) => {
   const pipeline: PipelineStage[] = [
     {
       $match: {
@@ -182,5 +172,5 @@ export const ProductServiceGetAvailableUser = ({
     });
   }
 
-  return ShiftModel.aggregate<ProductServiceGetAvailableStaffReturn>(pipeline);
+  return ShiftModel.aggregate<ProductServiceGetAvailableUser>(pipeline);
 };

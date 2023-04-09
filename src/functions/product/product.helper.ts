@@ -3,38 +3,39 @@ import mongoose, { PipelineStage } from "mongoose";
 export const createProductPipeline = (group?: string, userId?: string) => {
   const pipeline: PipelineStage[] = [
     {
-      $unwind: { path: "$user", preserveNullAndEmptyArrays: true },
+      $unwind: { path: "$users", preserveNullAndEmptyArrays: true },
     },
     {
       $lookup: {
-        as: "user.userId",
+        as: "users.userId",
         foreignField: "_id",
         from: "User",
-        localField: "user.user",
+        localField: "users.userId",
       },
     },
     {
       $unwind: {
-        path: "$user.user",
+        path: "$users.userId",
       },
     },
     {
       $addFields: {
-        "user.user.tag": "$user.tag",
+        "users.userId.userId": "$users.userId._id",
+        "users.userId.tag": "$users.tag",
       },
     },
     {
       $addFields: {
-        user: "$user.user",
+        users: "$users.userId",
       },
     },
-    { $sort: { "user.fullname": 1 } },
+    { $sort: { "users.fullname": 1 } },
   ];
 
   if (userId) {
     pipeline.push({
       $match: {
-        "user._id": new mongoose.Types.ObjectId(userId),
+        "users._id": new mongoose.Types.ObjectId(userId),
       },
     });
   }
@@ -42,7 +43,7 @@ export const createProductPipeline = (group?: string, userId?: string) => {
   if (group) {
     pipeline.push({
       $match: {
-        "user.group": group,
+        "users.group": group,
       },
     });
   }
@@ -52,12 +53,12 @@ export const createProductPipeline = (group?: string, userId?: string) => {
       $group: {
         _id: "$_id",
         product: { $first: "$$ROOT" },
-        user: { $push: "$user" },
+        users: { $push: "$users" },
       },
     },
     {
       $addFields: {
-        "product.user": "$user",
+        "product.users": "$users",
       },
     },
     { $replaceRoot: { newRoot: "$product" } }

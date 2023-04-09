@@ -1,0 +1,31 @@
+parameters:
+  - name: group
+    in: query
+    description: The field filter by user group, only show products that contain users with specific group
+    required: false
+    schema:
+      type: string
+  - name: userId
+    in: query
+    description: This field to filter by user id, only show products where this user is assigned to.
+    required: false
+    schema:
+      type: string
+get:
+  tags:
+    - Product
+  operationId: getAllProducts
+  summary: GET Get all products
+  description: This endpoint get all products
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../responses/error.yaml"
+
+  security:
+    - BearerAuth: []

@@ -9,13 +9,13 @@ put:
     content:
       application/json:
         schema:
-          $ref: "./schemas/user-create.yaml"
+          $ref: "./payload.yaml"
 
   responses:
     "200":
-      $ref: "./responses/user-response.yaml"
+      $ref: "./response.yaml"
     "400":
-      $ref: "../../responses/error.yaml"
+      $ref: "../../../responses/error.yaml"
   security:
     - BearerAuth:
         - owner

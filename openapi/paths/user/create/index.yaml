@@ -9,13 +9,17 @@ post:
     content:
       application/json:
         schema:
-          $ref: "./schemas/user-create.yaml"
+          $ref: "./body.yaml"
 
   responses:
     "200":
-      $ref: "./responses/user-response.yaml"
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
     "400":
-      $ref: "../../responses/error.yaml"
+      $ref: "../../../responses/error.yaml"
 
   security:
     - BearerAuth:
