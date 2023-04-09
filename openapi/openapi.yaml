@@ -143,15 +143,6 @@ paths:
   /users:
     $ref: "./paths/user/get-all/index.yaml"
 
-  /user/create-user-api:
-    $ref: "./paths/user/create-api/index.yaml"
-
-  /user:
-    $ref: "./paths/user/create/index.yaml"
-
-  /user/{id}:
-    $ref: "./paths/user/user.yaml"
-
   # shift
   /user/{userId}/shift-group:
     $ref: "./paths/shift/create-group/index.yaml"

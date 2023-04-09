@@ -13,7 +13,11 @@ post:
 
   responses:
     "200":
-      $ref: "./response.yaml"
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
     "400":
       $ref: "../../../responses/error.yaml"
 
