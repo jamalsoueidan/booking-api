@@ -12,6 +12,7 @@ info:
         - My Account
         - User
         - Shift
+        - Product
 servers:
   - url: 'https://booking-shopify-api.azurewebsites.net/api'
 components:
@@ -27,18 +28,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorModel'
-    UserResponse:
-      description: Response with UserModel payload
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UserResponse'
-    UsersResponse:
-      description: Response with Array of UserModel payload
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UsersResponse'
   schemas:
     ErrorModel:
       oneOf:
@@ -122,7 +111,7 @@ components:
           description: The phone number associated with the password
       required:
         - phone
-    UserCreateOrUpdateModel:
+    UserCreateBody:
       type: object
       properties:
         active:
@@ -160,7 +149,137 @@ components:
         - postal
         - position
         - avatar
-    UserModel:
+    UserCreate:
+      type: object
+      properties:
+        active:
+          type: boolean
+          default: true
+        address:
+          type: string
+        avatar:
+          type: string
+        email:
+          type: string
+          uniqueItems: true
+        fullname:
+          type: string
+        group:
+          type: string
+          default: all
+        language:
+          type: string
+          default: da
+        phone:
+          type: string
+          uniqueItems: true
+        position:
+          type: string
+        postal:
+          type: integer
+        timeZone:
+          type: string
+          default: Europe/Copenhagen
+      required:
+        - fullname
+        - email
+        - phone
+        - postal
+        - position
+        - avatar
+    UserCreateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/UserCreate'
+    UserCreateApiBody:
+      type: object
+      properties:
+        active:
+          type: boolean
+          default: true
+        address:
+          type: string
+        avatar:
+          type: string
+        email:
+          type: string
+          uniqueItems: true
+        fullname:
+          type: string
+        group:
+          type: string
+          default: all
+        language:
+          type: string
+          default: da
+        phone:
+          type: string
+          uniqueItems: true
+        position:
+          type: string
+        postal:
+          type: integer
+        timeZone:
+          type: string
+          default: Europe/Copenhagen
+      required:
+        - fullname
+        - email
+        - phone
+        - postal
+        - position
+        - avatar
+    UserCreateApi:
+      type: object
+      properties:
+        active:
+          type: boolean
+          default: true
+        address:
+          type: string
+        avatar:
+          type: string
+        email:
+          type: string
+          uniqueItems: true
+        fullname:
+          type: string
+        group:
+          type: string
+          default: all
+        language:
+          type: string
+          default: da
+        phone:
+          type: string
+          uniqueItems: true
+        position:
+          type: string
+        postal:
+          type: integer
+        timeZone:
+          type: string
+          default: Europe/Copenhagen
+      required:
+        - fullname
+        - email
+        - phone
+        - postal
+        - position
+        - avatar
+    UserCreateResponseApi:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/UserCreateApi'
+    UserGetAll:
       type: object
       properties:
         _id:
@@ -200,15 +319,7 @@ components:
         - postal
         - position
         - avatar
-    UserResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/UserModel'
-    UsersResponse:
+    UserGetAllResponse:
       type: object
       properties:
         success:
@@ -217,7 +328,141 @@ components:
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/UserModel'
+            $ref: '#/components/schemas/UserGetAll'
+    UserGetById:
+      type: object
+      properties:
+        _id:
+          type: string
+        active:
+          type: boolean
+          default: true
+        address:
+          type: string
+        avatar:
+          type: string
+        email:
+          type: string
+          uniqueItems: true
+        fullname:
+          type: string
+        group:
+          type: string
+          default: all
+        language:
+          type: string
+          default: da
+        phone:
+          type: string
+          uniqueItems: true
+        position:
+          type: string
+        postal:
+          type: integer
+        timeZone:
+          type: string
+          default: Europe/Copenhagen
+      required:
+        - fullname
+        - email
+        - phone
+        - postal
+        - position
+        - avatar
+    UserGetByIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/UserGetById'
+    UserUpdateBody:
+      type: object
+      properties:
+        active:
+          type: boolean
+          default: true
+        address:
+          type: string
+        avatar:
+          type: string
+        email:
+          type: string
+          uniqueItems: true
+        fullname:
+          type: string
+        group:
+          type: string
+          default: all
+        language:
+          type: string
+          default: da
+        phone:
+          type: string
+          uniqueItems: true
+        position:
+          type: string
+        postal:
+          type: integer
+        timeZone:
+          type: string
+          default: Europe/Copenhagen
+      required:
+        - fullname
+        - email
+        - phone
+        - postal
+        - position
+        - avatar
+    UserUpdate:
+      type: object
+      properties:
+        _id:
+          type: string
+        active:
+          type: boolean
+          default: true
+        address:
+          type: string
+        avatar:
+          type: string
+        email:
+          type: string
+          uniqueItems: true
+        fullname:
+          type: string
+        group:
+          type: string
+          default: all
+        language:
+          type: string
+          default: da
+        phone:
+          type: string
+          uniqueItems: true
+        position:
+          type: string
+        postal:
+          type: integer
+        timeZone:
+          type: string
+          default: Europe/Copenhagen
+      required:
+        - fullname
+        - email
+        - phone
+        - postal
+        - position
+        - avatar
+    UserUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/UserUpdate'
     ShiftCreateBody:
       type: object
       properties:
@@ -469,6 +714,298 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/ShiftGetGroup'
+    ProductGetAll:
+      type: object
+      properties:
+        _id:
+          type: string
+        collectionId:
+          type: integer
+        hidden:
+          type: boolean
+        imageUrl:
+          type: string
+        productId:
+          type: integer
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductGetAllUser'
+        title:
+          type: string
+        active:
+          type: boolean
+          default: true
+        buffertime:
+          type: integer
+        duration:
+          type: integer
+      required:
+        - _id
+        - collectionId
+        - hidden
+        - imageUrl
+        - productId
+        - users
+        - title
+        - active
+        - buffertime
+        - duration
+    ProductGetAllUser:
+      type: object
+      properties:
+        userId:
+          type: string
+        tag:
+          type: string
+        fullname:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        avatar:
+          type: string
+        position:
+          type: string
+        postal:
+          type: integer
+      required:
+        - userId
+        - tag
+        - fullname
+        - email
+        - phone
+        - avatar
+        - position
+        - postal
+    ProductGetAllResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductGetAll'
+    ProductGetAvailableUsers:
+      type: object
+      properties:
+        _id:
+          type: string
+        tag:
+          type: string
+        fullname:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        avatar:
+          type: string
+        position:
+          type: string
+        postal:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+            enum:
+              - weekday
+              - weekend
+              - all_day
+              - end_of_week
+              - start_of_week
+              - middle_of_week
+          minItems: 1
+      required:
+        - _id
+        - tag
+        - fullname
+        - email
+        - phone
+        - avatar
+        - position
+        - postal
+        - tags
+    ProductGetAvailableUsersResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductGetAvailableUsers'
+    ProductUpdateBody:
+      type: object
+      properties:
+        hidden:
+          type: boolean
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductUpdateUser'
+        active:
+          type: boolean
+          default: true
+        buffertime:
+          type: integer
+        duration:
+          type: integer
+      required:
+        - hidden
+        - users
+        - active
+        - buffertime
+        - duration
+    ProductUpdateUser:
+      type: object
+      properties:
+        userId:
+          type: string
+        tag:
+          type: string
+        fullname:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        avatar:
+          type: string
+        position:
+          type: string
+        postal:
+          type: integer
+      required:
+        - userId
+        - tag
+        - fullname
+        - email
+        - phone
+        - avatar
+        - position
+        - postal
+    ProductUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: object
+          properties:
+            _id:
+              type: string
+            collectionId:
+              type: integer
+            hidden:
+              type: boolean
+            imageUrl:
+              type: string
+            productId:
+              type: integer
+            users:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductUpdateUser'
+            title:
+              type: string
+            active:
+              type: boolean
+              default: true
+            buffertime:
+              type: integer
+            duration:
+              type: integer
+          required:
+            - _id
+            - collectionId
+            - hidden
+            - imageUrl
+            - productId
+            - users
+            - title
+            - active
+            - buffertime
+            - duration
+    ProductGetById:
+      type: object
+      properties:
+        _id:
+          type: string
+        collectionId:
+          type: integer
+        hidden:
+          type: boolean
+        imageUrl:
+          type: string
+        productId:
+          type: integer
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductGetByIdUser'
+        title:
+          type: string
+        active:
+          type: boolean
+          default: true
+        buffertime:
+          type: integer
+        duration:
+          type: integer
+      required:
+        - _id
+        - collectionId
+        - hidden
+        - imageUrl
+        - productId
+        - users
+        - title
+        - active
+        - buffertime
+        - duration
+    ProductGetByIdUser:
+      type: object
+      properties:
+        userId:
+          type: string
+        tag:
+          type: string
+        fullname:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        avatar:
+          type: string
+        position:
+          type: string
+        postal:
+          type: integer
+      required:
+        - userId
+        - tag
+        - fullname
+        - email
+        - phone
+        - avatar
+        - position
+        - postal
+    ProductGetByIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/ProductGetById'
 paths:
   /auth/login:
     post:
@@ -525,7 +1062,11 @@ paths:
       description: This endpoint get account data.
       responses:
         '200':
-          $ref: '#/components/responses/UserResponse'
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGetByIdResponse'
       security:
         - BearerAuth: []
     put:
@@ -539,10 +1080,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserModel'
+              $ref: '#/components/schemas/UserCreateBody'
       responses:
         '200':
-          $ref: '#/components/responses/UserResponse'
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateResponse'
         '400':
           $ref: '#/components/responses/ErrorResponse'
       security:
@@ -556,92 +1101,13 @@ paths:
       description: 'This endpoint gets all users, in case you are logged in as admin or user, only same group'
       responses:
         '200':
-          $ref: '#/components/responses/UsersResponse'
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGetAllResponse'
       security:
         - BearerAuth: []
-  /user/create-user-api:
-    post:
-      tags:
-        - User
-      operationId: createUserApi
-      summary: 'POST Create user [api]'
-      description: 'This endpoint is special and should be used to create new user with api key, and not logged in user.'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserCreateOrUpdateModel'
-      responses:
-        '200':
-          $ref: '#/components/responses/UserResponse'
-        '400':
-          $ref: '#/components/responses/ErrorResponse'
-      security: []
-  /user:
-    post:
-      tags:
-        - User
-      operationId: createUser
-      summary: POST Create user
-      description: This endpoint create new user with api key
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserCreateOrUpdateModel'
-      responses:
-        '200':
-          $ref: '#/components/responses/UserResponse'
-        '400':
-          $ref: '#/components/responses/ErrorResponse'
-      security:
-        - BearerAuth:
-            - owner
-            - admin
-  '/user/{id}':
-    parameters:
-      - name: id
-        in: path
-        description: The ID of the user
-        required: true
-        schema:
-          type: string
-    get:
-      tags:
-        - User
-      operationId: getUser
-      summary: GET Get user
-      description: This endpoint gets user object
-      responses:
-        '200':
-          $ref: '#/components/responses/UserResponse'
-        '400':
-          $ref: '#/components/responses/ErrorResponse'
-      security:
-        - BearerAuth: []
-    put:
-      tags:
-        - User
-      operationId: updateUser
-      summary: PUT Update user
-      description: This endpoint update user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserCreateOrUpdateModel'
-      responses:
-        '200':
-          $ref: '#/components/responses/UserResponse'
-        '400':
-          $ref: '#/components/responses/ErrorResponse'
-      security:
-        - BearerAuth:
-            - owner
-            - admin
   '/user/{userId}/shift-group':
     parameters:
       - name: userId
@@ -981,6 +1447,114 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
       security:
         - BearerAuth: []
+  /products:
+    parameters:
+      - name: group
+        in: query
+        description: 'The field filter by user group, only show products that contain users with specific group'
+        required: false
+        schema:
+          type: string
+      - name: userId
+        in: query
+        description: 'This field to filter by user id, only show products where this user is assigned to.'
+        required: false
+        schema:
+          type: string
+    get:
+      tags:
+        - Product
+      operationId: getAllProducts
+      summary: GET Get all products
+      description: This endpoint get all products
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductGetAllResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth: []
+  /products/get-available-users:
+    parameters:
+      - name: group
+        in: query
+        description: 'The field filter by user group, this is automatically set when user is admin.'
+        required: false
+        schema:
+          type: string
+    get:
+      tags:
+        - Product
+      operationId: getAllAvailableUsers
+      summary: GET Get all available users
+      description: This endpoint get all available users
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductGetAvailableUsersResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth:
+            - owner
+            - admin
+  '/products/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: The ID of the product
+        required: true
+        schema:
+          type: string
+    put:
+      tags:
+        - Product
+      operationId: updateProduct
+      summary: PUT Update product
+      description: This endpoint update product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductUpdateBody'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductUpdateResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth:
+            - owner
+            - admin
+    get:
+      tags:
+        - Product
+      operationId: getProduct
+      summary: GET Get product
+      description: This endpoint gets product object
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductGetByIdResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth: []
 tags:
   - name: Auth
     description: Login and reset password
@@ -990,3 +1564,5 @@ tags:
     description: Manage users..
   - name: Shift
     description: Manage shifts for user.
+  - name: Product
+    description: Manage products
