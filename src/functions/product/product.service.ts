@@ -91,9 +91,11 @@ export const ProductServiceUpdate = async (
   );
 };
 
-export type ProductServiceGetAvailableUsersReturn = User & {
-  tags: Tag[];
-};
+export type ProductServiceGetAvailableUsersReturn = Array<
+  User & {
+    tags: Tag[];
+  }
+>;
 
 // @description return all user that don't belong yet to the product
 export const ProductServiceGetAvailableUsers = (group?: string) => {

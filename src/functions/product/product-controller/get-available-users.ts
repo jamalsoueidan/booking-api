@@ -1,3 +1,5 @@
+import { SessionKey, _, onlyAdmin } from "~/library/handler";
+import { jwtVerify } from "~/library/jwt";
 import {
   ProductServiceGetAvailableUsers,
   ProductServiceGetAvailableUsersReturn,
@@ -10,8 +12,16 @@ export type ProductControllerGetAvailableUsersRequest = {
 export type ProductControllerGetAllResponse =
   ProductServiceGetAvailableUsersReturn;
 
-export const ProductControllerGetAvailableUsers = ({
-  query,
-}: ProductControllerGetAvailableUsersRequest) => {
-  return ProductServiceGetAvailableUsers(query.group);
-};
+export const ProductControllerGetAvailableUsers = _(
+  jwtVerify,
+  onlyAdmin,
+  ({
+    query,
+    session,
+  }: SessionKey<ProductControllerGetAvailableUsersRequest>) => {
+    if (session.isAdmin) {
+      query.group = session.group;
+    }
+    return ProductServiceGetAvailableUsers(query.group);
+  }
+);

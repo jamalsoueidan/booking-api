@@ -1,3 +1,5 @@
+import { _ } from "~/library/handler";
+import { jwtVerify } from "~/library/jwt";
 import {
   ProductServiceGetById,
   ProductServiceGetByIdProps,
@@ -10,8 +12,9 @@ export type ProductControllerGetByIdRequest = {
 
 export type ProductControllerGetByIdReturn = Product;
 
-export const ProductControllerGetById = async ({
-  query,
-}: ProductControllerGetByIdRequest) => {
-  return ProductServiceGetById(query);
-};
+export const ProductControllerGetById = _(
+  jwtVerify,
+  async ({ query }: ProductControllerGetByIdRequest) => {
+    return ProductServiceGetById(query);
+  }
+);

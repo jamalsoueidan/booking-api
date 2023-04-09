@@ -1,7 +1,6 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { AuthRole } from "~/functions/auth";
 import { Tag } from "~/functions/shift";
-import { User } from "~/functions/user";
 import {
   HttpSuccessResponse,
   createContext,
@@ -11,7 +10,6 @@ import {
   DEFAULT_GROUP,
   createProduct,
   createShift,
-  createUser,
   createUserWithShift,
   login,
 } from "~/library/jest/helpers";
@@ -44,12 +42,10 @@ describe("ProductControllerGetAll", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
-  let user: User;
   const tag = Tag.all_day;
 
   beforeEach(async () => {
     context = createContext();
-    user = await createUser();
   });
 
   it("Owner: Should be able to get all product", async () => {
@@ -66,7 +62,7 @@ describe("ProductControllerGetAll", () => {
       tag,
     });
 
-    const productUpdated = await ProductServiceUpdate(product?._id, {
+    await ProductServiceUpdate(product?._id, {
       users: [
         { userId: user._id, tag },
         { userId: user2._id, tag: Tag.end_of_week },
