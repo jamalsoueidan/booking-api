@@ -1,4 +1,4 @@
-import { _ } from "~/library/handler";
+import { SessionKey, _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 import {
   ProductServiceGetById,
@@ -10,11 +10,14 @@ export type ProductControllerGetByIdRequest = {
   query: ProductServiceGetByIdProps;
 };
 
-export type ProductControllerGetByIdReturn = Product;
+export type ProductControllerGetByIdResponse = Product;
 
 export const ProductControllerGetById = _(
   jwtVerify,
-  async ({ query }: ProductControllerGetByIdRequest) => {
+  async ({ query, session }: SessionKey<ProductControllerGetByIdRequest>) => {
+    if (!session.isOwner) {
+      query.group = session.group;
+    }
     return ProductServiceGetById(query);
   }
 );

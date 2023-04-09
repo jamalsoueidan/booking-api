@@ -1,5 +1,8 @@
+import mongoose from "mongoose";
 import { z } from "zod";
 import { Tag } from "../shift";
+
+const isObjectId = (str: string) => mongoose.Types.ObjectId.isValid(str);
 
 export const ProductZodSchema = z.object({
   _id: z.string(),
@@ -12,7 +15,9 @@ export const ProductZodSchema = z.object({
   productId: z.number(),
   users: z.array(
     z.object({
-      userId: z.string(),
+      userId: z.string().refine(isObjectId, {
+        message: "String must be a valid ObjectId",
+      }),
       tag: z.nativeEnum(Tag),
     })
   ),

@@ -23,7 +23,6 @@ import {
 require("~/library/jest/mongoose/mongodb.jest");
 
 const productId = 123456789;
-const tag = Tag.all_day;
 
 describe("ProductControllerGetAvailableUsers", () => {
   let context: InvocationContext;

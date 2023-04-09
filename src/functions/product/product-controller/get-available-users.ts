@@ -1,8 +1,8 @@
 import { SessionKey, _, onlyAdmin } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 import {
+  ProductServiceGetAvailableUser,
   ProductServiceGetAvailableUsers,
-  ProductServiceGetAvailableUsersReturn,
 } from "../product.service";
 
 export type ProductControllerGetAvailableUsersRequest = {
@@ -10,7 +10,7 @@ export type ProductControllerGetAvailableUsersRequest = {
 };
 
 export type ProductControllerGetAllResponse =
-  ProductServiceGetAvailableUsersReturn;
+  Array<ProductServiceGetAvailableUser>;
 
 export const ProductControllerGetAvailableUsers = _(
   jwtVerify,

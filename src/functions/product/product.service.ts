@@ -5,7 +5,6 @@ import { ShiftModel, Tag } from "../shift";
 import { User } from "../user";
 import { createProductPipeline } from "./product.helper";
 import { ProductModel } from "./product.model";
-import { IProduct } from "./product.schema";
 import { Product, ProductServiceUpdateBodyZodSchema } from "./product.types";
 
 export type ProductServiceGetAllProps = {
@@ -13,17 +12,17 @@ export type ProductServiceGetAllProps = {
   userId?: string;
 };
 
-export type ProductServiceGetAllReturn = Array<
-  Omit<Product, "users"> & {
-    users: Array<User & { userId: string; tag: Tag }>;
-  }
->;
+export type ProductServiceGetAllProduct = Omit<Product, "users"> & {
+  users: Array<User & { userId: string; tag: Tag }>;
+};
+
+export type ProductServiceGetAllReturn = Array<ProductServiceGetAllProduct>;
 
 export const ProductServiceGetAll = async ({
   userId,
   group,
 }: ProductServiceGetAllProps = {}) => {
-  return ProductModel.aggregate<Array<ProductServiceGetAllReturn>>(
+  return ProductModel.aggregate<ProductServiceGetAllProduct>(
     createProductPipeline(group, userId)
   );
 };
@@ -33,25 +32,21 @@ export type ProductServiceGetByIdProps = {
   id: string;
 };
 
+export type ProductServiceGetByIdReturn = ProductServiceGetAllProduct;
+
 export const ProductServiceGetById = async ({
   id,
   group,
-}: ProductServiceGetByIdProps): Promise<IProduct | Product | null> => {
-  const product = await ProductModel.findOne({
-    _id: new mongoose.Types.ObjectId(id),
-    "user.0": { $exists: false }, // if product contains zero user, then just return the product, no need for aggreation
-  });
-
-  if (product) {
-    return product;
-  }
-
+}: ProductServiceGetByIdProps) => {
   const pipeline = createProductPipeline(group);
   pipeline.unshift({ $match: { _id: new mongoose.Types.ObjectId(id) } });
-
-  const products = await ProductModel.aggregate<Product>(pipeline);
+  const products = await ProductModel.aggregate<ProductServiceGetByIdReturn>(
+    pipeline
+  );
   return products?.length > 0 ? products[0] : null;
 };
+
+export type ProductServiceUpdateReturn = ProductServiceGetByIdReturn;
 
 export const ProductServiceUpdate = async (
   id: string,
@@ -78,7 +73,7 @@ export const ProductServiceUpdate = async (
     active = false;
   }
 
-  return ProductModel.findOneAndUpdate(
+  return ProductModel.updateOne(
     {
       _id: new mongoose.Types.ObjectId(id),
     },
@@ -91,11 +86,9 @@ export const ProductServiceUpdate = async (
   );
 };
 
-export type ProductServiceGetAvailableUsersReturn = Array<
-  User & {
-    tags: Tag[];
-  }
->;
+export type ProductServiceGetAvailableUser = User & {
+  tags: Tag[];
+};
 
 // @description return all user that don't belong yet to the product
 export const ProductServiceGetAvailableUsers = (group?: string) => {
@@ -166,5 +159,5 @@ export const ProductServiceGetAvailableUsers = (group?: string) => {
     });
   }
 
-  return ShiftModel.aggregate<ProductServiceGetAvailableUsersReturn>(pipeline);
+  return ShiftModel.aggregate<ProductServiceGetAvailableUser>(pipeline);
 };

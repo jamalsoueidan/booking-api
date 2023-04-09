@@ -53,6 +53,7 @@ export const ProductMongooseSchema = new Schema<
       userId: {
         ref: "user",
         required: true,
+        unique: true,
         type: Schema.Types.ObjectId,
       },
       tag: {

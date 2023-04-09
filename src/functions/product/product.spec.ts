@@ -92,6 +92,7 @@ describe("ProductService", () => {
     });
 
     const userToAdd = await ProductServiceGetAvailableUsers();
+
     expect(userToAdd.length).toEqual(3);
 
     const pickUser = userToAdd[0];
