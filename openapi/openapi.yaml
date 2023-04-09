@@ -12,6 +12,7 @@ info:
         - My Account
         - User
         - Shift
+        - Product
 servers:
   - url: https://booking-shopify-api.azurewebsites.net/api
 components:
@@ -87,6 +88,15 @@ components:
       $ref: "./paths/shift/get-group/payload.yaml"
     ShiftGetGroupResponse:
       $ref: "./paths/shift/get-group/response.yaml"
+
+    # product
+    ProductGetAll:
+      $ref: "./paths/product/get-all/payload.yaml"
+    ProductGUseretAll:
+      $ref: "./paths/product/get-all/user.yaml"
+    ProductGetAllResponse:
+      $ref: "./paths/product/get-all/response.yaml"
+
 paths:
   # auth
   /auth/login:
@@ -128,6 +138,10 @@ paths:
   /user/{userId}/shift/{id}:
     $ref: "./paths/shift/shift.yaml"
 
+  # product
+  /products:
+    $ref: "./paths/product/get-all/index.yaml"
+
 tags:
   - name: Auth
     description: Login and reset password
@@ -137,3 +151,5 @@ tags:
     description: Manage users..
   - name: Shift
     description: Manage shifts for user.
+  - name: Product
+    description: Manage products
