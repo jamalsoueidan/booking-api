@@ -6,6 +6,6 @@ parameters:
     schema:
       type: string
 get:
-  $ref: "./get-by-id.yaml#/get"
+  $ref: "./get-by-id/index.yaml#/get"
 put:
-  $ref: "./update.yaml#/put"
+  $ref: "./update/index.yaml#/put"

@@ -1,0 +1,40 @@
+type: object
+properties:
+  _id:
+    type: string
+  tag:
+    type: string
+  fullname:
+    type: string
+  email:
+    type: string
+  phone:
+    type: string
+  avatar:
+    type: string
+  position:
+    type: string
+  postal:
+    type: integer
+  tags:
+    type: array
+    items:
+      type: string
+      enum:
+        - "weekday"
+        - "weekend"
+        - "all_day"
+        - "end_of_week"
+        - "start_of_week"
+        - "middle_of_week"
+    minItems: 1
+required:
+  - _id
+  - tag
+  - fullname
+  - email
+  - phone
+  - avatar
+  - position
+  - postal
+  - tags

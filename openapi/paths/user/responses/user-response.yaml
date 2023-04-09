@@ -1,5 +1,0 @@
-description: Response with UserModel payload
-content:
-  application/json:
-    schema:
-      $ref: "../schemas/user-response.yaml"

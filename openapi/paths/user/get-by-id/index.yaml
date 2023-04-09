@@ -1,0 +1,18 @@
+get:
+  tags:
+    - User
+  operationId: getUser
+  summary: GET Get user
+  description: This endpoint gets user object
+  responses:
+    "200":
+      description: Response with UserModel payload
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+
+    "400":
+      $ref: "../../../responses/error.yaml"
+  security:
+    - BearerAuth: []

@@ -6,7 +6,7 @@ get:
   description: This endpoint get account data.
   responses:
     "200":
-      $ref: "../user/responses/user-response.yaml"
+      $ref: "../user/get-by-id/response.yaml"
   security:
     - BearerAuth: []
 
@@ -21,11 +21,11 @@ put:
     content:
       application/json:
         schema:
-          $ref: "../user/schemas/user-model.yaml"
+          $ref: "../user/create/body.yaml"
 
   responses:
     "200":
-      $ref: "../user/responses/user-response.yaml"
+      $ref: "../user/create/response.yaml"
     "400":
       $ref: "../../responses/error.yaml"
   security:
