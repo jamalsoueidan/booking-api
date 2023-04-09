@@ -111,15 +111,21 @@ components:
     ProductGetAllResponse:
       $ref: "./paths/product/get-all/response.yaml"
     ProductGetAvailableUsers:
-      $ref: "./paths/product/get-all/payload.yaml"
+      $ref: "./paths/product/get-available-users/payload.yaml"
     ProductGetAvailableUsersResponse:
-      $ref: "./paths/product/get-all/response.yaml"
+      $ref: "./paths/product/get-available-users/response.yaml"
     ProductUpdateBody:
       $ref: "./paths/product/update/body.yaml"
-    ProductUpdate:
-      $ref: "./paths/product/update/payload.yaml"
+    ProductUpdateUser:
+      $ref: "./paths/product/update/user.yaml"
     ProductUpdateResponse:
       $ref: "./paths/product/update/response.yaml"
+    ProductGetById:
+      $ref: "./paths/product/get-by-id/payload.yaml"
+    ProductGetByIdUser:
+      $ref: "./paths/product/get-by-id/user.yaml"
+    ProductGetByIdResponse:
+      $ref: "./paths/product/get-by-id/response.yaml"
 
 paths:
   # auth

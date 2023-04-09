@@ -8,3 +8,5 @@ parameters:
 
 put:
   $ref: "./update/index.yaml#/put"
+get:
+  $ref: "./get-by-id/index.yaml#/get"
