@@ -5,7 +5,7 @@ properties:
   users:
     type: array
     items:
-      $ref: "./user.yaml"
+      $ref: "./body-user.yaml"
   active:
     type: boolean
     default: true

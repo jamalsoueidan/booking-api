@@ -5,6 +5,7 @@ put:
   summary: PUT Update product
   description: This endpoint update product
   requestBody:
+    description: "Body"
     required: true
     content:
       application/json:
@@ -13,7 +14,7 @@ put:
 
   responses:
     "200":
-      description: ""
+      description: "Response"
       content:
         application/json:
           schema:

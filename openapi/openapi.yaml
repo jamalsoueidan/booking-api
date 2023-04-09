@@ -116,6 +116,8 @@ components:
       $ref: "./paths/product/get-available-users/response.yaml"
     ProductUpdateBody:
       $ref: "./paths/product/update/body.yaml"
+    ProductUpdateBodyUser:
+      $ref: "./paths/product/update/body-user.yaml"
     ProductUpdateUser:
       $ref: "./paths/product/update/user.yaml"
     ProductUpdateResponse:
@@ -142,6 +144,15 @@ paths:
   # user
   /users:
     $ref: "./paths/user/get-all/index.yaml"
+
+  /user/create-user-api:
+    $ref: "./paths/user/create-api/index.yaml"
+
+  /user:
+    $ref: "./paths/user/create/index.yaml"
+
+  /user/{id}:
+    $ref: "./paths/user/user.yaml"
 
   # shift
   /user/{userId}/shift-group:
