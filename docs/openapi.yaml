@@ -848,7 +848,7 @@ components:
         users:
           type: array
           items:
-            $ref: '#/components/schemas/ProductUpdateUser'
+            $ref: '#/components/schemas/ProductUpdateBodyUser'
         active:
           type: boolean
           default: true
@@ -862,6 +862,16 @@ components:
         - active
         - buffertime
         - duration
+    ProductUpdateBodyUser:
+      type: object
+      properties:
+        userId:
+          type: string
+        tag:
+          type: string
+      required:
+        - userId
+        - tag
     ProductUpdateUser:
       type: object
       properties:
@@ -1108,6 +1118,105 @@ paths:
                 $ref: '#/components/schemas/UserGetAllResponse'
       security:
         - BearerAuth: []
+  /user/create-user-api:
+    post:
+      tags:
+        - User
+      operationId: createUserApi
+      summary: 'POST Create user [api]'
+      description: 'This endpoint is special and should be used to create new user with api key, and not logged in user.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateApiBody'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateResponseApi'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security: []
+  /user:
+    post:
+      tags:
+        - User
+      operationId: createUser
+      summary: POST Create user
+      description: This endpoint create new user with api key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateBody'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth:
+            - owner
+            - admin
+  '/user/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: The ID of the user
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - User
+      operationId: getUser
+      summary: GET Get user
+      description: This endpoint gets user object
+      responses:
+        '200':
+          description: Response with UserModel payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGetByIdResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth: []
+    put:
+      tags:
+        - User
+      operationId: updateUser
+      summary: PUT Update user
+      description: This endpoint update user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdateResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+        - BearerAuth:
+            - owner
+            - admin
   '/user/{userId}/shift-group':
     parameters:
       - name: userId
@@ -1520,6 +1629,7 @@ paths:
       summary: PUT Update product
       description: This endpoint update product
       requestBody:
+        description: Body
         required: true
         content:
           application/json:
@@ -1527,7 +1637,7 @@ paths:
               $ref: '#/components/schemas/ProductUpdateBody'
       responses:
         '200':
-          description: ''
+          description: Response
           content:
             application/json:
               schema:
