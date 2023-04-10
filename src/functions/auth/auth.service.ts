@@ -1,54 +1,44 @@
 import { compare } from "bcryptjs";
 import { generate } from "generate-password";
-import { z } from "zod";
+import { UnauthorizedError } from "~/library/handler";
 import { jwtCreateToken } from "~/library/jwt";
 import { AuthModel } from "./auth.model";
 import { Auth } from "./auth.types";
 
-export const AuthServiceLoginSchema = z.object({
-  identification: z.string(),
-  password: z.string(),
-});
-
-export type AuthServiceLoginProps = z.infer<typeof AuthServiceLoginSchema>;
+export type AuthServiceLoginProps = {
+  identification: string;
+  password: string;
+};
 
 export const AuthServiceLogin = async (props: AuthServiceLoginProps) => {
-  AuthServiceLoginSchema.parse(props);
-
   const auth = await AuthModel.findOne({
     $or: [{ phone: props.identification }, { email: props.identification }],
     active: true,
   });
 
   if (!auth) {
-    throw new Error("identification or password is incorrect");
+    throw new UnauthorizedError("identification or password is incorrect");
   }
 
   const correctPassword = await compare(props.password, auth.password || "");
   if (!correctPassword) {
-    throw new Error("identification or password is incorrect");
+    throw new UnauthorizedError("identification or password is incorrect");
   }
 
   return { token: jwtCreateToken(auth.toJSON()) };
 };
 
-export const AuthServiceReceivePasswordSchema = z.object({
-  phone: z.string(),
-});
-
-export type AuthServiceReceivePasswordProps = z.infer<
-  typeof AuthServiceReceivePasswordSchema
->;
+export type AuthServiceReceivePasswordProps = {
+  phone: string;
+};
 
 export const AuthServiceReceivePassword = async (
   props: AuthServiceReceivePasswordProps
 ) => {
-  AuthServiceReceivePasswordSchema.parse(props);
-
   const user = await AuthModel.findOne(props);
 
   if (!user) {
-    throw new Error("phone number not exist");
+    throw new UnauthorizedError("phone number not exist");
   }
 
   const password = generate({

@@ -1,5 +1,0 @@
-description: Error happened, either message error or validation error
-content:
-  application/json:
-    schema:
-      $ref: "../schemas/error-model.yaml"

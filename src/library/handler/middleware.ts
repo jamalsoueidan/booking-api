@@ -8,6 +8,7 @@ import {
 import { ZodError } from "zod";
 import { jwtDecode, jwtGetToken } from "../jwt";
 import { connect } from "../mongoose";
+import { ForbiddenError, NotFoundError, UnauthorizedError } from "./errors";
 
 export type AzureHandler = (
   request: HttpRequest,
@@ -36,14 +37,32 @@ export const _ =
       }
     } catch (err: unknown) {
       const props: HttpResponseInit = {};
-      if (err instanceof Error) {
+      if (err instanceof UnauthorizedError) {
         props.jsonBody = { error: err.message, success: false };
+        props.status = err.status;
+        return props;
       }
 
       if (err instanceof ZodError) {
         props.jsonBody = { error: err.issues, success: false };
+        props.status = 400;
+        return props;
       }
-      props.status = 400;
+
+      if (err instanceof NotFoundError) {
+        props.jsonBody = { error: err.message, success: false };
+        props.status = err.status;
+        return props;
+      }
+
+      if (err instanceof ForbiddenError) {
+        props.jsonBody = { error: err.message, success: false };
+        props.status = err.status;
+        return props;
+      }
+
+      props.jsonBody = { error: "unknown", succes: false };
+      props.status = 500;
       return props;
     }
 

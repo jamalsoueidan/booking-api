@@ -1,5 +1,5 @@
 import { UserServiceBelongsToSameGroup } from "~/functions/user";
-import { SessionKey } from "~/library/handler";
+import { ForbiddenError, SessionKey } from "~/library/handler";
 
 export type SessionRequest = {
   query: {
@@ -12,7 +12,7 @@ export const ShiftRestrictUser = async ({
   session,
 }: SessionKey<SessionRequest>) => {
   if (session.isUser && query.userId !== session.userId) {
-    throw new Error("not allowed to modifiy other user");
+    throw new ForbiddenError("not allowed to modifiy other user");
   }
 
   await ShiftRestrictGroup({ query, session });
@@ -28,7 +28,7 @@ export const ShiftRestrictGroup = async ({
       group: session.group,
     });
     if (!belongToSameGroup) {
-      throw new Error("not allowed to modifiy staff in other groups");
+      throw new ForbiddenError("not allowed to modifiy staff in other groups");
     }
   }
 };
