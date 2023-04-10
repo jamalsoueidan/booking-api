@@ -1249,7 +1249,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserUpdate'
+              $ref: '#/components/schemas/UserUpdateBody'
       responses:
         '200':
           description: Response
