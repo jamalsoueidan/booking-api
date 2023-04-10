@@ -9,7 +9,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: "./payload.yaml"
+          $ref: "./body.yaml"
 
   responses:
     "200":
