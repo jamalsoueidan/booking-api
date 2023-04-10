@@ -22,18 +22,47 @@ components:
       scheme: bearer
       bearerFormat: JWT
   responses:
-    ErrorResponse:
-      description: 'Error happened, either message error or validation error'
+    BadResponse:
+      description: Bad Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorModel'
+            $ref: '#/components/schemas/Error'
+    ForbiddenResponse:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFoundResponse:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnauthorizedResponse:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ZodResponse:
+      description: Incomplete data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ZodError'
   schemas:
-    ErrorModel:
-      oneOf:
-        - $ref: '#/components/schemas/MessageError'
-        - $ref: '#/components/schemas/ValidationError'
-    ValidationError:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: error message
+    ZodError:
       type: object
       properties:
         success:
@@ -60,15 +89,6 @@ components:
               - path
               - message
               - code
-    MessageError:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: false
-        error:
-          type: string
-          example: error message
     AuthLoginResponse:
       type: object
       properties:
@@ -1038,7 +1058,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthLoginResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
       security: []
   /auth/receive-password:
     post:
@@ -1061,7 +1083,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthPasswordResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
       security: []
   /my-account:
     get:
@@ -1098,8 +1122,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserCreateResponse'
-        '400':
-          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
   /users:
@@ -1116,6 +1144,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserGetAllResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth: []
   /user/create-user-api:
@@ -1139,7 +1171,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserCreateResponseApi'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security: []
   /user:
     post:
@@ -1162,7 +1198,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserCreateResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth:
             - owner
@@ -1189,7 +1229,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserGetByIdResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
     put:
@@ -1212,7 +1258,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserUpdateResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth:
             - owner
@@ -1245,7 +1295,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ShiftCreateGroupResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
   '/user/{userId}/shifts':
@@ -1270,7 +1326,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ShiftGetAllResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth: []
   '/user/{userId}/shift':
@@ -1301,7 +1361,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ShiftCreateResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
   '/user/{userId}/shift-group/{groupId}':
@@ -1331,6 +1397,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ShiftGetGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
     put:
@@ -1429,7 +1503,13 @@ paths:
                       - tag
                       - day
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
     delete:
@@ -1446,7 +1526,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ShiftDestroyGroupResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
   '/user/{userId}/shift/{id}':
@@ -1536,7 +1622,13 @@ paths:
                       - start
                       - tag
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
     delete:
@@ -1553,7 +1645,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ShiftDestroyResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
   /products:
@@ -1584,7 +1682,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductGetAllResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
   /products/get-available-users:
@@ -1609,7 +1713,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductGetAvailableUsersResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth:
             - owner
@@ -1643,7 +1753,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductUpdateResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth:
             - owner
@@ -1662,7 +1778,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductGetByIdResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
 tags:
