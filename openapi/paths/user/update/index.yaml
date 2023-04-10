@@ -9,7 +9,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: "./payload.yaml"
+          $ref: "./body.yaml"
 
   responses:
     "200":
@@ -19,7 +19,12 @@ put:
           schema:
             $ref: "./response.yaml"
     "400":
-      $ref: "../../../responses/error.yaml"
+      $ref: "../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+
   security:
     - BearerAuth:
         - owner

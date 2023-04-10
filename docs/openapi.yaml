@@ -22,18 +22,47 @@ components:
       scheme: bearer
       bearerFormat: JWT
   responses:
-    ErrorResponse:
-      description: 'Error happened, either message error or validation error'
+    BadResponse:
+      description: Bad Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorModel'
+            $ref: '#/components/schemas/Error'
+    ForbiddenResponse:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFoundResponse:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnauthorizedResponse:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ZodResponse:
+      description: Incomplete data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ZodError'
   schemas:
-    ErrorModel:
-      oneOf:
-        - $ref: '#/components/schemas/MessageError'
-        - $ref: '#/components/schemas/ValidationError'
-    ValidationError:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: error message
+    ZodError:
       type: object
       properties:
         success:
@@ -60,15 +89,6 @@ components:
               - path
               - message
               - code
-    MessageError:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: false
-        error:
-          type: string
-          example: error message
     AuthLoginResponse:
       type: object
       properties:
@@ -848,7 +868,7 @@ components:
         users:
           type: array
           items:
-            $ref: '#/components/schemas/ProductUpdateUser'
+            $ref: '#/components/schemas/ProductUpdateBodyUser'
         active:
           type: boolean
           default: true
@@ -862,6 +882,16 @@ components:
         - active
         - buffertime
         - duration
+    ProductUpdateBodyUser:
+      type: object
+      properties:
+        userId:
+          type: string
+        tag:
+          type: string
+      required:
+        - userId
+        - tag
     ProductUpdateUser:
       type: object
       properties:
@@ -1028,7 +1058,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthLoginResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
       security: []
   /auth/receive-password:
     post:
@@ -1051,7 +1083,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthPasswordResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
       security: []
   /my-account:
     get:
@@ -1088,8 +1122,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserCreateResponse'
-        '400':
-          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
   /users:
@@ -1106,8 +1144,129 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserGetAllResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth: []
+  /user/create-user-api:
+    post:
+      tags:
+        - User
+      operationId: createUserApi
+      summary: 'POST Create user [api]'
+      description: 'This endpoint is special and should be used to create new user with api key, and not logged in user.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateApiBody'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateResponseApi'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
+  /user:
+    post:
+      tags:
+        - User
+      operationId: createUser
+      summary: POST Create user
+      description: This endpoint create new user with api key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateBody'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security:
+        - BearerAuth:
+            - owner
+            - admin
+  '/user/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: The ID of the user
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - User
+      operationId: getUser
+      summary: GET Get user
+      description: This endpoint gets user object
+      responses:
+        '200':
+          description: Response with UserModel payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGetByIdResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security:
+        - BearerAuth: []
+    put:
+      tags:
+        - User
+      operationId: updateUser
+      summary: PUT Update user
+      description: This endpoint update user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateBody'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security:
+        - BearerAuth:
+            - owner
+            - admin
   '/user/{userId}/shift-group':
     parameters:
       - name: userId
@@ -1136,7 +1295,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ShiftCreateGroupResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
   '/user/{userId}/shifts':
@@ -1161,7 +1326,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ShiftGetAllResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth: []
   '/user/{userId}/shift':
@@ -1192,7 +1361,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ShiftCreateResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
   '/user/{userId}/shift-group/{groupId}':
@@ -1222,6 +1397,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ShiftGetGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
     put:
@@ -1320,7 +1503,13 @@ paths:
                       - tag
                       - day
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
     delete:
@@ -1337,7 +1526,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ShiftDestroyGroupResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
   '/user/{userId}/shift/{id}':
@@ -1427,7 +1622,13 @@ paths:
                       - start
                       - tag
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
     delete:
@@ -1444,7 +1645,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ShiftDestroyResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
   /products:
@@ -1475,7 +1682,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductGetAllResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
   /products/get-available-users:
@@ -1500,7 +1713,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductGetAvailableUsersResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth:
             - owner
@@ -1520,6 +1739,7 @@ paths:
       summary: PUT Update product
       description: This endpoint update product
       requestBody:
+        description: Body
         required: true
         content:
           application/json:
@@ -1527,13 +1747,19 @@ paths:
               $ref: '#/components/schemas/ProductUpdateBody'
       responses:
         '200':
-          description: ''
+          description: Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductUpdateResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth:
             - owner
@@ -1552,7 +1778,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductGetByIdResponse'
         '400':
-          $ref: '#/components/responses/ErrorResponse'
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
 tags:

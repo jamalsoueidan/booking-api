@@ -1,3 +1,4 @@
+import { NotFoundError } from "~/library/handler";
 import { AuthRole, AuthServiceCreate, AuthServiceUpdate } from "../auth";
 import { UserModel } from "./user.model";
 import { User } from "./user.types";
@@ -30,7 +31,7 @@ export const UserServiceFindByIdAndUpdate = async (
     new: true,
   });
   if (!user) {
-    throw new Error("User not found");
+    throw new NotFoundError("User not found");
   }
 
   await AuthServiceUpdate(
@@ -58,7 +59,7 @@ type UserServiceGetByIdProps = {
 export const UserServiceGetById = async (props: UserServiceGetByIdProps) => {
   const user = await UserModel.findOne(props).lean();
   if (!user) {
-    throw new Error("no user found");
+    throw new NotFoundError("no user found");
   }
   return user;
 };

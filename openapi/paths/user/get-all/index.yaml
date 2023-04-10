@@ -11,5 +11,9 @@ get:
         application/json:
           schema:
             $ref: "./response.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
   security:
     - BearerAuth: []
