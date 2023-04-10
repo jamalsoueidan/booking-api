@@ -18,5 +18,7 @@ post:
           schema:
             $ref: "./schemas/login-response.yaml"
     "400":
-      $ref: "../../responses/error.yaml"
+      $ref: "../../responses/bad.yaml"
+    "401":
+      $ref: "../../responses/unauthorized.yaml"
   security: []

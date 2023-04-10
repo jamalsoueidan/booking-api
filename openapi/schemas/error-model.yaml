@@ -1,3 +1,0 @@
-oneOf:
-  - $ref: "../schemas/message-error.yaml"
-  - $ref: "../schemas/validation-error.yaml"

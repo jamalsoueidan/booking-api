@@ -23,17 +23,23 @@ components:
       bearerFormat: JWT
 
   responses:
-    ErrorResponse:
-      $ref: "./responses/error.yaml"
+    BadResponse:
+      $ref: "./responses/bad.yaml"
+    ForbiddenResponse:
+      $ref: "./responses/forbidden.yaml"
+    NotFoundResponse:
+      $ref: "./responses/not-found.yaml"
+    UnauthorizedResponse:
+      $ref: "./responses/unauthorized.yaml"
+    ZodResponse:
+      $ref: "./responses/zod.yaml"
 
   schemas:
     # errors
-    ErrorModel:
-      $ref: "./schemas/error-model.yaml"
-    ValidationError:
-      $ref: "./schemas/validation-error.yaml"
-    MessageError:
-      $ref: "./schemas/message-error.yaml"
+    Error:
+      $ref: "./schemas/error.yaml"
+    ZodError:
+      $ref: "./schemas/zod-error.yaml"
 
     # auth
     AuthLoginResponse:

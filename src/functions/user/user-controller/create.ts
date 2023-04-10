@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SessionKey, _, onlyAdmin } from "~/library/handler";
+import { SessionKey, UnauthorizedError, _, onlyAdmin } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 import { UserServiceCreate } from "../user.service";
 import { User, UserSchema } from "../user.types";
@@ -25,7 +25,9 @@ export const UserControllerCreateUser = _(
     const validateBody = UserControllerCreateUserSchema.parse(body);
 
     if (session.isAdmin && body.group !== session.group) {
-      throw new Error("not allowed to create user in another group");
+      throw new UnauthorizedError(
+        "not allowed to create user in another group"
+      );
     }
 
     return UserServiceCreate(validateBody);
