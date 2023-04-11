@@ -1,14 +1,16 @@
 import { gql, request } from "graphql-request";
 
+export type ShopifyCollection = {
+  id: string;
+  title: string;
+  image?: {
+    url: string;
+  };
+};
+
 export type ShopifyServiceGetCollections = {
   collections: {
-    nodes: Array<{
-      id: string;
-      title: string;
-      image?: {
-        url: string;
-      };
-    }>;
+    nodes: Array<ShopifyCollection>;
   };
 };
 
