@@ -1,92 +1,53 @@
-import { addDays, addHours } from "date-fns";
-import { GetCollectionsProps } from "./collection.helper";
+import { HttpRequest, InvocationContext } from "@azure/functions";
+import { createContext } from "~/library/jest/azure";
 import {
-  CollectionServiceDestroy,
+  createCollection,
+  createProduct,
+  createUserWithShift,
+} from "~/library/jest/helpers";
+import { ProductServiceUpdate } from "../product";
+import { Tag } from "../shift";
+import {
+  CollectionServiceAddProduct,
   CollectionServiceGetAll,
 } from "./collection.service";
 
-require("@jamalsoueidan/bit-dev.testing-library.mongodb/mongodb.jest");
+require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("./collection.helper", () => ({
-  __esModule: true,
-  getCollections: ({ session, selections, shopify }: GetCollectionsProps) => {
-    // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
-    const mock = require("./collection.mock").default;
-    return Promise.resolve(mock);
-  },
-}));
+describe("CollectionService", () => {
+  let context: InvocationContext;
+  let request: HttpRequest;
 
-describe("collection testing", () => {
-  it("Should be able create collections", async () => {
-    const id = "gid://shopify/Collection/425845817661";
-    await CollectionServiceCreate({ session: { shop } } as never, {
-      selections: [id],
-    });
-
-    const collections = await CollectionServiceGetAll({ shop });
-    expect(collections.length).toEqual(2);
+  beforeEach(async () => {
+    context = createContext();
   });
 
-  it("Should be able to get collections with product => user relations", async () => {
-    await CollectionServiceCreate({ session: { shop } } as never, {
-      selections: [
-        "gid://shopify/Collection/425845817661",
-        "gid://shopify/Collection/425290039613",
-      ],
-    });
-
-    let collections = await CollectionServiceGetAll({ shop });
-    let collection = collections.find((c) => c.collectionId === 425845817661);
-
-    expect(collection?.products.length).toEqual(2);
-
-    let collectionProduct = collection?.products[0];
-    expect(collectionProduct?.active).toBeFalsy();
-
-    if (collectionProduct) {
-      const user = await createUser();
-      const start = addDays(new Date(), 1);
-
-      await createShift({
-        end: addHours(start, 5),
-        user: user._id,
-        start,
-        tag: Tag.end_of_week,
-      });
-
-      await ProductServiceUpdate(
-        { id: collectionProduct._id, shop },
-        {
-          user: [{ _id: user._id, tag: Tag.end_of_week }],
-        }
-      );
-    }
-
-    collections = await CollectionServiceGetAll({ shop });
-    collection = collections.find((c) => c.collectionId === 425845817661);
-
-    expect(collection?.products.length).toEqual(2);
-    collectionProduct = collection?.products.find(
-      (product) => product._id.toString() === collectionProduct?._id.toString()
+  it("Should be able to get collections with product => users relations", async () => {
+    const collection = await createCollection();
+    const product = await createProduct({ productId: 321 });
+    await CollectionServiceAddProduct(
+      collection.collectionId,
+      product.productId
     );
 
-    expect(collectionProduct?.user.length).toBe(1);
-    expect(collectionProduct?.user[0].avatar).not.toBeNull();
-    expect(collectionProduct?.user[0].fullname).not.toBeNull();
-  });
-
-  it("Should be able destroy collection", async () => {
-    await CollectionServiceCreate({ session: { shop } } as never, {
-      selections: [
-        "gid://shopify/Collection/425845817661",
-        "gid://shopify/Collection/425290039613",
-      ],
+    const { user } = await createUserWithShift({ tag: Tag.all_day });
+    await ProductServiceUpdate(product._id, {
+      users: [{ userId: user._id, tag: Tag.end_of_week }],
     });
 
-    let collections = await CollectionServiceGetAll();
-    expect(collections.length).toEqual(2);
-    await CollectionServiceDestroy({ id: collections[0]._id });
-    collections = await CollectionServiceGetAll();
-    expect(collections.length).toEqual(1);
+    const product2 = await createProduct({ productId: 123 });
+    await CollectionServiceAddProduct(
+      collection.collectionId,
+      product2.productId
+    );
+
+    const collections = await CollectionServiceGetAll();
+    expect(collections[0].products.length).toBe(2);
+
+    const productUsers = collections[0].products.find(
+      (p) => p.productId === 321
+    );
+
+    expect(productUsers?.users.length).toBe(1);
   });
 });

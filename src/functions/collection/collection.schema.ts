@@ -11,10 +11,22 @@ export const CollectionMongooseSchema = new mongoose.Schema<
   ICollectionDocument,
   ICollectionModel
 >({
+  hidden: {
+    default: false,
+    type: Boolean,
+  },
   collectionId: {
     index: true,
     required: true,
     type: Number,
   },
+  productIds: [
+    {
+      index: true,
+      required: true,
+      type: Number,
+    },
+  ],
+  imageUrl: String,
   title: String,
 });
