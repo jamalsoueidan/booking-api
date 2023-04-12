@@ -53,34 +53,30 @@ components:
       $ref: "./paths/auth/schemas/receive-password-request.yaml"
 
     # user
+    User:
+      $ref: "./paths/user/_types/user.yaml"
     UserCreateBody:
       $ref: "./paths/user/create/body.yaml"
-    UserCreate:
-      $ref: "./paths/user/create/payload.yaml"
     UserCreateResponse:
       $ref: "./paths/user/create/response.yaml"
     UserCreateApiBody:
       $ref: "./paths/user/create-api/body.yaml"
-    UserCreateApi:
-      $ref: "./paths/user/create-api/payload.yaml"
     UserCreateResponseApi:
       $ref: "./paths/user/create-api/response.yaml"
-    UserGetAll:
-      $ref: "./paths/user/get-all/payload.yaml"
     UserGetAllResponse:
       $ref: "./paths/user/get-all/response.yaml"
-    UserGetById:
-      $ref: "./paths/user/get-by-id/payload.yaml"
     UserGetByIdResponse:
       $ref: "./paths/user/get-by-id/response.yaml"
     UserUpdateBody:
       $ref: "./paths/user/update/body.yaml"
-    UserUpdate:
-      $ref: "./paths/user/update/payload.yaml"
     UserUpdateResponse:
       $ref: "./paths/user/update/response.yaml"
 
     # shift
+    ShiftDay:
+      $ref: "./paths/shift/_types/day.yaml"
+    ShiftTag:
+      $ref: "./paths/shift/_types/tag.yaml"
     ShiftCreateBody:
       $ref: "./paths/shift/create/body.yaml"
     ShiftCreate:

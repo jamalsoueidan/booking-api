@@ -1,5 +1,7 @@
 type: object
 properties:
+  _id:
+    type: string
   active:
     type: boolean
     default: true
@@ -29,6 +31,7 @@ properties:
     type: string
     default: Europe/Copenhagen
 required:
+  - _id
   - fullname
   - email
   - phone

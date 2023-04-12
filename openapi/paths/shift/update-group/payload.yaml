@@ -10,26 +10,11 @@ properties:
   start:
     type: string
     format: date-time
-  tag:
-    type: string
-    enum:
-      - "weekday"
-      - "weekend"
-      - "all_day"
-      - "end_of_week"
-      - "start_of_week"
-      - "middle_of_week"
   day:
-    type: array
-    items:
-      type: string
-      enum:
-        - "monday"
-        - "tuesday"
-        - "wednesday"
-        - "thursday"
-        - "friday"
-        - "saturday"
+    $ref: "../_types/day.yaml"
+  tag:
+    $ref: "../_types/tag.yaml"
+
 required:
   - _id
   - end
