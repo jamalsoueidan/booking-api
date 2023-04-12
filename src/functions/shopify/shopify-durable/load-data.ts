@@ -16,10 +16,10 @@ const runTask: OrchestrationHandler = function* (
   return outputs;
 };
 
-df.app.orchestration("shopifySetup", runTask);
+df.app.orchestration("shopify-load-data", runTask);
 df.app.activity("load-collections", { handler: ShopifyServiceLoadCollections });
 
-export const ShopifyDurableloadData: HttpHandler = async (
+export const ShopifyDurableLoadData: HttpHandler = async (
   request: HttpRequest,
   context: InvocationContext
 ): Promise<HttpResponse> => {
