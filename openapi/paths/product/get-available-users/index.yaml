@@ -1,7 +1,7 @@
 parameters:
   - name: group
     in: query
-    description: The field filter by user group, this is automatically set when user is admin.
+    description: Filter products by a specific user group. Only 'owner' role can use this parameter.
     required: false
     schema:
       type: string

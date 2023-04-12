@@ -1,13 +1,10 @@
 import { SessionKey, _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
-import {
-  ProductServiceGetById,
-  ProductServiceGetByIdProps,
-} from "../product.service";
+import { ProductServiceGetById } from "../product.service";
 import { Product } from "../product.types";
 
 export type ProductControllerGetByIdRequest = {
-  query: ProductServiceGetByIdProps;
+  query: { group?: string; id: string };
 };
 
 export type ProductControllerGetByIdResponse = Product;

@@ -1,0 +1,26 @@
+parameters:
+  - name: group
+    in: query
+    description: The field filter by user group, only show collections that have products that contains this specific user group
+    required: false
+    schema:
+      type: string
+get:
+  tags:
+    - Collection
+  operationId: collectionGetAll
+  summary: GET All collections
+  description: This endpoint gets all collection
+  responses:
+    "200":
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+  security:
+    - BearerAuth: []

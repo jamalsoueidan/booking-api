@@ -29,7 +29,8 @@ export const ProductServiceGetAll = async ({
 
 export type ProductServiceGetByIdProps = {
   group?: string;
-  id: string;
+  id?: string;
+  productId?: number;
 };
 
 export type ProductServiceGetByIdReturn = ProductServiceGetAllProduct;
@@ -37,11 +38,13 @@ export type ProductServiceGetByIdReturn = ProductServiceGetAllProduct;
 export const ProductServiceGetById = async ({
   id,
   group,
+  productId,
 }: ProductServiceGetByIdProps) => {
   // if group is
   if (!group) {
     const product = await ProductModel.findOne({
-      _id: new mongoose.Types.ObjectId(id),
+      ...(id ? { _id: new mongoose.Types.ObjectId(id) } : null),
+      ...(productId ? { productId } : null),
       "users.0": { $exists: false }, // if product contains zero staff, then just return the product, no need for aggreation
     });
 
@@ -51,7 +54,13 @@ export const ProductServiceGetById = async ({
   }
 
   const pipeline = createProductPipeline(group);
-  pipeline.unshift({ $match: { _id: new mongoose.Types.ObjectId(id) } });
+  if (id) {
+    pipeline.unshift({ $match: { _id: new mongoose.Types.ObjectId(id) } });
+  }
+  if (productId) {
+    pipeline.unshift({ $match: { productId } });
+  }
+
   const products = await ProductModel.aggregate<ProductServiceGetByIdReturn>(
     pipeline
   );

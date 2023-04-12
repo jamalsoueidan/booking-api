@@ -28,11 +28,6 @@ export const ProductMongooseSchema = new Schema<
     default: 0,
     type: Number,
   },
-  collectionId: {
-    index: true,
-    required: true,
-    type: Number,
-  },
   duration: {
     default: 60,
     type: Number,

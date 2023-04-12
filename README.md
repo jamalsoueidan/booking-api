@@ -61,5 +61,8 @@ pm.environment.set("bearerToken", token);
 
 ## Todo
 
-openapi to use-query
+Openapi to use-query:
 https://xata.io/blog/openapi-typesafe-react-query-hooks
+
+Google pub/sub setup with shopify:
+https://www.youtube.com/watch?v=m9MQyRWnMdU&ab_channel=ShopifyDevs

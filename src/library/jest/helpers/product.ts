@@ -14,5 +14,6 @@ export const createProduct = ({
     duration,
     productId,
     title: faker.company.name(),
+    users: [],
   });
 };

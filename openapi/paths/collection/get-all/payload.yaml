@@ -1,0 +1,25 @@
+type: object
+properties:
+  _id:
+    type: string
+  title:
+    type: string
+  collectionId:
+    type: number
+    uniqueItems: true
+  hidden:
+    type: boolean
+    default: false
+  items:
+    type: number
+  products:
+    type: array
+    items:
+      $ref: "./product.yaml"
+required:
+  - fullname
+  - email
+  - phone
+  - postal
+  - position
+  - avatar

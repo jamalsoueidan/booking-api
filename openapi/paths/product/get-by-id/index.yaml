@@ -1,4 +1,11 @@
 get:
+  parameters:
+    - name: group
+      in: query
+      description: Filter products by a specific user group. Only 'owner' role can use this parameter.
+      required: false
+      schema:
+        type: string
   tags:
     - Product
   operationId: getProduct
