@@ -14,6 +14,9 @@ jest.mock("./get-collections", () => ({
       },
     },
   ]),
+}));
+
+jest.mock("./get-products", () => ({
   ShopifyServiceGetProducts: jest.fn().mockResolvedValue([
     {
       id: "gid://shopify/Product/8022089171218",
