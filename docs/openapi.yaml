@@ -739,8 +739,6 @@ components:
       properties:
         _id:
           type: string
-        collectionId:
-          type: integer
         hidden:
           type: boolean
         imageUrl:
@@ -968,8 +966,6 @@ components:
       properties:
         _id:
           type: string
-        collectionId:
-          type: integer
         hidden:
           type: boolean
         imageUrl:
@@ -1036,6 +1032,105 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/ProductGetById'
+    CollectionGetAll:
+      type: object
+      properties:
+        _id:
+          type: string
+        title:
+          type: string
+        collectionId:
+          type: number
+          uniqueItems: true
+        hidden:
+          type: boolean
+          default: false
+        items:
+          type: number
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionGetAllProduct'
+      required:
+        - fullname
+        - email
+        - phone
+        - postal
+        - position
+        - avatar
+    CollectionGetAllUser:
+      type: object
+      properties:
+        userId:
+          type: string
+        tag:
+          type: string
+        fullname:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        avatar:
+          type: string
+        position:
+          type: string
+        postal:
+          type: integer
+      required:
+        - userId
+        - tag
+        - fullname
+        - email
+        - phone
+        - avatar
+        - position
+        - postal
+    CollectionGetAllProduct:
+      type: object
+      properties:
+        _id:
+          type: string
+        hidden:
+          type: boolean
+        imageUrl:
+          type: string
+        productId:
+          type: integer
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionGetAllUser'
+        title:
+          type: string
+        active:
+          type: boolean
+          default: true
+        buffertime:
+          type: integer
+        duration:
+          type: integer
+      required:
+        - _id
+        - collectionId
+        - hidden
+        - imageUrl
+        - productId
+        - users
+        - title
+        - active
+        - buffertime
+        - duration
+    CollectionGetAllResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionGetAll'
 paths:
   /auth/login:
     post:
@@ -1216,6 +1311,13 @@ paths:
         schema:
           type: string
     get:
+      parameters:
+        - name: group
+          in: query
+          description: Filter users by a specific group. Only 'owner' role can use this parameter.
+          required: false
+          schema:
+            type: string
       tags:
         - User
       operationId: getUser
@@ -1695,7 +1797,7 @@ paths:
     parameters:
       - name: group
         in: query
-        description: 'The field filter by user group, this is automatically set when user is admin.'
+        description: Filter products by a specific user group. Only 'owner' role can use this parameter.
         required: false
         schema:
           type: string
@@ -1765,6 +1867,13 @@ paths:
             - owner
             - admin
     get:
+      parameters:
+        - name: group
+          in: query
+          description: Filter products by a specific user group. Only 'owner' role can use this parameter.
+          required: false
+          schema:
+            type: string
       tags:
         - Product
       operationId: getProduct
@@ -1785,6 +1894,33 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
+      security:
+        - BearerAuth: []
+  /collections:
+    parameters:
+      - name: group
+        in: query
+        description: 'The field filter by user group, only show collections that have products that contains this specific user group'
+        required: false
+        schema:
+          type: string
+    get:
+      tags:
+        - Collection
+      operationId: collectionGetAll
+      summary: GET All collections
+      description: This endpoint gets all collection
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionGetAllResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth: []
 tags:
