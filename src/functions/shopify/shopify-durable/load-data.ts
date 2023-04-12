@@ -6,7 +6,13 @@ import {
 } from "@azure/functions";
 import * as df from "durable-functions";
 import { OrchestrationContext, OrchestrationHandler } from "durable-functions";
+import { connect } from "~/library/mongoose";
 import { ShopifyServiceLoadCollections } from "../shopify-service/load-collections";
+
+const loadCollections = async () => {
+  await connect();
+  return ShopifyServiceLoadCollections;
+};
 
 const runTask: OrchestrationHandler = function* (
   context: OrchestrationContext
@@ -17,7 +23,7 @@ const runTask: OrchestrationHandler = function* (
 };
 
 df.app.orchestration("shopify-load-data", runTask);
-df.app.activity("load-collections", { handler: ShopifyServiceLoadCollections });
+df.app.activity("load-collections", { handler: loadCollections });
 
 export const ShopifyDurableLoadData: HttpHandler = async (
   request: HttpRequest,

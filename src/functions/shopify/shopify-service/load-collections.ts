@@ -2,13 +2,11 @@ import { ShopifyServiceGetCollections } from "./get-collections";
 import { ShopifyServiceGetProducts } from "./get-products";
 
 import { ProductModel } from "~/functions/product";
-import { connect } from "~/library/mongoose";
 import { ShopifyHelperGetId } from "../shopify-helper";
 import { ShopifyProduct } from "./get-products";
 import { ShopifyServiceInsertCollections } from "./insert-collections";
 
 export const ShopifyServiceLoadCollections = async () => {
-  await connect();
   const collections = await ShopifyServiceGetCollections();
 
   for (const collection of collections) {

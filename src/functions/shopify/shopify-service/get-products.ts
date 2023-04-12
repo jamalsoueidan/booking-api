@@ -42,6 +42,11 @@ export const ShopifyServiceGetProducts = async (
   const response = await request<
     ShopifyServiceGetProducts,
     { gidCollectionId: string }
-  >(process.env["ShopifyApiUrl"] || "", query, { gidCollectionId }, headers);
+  >(
+    process.env["ShopifyApiUrl"] || "https://myshopify.com/graphql.json",
+    query,
+    { gidCollectionId },
+    headers
+  );
   return response.collection?.products?.nodes;
 };
