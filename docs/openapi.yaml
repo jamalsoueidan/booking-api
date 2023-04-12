@@ -13,6 +13,7 @@ info:
         - User
         - Shift
         - Product
+        - Shopify
 servers:
   - url: 'https://booking-shopify-api.azurewebsites.net/api'
 components:
@@ -1131,6 +1132,55 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CollectionGetAll'
+    ShopifyLoadData:
+      type: object
+      properties:
+        id:
+          type: string
+        purgeHistoryDeleteUri:
+          type: string
+          description: The URI used to delete the object's history.
+        restartPostUri:
+          type: string
+          description: The URI used to restart the object.
+        resumePostUri:
+          type: string
+          description: The URI used to resume the object.
+        rewindPostUri:
+          type: string
+          description: The URI used to rewind the object.
+        sendEventPostUri:
+          type: string
+          description: The URI used to send an event to the object.
+        statusQueryGetUri:
+          type: string
+          description: The URI used to query the object's status (use this!)
+        suspendPostUri:
+          type: string
+          description: The URI used to suspend the object.
+        terminatePostUri:
+          type: string
+          description: The URI used to terminate the object.
+      required:
+        - id
+        - purgeHistoryDeleteUri
+        - restartPostUri
+        - resumePostUri
+        - rewindPostUri
+        - sendEventPostUri
+        - statusQueryGetUri
+        - suspendPostUri
+        - terminatePostUri
+    ShopifyLoadDataResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopifyLoadData'
 paths:
   /auth/login:
     post:
@@ -1923,6 +1973,26 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth: []
+  /shopify/load-data:
+    get:
+      tags:
+        - Shopify
+      operationId: shopifyLoadData
+      summary: GET Load Shopify Data
+      description: This endpoint load all shopify collections and products
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopifyLoadDataResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security:
+        - BearerAuth: []
 tags:
   - name: Auth
     description: Login and reset password
@@ -1934,3 +2004,5 @@ tags:
     description: Manage shifts for user.
   - name: Product
     description: Manage products
+  - name: Shopify
+    description: Shopify api
