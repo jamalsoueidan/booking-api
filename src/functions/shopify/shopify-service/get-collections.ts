@@ -6,6 +6,7 @@ export type ShopifyCollection = {
   image?: {
     url: string;
   };
+  productIds: Array<number>; // added extra
 };
 
 export type ShopifyServiceGetCollections = {

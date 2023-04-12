@@ -21,6 +21,7 @@
     "@types/jsonwebtoken": "^9.0.1",
     "bcryptjs": "^2.4.3",
     "date-fns": "^2.29.3",
+    "durable-functions": "^3.0.0-alpha.4",
     "generate-password": "^1.7.0",
     "graphql-request": "^5.2.0",
     "jsonwebtoken": "^9.0.0",

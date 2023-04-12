@@ -14,6 +14,7 @@ describe("ShopifyServiceInsertCollections", () => {
             image: {
               url: "https://cdn.shopify.com/s/files/1/0682/4060/5458/collections/433297_medium_zoom-4b.jpg?v=1670173558",
             },
+            productIds: [],
           },
           {
             id: "gid://shopify/Collection/428546654482",
@@ -21,6 +22,7 @@ describe("ShopifyServiceInsertCollections", () => {
             image: {
               url: "https://cdn.shopify.com/s/files/1/0682/4060/5458/collections/Balayage.webp?v=1670173633",
             },
+            productIds: [],
           },
         ],
       },

@@ -1,2 +1,2 @@
-export * from "./shopify-service/get-collections";
-export * from "./shopify-service/get-products";
+export * from "./shopify-durable";
+export * from "./shopify-service";

@@ -15,6 +15,7 @@ export const ShopifyServiceInsertCollections = async (
           collectionId: ShopifyHelperGetId(c.id),
           title: c.title,
           image: c.image?.url,
+          productIds: c.productIds,
         },
       },
       upsert: true,
