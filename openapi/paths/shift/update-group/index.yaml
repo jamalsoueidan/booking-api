@@ -1,7 +1,7 @@
 put:
   tags:
     - Shift
-  operationId: shifyUpdateGroup
+  operationId: shiftUpdateGroup
   summary: PUT Update shift group
   description: This endpoint update shift group
   requestBody:

@@ -1,5 +1,7 @@
 type: object
 properties:
+  _id:
+    type: string
   end:
     type: string
     format: date-time

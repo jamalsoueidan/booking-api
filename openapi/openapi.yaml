@@ -101,6 +101,14 @@ components:
       $ref: "./paths/shift/get-all-shifts/response.yaml"
     ShiftGetGroupResponse:
       $ref: "./paths/shift/get-group/response.yaml"
+    ShiftUpdateBody:
+      $ref: "./paths/shift/update/body.yaml"
+    ShiftUpdateResponse:
+      $ref: "./paths/shift/update/response.yaml"
+    ShiftUpdateGroupBody:
+      $ref: "./paths/shift/update-group/body.yaml"
+    ShiftUpdateGroupResponse:
+      $ref: "./paths/shift/update-group/response.yaml"
 
     # product
     ProductGetAll:
