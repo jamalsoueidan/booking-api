@@ -53,44 +53,40 @@ components:
       $ref: "./paths/auth/schemas/receive-password-request.yaml"
 
     # user
+    User:
+      $ref: "./paths/user/_types/user.yaml"
     UserCreateBody:
       $ref: "./paths/user/create/body.yaml"
-    UserCreate:
-      $ref: "./paths/user/create/payload.yaml"
     UserCreateResponse:
       $ref: "./paths/user/create/response.yaml"
     UserCreateApiBody:
       $ref: "./paths/user/create-api/body.yaml"
-    UserCreateApi:
-      $ref: "./paths/user/create-api/payload.yaml"
     UserCreateResponseApi:
       $ref: "./paths/user/create-api/response.yaml"
-    UserGetAll:
-      $ref: "./paths/user/get-all/payload.yaml"
     UserGetAllResponse:
       $ref: "./paths/user/get-all/response.yaml"
-    UserGetById:
-      $ref: "./paths/user/get-by-id/payload.yaml"
     UserGetByIdResponse:
       $ref: "./paths/user/get-by-id/response.yaml"
     UserUpdateBody:
       $ref: "./paths/user/update/body.yaml"
-    UserUpdate:
-      $ref: "./paths/user/update/payload.yaml"
     UserUpdateResponse:
       $ref: "./paths/user/update/response.yaml"
 
     # shift
+    Shift:
+      $ref: "./paths/shift/_types/shift.yaml"
+    ShiftGroup:
+      $ref: "./paths/shift/_types/shift-group.yaml"
+    ShiftDay:
+      $ref: "./paths/shift/_types/day.yaml"
+    ShiftTag:
+      $ref: "./paths/shift/_types/tag.yaml"
     ShiftCreateBody:
       $ref: "./paths/shift/create/body.yaml"
-    ShiftCreate:
-      $ref: "./paths/shift/create/payload.yaml"
     ShiftCreateResponse:
       $ref: "./paths/shift/create/response.yaml"
     ShiftCreateGroupBody:
       $ref: "./paths/shift/create-group/body.yaml"
-    ShiftCreateGroup:
-      $ref: "./paths/shift/create-group/payload.yaml"
     ShiftCreateGroupResponse:
       $ref: "./paths/shift/create-group/response.yaml"
     ShiftDestroy:
@@ -101,14 +97,18 @@ components:
       $ref: "./paths/shift/destroy-group/payload.yaml"
     ShiftDestroyGroupResponse:
       $ref: "./paths/shift/destroy-group/response.yaml"
-    ShiftGetAll:
-      $ref: "./paths/shift/get-all-shifts/payload.yaml"
     ShiftGetAllResponse:
       $ref: "./paths/shift/get-all-shifts/response.yaml"
-    ShiftGetGroup:
-      $ref: "./paths/shift/get-group/payload.yaml"
     ShiftGetGroupResponse:
       $ref: "./paths/shift/get-group/response.yaml"
+    ShiftUpdateBody:
+      $ref: "./paths/shift/update/body.yaml"
+    ShiftUpdateResponse:
+      $ref: "./paths/shift/update/response.yaml"
+    ShiftUpdateGroupBody:
+      $ref: "./paths/shift/update-group/body.yaml"
+    ShiftUpdateGroupResponse:
+      $ref: "./paths/shift/update-group/response.yaml"
 
     # product
     ProductGetAll:

@@ -6,4 +6,4 @@ properties:
   payload:
     type: array
     items:
-      $ref: "./payload.yaml"
+      $ref: "../_types/user.yaml"

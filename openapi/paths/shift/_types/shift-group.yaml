@@ -1,5 +1,7 @@
 type: object
 properties:
+  _id:
+    type: string
   end:
     type: string
     format: date-time
@@ -11,17 +13,14 @@ properties:
     type: string
     format: date-time
   tag:
-    type: string
-    enum:
-      - "weekday"
-      - "weekend"
-      - "all_day"
-      - "end_of_week"
-      - "start_of_week"
-      - "middle_of_week"
+    $ref: "../_types/tag.yaml"
+  day:
+    $ref: "../_types/day.yaml"
 required:
   - _id
   - end
+  - groupId
   - userId
   - start
   - tag
+  - day

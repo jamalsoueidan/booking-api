@@ -22,5 +22,5 @@ jobs:
       - name: Install dependencies and run bundle openapi
         run: |
           npm ci
-          npm run bundle-openapi
-          npm run validate-openapi
+          npm run bundle
+          npm run validate
