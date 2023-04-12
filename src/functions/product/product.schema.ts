@@ -41,6 +41,7 @@ export const ProductMongooseSchema = new Schema<
   productId: {
     index: true,
     required: true,
+    unique: true,
     type: Number,
   },
   users: [

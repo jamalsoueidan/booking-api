@@ -6,6 +6,7 @@ export type ShopifyCollection = {
   image?: {
     url: string;
   };
+  productIds: Array<number>; // added extra
 };
 
 export type ShopifyServiceGetCollections = {
@@ -34,7 +35,7 @@ const headers = {
 
 export const ShopifyServiceGetCollections = async () => {
   const response = await request<ShopifyServiceGetCollections>(
-    process.env["ShopifyApiUrl"] || "",
+    process.env["ShopifyApiUrl"] || "https://myshopify.com/graphql.json",
     query,
     undefined,
     headers

@@ -1,0 +1,19 @@
+get:
+  tags:
+    - Shopify
+  operationId: shopifyLoadData
+  summary: GET Load Shopify Data
+  description: This endpoint load all shopify collections and products
+  responses:
+    "200":
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+  security:
+    - BearerAuth: []

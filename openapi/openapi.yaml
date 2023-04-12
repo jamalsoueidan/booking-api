@@ -13,6 +13,7 @@ info:
         - User
         - Shift
         - Product
+        - Shopify
 servers:
   - url: https://booking-shopify-api.azurewebsites.net/api
 components:
@@ -145,6 +146,11 @@ components:
     CollectionGetAllResponse:
       $ref: "./paths/collection/get-all/response.yaml"
 
+    # Shopify
+    ShopifyLoadData:
+      $ref: "./paths/shopify/load-data/payload.yaml"
+    ShopifyLoadDataResponse:
+      $ref: "./paths/shopify/load-data/response.yaml"
 paths:
   # auth
   /auth/login:
@@ -198,6 +204,10 @@ paths:
 
   /collections:
     $ref: "./paths/collection/get-all/index.yaml"
+
+  /shopify/load-data:
+    $ref: "./paths/shopify/load-data/index.yaml"
+
 tags:
   - name: Auth
     description: Login and reset password
@@ -209,3 +219,5 @@ tags:
     description: Manage shifts for user.
   - name: Product
     description: Manage products
+  - name: Shopify
+    description: Shopify api

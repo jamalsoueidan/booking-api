@@ -3,20 +3,22 @@ import { gql, request } from "graphql-request";
 export type ShopifyProduct = {
   id: string;
   title: string;
-  featuredImage: any;
+  featuredImage: {
+    url: string;
+  };
 };
 
 export type ShopifyServiceGetProducts = {
   collection: {
     products: {
-      nodes: Array<ShopifyProduct>;
+      nodes: ShopifyProduct[];
     };
   };
 };
 
 const query = gql`
-  query ($collectionId: ID!) {
-    collection(id: $collectionId) {
+  query ($gidCollectionId: ID!) {
+    collection(id: $gidCollectionId) {
       products(first: 50) {
         nodes {
           id
@@ -35,13 +37,16 @@ const headers = {
 };
 
 export const ShopifyServiceGetProducts = async (
-  collectionId: string
-): Promise<
-  ShopifyServiceGetProducts["collection"]["products"]["nodes"] | undefined
-> => {
+  gidCollectionId: string
+): Promise<ShopifyProduct[]> => {
   const response = await request<
     ShopifyServiceGetProducts,
-    { collectionId: string }
-  >(process.env["ShopifyApiUrl"] || "", query, { collectionId }, headers);
+    { gidCollectionId: string }
+  >(
+    process.env["ShopifyApiUrl"] || "https://myshopify.com/graphql.json",
+    query,
+    { gidCollectionId },
+    headers
+  );
   return response.collection?.products?.nodes;
 };

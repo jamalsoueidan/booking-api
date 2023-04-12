@@ -18,6 +18,7 @@ export const CollectionMongooseSchema = new mongoose.Schema<
   collectionId: {
     index: true,
     required: true,
+    unique: true,
     type: Number,
   },
   productIds: [
