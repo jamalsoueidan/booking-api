@@ -205,7 +205,7 @@ paths:
   /collections:
     $ref: "./paths/collection/get-all/index.yaml"
 
-  /orchestrators/shopify-load-data:
+  /shopify/load-data:
     $ref: "./paths/shopify/load-data/index.yaml"
 
 tags:

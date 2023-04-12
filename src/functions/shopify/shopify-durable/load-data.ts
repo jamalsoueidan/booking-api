@@ -22,7 +22,7 @@ const runTask: OrchestrationHandler = function* (
   return outputs;
 };
 
-df.app.orchestration("shopify-load-data", runTask);
+df.app.orchestration("load-data", runTask);
 df.app.activity("load-collections", { handler: loadCollections });
 
 export const ShopifyDurableLoadData: HttpHandler = async (
@@ -32,10 +32,9 @@ export const ShopifyDurableLoadData: HttpHandler = async (
   const client = df.getClient(context);
   const body: unknown = await request.text();
   console.log(request.params.orchestratorName);
-  const instanceId: string = await client.startNew(
-    request.params.orchestratorName,
-    { input: body }
-  );
+  const instanceId: string = await client.startNew(request.params.name, {
+    input: body,
+  });
 
   context.log(`Started orchestration with ID = '${instanceId}'.`);
 

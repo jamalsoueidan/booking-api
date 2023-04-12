@@ -3,7 +3,7 @@ import * as df from "durable-functions";
 import { ShopifyDurableLoadData } from "./shopify";
 
 app.http("shopify", {
-  route: "orchestrators/{orchestratorName}",
+  route: "shopify/{name}",
   extraInputs: [df.input.durableClient()],
   handler: ShopifyDurableLoadData,
 });
