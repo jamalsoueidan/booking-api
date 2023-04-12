@@ -135,6 +135,16 @@ components:
     ProductGetByIdResponse:
       $ref: "./paths/product/get-by-id/response.yaml"
 
+    # Collection
+    CollectionGetAll:
+      $ref: "./paths/collection/get-all/payload.yaml"
+    CollectionGetAllUser:
+      $ref: "./paths/collection/get-all/user.yaml"
+    CollectionGetAllProduct:
+      $ref: "./paths/collection/get-all/product.yaml"
+    CollectionGetAllResponse:
+      $ref: "./paths/collection/get-all/response.yaml"
+
 paths:
   # auth
   /auth/login:
@@ -186,6 +196,8 @@ paths:
   /products/{id}:
     $ref: "./paths/product/product.yaml"
 
+  /collections:
+    $ref: "./paths/collection/get-all/index.yaml"
 tags:
   - name: Auth
     description: Login and reset password

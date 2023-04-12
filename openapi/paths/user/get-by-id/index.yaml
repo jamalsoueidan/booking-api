@@ -1,4 +1,11 @@
 get:
+  parameters:
+    - name: group
+      in: query
+      description: Filter users by a specific group. Only 'owner' role can use this parameter.
+      required: false
+      schema:
+        type: string
   tags:
     - User
   operationId: getUser
