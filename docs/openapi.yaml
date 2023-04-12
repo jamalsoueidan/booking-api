@@ -132,9 +132,11 @@ components:
           description: The phone number associated with the password
       required:
         - phone
-    UserCreateBody:
+    User:
       type: object
       properties:
+        _id:
+          type: string
         active:
           type: boolean
           default: true
@@ -164,13 +166,14 @@ components:
           type: string
           default: Europe/Copenhagen
       required:
+        - _id
         - fullname
         - email
         - phone
         - postal
         - position
         - avatar
-    UserCreate:
+    UserCreateBody:
       type: object
       properties:
         active:
@@ -215,46 +218,8 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/UserCreate'
+          $ref: '#/components/schemas/User'
     UserCreateApiBody:
-      type: object
-      properties:
-        active:
-          type: boolean
-          default: true
-        address:
-          type: string
-        avatar:
-          type: string
-        email:
-          type: string
-          uniqueItems: true
-        fullname:
-          type: string
-        group:
-          type: string
-          default: all
-        language:
-          type: string
-          default: da
-        phone:
-          type: string
-          uniqueItems: true
-        position:
-          type: string
-        postal:
-          type: integer
-        timeZone:
-          type: string
-          default: Europe/Copenhagen
-      required:
-        - fullname
-        - email
-        - phone
-        - postal
-        - position
-        - avatar
-    UserCreateApi:
       type: object
       properties:
         active:
@@ -299,47 +264,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/UserCreateApi'
-    UserGetAll:
-      type: object
-      properties:
-        _id:
-          type: string
-        active:
-          type: boolean
-          default: true
-        address:
-          type: string
-        avatar:
-          type: string
-        email:
-          type: string
-          uniqueItems: true
-        fullname:
-          type: string
-        group:
-          type: string
-          default: all
-        language:
-          type: string
-          default: da
-        phone:
-          type: string
-          uniqueItems: true
-        position:
-          type: string
-        postal:
-          type: integer
-        timeZone:
-          type: string
-          default: Europe/Copenhagen
-      required:
-        - fullname
-        - email
-        - phone
-        - postal
-        - position
-        - avatar
+          $ref: '#/components/schemas/User'
     UserGetAllResponse:
       type: object
       properties:
@@ -349,47 +274,7 @@ components:
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/UserGetAll'
-    UserGetById:
-      type: object
-      properties:
-        _id:
-          type: string
-        active:
-          type: boolean
-          default: true
-        address:
-          type: string
-        avatar:
-          type: string
-        email:
-          type: string
-          uniqueItems: true
-        fullname:
-          type: string
-        group:
-          type: string
-          default: all
-        language:
-          type: string
-          default: da
-        phone:
-          type: string
-          uniqueItems: true
-        position:
-          type: string
-        postal:
-          type: integer
-        timeZone:
-          type: string
-          default: Europe/Copenhagen
-      required:
-        - fullname
-        - email
-        - phone
-        - postal
-        - position
-        - avatar
+            $ref: '#/components/schemas/User'
     UserGetByIdResponse:
       type: object
       properties:
@@ -397,50 +282,10 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/UserGetById'
+          $ref: '#/components/schemas/User'
     UserUpdateBody:
       type: object
       properties:
-        active:
-          type: boolean
-          default: true
-        address:
-          type: string
-        avatar:
-          type: string
-        email:
-          type: string
-          uniqueItems: true
-        fullname:
-          type: string
-        group:
-          type: string
-          default: all
-        language:
-          type: string
-          default: da
-        phone:
-          type: string
-          uniqueItems: true
-        position:
-          type: string
-        postal:
-          type: integer
-        timeZone:
-          type: string
-          default: Europe/Copenhagen
-      required:
-        - fullname
-        - email
-        - phone
-        - postal
-        - position
-        - avatar
-    UserUpdate:
-      type: object
-      properties:
-        _id:
-          type: string
         active:
           type: boolean
           default: true
@@ -483,31 +328,8 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/UserUpdate'
-    ShiftCreateBody:
-      type: object
-      properties:
-        end:
-          type: string
-          format: date-time
-        start:
-          type: string
-          format: date-time
-        tag:
-          type: string
-          enum:
-            - weekday
-            - weekend
-            - all_day
-            - end_of_week
-            - start_of_week
-            - middle_of_week
-      required:
-        - end
-        - userId
-        - start
-        - tag
-    ShiftCreate:
+          $ref: '#/components/schemas/User'
+    Shift:
       type: object
       properties:
         _id:
@@ -521,64 +343,18 @@ components:
           type: string
           format: date-time
         tag:
-          type: string
-          enum:
-            - weekday
-            - weekend
-            - all_day
-            - end_of_week
-            - start_of_week
-            - middle_of_week
+          $ref: '#/components/schemas/ShiftTag'
       required:
         - _id
         - end
         - userId
         - start
         - tag
-    ShiftCreateResponse:
+    ShiftGroup:
       type: object
       properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/ShiftCreate'
-    ShiftCreateGroupBody:
-      type: object
-      properties:
-        end:
+        _id:
           type: string
-          format: date-time
-        start:
-          type: string
-          format: date-time
-        day:
-          type: string
-          enum:
-            - monday
-            - tuesday
-            - wednesday
-            - thursday
-            - friday
-            - saturday
-        tag:
-          type: string
-          enum:
-            - weekday
-            - weekend
-            - all_day
-            - end_of_week
-            - start_of_week
-            - middle_of_week
-      required:
-        - end
-        - userId
-        - start
-        - day
-        - tag
-    ShiftCreateGroup:
-      type: object
-      properties:
         end:
           type: string
           format: date-time
@@ -590,25 +366,9 @@ components:
           type: string
           format: date-time
         tag:
-          type: string
-          enum:
-            - weekday
-            - weekend
-            - all_day
-            - end_of_week
-            - start_of_week
-            - middle_of_week
+          $ref: '#/components/schemas/ShiftTag'
         day:
-          type: array
-          items:
-            type: string
-            enum:
-              - monday
-              - tuesday
-              - wednesday
-              - thursday
-              - friday
-              - saturday
+          $ref: '#/components/schemas/ShiftDay'
       required:
         - _id
         - end
@@ -617,6 +377,71 @@ components:
         - start
         - tag
         - day
+    ShiftDay:
+      type: array
+      items:
+        type: string
+        enum:
+          - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+          - saturday
+      minItems: 1
+      uniqueItems: true
+    ShiftTag:
+      type: string
+      enum:
+        - weekday
+        - weekend
+        - all_day
+        - end_of_week
+        - start_of_week
+        - middle_of_week
+    ShiftCreateBody:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+        tag:
+          $ref: '#/components/schemas/ShiftTag'
+      required:
+        - end
+        - userId
+        - start
+        - tag
+    ShiftCreateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Shift'
+    ShiftCreateGroupBody:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+        day:
+          $ref: '#/components/schemas/ShiftDay'
+        tag:
+          $ref: '#/components/schemas/ShiftTag'
+      required:
+        - end
+        - userId
+        - start
+        - day
+        - tag
     ShiftCreateGroupResponse:
       type: object
       properties:
@@ -624,7 +449,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/ShiftCreateGroup'
+          $ref: '#/components/schemas/ShiftGroup'
     ShiftDestroy:
       type: object
       properties:
@@ -661,34 +486,6 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/ShiftDestroyGroup'
-    ShiftGetAll:
-      type: object
-      properties:
-        _id:
-          type: string
-        end:
-          type: string
-          format: date-time
-        userId:
-          type: string
-        start:
-          type: string
-          format: date-time
-        tag:
-          type: string
-          enum:
-            - weekday
-            - weekend
-            - all_day
-            - end_of_week
-            - start_of_week
-            - middle_of_week
-      required:
-        - _id
-        - end
-        - userId
-        - start
-        - tag
     ShiftGetAllResponse:
       type: object
       properties:
@@ -698,35 +495,7 @@ components:
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/ShiftGetAll'
-    ShiftGetGroup:
-      type: object
-      properties:
-        end:
-          type: string
-          format: date-time
-        groupId:
-          type: string
-        userId:
-          type: string
-        start:
-          type: string
-          format: date-time
-        tag:
-          type: string
-          enum:
-            - weekday
-            - weekend
-            - all_day
-            - end_of_week
-            - start_of_week
-            - middle_of_week
-      required:
-        - _id
-        - end
-        - userId
-        - start
-        - tag
+            $ref: '#/components/schemas/Shift'
     ShiftGetGroupResponse:
       type: object
       properties:
@@ -734,7 +503,58 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/ShiftGetGroup'
+          $ref: '#/components/schemas/ShiftGroup'
+    ShiftUpdateBody:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+        tag:
+          $ref: '#/components/schemas/ShiftTag'
+      required:
+        - end
+        - userId
+        - start
+        - tag
+    ShiftUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Shift'
+    ShiftUpdateGroupBody:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+        day:
+          $ref: '#/components/schemas/ShiftDay'
+        tag:
+          $ref: '#/components/schemas/ShiftTag'
+      required:
+        - end
+        - userId
+        - start
+        - day
+        - tag
+    ShiftUpdateGroupResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/ShiftGroup'
     ProductGetAll:
       type: object
       properties:
@@ -1564,7 +1384,7 @@ paths:
     put:
       tags:
         - Shift
-      operationId: shifyUpdateGroup
+      operationId: shiftUpdateGroup
       summary: PUT Update shift group
       description: This endpoint update shift group
       requestBody:
@@ -1572,90 +1392,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                end:
-                  type: string
-                  format: date-time
-                start:
-                  type: string
-                  format: date-time
-                day:
-                  type: string
-                  enum:
-                    - monday
-                    - tuesday
-                    - wednesday
-                    - thursday
-                    - friday
-                    - saturday
-                tag:
-                  type: string
-                  enum:
-                    - weekday
-                    - weekend
-                    - all_day
-                    - end_of_week
-                    - start_of_week
-                    - middle_of_week
-              required:
-                - end
-                - userId
-                - start
-                - day
-                - tag
+              $ref: '#/components/schemas/ShiftUpdateGroupBody'
       responses:
         '200':
           description: Response with updated model
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  payload:
-                    type: object
-                    properties:
-                      end:
-                        type: string
-                        format: date-time
-                      groupId:
-                        type: string
-                      userId:
-                        type: string
-                      start:
-                        type: string
-                        format: date-time
-                      tag:
-                        type: string
-                        enum:
-                          - weekday
-                          - weekend
-                          - all_day
-                          - end_of_week
-                          - start_of_week
-                          - middle_of_week
-                      day:
-                        type: array
-                        items:
-                          type: string
-                          enum:
-                            - monday
-                            - tuesday
-                            - wednesday
-                            - thursday
-                            - friday
-                            - saturday
-                    required:
-                      - _id
-                      - end
-                      - groupId
-                      - userId
-                      - start
-                      - tag
-                      - day
+                $ref: '#/components/schemas/ShiftUpdateGroupResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -1714,67 +1458,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                end:
-                  type: string
-                  format: date-time
-                start:
-                  type: string
-                  format: date-time
-                tag:
-                  type: string
-                  enum:
-                    - weekday
-                    - weekend
-                    - all_day
-                    - end_of_week
-                    - start_of_week
-                    - middle_of_week
-              required:
-                - end
-                - userId
-                - start
-                - tag
+              $ref: '#/components/schemas/ShiftUpdateBody'
       responses:
         '200':
           description: ''
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  payload:
-                    type: object
-                    properties:
-                      _id:
-                        type: string
-                      end:
-                        type: string
-                        format: date-time
-                      userId:
-                        type: string
-                      start:
-                        type: string
-                        format: date-time
-                      tag:
-                        type: string
-                        enum:
-                          - weekday
-                          - weekend
-                          - all_day
-                          - end_of_week
-                          - start_of_week
-                          - middle_of_week
-                    required:
-                      - _id
-                      - end
-                      - userId
-                      - start
-                      - tag
+                $ref: '#/components/schemas/ShiftUpdateResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
