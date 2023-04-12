@@ -22,7 +22,7 @@ describe("CollectionService", () => {
     context = createContext();
   });
 
-  it("Should be able to get collections with product => users relations", async () => {
+  it("Should be able to get all collections with all product and users relations", async () => {
     const collection = await createCollection();
     const product = await createProduct({ productId: 321 });
     await CollectionServiceAddProduct(

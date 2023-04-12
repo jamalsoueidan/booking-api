@@ -1,9 +1,10 @@
 import {
-  ProductServiceGetByProductId,
-  ProductServiceGetByProductIdReturn,
+  ProductServiceGetAllProduct,
+  ProductServiceGetById,
+  ProductServiceGetByIdReturn,
 } from "../product";
 import { CollectionModel } from "./collection.model";
-import { CollectionServiceGetAllReturn } from "./collection.types";
+import { Collection } from "./collection.types";
 
 export const CollectionServiceAddProduct = async (
   collectionId: number,
@@ -33,15 +34,28 @@ export const CollectionServiceRemoveProduct = async (
   );
 };
 
-export const CollectionServiceGetAll = async () => {
+export type CollectionServiceGetAllProps = {
+  group?: string;
+};
+export interface CollectionServiceGetAllCollection extends Collection {
+  products: ProductServiceGetAllProduct[];
+}
+
+export type CollectionServiceGetAllReturn = CollectionServiceGetAllCollection[];
+
+export const CollectionServiceGetAll = async ({
+  group,
+}: CollectionServiceGetAllProps = {}) => {
   const collections = await CollectionModel.find().lean();
-  const products: ProductServiceGetByProductIdReturn[] = [];
-  const aggregateCollections: CollectionServiceGetAllReturn[] = [];
+  const products: ProductServiceGetByIdReturn[] = [];
+  const aggregateCollections: CollectionServiceGetAllReturn = [];
 
   for (const collection of collections) {
     for (const productId of collection.productIds) {
-      const product = await ProductServiceGetByProductId(productId);
-      products.push(product);
+      const product = await ProductServiceGetById({ productId, group });
+      if (product) {
+        products.push(product);
+      }
     }
     aggregateCollections.push({
       products,

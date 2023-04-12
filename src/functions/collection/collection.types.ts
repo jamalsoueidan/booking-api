@@ -1,5 +1,3 @@
-import { ProductServiceGetAllProduct } from "../product";
-
 export interface Collection {
   _id: string;
   hidden: boolean;
@@ -7,8 +5,4 @@ export interface Collection {
   collectionId: number;
   imageUrl: string;
   productIds: number[];
-}
-
-export interface CollectionServiceGetAllReturn extends Collection {
-  products: ProductServiceGetAllProduct[];
 }
