@@ -1186,7 +1186,7 @@ paths:
     post:
       tags:
         - Auth
-      operationId: login
+      operationId: authLogin
       summary: Logs in a user
       description: This endpoint return to you token for authentication.
       requestBody:
@@ -1211,7 +1211,7 @@ paths:
     post:
       tags:
         - Auth
-      operationId: receivePassword
+      operationId: authReceivePassword
       summary: Receive password
       description: This endpoint receives a password using a phone number provided in the request body.
       requestBody:
@@ -1236,7 +1236,7 @@ paths:
     get:
       tags:
         - My Account
-      operationId: getMyAccount
+      operationId: myAccountGet
       summary: Get my-account data
       description: This endpoint get account data.
       responses:
@@ -1246,12 +1246,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserGetByIdResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth: []
     put:
       tags:
         - My Account
-      operationId: updateMyAccount
+      operationId: myAccountUpdate
       summary: Update my-account data
       description: This endpoint update account
       requestBody:
@@ -1279,7 +1281,7 @@ paths:
     get:
       tags:
         - User
-      operationId: usersGetAll
+      operationId: userGetAll
       summary: GET All users
       description: 'This endpoint gets all users, in case you are logged in as admin or user, only same group'
       responses:
@@ -1299,7 +1301,7 @@ paths:
     post:
       tags:
         - User
-      operationId: createUserApi
+      operationId: userCreateByApi
       summary: 'POST Create user [api]'
       description: 'This endpoint is special and should be used to create new user with api key, and not logged in user.'
       requestBody:
@@ -1326,7 +1328,7 @@ paths:
     post:
       tags:
         - User
-      operationId: createUser
+      operationId: userCreate
       summary: POST Create user
       description: This endpoint create new user with api key
       requestBody:
@@ -1370,7 +1372,7 @@ paths:
             type: string
       tags:
         - User
-      operationId: getUser
+      operationId: userGetById
       summary: GET Get user
       description: This endpoint gets user object
       responses:
@@ -1393,7 +1395,7 @@ paths:
     put:
       tags:
         - User
-      operationId: updateUser
+      operationId: userUpdateById
       summary: PUT Update user
       description: This endpoint update user
       requestBody:
@@ -1430,7 +1432,7 @@ paths:
     post:
       tags:
         - Shift
-      operationId: createShiftGroup
+      operationId: shiftCreateGroup
       summary: POST Create shift group
       description: This endpoint create new shift group
       requestBody:
@@ -1467,7 +1469,7 @@ paths:
     get:
       tags:
         - Shift
-      operationId: getAllShifts
+      operationId: shiftGetAll
       summary: GET Get all shifts
       description: This endpoint get all shifts
       responses:
@@ -1496,7 +1498,7 @@ paths:
     post:
       tags:
         - Shift
-      operationId: createShift
+      operationId: shiftCreate
       summary: POST Create shift
       description: This endpoint create new shift
       requestBody:
@@ -1539,7 +1541,7 @@ paths:
     get:
       tags:
         - Shift
-      operationId: getShiftGroup
+      operationId: shiftGetGroup
       summary: GET Get shift group
       description: This endpoint get shift group by id
       responses:
@@ -1562,7 +1564,7 @@ paths:
     put:
       tags:
         - Shift
-      operationId: updateShiftGroup
+      operationId: shifyUpdateGroup
       summary: PUT Update shift group
       description: This endpoint update shift group
       requestBody:
@@ -1667,7 +1669,7 @@ paths:
     delete:
       tags:
         - Shift
-      operationId: destroyShiftGroup
+      operationId: shiftDestroyGroup
       summary: DEL Delete shift group
       description: This endpoint delete shift group
       responses:
@@ -1704,7 +1706,7 @@ paths:
     put:
       tags:
         - Shift
-      operationId: updateShift
+      operationId: shiftUpdate
       summary: PUT Update shift
       description: This endpoint update shift
       requestBody:
@@ -1786,7 +1788,7 @@ paths:
     delete:
       tags:
         - Shift
-      operationId: destroyShift
+      operationId: shiftDestroy
       summary: DEL Delete shift
       description: This endpoint delete shift
       responses:
@@ -1823,7 +1825,7 @@ paths:
     get:
       tags:
         - Product
-      operationId: getAllProducts
+      operationId: productGetAll
       summary: GET Get all products
       description: This endpoint get all products
       responses:
@@ -1854,7 +1856,7 @@ paths:
     get:
       tags:
         - Product
-      operationId: getAllAvailableUsers
+      operationId: productGetAvailableUsers
       summary: GET Get all available users
       description: This endpoint get all available users
       responses:
@@ -1887,7 +1889,7 @@ paths:
     put:
       tags:
         - Product
-      operationId: updateProduct
+      operationId: productUpdateById
       summary: PUT Update product
       description: This endpoint update product
       requestBody:
@@ -1926,7 +1928,7 @@ paths:
             type: string
       tags:
         - Product
-      operationId: getProduct
+      operationId: productGetById
       summary: GET Get product
       description: This endpoint gets product object
       responses:
