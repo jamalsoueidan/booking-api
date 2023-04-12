@@ -8,7 +8,7 @@ get:
         type: string
   tags:
     - Product
-  operationId: getProduct
+  operationId: productGetById
   summary: GET Get product
   description: This endpoint gets product object
   responses:

@@ -8,7 +8,7 @@ parameters:
 get:
   tags:
     - Product
-  operationId: getAllAvailableUsers
+  operationId: productGetAvailableUsers
   summary: GET Get all available users
   description: This endpoint get all available users
   responses:

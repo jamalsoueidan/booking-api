@@ -1,7 +1,7 @@
 post:
   tags:
     - User
-  operationId: createUserApi
+  operationId: userCreateByApi
   summary: POST Create user [api]
   description: This endpoint is special and should be used to create new user with api key, and not logged in user.
   requestBody:

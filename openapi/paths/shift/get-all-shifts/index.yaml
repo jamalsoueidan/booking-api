@@ -8,7 +8,7 @@ parameters:
 get:
   tags:
     - Shift
-  operationId: getAllShifts
+  operationId: shiftGetAll
   summary: GET Get all shifts
   description: This endpoint get all shifts
   responses:

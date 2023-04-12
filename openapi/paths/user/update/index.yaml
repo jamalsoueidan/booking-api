@@ -1,7 +1,7 @@
 put:
   tags:
     - User
-  operationId: updateUser
+  operationId: userUpdateById
   summary: PUT Update user
   description: This endpoint update user
   requestBody:
