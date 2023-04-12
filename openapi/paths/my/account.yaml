@@ -1,7 +1,7 @@
 get:
   tags:
     - My Account
-  operationId: getMyAccount
+  operationId: myAccountGet
   summary: Get my-account data
   description: This endpoint get account data.
   responses:
@@ -11,13 +11,15 @@ get:
         application/json:
           schema:
             $ref: "../user/get-by-id/response.yaml"
+    "403":
+      $ref: "../../responses/forbidden.yaml"
   security:
     - BearerAuth: []
 
 put:
   tags:
     - My Account
-  operationId: updateMyAccount
+  operationId: myAccountUpdate
   summary: Update my-account data
   description: This endpoint update account
   requestBody:

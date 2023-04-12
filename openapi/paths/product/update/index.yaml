@@ -1,7 +1,7 @@
 put:
   tags:
     - Product
-  operationId: updateProduct
+  operationId: productUpdateById
   summary: PUT Update product
   description: This endpoint update product
   requestBody:

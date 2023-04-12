@@ -14,7 +14,7 @@ parameters:
 get:
   tags:
     - Product
-  operationId: getAllProducts
+  operationId: productGetAll
   summary: GET Get all products
   description: This endpoint get all products
   responses:

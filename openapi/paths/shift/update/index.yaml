@@ -1,7 +1,7 @@
 put:
   tags:
     - Shift
-  operationId: updateShift
+  operationId: shiftUpdate
   summary: PUT Update shift
   description: This endpoint update shift
   requestBody:

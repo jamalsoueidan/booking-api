@@ -1,7 +1,7 @@
 post:
   tags:
     - Auth
-  operationId: login
+  operationId: authLogin
   summary: Logs in a user
   description: This endpoint return to you token for authentication.
   requestBody:

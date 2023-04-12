@@ -1,7 +1,7 @@
 delete:
   tags:
     - Shift
-  operationId: destroyShiftGroup
+  operationId: shiftDestroyGroup
   summary: DEL Delete shift group
   description: This endpoint delete shift group
   responses:

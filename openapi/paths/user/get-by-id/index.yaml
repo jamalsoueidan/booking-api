@@ -8,7 +8,7 @@ get:
         type: string
   tags:
     - User
-  operationId: getUser
+  operationId: userGetById
   summary: GET Get user
   description: This endpoint gets user object
   responses:

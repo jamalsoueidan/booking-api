@@ -1,7 +1,7 @@
 get:
   tags:
     - Shift
-  operationId: getShiftGroup
+  operationId: shiftGetGroup
   summary: GET Get shift group
   description: This endpoint get shift group by id
   responses:
