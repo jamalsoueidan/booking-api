@@ -4,4 +4,4 @@ properties:
     type: boolean
     example: true
   payload:
-    $ref: "./payload.yaml"
+    $ref: ../_types/shift.yaml
