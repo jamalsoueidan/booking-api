@@ -14,7 +14,7 @@
     "bundle": "npx swagger-cli bundle openapi/openapi.yaml -t yaml -o docs/openapi.yaml",
     "validate": "npx swagger-cli validate docs/openapi.yaml",
     "generate-docs": "npx @redocly/cli build-docs docs/openapi.yaml -o docs/index.html --title 'Booking Api Documentation'",
-    "generate-ts": "npm run bundle && npx orval"
+    "generate-ts": "npm run bundle && npx orval --config ./orval.config.js"
   },
   "dependencies": {
     "@azure/functions": "^4.0.0-alpha.9",

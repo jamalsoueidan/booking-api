@@ -1,7 +1,5 @@
-import { defineConfig } from "orval";
-
-export default defineConfig({
-  petstore: {
+module.exports = {
+  "booking-api": {
     output: {
       mode: "split",
       schemas: "dist/api/model",
@@ -13,4 +11,4 @@ export default defineConfig({
       target: "./docs/openapi.yaml",
     },
   },
-});
+};
