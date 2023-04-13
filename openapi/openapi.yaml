@@ -15,6 +15,7 @@ info:
         - Product
         - Booking
         - Shopify
+        - Setting
 servers:
   - url: https://booking-shopify-api.azurewebsites.net/api
 components:
@@ -52,6 +53,14 @@ components:
       $ref: "./paths/auth/schemas/receive-password-response.yaml"
     AuthPasswordRequest:
       $ref: "./paths/auth/schemas/receive-password-request.yaml"
+
+    # setting
+    Setting:
+      $ref: "./paths/setting/payload.yaml"
+    SettingBody:
+      $ref: "./paths/setting/body.yaml"
+    SettingResponse:
+      $ref: "./paths/setting/response.yaml"
 
     # user
     User:
@@ -186,9 +195,13 @@ paths:
   /auth/receive-password:
     $ref: "./paths/auth/receive-password.yaml"
 
-  # my account
+  # my-account
   /my-account:
     $ref: "./paths/my/account.yaml"
+
+  # setting
+  /setting:
+    $ref: "./paths/setting/index.yaml"
 
   # user
   /users:
@@ -251,3 +264,5 @@ tags:
     description: Manage products
   - name: Shopify
     description: Shopify api
+  - name: Setting
+    description: Setting Api
