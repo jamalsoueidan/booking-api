@@ -1716,7 +1716,25 @@ paths:
       security:
         - BearerAuth: []
   /shopify/search-customers:
-    $ref: '#/paths/~1shopify~1load-data'
+    get:
+      tags:
+        - Shopify
+      operationId: shopifySearchCustomers
+      summary: GET Search Shopify Customers
+      description: This endpoint can search in shopify customers
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopifySearchCustomersResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security:
+        - BearerAuth: []
 tags:
   - name: Auth
     description: Login and reset password
