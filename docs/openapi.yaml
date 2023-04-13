@@ -13,6 +13,7 @@ info:
         - User
         - Shift
         - Product
+        - Booking
         - Shopify
 servers:
   - url: 'https://booking-shopify-api.azurewebsites.net/api'
@@ -853,6 +854,272 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/ProductGetById'
+    BookingGetAll:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: A valid ObjectId
+        productId:
+          type: integer
+        orderId:
+          type: integer
+        lineItemId:
+          type: integer
+        lineItemTotal:
+          type: integer
+        customerId:
+          type: integer
+        userId:
+          type: string
+          description: A valid ObjectId
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+        anyAvailable:
+          type: boolean
+        fulfillmentStatus:
+          type: string
+          enum:
+            - cancelled
+            - refunded
+            - fulfilled
+            - booked
+            - default
+        title:
+          type: string
+        timeZone:
+          type: string
+        isEdit:
+          type: boolean
+        isSelfBooked:
+          type: boolean
+        customer:
+          $ref: '#/components/schemas/BookingGetAllCustomer'
+        product:
+          $ref: '#/components/schemas/BookingGetAllProduct'
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+        - _id
+        - productId
+        - orderId
+        - lineItemId
+        - lineItemTotal
+        - customerId
+        - userId
+        - end
+        - start
+        - fulfillmentStatus
+        - title
+        - timeZone
+        - customer
+        - product
+        - user
+    BookingGetAllCustomer:
+      type: object
+      properties:
+        _id:
+          type: string
+        customerId:
+          type: integer
+          format: int32
+        firstName:
+          type: string
+        lastName:
+          type: string
+        fullname:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+      required:
+        - _id
+        - customerId
+        - firstName
+        - lastName
+        - fullname
+        - email
+        - phone
+    BookingGetAllProduct:
+      type: object
+      properties:
+        _id:
+          type: string
+        hidden:
+          type: boolean
+        imageUrl:
+          type: string
+        productId:
+          type: integer
+        userId:
+          type: string
+        title:
+          type: string
+        active:
+          type: boolean
+          default: true
+        buffertime:
+          type: integer
+        duration:
+          type: integer
+      required:
+        - _id
+        - collectionId
+        - hidden
+        - imageUrl
+        - productId
+        - userId
+        - title
+        - active
+        - buffertime
+        - duration
+    BookingGetAllResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingGetAll'
+    BookingGetByIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Booking'
+    Booking:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: A valid ObjectId
+        productId:
+          type: integer
+        orderId:
+          type: integer
+        lineItemId:
+          type: integer
+        lineItemTotal:
+          type: integer
+        customerId:
+          type: integer
+        userId:
+          type: string
+          description: A valid ObjectId
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+        anyAvailable:
+          type: boolean
+        fulfillmentStatus:
+          type: string
+          enum:
+            - cancelled
+            - refunded
+            - fulfilled
+            - booked
+            - default
+        title:
+          type: string
+        timeZone:
+          type: string
+        isEdit:
+          type: boolean
+        isSelfBooked:
+          type: boolean
+      required:
+        - _id
+        - productId
+        - orderId
+        - lineItemId
+        - lineItemTotal
+        - customerId
+        - userId
+        - end
+        - start
+        - fulfillmentStatus
+        - title
+        - timeZone
+    BookingCreateBody:
+      type: object
+      properties:
+        productId:
+          type: integer
+        customerId:
+          type: integer
+        userId:
+          type: string
+          description: A valid ObjectId
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+        title:
+          type: string
+      required:
+        - _id
+        - productId
+        - customerId
+        - userId
+        - end
+        - start
+        - title
+    BookingCreateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Booking'
+    BookingUpdateBody:
+      type: object
+      properties:
+        productId:
+          type: integer
+        customerId:
+          type: integer
+        userId:
+          type: string
+          description: A valid ObjectId
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+        title:
+          type: string
+      required:
+        - _id
+        - productId
+        - customerId
+        - userId
+        - end
+        - start
+        - title
+    BookingUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Booking'
     CollectionGetAll:
       type: object
       properties:
@@ -1642,7 +1909,7 @@ paths:
       parameters:
         - name: group
           in: query
-          description: Filter products by a specific user group. Only 'owner' role can use this parameter.
+          description: Filter products by a specific user group. (Only 'owner' role can use this parameter)
           required: false
           schema:
             type: string
@@ -1695,6 +1962,160 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth: []
+  /bookings:
+    parameters:
+      - name: start
+        in: query
+        description: This field filter by start date
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: end
+        in: query
+        description: This field filter by end date
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: userId
+        in: query
+        description: This field filter by userId(s). (Only 'owner' role can set this parameter)
+        required: false
+        schema:
+          oneOf:
+            - type: string
+              description: A valid ObjectId
+            - type: array
+              items:
+                type: string
+                description: A valid ObjectId
+    get:
+      tags:
+        - Booking
+      operationId: bookingGetAll
+      summary: GET Get all bookings
+      description: This endpoint get all bookings
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingGetAllResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security:
+        - BearerAuth: []
+  /booking:
+    post:
+      tags:
+        - Booking
+      operationId: bookingCreate
+      summary: POST Create booking
+      description: This endpoint create new booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingCreateBody'
+      responses:
+        '200':
+          description: Response with booking model
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingCreateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security:
+        - BearerAuth: []
+  '/booking/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: The ID of the booking
+        required: true
+        schema:
+          type: string
+    get:
+      parameters:
+        - name: userId
+          in: query
+          description: This field filter by userId(s). (Only 'owner' role can set this parameter)
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                description: A valid ObjectId
+              - type: array
+                items:
+                  type: string
+                  description: A valid ObjectId
+      tags:
+        - Booking
+      operationId: bookingGetById
+      summary: GET Get user
+      description: This endpoint gets user object
+      responses:
+        '200':
+          description: Response with payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingGetByIdResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security:
+        - BearerAuth: []
+    put:
+      tags:
+        - Booking
+      operationId: bookingUpdateById
+      summary: PUT Update user
+      description: This endpoint update user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingUpdateBody'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingUpdateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security:
+        - BearerAuth:
+            - owner
+            - admin
   /shopify/load-data:
     get:
       tags:
@@ -1744,6 +2165,8 @@ tags:
     description: Manage users..
   - name: Shift
     description: Manage shifts for user.
+  - name: Booking
+    description: Manage bookings
   - name: Product
     description: Manage products
   - name: Shopify
