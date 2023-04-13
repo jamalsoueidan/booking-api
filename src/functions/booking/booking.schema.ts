@@ -1,7 +1,7 @@
 import { Document, Model, Schema, Types } from "mongoose";
-import { BaseBooking, BookingFulfillmentStatus } from "./booking.types";
+import { Booking, BookingFulfillmentStatus } from "./booking.types";
 
-export interface IBooking extends Omit<BaseBooking, "_id" | "userId"> {
+export interface IBooking extends Omit<Booking, "_id" | "userId"> {
   userId: Types.ObjectId;
 }
 
