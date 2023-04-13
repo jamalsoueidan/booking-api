@@ -2,7 +2,6 @@ import { HttpRequest, InvocationContext } from "@azure/functions";
 import { faker } from "@faker-js/faker";
 import { addHours } from "date-fns";
 import { AuthRole } from "~/functions/auth";
-import { Tag } from "~/functions/shift";
 import {
   HttpErrorResponse,
   HttpSuccessResponse,
@@ -28,8 +27,6 @@ const productId = parseInt(faker.random.numeric(10), 10);
 describe("BookingControllerCreate", () => {
   let context: InvocationContext;
   let request: HttpRequest;
-
-  const tag = Tag.all_day;
 
   beforeEach(async () => {
     context = createContext();

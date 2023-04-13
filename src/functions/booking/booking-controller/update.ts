@@ -1,9 +1,13 @@
 import { z } from "zod";
 import { UserServiceGetUserIdsbyGroup } from "~/functions/user";
 import { ForbiddenError, SessionKey, _ } from "~/library/handler";
+import { objectIdIsValid } from "~/library/handler/validate";
 import { jwtVerify } from "~/library/jwt";
 import { ResolveReturnType } from "~/types";
-import { BookingServiceUpdate } from "../booking.service";
+import {
+  BookingServiceGetUserId,
+  BookingServiceUpdate,
+} from "../booking.service";
 import { BookingZodSchema } from "../booking.types";
 
 export type BookingControllerUpdateRequest = {
@@ -17,8 +21,9 @@ export const BookingControllerUpdateQuerySchema = BookingZodSchema.pick({
 
 export const BookingControllerUpdateBodySchema = BookingZodSchema.pick({
   end: true,
-  userId: true,
   start: true,
+}).extend({
+  userId: objectIdIsValid("userId").optional(),
 });
 
 export type BookingControllerUpdateResponse = ResolveReturnType<
@@ -33,21 +38,39 @@ export const BookingControllerUpdate = _(
     session,
   }: SessionKey<BookingControllerUpdateRequest>) => {
     if (!session.isOwner) {
-      const { userId } = body;
-
+      const booking = await BookingServiceGetUserId(query._id);
       if (session.isUser) {
-        if (body.userId !== session.userId) {
+        if (booking?.userId.toString() !== session.userId) {
           throw new ForbiddenError(
-            "not allowed to update another user booking"
+            "not allowed to update booking for other users"
           );
         }
-      } else if (session.isAdmin) {
+      }
+
+      if (session.isAdmin) {
+        const { userId } = body;
         const userIds = await UserServiceGetUserIdsbyGroup({
           group: session.group,
         });
-        const notFound = !userIds.find((id) => id === userId);
-        if (notFound) {
-          throw new ForbiddenError("cant update booking in another group");
+
+        const currentBookingBelongsSameGroup = userIds.includes(
+          booking?.userId.toString() || ""
+        );
+
+        if (!currentBookingBelongsSameGroup) {
+          throw new ForbiddenError(
+            "not allowed to update booking outside your group"
+          );
+        }
+
+        const updateBookingBelongsSameGroup = userIds.includes(
+          userId?.toString() || ""
+        );
+
+        if (!updateBookingBelongsSameGroup) {
+          throw new ForbiddenError(
+            "can't update booking for user another group"
+          );
         }
       }
     }
