@@ -1,5 +1,8 @@
 import { request } from "graphql-request";
-import { ShopifyServiceGetCollections } from "./get-collections";
+import {
+  ShopifyServiceGetCollections,
+  ShopifyServiceGetCollectionsResponse,
+} from "./get-collections";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -7,7 +10,7 @@ jest.mock("graphql-request");
 
 describe("ShopifyServiceGetCollections", () => {
   it("fetches products from the Shopify API", async () => {
-    const mockData: ShopifyServiceGetCollections = {
+    const mockData: ShopifyServiceGetCollectionsResponse = {
       collections: {
         nodes: [
           {

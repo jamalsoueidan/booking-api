@@ -1,0 +1,12 @@
+import mongoose from "mongoose";
+import {
+  CustomerMongooseSchema,
+  ICustomerDocument,
+  ICustomerModel,
+} from "./customer.schema";
+
+export const CustomerModel = mongoose.model<ICustomerDocument, ICustomerModel>(
+  "customer",
+  CustomerMongooseSchema,
+  "Customer"
+);

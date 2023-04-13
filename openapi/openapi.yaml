@@ -151,6 +151,11 @@ components:
       $ref: "./paths/shopify/load-data/payload.yaml"
     ShopifyLoadDataResponse:
       $ref: "./paths/shopify/load-data/response.yaml"
+    ShopifySearchCustomers:
+      $ref: "./paths/shopify/search-customers/payload.yaml"
+    ShopifySearchCustomersResponse:
+      $ref: "./paths/shopify/search-customers/response.yaml"
+
 paths:
   # auth
   /auth/login:
@@ -205,7 +210,10 @@ paths:
   /collections:
     $ref: "./paths/collection/get-all/index.yaml"
 
+  # shopify
   /shopify/load-data:
+    $ref: "./paths/shopify/load-data/index.yaml"
+  /shopify/search-customers:
     $ref: "./paths/shopify/load-data/index.yaml"
 
 tags:

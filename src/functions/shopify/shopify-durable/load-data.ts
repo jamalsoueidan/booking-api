@@ -11,7 +11,7 @@ import { ShopifyServiceLoadCollections } from "../shopify-service/load-collectio
 
 const loadCollections = async () => {
   await connect();
-  return ShopifyServiceLoadCollections;
+  return ShopifyServiceLoadCollections();
 };
 
 const runTask: OrchestrationHandler = function* (
@@ -31,8 +31,7 @@ export const ShopifyDurableLoadData: HttpHandler = async (
 ): Promise<HttpResponse> => {
   const client = df.getClient(context);
   const body: unknown = await request.text();
-  console.log(request.params.orchestratorName);
-  const instanceId: string = await client.startNew(request.params.name, {
+  const instanceId: string = await client.startNew("load-data", {
     input: body,
   });
 

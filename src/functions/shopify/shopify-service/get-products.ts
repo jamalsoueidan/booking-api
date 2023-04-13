@@ -8,7 +8,7 @@ export type ShopifyProduct = {
   };
 };
 
-export type ShopifyServiceGetProducts = {
+export type ShopifyServiceGetProductsResponse = {
   collection: {
     products: {
       nodes: ShopifyProduct[];
@@ -40,13 +40,8 @@ export const ShopifyServiceGetProducts = async (
   gidCollectionId: string
 ): Promise<ShopifyProduct[]> => {
   const response = await request<
-    ShopifyServiceGetProducts,
+    ShopifyServiceGetProductsResponse,
     { gidCollectionId: string }
-  >(
-    process.env["ShopifyApiUrl"] || "https://myshopify.com/graphql.json",
-    query,
-    { gidCollectionId },
-    headers
-  );
+  >(process.env["ShopifyApiUrl"] || "", query, { gidCollectionId }, headers);
   return response.collection?.products?.nodes;
 };

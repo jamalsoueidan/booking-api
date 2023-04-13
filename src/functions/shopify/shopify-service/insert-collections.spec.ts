@@ -1,11 +1,11 @@
-import { ShopifyServiceGetCollections } from "./get-collections";
+import { ShopifyServiceGetCollectionsResponse } from "./get-collections";
 import { ShopifyServiceInsertCollections } from "./insert-collections";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("ShopifyServiceInsertCollections", () => {
   it("fetches products from the Shopify API", async () => {
-    const mockData: ShopifyServiceGetCollections = {
+    const mockData: ShopifyServiceGetCollectionsResponse = {
       collections: {
         nodes: [
           {

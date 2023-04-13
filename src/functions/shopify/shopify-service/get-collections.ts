@@ -9,7 +9,7 @@ export type ShopifyCollection = {
   productIds: Array<number>; // added extra
 };
 
-export type ShopifyServiceGetCollections = {
+export type ShopifyServiceGetCollectionsResponse = {
   collections: {
     nodes: Array<ShopifyCollection>;
   };
@@ -34,11 +34,11 @@ const headers = {
 };
 
 export const ShopifyServiceGetCollections = async () => {
-  const response = await request<ShopifyServiceGetCollections>(
-    process.env["ShopifyApiUrl"] || "https://myshopify.com/graphql.json",
+  const response = await request<ShopifyServiceGetCollectionsResponse>(
+    process.env["ShopifyApiUrl"] || "",
     query,
     undefined,
     headers
   );
-  return response.collections?.nodes;
+  return response?.collections?.nodes;
 };
