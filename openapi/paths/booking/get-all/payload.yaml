@@ -1,0 +1,64 @@
+type: object
+properties:
+  _id:
+    type: string
+    description: A valid ObjectId
+  productId:
+    type: integer
+  orderId:
+    type: integer
+  lineItemId:
+    type: integer
+  lineItemTotal:
+    type: integer
+  customerId:
+    type: integer
+  userId:
+    type: string
+    description: A valid ObjectId
+  end:
+    type: string
+    format: date-time
+  start:
+    type: string
+    format: date-time
+  anyAvailable:
+    type: boolean
+  fulfillmentStatus:
+    type: string
+    enum:
+      - cancelled
+      - refunded
+      - fulfilled
+      - booked
+      - default
+  title:
+    type: string
+  timeZone:
+    type: string
+  isEdit:
+    type: boolean
+  isSelfBooked:
+    type: boolean
+  customer:
+    $ref: "./customer.yaml"
+  product:
+    $ref: "./product.yaml"
+  user:
+    $ref: "../../user/_types/user.yaml"
+required:
+  - _id
+  - productId
+  - orderId
+  - lineItemId
+  - lineItemTotal
+  - customerId
+  - userId
+  - end
+  - start
+  - fulfillmentStatus
+  - title
+  - timeZone
+  - customer
+  - product
+  - user

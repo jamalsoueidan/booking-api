@@ -1,24 +1,23 @@
-get:
-  parameters:
-    - name: group
-      in: query
-      description: Filter products by a specific user group. (Only 'owner' role can use this parameter)
-      required: false
-      schema:
-        type: string
+post:
   tags:
-    - Product
-  operationId: productGetById
-  summary: GET Get product
-  description: This endpoint gets product object
+    - Booking
+  operationId: bookingCreate
+  summary: POST Create booking
+  description: This endpoint create new booking
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./body.yaml"
+
   responses:
     "200":
-      description: Response
+      description: Response with booking model
       content:
         application/json:
           schema:
             $ref: "./response.yaml"
-
     "400":
       $ref: "../../../responses/bad.yaml"
     "401":
@@ -27,5 +26,6 @@ get:
       $ref: "../../../responses/forbidden.yaml"
     "404":
       $ref: "../../../responses/not-found.yaml"
+
   security:
     - BearerAuth: []

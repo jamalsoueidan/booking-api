@@ -1,0 +1,51 @@
+parameters:
+  - name: start
+    in: query
+    description: This field filter by start date
+    required: true
+    schema:
+      type: string
+      format: date-time
+  - name: end
+    in: query
+    description: This field filter by end date
+    required: true
+    schema:
+      type: string
+      format: date-time
+  - name: userId
+    in: query
+    description: This field filter by userId(s). (Only 'owner' role can set this parameter)
+    required: false
+    schema:
+      oneOf:
+        - type: string
+          description: A valid ObjectId
+        - type: array
+          items:
+            type: string
+            description: A valid ObjectId
+get:
+  tags:
+    - Booking
+  operationId: bookingGetAll
+  summary: GET Get all bookings
+  description: This endpoint get all bookings
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../responses/not-found.yaml"
+
+  security:
+    - BearerAuth: []

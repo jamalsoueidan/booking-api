@@ -1,0 +1,25 @@
+type: object
+properties:
+  _id:
+    type: string
+  customerId:
+    type: integer
+    format: int32
+  firstName:
+    type: string
+  lastName:
+    type: string
+  fullname:
+    type: string
+  email:
+    type: string
+  phone:
+    type: string
+required:
+  - _id
+  - customerId
+  - firstName
+  - lastName
+  - fullname
+  - email
+  - phone

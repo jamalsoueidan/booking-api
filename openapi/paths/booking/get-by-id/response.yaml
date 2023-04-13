@@ -1,0 +1,7 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  payload:
+    $ref: "../_types/booking.yaml"

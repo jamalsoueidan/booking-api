@@ -13,6 +13,7 @@ info:
         - User
         - Shift
         - Product
+        - Booking
         - Shopify
 servers:
   - url: https://booking-shopify-api.azurewebsites.net/api
@@ -136,6 +137,28 @@ components:
     ProductGetByIdResponse:
       $ref: "./paths/product/get-by-id/response.yaml"
 
+    # Booking
+    BookingGetAll:
+      $ref: "./paths/booking/get-all/payload.yaml"
+    BookingGetAllCustomer:
+      $ref: "./paths/booking/get-all/customer.yaml"
+    BookingGetAllProduct:
+      $ref: "./paths/booking/get-all/product.yaml"
+    BookingGetAllResponse:
+      $ref: "./paths/booking/get-all/response.yaml"
+    BookingGetByIdResponse:
+      $ref: "./paths/booking/get-by-id/response.yaml"
+    Booking:
+      $ref: "./paths/booking/_types/booking.yaml"
+    BookingCreateBody:
+      $ref: "./paths/booking/create/body.yaml"
+    BookingCreateResponse:
+      $ref: "./paths/booking/create/response.yaml"
+    BookingUpdateBody:
+      $ref: "./paths/booking/update/body.yaml"
+    BookingUpdateResponse:
+      $ref: "./paths/booking/update/response.yaml"
+
     # Collection
     CollectionGetAll:
       $ref: "./paths/collection/get-all/payload.yaml"
@@ -160,7 +183,6 @@ paths:
   # auth
   /auth/login:
     $ref: "./paths/auth/login.yaml"
-
   /auth/receive-password:
     $ref: "./paths/auth/receive-password.yaml"
 
@@ -171,44 +193,42 @@ paths:
   # user
   /users:
     $ref: "./paths/user/get-all/index.yaml"
-
   /user/create-user-api:
     $ref: "./paths/user/create-api/index.yaml"
-
   /user:
     $ref: "./paths/user/create/index.yaml"
-
   /user/{id}:
     $ref: "./paths/user/user.yaml"
 
   # shift
   /user/{userId}/shift-group:
     $ref: "./paths/shift/create-group/index.yaml"
-
   /user/{userId}/shifts:
     $ref: "./paths/shift/get-all-shifts/index.yaml"
-
   /user/{userId}/shift:
     $ref: "./paths/shift/create/index.yaml"
-
   /user/{userId}/shift-group/{groupId}:
     $ref: "./paths/shift/group.yaml"
-
   /user/{userId}/shift/{id}:
     $ref: "./paths/shift/shift.yaml"
 
   # product
   /products:
     $ref: "./paths/product/get-all/index.yaml"
-
   /products/get-available-users:
     $ref: "./paths/product/get-available-users/index.yaml"
-
   /products/{id}:
     $ref: "./paths/product/product.yaml"
-
   /collections:
     $ref: "./paths/collection/get-all/index.yaml"
+
+  # booking
+  /bookings:
+    $ref: "./paths/booking/get-all/index.yaml"
+  /booking:
+    $ref: "./paths/booking/create/index.yaml"
+  /booking/{id}:
+    $ref: "./paths/booking/booking.yaml"
 
   # shopify
   /shopify/load-data:
@@ -225,6 +245,8 @@ tags:
     description: Manage users..
   - name: Shift
     description: Manage shifts for user.
+  - name: Booking
+    description: Manage bookings
   - name: Product
     description: Manage products
   - name: Shopify
