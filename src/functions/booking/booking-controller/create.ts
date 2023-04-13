@@ -2,6 +2,7 @@ import { z } from "zod";
 import { UserServiceGetUserIdsbyGroup } from "~/functions/user";
 import { ForbiddenError, SessionKey, _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
+import { ResolveReturnType } from "~/types";
 import { BookingServiceCreate } from "../booking.service";
 import { BookingZodSchema } from "./../booking.types";
 
@@ -17,8 +18,8 @@ export const BookingControllerCreateZodSchema = BookingZodSchema.pick({
   start: true,
 });
 
-export type BookingControllerCreateResponse = ReturnType<
-  typeof BookingControllerCreate
+export type BookingControllerCreateResponse = ResolveReturnType<
+  typeof BookingServiceCreate
 >;
 
 export const BookingControllerCreate = _(
