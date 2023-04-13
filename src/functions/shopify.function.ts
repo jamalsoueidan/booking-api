@@ -1,9 +1,7 @@
 import { app } from "@azure/functions";
 import * as df from "durable-functions";
-import {
-  ShopifyControllerSearchCustomers,
-  ShopifyDurableLoadData,
-} from "./shopify";
+import { ShopifyControllerSearchCustomers } from "./shopify";
+import { ShopifyDurableLoadData } from "./shopify/shopify-durable";
 
 app.http("shopifyLoadData", {
   route: "shopify/load-data",
