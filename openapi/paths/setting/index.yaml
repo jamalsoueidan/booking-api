@@ -43,4 +43,5 @@ put:
     "404":
       $ref: "../../responses/not-found.yaml"
   security:
-    - BearerAuth: []
+    - BearerAuth:
+        - owner
