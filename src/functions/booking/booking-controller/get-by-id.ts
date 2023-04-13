@@ -3,6 +3,7 @@ import { UserServiceGetUserIdsbyGroup } from "~/functions/user";
 import { NotFoundError, SessionKey, _ } from "~/library/handler";
 import { objectIdIsValid } from "~/library/handler/validate";
 import { jwtVerify } from "~/library/jwt";
+import { ResolveReturnType } from "~/types";
 import { BookingServiceGetById } from "../booking.service";
 import { BookingZodSchema } from "../booking.types";
 
@@ -18,7 +19,7 @@ export const BookingControllerGetByIdQuerySchema = BookingZodSchema.pick({
     .optional(),
 });
 
-export type BookingControllerGetByIdResponse = ReturnType<
+export type BookingControllerGetByIdResponse = ResolveReturnType<
   typeof BookingServiceGetById
 >;
 

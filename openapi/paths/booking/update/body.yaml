@@ -1,0 +1,26 @@
+type: object
+properties:
+  productId:
+    type: integer
+  customerId:
+    type: integer
+  userId:
+    type: string
+    description: A valid ObjectId
+  end:
+    type: string
+    format: date-time
+  start:
+    type: string
+    format: date-time
+  title:
+    type: string
+
+required:
+  - _id
+  - productId
+  - customerId
+  - userId
+  - end
+  - start
+  - title

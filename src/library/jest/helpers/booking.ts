@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { setHours } from "date-fns";
 import { BookingModel } from "~/functions/booking";
 import { createCustomer } from "./customer";
-import { createUser } from "./user";
+import { DEFAULT_GROUP, createUser } from "./user";
 
 type CreateStaffWithBookingProps = {
   productId: number;
@@ -11,7 +11,7 @@ type CreateStaffWithBookingProps = {
 
 export const createUserWithBooking = async ({
   productId,
-  group = "all",
+  group = DEFAULT_GROUP,
 }: CreateStaffWithBookingProps) => {
   const user = await createUser({ group });
 

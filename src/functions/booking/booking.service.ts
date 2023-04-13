@@ -43,8 +43,8 @@ export const BookingServiceCreate = async (body: BookingServiceCreateProps) => {
   return booking;
 };
 
-export const BookingServiceFind = async () => {
-  return BookingModel.find();
+export const BookingServiceGetUserId = async (_id: string) => {
+  return BookingModel.findOne({ _id }, "userId").lean();
 };
 
 type BookingServiceGetAllProps = Pick<Booking, "end" | "start"> & {
@@ -79,17 +79,23 @@ export const BookingServiceGetAll = ({
 
 type BookingServiceUpdateQuery = Pick<Booking, "_id">;
 
-type BookingServiceUpdateBody = Pick<Booking, "start" | "end" | "userId">;
+type BookingServiceUpdateBody = Pick<Booking, "start" | "end"> &
+  Partial<Pick<Booking, "userId">>;
 
 export const BookingServiceUpdate = async (
   query: BookingServiceUpdateQuery,
   body: BookingServiceUpdateBody
 ) => {
   const booking = await BookingModel.findOne(query);
+
   if (!booking) {
-    throw new Error("Not found");
+    throw new NotFoundError("Not found");
   }
-  booking.userId = new mongoose.Types.ObjectId(body.userId);
+
+  if (body.userId) {
+    booking.userId = new mongoose.Types.ObjectId(body.userId);
+  }
+
   booking.start = new Date(body.start);
   booking.end = new Date(body.end);
   booking.isEdit = true;

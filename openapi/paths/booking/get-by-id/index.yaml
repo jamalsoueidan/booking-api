@@ -1,19 +1,25 @@
 get:
   parameters:
-    - name: group
+    - name: userId
       in: query
-      description: Filter products by a specific user group. (Only 'owner' role can use this parameter)
+      description: This field filter by userId(s). (Only 'owner' role can set this parameter)
       required: false
       schema:
-        type: string
+        oneOf:
+          - type: string
+            description: A valid ObjectId
+          - type: array
+            items:
+              type: string
+              description: A valid ObjectId
   tags:
-    - Product
-  operationId: productGetById
-  summary: GET Get product
-  description: This endpoint gets product object
+    - Booking
+  operationId: bookingGetById
+  summary: GET Get user
+  description: This endpoint gets user object
   responses:
     "200":
-      description: Response
+      description: Response with payload
       content:
         application/json:
           schema:
@@ -27,5 +33,6 @@ get:
       $ref: "../../../responses/forbidden.yaml"
     "404":
       $ref: "../../../responses/not-found.yaml"
+
   security:
     - BearerAuth: []

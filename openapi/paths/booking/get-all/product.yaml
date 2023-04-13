@@ -1,0 +1,32 @@
+type: object
+properties:
+  _id:
+    type: string
+  hidden:
+    type: boolean
+  imageUrl:
+    type: string
+  productId:
+    type: integer
+  userId:
+    type: string
+  title:
+    type: string
+  active:
+    type: boolean
+    default: true
+  buffertime:
+    type: integer
+  duration:
+    type: integer
+required:
+  - _id
+  - collectionId
+  - hidden
+  - imageUrl
+  - productId
+  - userId
+  - title
+  - active
+  - buffertime
+  - duration
