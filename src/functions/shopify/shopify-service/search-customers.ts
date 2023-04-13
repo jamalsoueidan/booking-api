@@ -40,7 +40,6 @@ const headers = {
 export const ShopifyServiceSearchCustomers = async (
   props: ShopifyServiceSearchCustomersVariables
 ) => {
-  console.log(props);
   const response = await request<
     ShopifyServiceSearchCustomersResponse,
     ShopifyServiceSearchCustomersVariables

@@ -8,14 +8,7 @@ export interface Customer {
   phone: string;
 }
 
-export interface CustomerQuery
-  extends Pick<Customer, "customerId" | "firstName" | "lastName"> {}
-
 export type CustomerServiceFindAndUpdateProps = {
   customerGraphqlApiId: string;
   customerId: number;
-};
-
-export type CustomerServiceSearchProps = {
-  name: string;
 };
