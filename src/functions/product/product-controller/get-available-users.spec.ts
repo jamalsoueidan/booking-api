@@ -14,10 +14,10 @@ import {
   login,
 } from "~/library/jest/helpers";
 import { ProductServiceUpdate } from "../product.service";
-import { ProductControllerGetAllResponse } from "./get-all";
 import {
   ProductControllerGetAvailableUsers,
   ProductControllerGetAvailableUsersRequest,
+  ProductControllerGetAvailableUsersResponse,
 } from "./get-available-users";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -60,7 +60,7 @@ describe("ProductControllerGetAvailableUsers", () => {
         loginAs: AuthRole.owner,
       });
 
-    const res: HttpSuccessResponse<ProductControllerGetAllResponse> =
+    const res: HttpSuccessResponse<ProductControllerGetAvailableUsersResponse> =
       await ProductControllerGetAvailableUsers(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
@@ -120,7 +120,7 @@ describe("ProductControllerGetAvailableUsers", () => {
         token,
       });
 
-    const res: HttpSuccessResponse<ProductControllerGetAllResponse> =
+    const res: HttpSuccessResponse<ProductControllerGetAvailableUsersResponse> =
       await ProductControllerGetAvailableUsers(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
