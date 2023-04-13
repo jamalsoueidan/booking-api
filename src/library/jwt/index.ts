@@ -1,6 +1,7 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { sign, verify } from "jsonwebtoken";
 import { Auth, AuthRole, AuthSession } from "~/functions/auth/auth.types";
+import { ForbiddenError } from "../handler";
 
 const secretOrPrivateKey = process.env["TokenSecret"] || "k12pke1p2ek12";
 const options = { expiresIn: "1h" };
@@ -29,7 +30,7 @@ export const jwtVerify = async (
 ) => {
   const token = jwtGetToken(request.headers);
   if (!token) {
-    throw new Error("unauthorized");
+    throw new ForbiddenError("unauthorized");
   }
 
   verify(token, secretOrPrivateKey);

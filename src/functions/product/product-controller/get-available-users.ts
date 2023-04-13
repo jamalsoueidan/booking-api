@@ -9,13 +9,13 @@ export type ProductControllerGetAvailableUsersRequest = {
   query: { group?: string };
 };
 
-export type ProductControllerGetAllResponse =
-  Array<ProductServiceGetAvailableUser>;
+export type ProductControllerGetAvailableUsersResponse =
+  ProductServiceGetAvailableUser[];
 
 export const ProductControllerGetAvailableUsers = _(
   jwtVerify,
   onlyAdmin,
-  ({
+  async ({
     query,
     session,
   }: SessionKey<ProductControllerGetAvailableUsersRequest>) => {

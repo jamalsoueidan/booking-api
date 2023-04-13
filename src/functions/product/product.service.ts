@@ -113,7 +113,7 @@ export type ProductServiceGetAvailableUser = User & {
 };
 
 // @description return all user that don't belong yet to the product
-export const ProductServiceGetAvailableUsers = (group?: string) => {
+export const ProductServiceGetAvailableUsers = async (group?: string) => {
   const pipeline: PipelineStage[] = [
     {
       $match: {
