@@ -48,7 +48,7 @@ export const UserServiceGetUserIdsbyGroup = async ({
   group: string;
 }): Promise<Array<string>> => {
   const users = await UserModel.find({ group }, "_id");
-  return users.map(({ _id }) => _id);
+  return users.map(({ _id }) => _id.toString());
 };
 
 type UserServiceGetByIdProps = {

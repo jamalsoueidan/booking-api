@@ -4,7 +4,7 @@ import { SessionKey, _ } from "~/library/handler";
 import { objectIdIsValid } from "~/library/handler/validate";
 import { jwtVerify } from "~/library/jwt";
 import { BookingServiceGetAll } from "../booking.service";
-import { BookingZodSchema } from "../booking.types";
+import { BookingWithLookup, BookingZodSchema } from "../booking.types";
 
 export type BookingControllerGetAllRequest = {
   query: z.infer<typeof BookingControllerGetAllQuerySchema>;
@@ -19,9 +19,7 @@ export const BookingControllerGetAllQuerySchema = BookingZodSchema.pick({
     .optional(),
 });
 
-export type BookingControllerGetAllResponse = ReturnType<
-  typeof BookingServiceGetAll
->;
+export type BookingControllerGetAllResponse = BookingWithLookup[];
 
 export const BookingControllerGetAll = _(
   jwtVerify,
