@@ -1,0 +1,13 @@
+type: object
+properties:
+  language:
+    type: string
+    enum: [en-US, da-DK]
+  timeZone:
+    type: string
+  status:
+    type: boolean
+required:
+  - language
+  - timeZone
+  - status

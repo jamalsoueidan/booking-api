@@ -1,0 +1,46 @@
+get:
+  tags:
+    - Setting
+  operationId: settingGet
+  summary: Get settings
+  description: This endpoint get settings.
+  responses:
+    "200":
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "403":
+      $ref: "../../responses/forbidden.yaml"
+  security:
+    - BearerAuth: []
+
+put:
+  tags:
+    - Setting
+  operationId: settingUpdate
+  summary: Update settings
+  description: This endpoint update setting
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./body.yaml"
+
+  responses:
+    "200":
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "401":
+      $ref: "../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../responses/not-found.yaml"
+  security:
+    - BearerAuth: []

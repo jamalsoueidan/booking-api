@@ -1,0 +1,17 @@
+type: object
+properties:
+  _id:
+    type: string
+  language:
+    type: string
+    enum: [en-US, da-DK]
+  timeZone:
+    type: string
+  status:
+    type: boolean
+required:
+  - _id
+  - shop
+  - language
+  - timeZone
+  - status
