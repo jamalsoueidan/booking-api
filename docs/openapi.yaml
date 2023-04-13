@@ -1001,6 +1001,35 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ShopifyLoadData'
+    ShopifySearchCustomers:
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+      required:
+        - id
+        - firstName
+        - lastName
+        - email
+        - phone
+    ShopifySearchCustomersResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopifySearchCustomers'
 paths:
   /auth/login:
     post:
@@ -1686,6 +1715,8 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth: []
+  /shopify/search-customers:
+    $ref: '#/paths/~1shopify~1load-data'
 tags:
   - name: Auth
     description: Login and reset password
