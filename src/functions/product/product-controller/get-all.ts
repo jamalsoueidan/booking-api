@@ -2,6 +2,7 @@ import { SessionKey, _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 import {
   ProductServiceGetAll,
+  ProductServiceGetAllProduct,
   ProductServiceGetAllProps,
 } from "../product.service";
 
@@ -9,9 +10,7 @@ export type ProductControllerGetAllRequest = {
   query: ProductServiceGetAllProps;
 };
 
-export type ProductControllerGetAllResponse = ReturnType<
-  typeof ProductServiceGetAll
->;
+export type ProductControllerGetAllResponse = ProductServiceGetAllProduct[];
 
 export const ProductControllerGetAll = _(
   jwtVerify,
