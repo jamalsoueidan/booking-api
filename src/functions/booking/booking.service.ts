@@ -1,15 +1,12 @@
 import mongoose from "mongoose";
 import { ProductModel } from "~/functions/product";
+import { NotFoundError } from "~/library/handler";
 import { DateHelpers } from "~/library/helper-date";
 import { BookingModel } from "./booking.model";
 import {
+  Booking,
   BookingServiceCreateProps,
-  BookingServiceGetAllProps,
-  BookingServiceGetAllReturn,
-  BookingServiceGetByIdProps,
-  BookingServiceGetByIdReturn,
-  BookingServiceUpdateBodyProps,
-  BookingServiceUpdateQueryProps,
+  BookingWithLookup,
 } from "./booking.types";
 
 export const BookingServiceCreate = async (body: BookingServiceCreateProps) => {
@@ -17,18 +14,21 @@ export const BookingServiceCreate = async (body: BookingServiceCreateProps) => {
     productId: body.productId,
   }).lean();
 
-  if (product) {
-    const booking = await BookingModel.create({
-      ...body,
-      fulfillmentStatus: "booked",
-      isSelfBooked: true,
-      lineItemId: Date.now() + Math.floor(100000 + Math.random() * 900000),
-      lineItemTotal: 1,
-      orderId: Date.now() + Math.floor(100000 + Math.random() * 900000),
-      title: product.title,
-    });
+  if (!product) {
+    throw new NotFoundError("no product found");
+  }
 
-    /*await NotificationServiceSendBookingConfirmationCustomer({
+  const booking = await BookingModel.create({
+    ...body,
+    fulfillmentStatus: "booked",
+    isSelfBooked: true,
+    lineItemId: Date.now() + Math.floor(100000 + Math.random() * 900000),
+    lineItemTotal: 1,
+    orderId: Date.now() + Math.floor(100000 + Math.random() * 900000),
+    title: product.title,
+  });
+
+  /*await NotificationServiceSendBookingConfirmationCustomer({
       booking,
     });
 
@@ -40,13 +40,15 @@ export const BookingServiceCreate = async (body: BookingServiceCreateProps) => {
       bookings: [booking],
     });*/
 
-    return booking;
-  }
-  throw new Error("no product found");
+  return booking;
 };
 
 export const BookingServiceFind = async () => {
   return BookingModel.find();
+};
+
+type BookingServiceGetAllProps = Pick<Booking, "end" | "start"> & {
+  userId?: string | string[];
 };
 
 export const BookingServiceGetAll = ({
@@ -54,7 +56,7 @@ export const BookingServiceGetAll = ({
   end,
   userId,
 }: BookingServiceGetAllProps) =>
-  BookingModel.aggregate<BookingServiceGetAllReturn>([
+  BookingModel.aggregate<BookingWithLookup>([
     {
       $match: {
         end: {
@@ -75,9 +77,13 @@ export const BookingServiceGetAll = ({
     ...lookup,
   ]);
 
+type BookingServiceUpdateQuery = Pick<Booking, "_id">;
+
+type BookingServiceUpdateBody = Pick<Booking, "start" | "end" | "userId">;
+
 export const BookingServiceUpdate = async (
-  query: BookingServiceUpdateQueryProps,
-  body: BookingServiceUpdateBodyProps
+  query: BookingServiceUpdateQuery,
+  body: BookingServiceUpdateBody
 ) => {
   const booking = await BookingModel.findOne(query);
   if (!booking) {
@@ -113,11 +119,15 @@ export const BookingServiceUpdate = async (
   return booking.save();
 };
 
+export type BookingServiceGetByIdProps = Pick<Booking, "_id"> & {
+  userId?: string | string[];
+};
+
 export const BookingServiceGetById = async ({
   _id,
   userId,
 }: BookingServiceGetByIdProps) => {
-  const bookings = await BookingModel.aggregate<BookingServiceGetByIdReturn>([
+  const bookings = await BookingModel.aggregate<BookingWithLookup>([
     {
       $match: {
         _id: new mongoose.Types.ObjectId(_id),

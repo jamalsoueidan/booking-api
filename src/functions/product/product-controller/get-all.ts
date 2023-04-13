@@ -3,14 +3,15 @@ import { jwtVerify } from "~/library/jwt";
 import {
   ProductServiceGetAll,
   ProductServiceGetAllProps,
-  ProductServiceGetAllReturn,
 } from "../product.service";
 
 export type ProductControllerGetAllRequest = {
   query: ProductServiceGetAllProps;
 };
 
-export type ProductControllerGetAllResponse = ProductServiceGetAllReturn;
+export type ProductControllerGetAllResponse = ReturnType<
+  typeof ProductServiceGetAll
+>;
 
 export const ProductControllerGetAll = _(
   jwtVerify,

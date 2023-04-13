@@ -1,6 +1,8 @@
+import { z } from "zod";
 import { Customer } from "~/functions/customer";
 import { Product } from "~/functions/product";
 import { User } from "~/functions/user";
+import { objectIdIsValid } from "~/library/handler/validate";
 
 export enum BookingFulfillmentStatus {
   CANCELLED = "cancelled",
@@ -10,53 +12,33 @@ export enum BookingFulfillmentStatus {
   DEFAULT = "default",
 }
 
-export type BaseBooking = {
-  _id: string;
-  productId: number;
-  orderId: number;
-  lineItemId: number;
-  lineItemTotal: number;
-  customerId: number;
-  userId: string;
-  end: Date;
-  start: Date;
-  anyAvailable?: boolean;
-  fulfillmentStatus: BookingFulfillmentStatus;
-  title: string;
-  timeZone: string;
-  isEdit?: boolean;
-  isSelfBooked?: boolean;
-};
+export const BookingZodSchema = z.object({
+  _id: objectIdIsValid("_id"),
+  productId: z.number(),
+  orderId: z.number(),
+  lineItemId: z.number(),
+  lineItemTotal: z.number(),
+  customerId: z.number(),
+  userId: objectIdIsValid("userId"),
+  end: z.coerce.date(),
+  start: z.coerce.date(),
+  anyAvailable: z.boolean().optional(),
+  fulfillmentStatus: z.nativeEnum(BookingFulfillmentStatus),
+  title: z.string(),
+  timeZone: z.string(),
+  isEdit: z.boolean().optional(),
+  isSelfBooked: z.boolean().optional(),
+});
 
-export type Booking = BaseBooking & {
+export type Booking = z.infer<typeof BookingZodSchema>;
+
+export type BookingWithLookup = Booking & {
   customer: Customer;
   product: Product;
   user: User;
 };
 
 export type BookingServiceCreateProps = Pick<
-  BaseBooking,
+  Booking,
   "customerId" | "end" | "productId" | "userId" | "start"
 >;
-
-export type BookingServiceGetAllReturn = Booking;
-export type BookingServiceGetAllProps = Pick<BaseBooking, "end" | "start"> & {
-  userId?: string | string[];
-};
-
-export type BookingServiceUpdateQueryProps = Pick<BaseBooking, "_id">;
-
-export type BookingServiceUpdateBodyProps = Pick<
-  BaseBooking,
-  "start" | "end" | "userId"
->;
-
-export interface BookingServiceUpdateProps {
-  query: BookingServiceUpdateQueryProps;
-  body: BookingServiceUpdateBodyProps;
-}
-
-export type BookingServiceGetByIdReturn = Booking;
-export type BookingServiceGetByIdProps = Pick<BaseBooking, "_id"> & {
-  userId?: string | string[];
-};
