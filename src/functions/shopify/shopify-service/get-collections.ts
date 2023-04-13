@@ -40,5 +40,5 @@ export const ShopifyServiceGetCollections = async () => {
     undefined,
     headers
   );
-  return response.collections?.nodes;
+  return response?.collections?.nodes;
 };

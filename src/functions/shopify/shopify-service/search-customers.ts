@@ -8,6 +8,11 @@ export type ShopifyCustomer = {
   phone: string;
 };
 
+export type ShopifyServiceSearchCustomersVariables = {
+  keyword: string;
+  limit?: number;
+};
+
 export type ShopifyServiceSearchCustomersResponse = {
   customers: {
     nodes: Array<ShopifyCustomer>;
@@ -15,8 +20,8 @@ export type ShopifyServiceSearchCustomersResponse = {
 };
 
 const query = gql`
-  query ($name: String!, $limit: Int!) {
-    customers(first: $limit, query: $name) {
+  query ($keyword: String!, $limit: Int!) {
+    customers(first: $limit, query: $keyword) {
       nodes {
         id
         firstName
@@ -33,12 +38,12 @@ const headers = {
 };
 
 export const ShopifyServiceSearchCustomers = async (
-  name: string,
-  limit: number = 5
+  props: ShopifyServiceSearchCustomersVariables
 ) => {
+  console.log(props);
   const response = await request<
     ShopifyServiceSearchCustomersResponse,
-    { name: string; limit: number }
-  >(process.env["ShopifyApiUrl"] || "", query, { name, limit }, headers);
-  return response.customers.nodes;
+    ShopifyServiceSearchCustomersVariables
+  >(process.env["ShopifyApiUrl"] || "", query, { limit: 5, ...props }, headers);
+  return response?.customers?.nodes;
 };

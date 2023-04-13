@@ -1,0 +1,19 @@
+get:
+  tags:
+    - Shopify
+  operationId: shopifySearchCustomers
+  summary: GET Search Shopify Customers
+  description: This endpoint can search in shopify customers
+  responses:
+    "200":
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+  security:
+    - BearerAuth: []

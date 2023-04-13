@@ -1,6 +1,6 @@
 import { CustomerModel } from "./customer.model";
 import { CustomerServiceSearchProps } from "./customer.types";
-
+/*
 export const CustomerServiceFindAndUpdate = async ({
   shop,
   customerGraphqlApiId,
@@ -41,7 +41,7 @@ export const CustomerServiceFindAndUpdate = async ({
     },
     { new: true, upsert: true }
   );
-};
+};*/
 
 export const CustomerServiceSearch = ({ name }: CustomerServiceSearchProps) => {
   const rgx = (pattern: string) => new RegExp(`.*${pattern}.*`);
