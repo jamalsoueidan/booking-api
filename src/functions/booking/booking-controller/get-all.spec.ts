@@ -23,7 +23,7 @@ require("~/library/jest/mongoose/mongodb.jest");
 
 const productId = parseInt(faker.random.numeric(10), 10);
 
-describe("Shopify: booking get all route test", () => {
+describe("BookingControllerGetAll", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 

@@ -3,8 +3,9 @@ import { UserServiceGetUserIdsbyGroup } from "~/functions/user";
 import { SessionKey, _ } from "~/library/handler";
 import { objectIdIsValid } from "~/library/handler/validate";
 import { jwtVerify } from "~/library/jwt";
+import { ResolveReturnType } from "~/types";
 import { BookingServiceGetAll } from "../booking.service";
-import { BookingWithLookup, BookingZodSchema } from "../booking.types";
+import { BookingZodSchema } from "../booking.types";
 
 export type BookingControllerGetAllRequest = {
   query: z.infer<typeof BookingControllerGetAllQuerySchema>;
@@ -19,7 +20,9 @@ export const BookingControllerGetAllQuerySchema = BookingZodSchema.pick({
     .optional(),
 });
 
-export type BookingControllerGetAllResponse = BookingWithLookup[];
+export type BookingControllerGetAllResponse = ResolveReturnType<
+  typeof BookingServiceGetAll
+>;
 
 export const BookingControllerGetAll = _(
   jwtVerify,
