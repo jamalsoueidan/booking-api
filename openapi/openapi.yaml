@@ -214,7 +214,7 @@ paths:
   /shopify/load-data:
     $ref: "./paths/shopify/load-data/index.yaml"
   /shopify/search-customers:
-    $ref: "./paths/shopify/load-data/index.yaml"
+    $ref: "./paths/shopify/search-customers/index.yaml"
 
 tags:
   - name: Auth
