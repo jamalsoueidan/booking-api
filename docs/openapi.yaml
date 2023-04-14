@@ -15,6 +15,7 @@ info:
         - Product
         - Booking
         - Shopify
+        - Setting
 servers:
   - url: 'https://booking-shopify-api.azurewebsites.net/api'
 components:
@@ -133,6 +134,50 @@ components:
           description: The phone number associated with the password
       required:
         - phone
+    Setting:
+      type: object
+      properties:
+        _id:
+          type: string
+        language:
+          type: string
+          enum:
+            - en-US
+            - da-DK
+        timeZone:
+          type: string
+        status:
+          type: boolean
+      required:
+        - _id
+        - shop
+        - language
+        - timeZone
+        - status
+    SettingBody:
+      type: object
+      properties:
+        language:
+          type: string
+          enum:
+            - en-US
+            - da-DK
+        timeZone:
+          type: string
+        status:
+          type: boolean
+      required:
+        - language
+        - timeZone
+        - status
+    SettingResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Setting'
     User:
       type: object
       properties:
@@ -1393,6 +1438,52 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
+  /setting:
+    get:
+      tags:
+        - Setting
+      operationId: settingGet
+      summary: Get settings
+      description: This endpoint get settings.
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security:
+        - BearerAuth: []
+    put:
+      tags:
+        - Setting
+      operationId: settingUpdate
+      summary: Update settings
+      description: This endpoint update setting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingBody'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security:
+        - BearerAuth:
+            - owner
   /users:
     get:
       tags:
@@ -2171,3 +2262,5 @@ tags:
     description: Manage products
   - name: Shopify
     description: Shopify api
+  - name: Setting
+    description: Setting Api
