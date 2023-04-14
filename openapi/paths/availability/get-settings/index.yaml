@@ -1,0 +1,25 @@
+parameters:
+  - name: productId
+    in: path
+    description: This field for productId from shopify
+    required: true
+    schema:
+      type: string
+get:
+  tags:
+    - Availability
+  operationId: availabilityGetSettings
+  summary: GET Get settings
+  description: This endpoint get all settings for product
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../responses/bad.yaml"
+    "404":
+      $ref: "../../../responses/not-found.yaml"
+  security: []

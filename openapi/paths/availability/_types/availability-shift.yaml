@@ -1,0 +1,21 @@
+type: object
+properties:
+  date:
+    type: string
+    format: date
+  start:
+    type: string
+    format: date-time
+  end:
+    type: string
+    format: date-time
+  bufferTime:
+    type: integer
+  duration:
+    type: integer
+  total:
+    type: integer
+  hours:
+    type: array
+    items:
+      $ref: "./availability-hour.yaml"

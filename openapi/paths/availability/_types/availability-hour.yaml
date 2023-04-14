@@ -1,0 +1,10 @@
+type: object
+properties:
+  user:
+    $ref: "../../user/_types/user.yaml"
+  start:
+    type: string
+    format: date-time
+  end:
+    type: string
+    format: date-time
