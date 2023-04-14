@@ -124,6 +124,8 @@ components:
     # Product
     ProductGetAll:
       $ref: "./paths/product/get-all/payload.yaml"
+    ProductGetAllUser:
+      $ref: "./paths/product/get-all/user.yaml"
     ProductGetAllResponse:
       $ref: "./paths/product/get-all/response.yaml"
     ProductGetAvailableUsers:
@@ -132,6 +134,8 @@ components:
       $ref: "./paths/product/get-available-users/response.yaml"
     ProductGetById:
       $ref: "./paths/product/get-by-id/payload.yaml"
+    ProductGetByIdUser:
+      $ref: "./paths/product/get-by-id/user.yaml"
     ProductGetByIdResponse:
       $ref: "./paths/product/get-by-id/response.yaml"
     ProductUpdateBody:
