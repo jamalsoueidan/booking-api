@@ -207,13 +207,59 @@ paths:
   /auth/receive-password:
     $ref: "./paths/auth/receive-password.yaml"
 
+  # Availability
+  /availability/{productId}/get-availability:
+    $ref: paths/availability/get-availability/index.yaml
+  /availability/{productId}/get-settings:
+    $ref: paths/availability/get-settings/index.yaml
+  /availability/{productId}/get-users:
+    $ref: paths/availability/get-users/index.yaml
+
+  # booking
+  /booking:
+    $ref: "./paths/booking/create/index.yaml"
+  /booking/{id}:
+    $ref: "./paths/booking/booking.yaml"
+  /bookings:
+    $ref: "./paths/booking/get-all/index.yaml"
+
+  # collections
+  /collections:
+    $ref: "./paths/collection/get-all/index.yaml"
+
   # my-account
   /my-account:
     $ref: "./paths/my/account.yaml"
 
+  # product
+  /products:
+    $ref: "./paths/product/get-all/index.yaml"
+  /products/get-available-users:
+    $ref: "./paths/product/get-available-users/index.yaml"
+  /products/{id}:
+    $ref: "./paths/product/product.yaml"
+
   # setting
   /setting:
     $ref: "./paths/setting/index.yaml"
+
+  # shopify
+  /shopify/load-data:
+    $ref: "./paths/shopify/load-data/index.yaml"
+  /shopify/search-customers:
+    $ref: "./paths/shopify/search-customers/index.yaml"
+
+  # shift
+  /user/{userId}/shift:
+    $ref: "./paths/shift/create/index.yaml"
+  /user/{userId}/shift-group:
+    $ref: "./paths/shift/create-group/index.yaml"
+  /user/{userId}/shift-group/{groupId}:
+    $ref: "./paths/shift/group.yaml"
+  /user/{userId}/shifts:
+    $ref: "./paths/shift/get-all-shifts/index.yaml"
+  /user/{userId}/shift/{id}:
+    $ref: "./paths/shift/shift.yaml"
 
   # user
   /users:
@@ -225,66 +271,22 @@ paths:
   /user/{id}:
     $ref: "./paths/user/user.yaml"
 
-  # shift
-  /user/{userId}/shift-group:
-    $ref: "./paths/shift/create-group/index.yaml"
-  /user/{userId}/shifts:
-    $ref: "./paths/shift/get-all-shifts/index.yaml"
-  /user/{userId}/shift:
-    $ref: "./paths/shift/create/index.yaml"
-  /user/{userId}/shift-group/{groupId}:
-    $ref: "./paths/shift/group.yaml"
-  /user/{userId}/shift/{id}:
-    $ref: "./paths/shift/shift.yaml"
-
-  # product
-  /products:
-    $ref: "./paths/product/get-all/index.yaml"
-  /products/get-available-users:
-    $ref: "./paths/product/get-available-users/index.yaml"
-  /products/{id}:
-    $ref: "./paths/product/product.yaml"
-  /collections:
-    $ref: "./paths/collection/get-all/index.yaml"
-
-  # booking
-  /bookings:
-    $ref: "./paths/booking/get-all/index.yaml"
-  /booking:
-    $ref: "./paths/booking/create/index.yaml"
-  /booking/{id}:
-    $ref: "./paths/booking/booking.yaml"
-
-  # shopify
-  /shopify/load-data:
-    $ref: "./paths/shopify/load-data/index.yaml"
-  /shopify/search-customers:
-    $ref: "./paths/shopify/search-customers/index.yaml"
-
-  # Availability
-  /availability/{productId}/get-availability:
-    $ref: paths/availability/get-availability/index.yaml
-  /availability/{productId}/get-users:
-    $ref: paths/availability/get-users/index.yaml
-  /availability/{productId}/get-settings:
-    $ref: paths/availability/get-settings/index.yaml
-
 tags:
   - name: Auth
     description: Login and reset password
-  - name: My Account
-    description: Manage logged in user data.
-  - name: User
-    description: Manage users..
-  - name: Shift
-    description: Manage shifts for user.
-  - name: Booking
-    description: Manage bookings
-  - name: Product
-    description: Manage products
-  - name: Shopify
-    description: Shopify api
-  - name: Setting
-    description: Setting Api
   - name: Availability
     description: Public Api for availability
+  - name: Booking
+    description: Manage bookings
+  - name: My Account
+    description: Manage logged in user data.
+  - name: Product
+    description: Manage products
+  - name: Setting
+    description: Setting Api
+  - name: Shift
+    description: Manage shifts for user.
+  - name: Shopify
+    description: Shopify api
+  - name: User
+    description: Manage users.
