@@ -1,7 +1,7 @@
 import { SessionKey, _, onlyAdmin } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 import { UserServiceFindByIdAndUpdate } from "../user.service";
-import { User, UserSchema } from "../user.types";
+import { User, UserZodSchema } from "../user.types";
 
 export type UserControllerUpdateRequest = {
   query: UserControllerUpdateQuery;
@@ -12,7 +12,7 @@ export type UserControllerUpdateResponse = User;
 
 export type UserControllerUpdateBody = Partial<User>;
 
-export const UserControllerUpdateQuerySchema = UserSchema.pick({
+export const UserControllerUpdateQuerySchema = UserZodSchema.pick({
   _id: true,
 });
 

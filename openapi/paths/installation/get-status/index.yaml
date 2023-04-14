@@ -1,0 +1,20 @@
+get:
+  tags:
+    - Installation
+  operationId: installationGetSTatus
+  summary: GET get status of the installation
+  description: This endpoint gets the status of the installation
+
+  responses:
+    "200":
+      description: Response payload
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+
+    "400":
+      $ref: "../../../responses/bad.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+  security: []

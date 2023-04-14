@@ -11,6 +11,7 @@ info:
         - Auth
         - Availability
         - Booking
+        - Installation
         - My Account
         - Product
         - Setting
@@ -55,6 +56,14 @@ components:
     AuthPasswordResponse:
       $ref: "./paths/auth/schemas/receive-password-response.yaml"
 
+    # Installation
+    InstallationGetStatusResponse:
+      $ref: "./paths/installation/get-status/response.yaml"
+    InstallationSetupBody:
+      $ref: "./paths/installation/setup/body.yaml"
+    InstallationSetupResponse:
+      $ref: "./paths/installation/setup/response.yaml"
+
     # setting
     Setting:
       $ref: "./paths/setting/payload.yaml"
@@ -70,10 +79,6 @@ components:
       $ref: "./paths/user/create/body.yaml"
     UserCreateResponse:
       $ref: "./paths/user/create/response.yaml"
-    UserCreateApiBody:
-      $ref: "./paths/user/create-api/body.yaml"
-    UserCreateResponseApi:
-      $ref: "./paths/user/create-api/response.yaml"
     UserGetAllResponse:
       $ref: "./paths/user/get-all/response.yaml"
     UserGetByIdResponse:
@@ -223,6 +228,12 @@ paths:
   /bookings:
     $ref: "./paths/booking/get-all/index.yaml"
 
+  # installation
+  /installation/get-status:
+    $ref: "./paths/installation/get-status/index.yaml"
+  /installation/setup:
+    $ref: "./paths/installation/setup/index.yaml"
+
   # collections
   /collections:
     $ref: "./paths/collection/get-all/index.yaml"
@@ -264,8 +275,6 @@ paths:
   # user
   /users:
     $ref: "./paths/user/get-all/index.yaml"
-  /user/create-user-api:
-    $ref: "./paths/user/create-api/index.yaml"
   /user:
     $ref: "./paths/user/create/index.yaml"
   /user/{id}:
@@ -278,6 +287,8 @@ tags:
     description: Public Api for availability
   - name: Booking
     description: Manage bookings
+  - name: Installation
+    description: Installation of the platform
   - name: My Account
     description: Manage logged in user data.
   - name: Product
