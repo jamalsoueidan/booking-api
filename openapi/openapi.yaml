@@ -9,13 +9,14 @@ info:
     - name: all api endpoints
       tags:
         - Auth
-        - My Account
-        - User
-        - Shift
-        - Product
+        - Availability
         - Booking
-        - Shopify
+        - My Account
+        - Product
         - Setting
+        - Shift
+        - Shopify
+        - User
 servers:
   - url: https://booking-shopify-api.azurewebsites.net/api
 components:
@@ -44,15 +45,15 @@ components:
     ZodError:
       $ref: "./schemas/zod-error.yaml"
 
-    # auth
-    AuthLoginResponse:
-      $ref: "./paths/auth/schemas/login-response.yaml"
+    # Auth
     AuthLoginRequest:
       $ref: "./paths/auth/schemas/login-request.yaml"
-    AuthPasswordResponse:
-      $ref: "./paths/auth/schemas/receive-password-response.yaml"
+    AuthLoginResponse:
+      $ref: "./paths/auth/schemas/login-response.yaml"
     AuthPasswordRequest:
       $ref: "./paths/auth/schemas/receive-password-request.yaml"
+    AuthPasswordResponse:
+      $ref: "./paths/auth/schemas/receive-password-response.yaml"
 
     # setting
     Setting:
@@ -120,7 +121,7 @@ components:
     ShiftUpdateGroupResponse:
       $ref: "./paths/shift/update-group/response.yaml"
 
-    # product
+    # Product
     ProductGetAll:
       $ref: "./paths/product/get-all/payload.yaml"
     ProductGetAllUser:
@@ -131,22 +132,28 @@ components:
       $ref: "./paths/product/get-available-users/payload.yaml"
     ProductGetAvailableUsersResponse:
       $ref: "./paths/product/get-available-users/response.yaml"
-    ProductUpdateBody:
-      $ref: "./paths/product/update/body.yaml"
-    ProductUpdateBodyUser:
-      $ref: "./paths/product/update/body-user.yaml"
-    ProductUpdateUser:
-      $ref: "./paths/product/update/user.yaml"
-    ProductUpdateResponse:
-      $ref: "./paths/product/update/response.yaml"
     ProductGetById:
       $ref: "./paths/product/get-by-id/payload.yaml"
     ProductGetByIdUser:
       $ref: "./paths/product/get-by-id/user.yaml"
     ProductGetByIdResponse:
       $ref: "./paths/product/get-by-id/response.yaml"
+    ProductUpdateBody:
+      $ref: "./paths/product/update/body.yaml"
+    ProductUpdateBodyUser:
+      $ref: "./paths/product/update/body-user.yaml"
+    ProductUpdateResponse:
+      $ref: "./paths/product/update/response.yaml"
+    ProductUpdateUser:
+      $ref: "./paths/product/update/user.yaml"
 
     # Booking
+    Booking:
+      $ref: "./paths/booking/_types/booking.yaml"
+    BookingCreateBody:
+      $ref: "./paths/booking/create/body.yaml"
+    BookingCreateResponse:
+      $ref: "./paths/booking/create/response.yaml"
     BookingGetAll:
       $ref: "./paths/booking/get-all/payload.yaml"
     BookingGetAllCustomer:
@@ -157,12 +164,6 @@ components:
       $ref: "./paths/booking/get-all/response.yaml"
     BookingGetByIdResponse:
       $ref: "./paths/booking/get-by-id/response.yaml"
-    Booking:
-      $ref: "./paths/booking/_types/booking.yaml"
-    BookingCreateBody:
-      $ref: "./paths/booking/create/body.yaml"
-    BookingCreateResponse:
-      $ref: "./paths/booking/create/response.yaml"
     BookingUpdateBody:
       $ref: "./paths/booking/update/body.yaml"
     BookingUpdateResponse:
@@ -171,12 +172,12 @@ components:
     # Collection
     CollectionGetAll:
       $ref: "./paths/collection/get-all/payload.yaml"
-    CollectionGetAllUser:
-      $ref: "./paths/collection/get-all/user.yaml"
     CollectionGetAllProduct:
       $ref: "./paths/collection/get-all/product.yaml"
     CollectionGetAllResponse:
       $ref: "./paths/collection/get-all/response.yaml"
+    CollectionGetAllUser:
+      $ref: "./paths/collection/get-all/user.yaml"
 
     # Shopify
     ShopifyLoadData:
@@ -188,6 +189,17 @@ components:
     ShopifySearchCustomersResponse:
       $ref: "./paths/shopify/search-customers/response.yaml"
 
+    # Availability
+    AvailabilityHour:
+      $ref: paths/availability/_types/availability-hour.yaml
+    AvailabilityShift:
+      $ref: paths/availability/_types/availability-shift.yaml
+    AvailabilityGetAvailabilityResponse:
+      $ref: paths/availability/get-availability/response.yaml
+    AvailabilityGetUsersResponse:
+      $ref: paths/availability/get-users/response.yaml
+    AvailabilityGetSettingsResponse:
+      $ref: paths/availability/get-settings/response.yaml
 paths:
   # auth
   /auth/login:
@@ -195,13 +207,59 @@ paths:
   /auth/receive-password:
     $ref: "./paths/auth/receive-password.yaml"
 
+  # Availability
+  /availability/{productId}/get-availability:
+    $ref: paths/availability/get-availability/index.yaml
+  /availability/{productId}/get-settings:
+    $ref: paths/availability/get-settings/index.yaml
+  /availability/{productId}/get-users:
+    $ref: paths/availability/get-users/index.yaml
+
+  # booking
+  /booking:
+    $ref: "./paths/booking/create/index.yaml"
+  /booking/{id}:
+    $ref: "./paths/booking/booking.yaml"
+  /bookings:
+    $ref: "./paths/booking/get-all/index.yaml"
+
+  # collections
+  /collections:
+    $ref: "./paths/collection/get-all/index.yaml"
+
   # my-account
   /my-account:
     $ref: "./paths/my/account.yaml"
 
+  # product
+  /products:
+    $ref: "./paths/product/get-all/index.yaml"
+  /products/get-available-users:
+    $ref: "./paths/product/get-available-users/index.yaml"
+  /products/{id}:
+    $ref: "./paths/product/product.yaml"
+
   # setting
   /setting:
     $ref: "./paths/setting/index.yaml"
+
+  # shopify
+  /shopify/load-data:
+    $ref: "./paths/shopify/load-data/index.yaml"
+  /shopify/search-customers:
+    $ref: "./paths/shopify/search-customers/index.yaml"
+
+  # shift
+  /user/{userId}/shift:
+    $ref: "./paths/shift/create/index.yaml"
+  /user/{userId}/shift-group:
+    $ref: "./paths/shift/create-group/index.yaml"
+  /user/{userId}/shift-group/{groupId}:
+    $ref: "./paths/shift/group.yaml"
+  /user/{userId}/shifts:
+    $ref: "./paths/shift/get-all-shifts/index.yaml"
+  /user/{userId}/shift/{id}:
+    $ref: "./paths/shift/shift.yaml"
 
   # user
   /users:
@@ -213,56 +271,22 @@ paths:
   /user/{id}:
     $ref: "./paths/user/user.yaml"
 
-  # shift
-  /user/{userId}/shift-group:
-    $ref: "./paths/shift/create-group/index.yaml"
-  /user/{userId}/shifts:
-    $ref: "./paths/shift/get-all-shifts/index.yaml"
-  /user/{userId}/shift:
-    $ref: "./paths/shift/create/index.yaml"
-  /user/{userId}/shift-group/{groupId}:
-    $ref: "./paths/shift/group.yaml"
-  /user/{userId}/shift/{id}:
-    $ref: "./paths/shift/shift.yaml"
-
-  # product
-  /products:
-    $ref: "./paths/product/get-all/index.yaml"
-  /products/get-available-users:
-    $ref: "./paths/product/get-available-users/index.yaml"
-  /products/{id}:
-    $ref: "./paths/product/product.yaml"
-  /collections:
-    $ref: "./paths/collection/get-all/index.yaml"
-
-  # booking
-  /bookings:
-    $ref: "./paths/booking/get-all/index.yaml"
-  /booking:
-    $ref: "./paths/booking/create/index.yaml"
-  /booking/{id}:
-    $ref: "./paths/booking/booking.yaml"
-
-  # shopify
-  /shopify/load-data:
-    $ref: "./paths/shopify/load-data/index.yaml"
-  /shopify/search-customers:
-    $ref: "./paths/shopify/search-customers/index.yaml"
-
 tags:
   - name: Auth
     description: Login and reset password
-  - name: My Account
-    description: Manage logged in user data.
-  - name: User
-    description: Manage users..
-  - name: Shift
-    description: Manage shifts for user.
+  - name: Availability
+    description: Public Api for availability
   - name: Booking
     description: Manage bookings
+  - name: My Account
+    description: Manage logged in user data.
   - name: Product
     description: Manage products
-  - name: Shopify
-    description: Shopify api
   - name: Setting
     description: Setting Api
+  - name: Shift
+    description: Manage shifts for user.
+  - name: Shopify
+    description: Shopify api
+  - name: User
+    description: Manage users.
