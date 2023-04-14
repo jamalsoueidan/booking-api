@@ -11,6 +11,7 @@ info:
         - Auth
         - Availability
         - Booking
+        - Installation
         - My Account
         - Product
         - Setting
@@ -135,6 +136,64 @@ components:
         message:
           type: string
           example: Password received successfully
+    InstallationGetStatusResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: object
+          properties:
+            done:
+              type: boolean
+              example: true
+              description: 'if true, it''s already installed!'
+    InstallationSetupBody:
+      type: object
+      properties:
+        address:
+          type: string
+        avatar:
+          type: string
+        email:
+          type: string
+          uniqueItems: true
+        fullname:
+          type: string
+        group:
+          type: string
+          default: all
+        language:
+          type: string
+          default: da
+        phone:
+          type: string
+          uniqueItems: true
+        position:
+          type: string
+        postal:
+          type: integer
+        timeZone:
+          type: string
+          default: Europe/Copenhagen
+      required:
+        - fullname
+        - email
+        - phone
+        - postal
+        - position
+        - avatar
+    InstallationSetupResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: boolean
+          example: true
+          description: If true everything went good.
     Setting:
       type: object
       properties:
@@ -259,52 +318,6 @@ components:
         - position
         - avatar
     UserCreateResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/User'
-    UserCreateApiBody:
-      type: object
-      properties:
-        active:
-          type: boolean
-          default: true
-        address:
-          type: string
-        avatar:
-          type: string
-        email:
-          type: string
-          uniqueItems: true
-        fullname:
-          type: string
-        group:
-          type: string
-          default: all
-        language:
-          type: string
-          default: da
-        phone:
-          type: string
-          uniqueItems: true
-        position:
-          type: string
-        postal:
-          type: integer
-        timeZone:
-          type: string
-          default: Europe/Copenhagen
-      required:
-        - fullname
-        - email
-        - phone
-        - postal
-        - position
-        - avatar
-    UserCreateResponseApi:
       type: object
       properties:
         success:
@@ -1708,6 +1721,50 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
+  /installation/get-status:
+    get:
+      tags:
+        - Installation
+      operationId: installationGetSTatus
+      summary: GET get status of the installation
+      description: This endpoint gets the status of the installation
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstallationGetStatusResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
+  /installation/setup:
+    post:
+      tags:
+        - Installation
+      operationId: installationSetup
+      summary: POST create user
+      description: This endpoint setup the platform by creating first user as owner
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstallationSetupBody'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstallationSetupResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
   /collections:
     parameters:
       - name: group
@@ -2284,33 +2341,6 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth: []
-  /user/create-user-api:
-    post:
-      tags:
-        - User
-      operationId: userCreateByApi
-      summary: 'POST Create user [api]'
-      description: 'This endpoint is special and should be used to create new user with api key, and not logged in user.'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserCreateApiBody'
-      responses:
-        '200':
-          description: Response payload
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserCreateResponseApi'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security: []
   /user:
     post:
       tags:
@@ -2415,6 +2445,8 @@ tags:
     description: Public Api for availability
   - name: Booking
     description: Manage bookings
+  - name: Installation
+    description: Installation of the platform
   - name: My Account
     description: Manage logged in user data.
   - name: Product
