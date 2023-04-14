@@ -36,13 +36,9 @@ components:
       $ref: "./responses/not-found.yaml"
     UnauthorizedResponse:
       $ref: "./responses/unauthorized.yaml"
-    ZodResponse:
-      $ref: "./responses/zod.yaml"
 
   schemas:
     # errors
-    Error:
-      $ref: "./schemas/error.yaml"
     ZodError:
       $ref: "./schemas/zod-error.yaml"
 

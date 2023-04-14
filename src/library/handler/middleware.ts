@@ -88,7 +88,7 @@ const executeControllerWithParams = async (
       const bodyData = (await request.json()) as object;
       return bodyData;
     } catch (error) {
-      throw new Error("Require body");
+      throw new ForbiddenError("Require body");
     }
   };
 

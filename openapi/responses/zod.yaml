@@ -1,5 +1,0 @@
-description: Incomplete data
-content:
-  application/json:
-    schema:
-      $ref: "../schemas/zod-error.yaml"
