@@ -1,5 +1,4 @@
 import { NotFoundError } from "~/library/handler";
-import { AvailabilityServiceAvailabilityProps } from "../availability.types";
 import { AvailabilityServiceCreateAvailability } from "./create-availability";
 import { AvailabilityServiceGetBookings } from "./get-bookings";
 import { AvailabilityServiceGetCarts } from "./get-carts";
@@ -7,12 +6,19 @@ import { AvailabilityServiceGetProduct } from "./get-product";
 import { AvailabilityServiceGetShifts } from "./get-shifts";
 import { AvailabilityServiceRemoveAvailability } from "./remove-availability";
 
+export type AvailabilityServiceGetAvailabilityProps = {
+  userId?: string;
+  productId: number;
+  start: Date;
+  end: Date;
+};
+
 export const AvailabilityServiceGetAvailability = async ({
   userId,
   start,
   end,
   productId,
-}: AvailabilityServiceAvailabilityProps) => {
+}: AvailabilityServiceGetAvailabilityProps) => {
   const product = await AvailabilityServiceGetProduct({
     productId,
     userId,

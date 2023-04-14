@@ -1,5 +1,5 @@
 import { User } from "~/functions/user";
-import { WidgetShift } from "../availability.types";
+import { AvailabilityShift } from "../availability.types";
 import { AvailabilityServiceCreateAvailability } from "./create-availability";
 import {
   AvailabilityServiceRemoveAvailability,
@@ -7,7 +7,7 @@ import {
 } from "./remove-availability";
 
 describe("AvailabilityServiceRemoveAvailability", () => {
-  let availabilities: Array<WidgetShift>;
+  let availabilities: Array<AvailabilityShift>;
 
   beforeEach(() => {
     availabilities = AvailabilityServiceCreateAvailability(
@@ -57,7 +57,7 @@ describe("AvailabilityServiceRemoveAvailability", () => {
   });
 
   test("should handle empty availabilities and bookings", () => {
-    const emptyAvailabilities: Array<WidgetShift> = [];
+    const emptyAvailabilities: Array<AvailabilityShift> = [];
     const emptyBookings: Array<AvailabilityServiceRemoveShifts> = [];
 
     const result = AvailabilityServiceRemoveAvailability(

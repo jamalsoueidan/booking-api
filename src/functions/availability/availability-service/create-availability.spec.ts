@@ -1,9 +1,12 @@
 import { User } from "~/functions/user";
-import { WidgetHourRange, WidgetHourUser } from "../availability.types";
+import {
+  AvailabilityHourRange,
+  AvailabilityHourUser,
+} from "../availability.types";
 import { AvailabilityServiceCreateAvailability } from "./create-availability";
 
 describe("AvailabilityServiceCreateAvailability", () => {
-  const schedules: Array<WidgetHourRange & WidgetHourUser> = [
+  const schedules: Array<AvailabilityHourRange & AvailabilityHourUser> = [
     {
       user: {
         _id: "1",

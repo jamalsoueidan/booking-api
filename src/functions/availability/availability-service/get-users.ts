@@ -1,6 +1,6 @@
 import mongoose, { PipelineStage } from "mongoose";
 import { ProductModel } from "~/functions/product";
-import { WidgetUser } from "../availability.types";
+import { AvailabilityUser } from "../availability.types";
 
 export type AvailabilityServiceGetUsersProps = {
   productId: number;
@@ -89,5 +89,5 @@ export const AvailabilityServiceGetUsers = ({
     });
   }
 
-  return ProductModel.aggregate<WidgetUser>(pipeline);
+  return ProductModel.aggregate<AvailabilityUser>(pipeline);
 };

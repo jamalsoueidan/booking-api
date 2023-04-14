@@ -1,7 +1,7 @@
 import mongoose, { PipelineStage } from "mongoose";
 import { Product, ProductModel } from "~/functions/product";
 
-export type WidgetSericeGetProductProps = {
+export type AvailabilitySericeGetProductProps = {
   productId: number;
   userId?: string;
 };
@@ -9,7 +9,7 @@ export type WidgetSericeGetProductProps = {
 export const AvailabilityServiceGetProduct = async ({
   productId,
   userId,
-}: WidgetSericeGetProductProps) => {
+}: AvailabilitySericeGetProductProps) => {
   const pipeline: PipelineStage[] = [
     {
       $match: {

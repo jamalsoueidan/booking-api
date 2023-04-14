@@ -1,6 +1,6 @@
 import { ShiftModel, Tag } from "~/functions/shift";
 import { DateHelpers } from "~/library/helper-date";
-import { WidgetHourUser } from "../availability.types";
+import { AvailabilityHourUser } from "../availability.types";
 
 export type AvailabilityServiceGetShiftsProps = {
   start: Date;
@@ -13,7 +13,7 @@ export type AvailabilityServiceGetShiftsReturn = {
   start: Date;
   end: Date;
   tag: Tag;
-} & WidgetHourUser;
+} & AvailabilityHourUser;
 
 export const AvailabilityServiceGetShifts = ({
   tag,

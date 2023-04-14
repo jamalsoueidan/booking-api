@@ -1,32 +1,25 @@
 import { Tag } from "~/functions/shift";
 import { User } from "~/functions/user";
 
-export interface AvailabilityServiceAvailabilityProps {
-  userId?: string;
-  productId: number;
-  start: Date;
-  end: Date;
-}
+export type AvailabilityUser = User & { userId: string; tag: Tag };
 
-export type WidgetUser = User & { userId: string; tag: Tag };
-
-export type WidgetHourUser = {
+export type AvailabilityHourUser = {
   user: User;
 };
 
-export type WidgetHourRange = {
+export type AvailabilityHourRange = {
   start: Date;
   end: Date;
 };
 
-export type WidgetHour = WidgetHourUser & WidgetHourRange;
+export type AvailabilityHour = AvailabilityHourUser & AvailabilityHourRange;
 
-export interface WidgetShift {
+export interface AvailabilityShift {
   date: Date;
   start: Date;
   end: Date;
   bufferTime: number;
   duration: number;
   total: number;
-  hours: WidgetHour[];
+  hours: AvailabilityHour[];
 }

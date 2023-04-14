@@ -1,5 +1,5 @@
 import { isWithinInterval } from "date-fns";
-import { WidgetShift } from "../availability.types";
+import { AvailabilityShift } from "../availability.types";
 
 export type AvailabilityServiceRemoveShifts = {
   start: Date;
@@ -15,14 +15,14 @@ export type AvailabilityServiceRemoveShifts = {
  * @returns Updated availabilities array without the bookings.
  */
 export const AvailabilityServiceRemoveAvailability = (
-  availabilities: Array<WidgetShift>,
+  availabilities: Array<AvailabilityShift>,
   bookings: Array<AvailabilityServiceRemoveShifts>
 ) => {
   // Iterate over bookings and update availabilities for each booking
   let filteredAvailabilities = availabilities.slice(); // create new copy of array
   bookings.forEach((booking) => {
     filteredAvailabilities = filteredAvailabilities.map(
-      (shift: WidgetShift): WidgetShift => ({
+      (shift: AvailabilityShift): AvailabilityShift => ({
         ...shift,
         hours: shift.hours.filter((hour) => {
           if (hour.user._id.toString() !== booking.userId.toString()) {

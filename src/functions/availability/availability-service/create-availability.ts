@@ -1,17 +1,17 @@
 import { addMinutes, isBefore, isSameDay } from "date-fns";
 import { Product } from "~/functions/product";
 import {
-  WidgetHourRange,
-  WidgetHourUser,
-  WidgetShift,
+  AvailabilityHourRange,
+  AvailabilityHourUser,
+  AvailabilityShift,
 } from "../availability.types";
 
 type AvailabilityServiceCreateAvailabilityProduct = Pick<
   Product,
   "duration" | "buffertime"
 >;
-type AvailabilityServiceCreateAvailabilityShift = WidgetHourRange &
-  WidgetHourUser;
+type AvailabilityServiceCreateAvailabilityShift = AvailabilityHourRange &
+  AvailabilityHourUser;
 
 export const AvailabilityServiceCreateAvailability = (
   product: AvailabilityServiceCreateAvailabilityProduct,
@@ -19,7 +19,7 @@ export const AvailabilityServiceCreateAvailability = (
 ) =>
   schedules.reduce(
     (
-      previous: Array<WidgetShift>,
+      previous: Array<AvailabilityShift>,
       current: AvailabilityServiceCreateAvailabilityShift
     ) => {
       const scheduleEnd = new Date(current.end);
@@ -30,18 +30,18 @@ export const AvailabilityServiceCreateAvailability = (
       let start = new Date(current.start);
       let end;
 
-      // Find if there's an existing WidgetShift in the 'previous' array with the same date as the current schedule
+      // Find if there's an existing AvailabilityShift in the 'previous' array with the same date as the current schedule
       const previousHours = previous.find((p) => isSameDay(p.date, start));
       const hours = previousHours?.hours || [];
 
-      // Iterate through the schedule to create WidgetHours while the current start time is before the schedule end
+      // Iterate through the schedule to create AvailabilityHours while the current start time is before the schedule end
       while (
         isBefore(addMinutes(start, 1), scheduleEnd) &&
         isBefore(addMinutes(start, duration + buffertime), scheduleEnd)
       ) {
         end = addMinutes(start, duration + buffertime);
 
-        // Push a new WidgetHour with the user and the calculated start and end times
+        // Push a new AvailabilityHour with the user and the calculated start and end times
         hours.push({
           end,
           user: current.user,
@@ -52,7 +52,7 @@ export const AvailabilityServiceCreateAvailability = (
         start = addMinutes(start, moveMinutes);
       }
 
-      // If there's no existing WidgetShift with the same date, create a new one and add it to the 'previous' array
+      // If there's no existing AvailabilityShift with the same date, create a new one and add it to the 'previous' array
       if (!previousHours) {
         previous.push({
           date: current.start,
