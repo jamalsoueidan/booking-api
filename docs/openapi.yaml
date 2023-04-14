@@ -32,41 +32,33 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/ZodError'
     ForbiddenResponse:
       description: Forbidden
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/responses/NotFoundResponse/content/application~1json/schema'
     NotFoundResponse:
       description: Not found
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: error message
     UnauthorizedResponse:
       description: Unauthorized
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
-    ZodResponse:
-      description: Incomplete data
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ZodError'
+            $ref: '#/components/responses/NotFoundResponse/content/application~1json/schema'
   schemas:
-    Error:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: false
-        error:
-          type: string
-          example: error message
     ZodError:
       type: object
       properties:
