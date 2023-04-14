@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const UserSchema = z.object({
+export const UserZodSchema = z.object({
   _id: z.string(),
   fullname: z.string(),
   email: z.string().email({ message: "Invalid email address" }),
@@ -15,4 +15,4 @@ export const UserSchema = z.object({
   timeZone: z.string().default("Europe/Copenhagen"),
 });
 
-export type User = z.infer<typeof UserSchema>;
+export type User = z.infer<typeof UserZodSchema>;

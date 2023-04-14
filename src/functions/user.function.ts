@@ -3,7 +3,6 @@ import "module-alias/register";
 import { app } from "@azure/functions";
 import {
   UserControllerCreateUser,
-  UserControllerCreateUserApi,
   UserControllerGetAllUsers,
   UserControllerGetById,
   UserControllerUpdate,
@@ -21,14 +20,6 @@ app.http("userCreateUser", {
   authLevel: "anonymous",
   route: "user",
   handler: UserControllerCreateUser,
-});
-
-// should have authLEVEL API-key
-app.http("userCreateUserApi", {
-  methods: ["POST"],
-  authLevel: "anonymous",
-  route: "user/create-user-api",
-  handler: UserControllerCreateUserApi,
 });
 
 app.http("userGetById", {

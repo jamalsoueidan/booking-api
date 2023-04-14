@@ -2,9 +2,9 @@ import { z } from "zod";
 import { SessionKey, _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 import { UserServiceGetById } from "../user.service";
-import { User, UserSchema } from "../user.types";
+import { User, UserZodSchema } from "../user.types";
 
-export const UserServiceGetUserByIdSchema = UserSchema.pick({
+export const UserServiceGetUserByIdSchema = UserZodSchema.pick({
   _id: true,
 });
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { SessionKey, UnauthorizedError, _, onlyAdmin } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 import { UserServiceCreate } from "../user.service";
-import { User, UserSchema } from "../user.types";
+import { User, UserZodSchema } from "../user.types";
 
 export type UserControllerCreateUserRequest = {
   body: UserControllerCreateUserBody;
@@ -10,7 +10,7 @@ export type UserControllerCreateUserRequest = {
 
 export type UserControllerCreateUserResponse = User;
 
-export const UserControllerCreateUserSchema = UserSchema.omit({
+export const UserControllerCreateUserSchema = UserZodSchema.omit({
   _id: true,
 });
 

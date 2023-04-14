@@ -1,8 +1,5 @@
 type: object
 properties:
-  active:
-    type: boolean
-    default: true
   address:
     type: string
   avatar:
