@@ -1,0 +1,10 @@
+type: integer
+enum:
+  - 1
+  - 3
+  - 99
+description: The role of the authenticated user.
+x-enum-descriptions:
+  - owner
+  - admin
+  - user
