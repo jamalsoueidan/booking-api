@@ -5,6 +5,10 @@ info:
   license:
     name: MIT
     url: http://
+  contact:
+    name: jamal Soueidan
+    email: jamal@soueidan.com
+    url: "https://github.com/jamalsoueidan"
   x-tagGroups:
     - name: all api endpoints
       tags:
