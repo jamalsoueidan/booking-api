@@ -42,29 +42,27 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/responses/NotFoundResponse/content/application~1json/schema'
     NotFoundResponse:
       description: Not found
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: error message
     UnauthorizedResponse:
       description: Unauthorized
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/responses/NotFoundResponse/content/application~1json/schema'
   schemas:
-    Error:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: false
-        error:
-          type: string
-          example: error message
     ZodError:
       type: object
       properties:
@@ -92,6 +90,17 @@ components:
               - path
               - message
               - code
+    AuthRole:
+      type: integer
+      enum:
+        - 1
+        - 3
+        - 99
+      description: The role of the authenticated user.
+      x-enum-descriptions:
+        - owner
+        - admin
+        - user
     AuthLoginRequest:
       type: object
       properties:
