@@ -43,13 +43,10 @@ components:
 
   schemas:
     # errors
-
     ZodError:
       $ref: "./schemas/zod-error.yaml"
 
     # Auth
-    AuthRole:
-      $ref: paths/auth/_types/auth-role.yaml
     AuthLoginRequest:
       $ref: "./paths/auth/schemas/login-request.yaml"
     AuthLoginResponse:
