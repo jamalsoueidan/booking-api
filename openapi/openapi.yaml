@@ -43,6 +43,8 @@ components:
 
   schemas:
     # errors
+    Error:
+      $ref: "./schemas/error.yaml"
     ZodError:
       $ref: "./schemas/zod-error.yaml"
 
