@@ -1,6 +1,6 @@
 import { compare } from "bcryptjs";
 import { generate } from "generate-password";
-import { UnauthorizedError } from "~/library/handler";
+import { ForbiddenError, NotFoundError } from "~/library/handler";
 import { jwtCreateToken } from "~/library/jwt";
 import { AuthModel } from "./auth.model";
 import { Auth } from "./auth.types";
@@ -17,12 +17,12 @@ export const AuthServiceLogin = async (props: AuthServiceLoginProps) => {
   });
 
   if (!auth) {
-    throw new UnauthorizedError("identification or password is incorrect");
+    throw new ForbiddenError("identification or password is incorrect");
   }
 
   const correctPassword = await compare(props.password, auth.password || "");
   if (!correctPassword) {
-    throw new UnauthorizedError("identification or password is incorrect");
+    throw new ForbiddenError("identification or password is incorrect");
   }
 
   return { token: jwtCreateToken(auth.toJSON()) };
@@ -38,7 +38,7 @@ export const AuthServiceReceivePassword = async (
   const user = await AuthModel.findOne(props);
 
   if (!user) {
-    throw new UnauthorizedError("phone number not exist");
+    throw new NotFoundError("phone number not exist");
   }
 
   const password = generate({
