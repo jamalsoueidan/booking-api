@@ -42,27 +42,29 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/responses/NotFoundResponse/content/application~1json/schema'
+            $ref: '#/components/schemas/Error'
     NotFoundResponse:
       description: Not found
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-                example: false
-              error:
-                type: string
-                example: error message
+            $ref: '#/components/schemas/Error'
     UnauthorizedResponse:
       description: Unauthorized
       content:
         application/json:
           schema:
-            $ref: '#/components/responses/NotFoundResponse/content/application~1json/schema'
+            $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: error message
     ZodError:
       type: object
       properties:
