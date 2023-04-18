@@ -320,6 +320,8 @@ components:
           default: Europe/Copenhagen
       required:
         - _id
+        - active
+        - address
         - fullname
         - email
         - phone
