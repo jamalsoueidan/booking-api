@@ -71,7 +71,7 @@ describe("UserControllerGetById", () => {
     );
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody).toHaveProperty("error");
+    expect(res.jsonBody).toHaveProperty("errors");
   });
 
   it("Admin: Should be able to get user by id in the same group", async () => {
@@ -100,6 +100,6 @@ describe("UserControllerGetById", () => {
     );
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody).toHaveProperty("error");
+    expect(res.jsonBody).toHaveProperty("errors");
   });
 });

@@ -34,7 +34,6 @@ describe("AvailabilityServiceGetProduct", () => {
       userId: user._id.toString(),
     });
 
-    console.log(product);
     expect(product?.users.length).toBe(1);
   });
 

@@ -1,4 +1,5 @@
 import { ShopifyServiceSearchCustomers } from "~/functions/shopify";
+import { NotFoundError } from "~/library/handler";
 import { CustomerModel } from "./customer.model";
 import { CustomerServiceFindAndUpdateProps } from "./customer.types";
 
@@ -11,7 +12,13 @@ export const CustomerServiceFindAndUpdate = async ({
     limit: 1,
   });
   if (!customers?.length) {
-    console.log("no customer found");
+    throw new NotFoundError([
+      {
+        path: ["customers"],
+        message: "NOT_FOUND",
+        code: "custom",
+      },
+    ]);
   }
 
   const customer = customers[0];

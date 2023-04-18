@@ -15,7 +15,13 @@ export const BookingServiceCreate = async (body: BookingServiceCreateProps) => {
   }).lean();
 
   if (!product) {
-    throw new NotFoundError("no product found");
+    throw new NotFoundError([
+      {
+        path: ["product"],
+        message: "NOT_FOUND",
+        code: "custom",
+      },
+    ]);
   }
 
   const booking = await BookingModel.create({
@@ -89,7 +95,13 @@ export const BookingServiceUpdate = async (
   const booking = await BookingModel.findOne(query);
 
   if (!booking) {
-    throw new NotFoundError("Not found");
+    throw new NotFoundError([
+      {
+        path: ["booking"],
+        message: "BOOKING_NOT_FOUND",
+        code: "custom",
+      },
+    ]);
   }
 
   if (body.userId) {

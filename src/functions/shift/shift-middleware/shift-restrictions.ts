@@ -12,7 +12,9 @@ export const ShiftRestrictUser = async ({
   session,
 }: SessionKey<SessionRequest>) => {
   if (session.isUser && query.userId !== session.userId) {
-    throw new ForbiddenError("not allowed to modifiy other user");
+    throw new ForbiddenError([
+      { path: ["userId"], message: "NOT_ALLOWED", code: "custom" },
+    ]);
   }
 
   await ShiftRestrictGroup({ query, session });
@@ -28,7 +30,9 @@ export const ShiftRestrictGroup = async ({
       group: session.group,
     });
     if (!belongToSameGroup) {
-      throw new ForbiddenError("not allowed to modifiy staff in other groups");
+      throw new ForbiddenError([
+        { path: ["group"], message: "NOT_ALLOWED", code: "custom" },
+      ]);
     }
   }
 };

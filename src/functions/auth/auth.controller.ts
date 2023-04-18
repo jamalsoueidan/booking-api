@@ -28,7 +28,9 @@ export type AuthControllerReceivePasswordRequest = {
 };
 
 export const AuthControllerReceivePasswordSchema = z.object({
-  phone: z.string(),
+  phone: z.string().refine((str) => /^\d{8}$/.test(str), {
+    message: "Invalid phone number format",
+  }),
 });
 
 export type AuthControllerReceivePasswordBody = z.infer<

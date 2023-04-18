@@ -8,7 +8,12 @@ import {
 import { ZodError } from "zod";
 import { jwtDecode, jwtGetToken } from "../jwt";
 import { connect } from "../mongoose";
-import { ForbiddenError, NotFoundError, UnauthorizedError } from "./errors";
+import {
+  BadError,
+  ForbiddenError,
+  NotFoundError,
+  UnauthorizedError,
+} from "./errors";
 
 export type AzureHandler = (
   request: HttpRequest,
@@ -37,31 +42,19 @@ export const _ =
       }
     } catch (err: unknown) {
       const props: HttpResponseInit = {};
-      if (err instanceof UnauthorizedError) {
-        props.jsonBody = { error: err.message, success: false };
-        props.status = err.status;
+      if (
+        err instanceof UnauthorizedError ||
+        err instanceof ZodError ||
+        err instanceof NotFoundError ||
+        err instanceof ForbiddenError ||
+        err instanceof BadError
+      ) {
+        props.jsonBody = { errors: err.issues, success: false };
+        props.status = (err as any).status || 400; // zodError doesn't have status
         return props;
       }
 
-      if (err instanceof ZodError) {
-        props.jsonBody = { error: err.issues, success: false };
-        props.status = 400;
-        return props;
-      }
-
-      if (err instanceof NotFoundError) {
-        props.jsonBody = { error: err.message, success: false };
-        props.status = err.status;
-        return props;
-      }
-
-      if (err instanceof ForbiddenError) {
-        props.jsonBody = { error: err.message, success: false };
-        props.status = err.status;
-        return props;
-      }
-
-      props.jsonBody = { error: "unknown", succes: false };
+      props.jsonBody = { errors: "unknown", succes: false };
       props.status = 500;
       return props;
     }
@@ -88,7 +81,9 @@ const executeControllerWithParams = async (
       const bodyData = (await request.json()) as object;
       return bodyData;
     } catch (error) {
-      throw new ForbiddenError("Require body");
+      throw new BadError([
+        { path: ["body"], message: "Require body", code: "custom" },
+      ]);
     }
   };
 

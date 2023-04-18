@@ -5,6 +5,7 @@ import {
   InvocationContext,
   InvocationContextInit,
 } from "@azure/functions";
+import { ZodIssue } from "zod";
 import { AuthRole } from "../../../functions/auth/auth.types";
 import { login } from "../helpers";
 
@@ -17,7 +18,7 @@ export interface HttpSuccessResponse<T = unknown> extends HttpResponseInit {
 
 export interface HttpErrorResponse extends HttpResponseInit {
   jsonBody?: {
-    error: string;
+    errors: ZodIssue[];
     success: boolean;
   };
 }

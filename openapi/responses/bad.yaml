@@ -2,4 +2,4 @@ description: Bad Request
 content:
   application/json:
     schema:
-      $ref: "../schemas/zod-error.yaml"
+      $ref: "../schemas/errors.yaml"

@@ -65,7 +65,7 @@ describe("BookingControllerGetAll", () => {
     );
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody?.error.length).toBe(2);
+    expect(res.jsonBody?.errors).toHaveLength(2);
   });
 
   it("User and Admin: Should be able to get only bookings in the same group by range", async () => {

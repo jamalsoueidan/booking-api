@@ -86,7 +86,7 @@ describe("BookingControllerCreate", () => {
     );
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody?.error.length).toBeGreaterThanOrEqual(1);
+    expect(res.jsonBody?.errors.length).toBeGreaterThanOrEqual(1);
   });
 
   it("User: Should not be able to update booking for another user", async () => {
@@ -119,7 +119,7 @@ describe("BookingControllerCreate", () => {
     );
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody?.error.length).toBeGreaterThanOrEqual(1);
+    expect(res.jsonBody?.errors.length).toBeGreaterThanOrEqual(1);
   });
 
   it("User: Should be able to update own booking", async () => {
@@ -183,7 +183,7 @@ describe("BookingControllerCreate", () => {
     );
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody?.error.length).toBeGreaterThanOrEqual(1);
+    expect(res.jsonBody?.errors.length).toBeGreaterThanOrEqual(1);
   });
   it("Admin: Should be able to update booking for user in the same group", async () => {
     const { token } = await login(AuthRole.admin);
