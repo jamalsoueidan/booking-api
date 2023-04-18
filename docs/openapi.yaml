@@ -36,45 +36,33 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ZodError'
+            $ref: '#/components/schemas/Errors'
     ForbiddenResponse:
       description: Forbidden
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/Errors'
     NotFoundResponse:
       description: Not found
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/Errors'
     UnauthorizedResponse:
       description: Unauthorized
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/Errors'
   schemas:
-    Error:
+    Errors:
       type: object
       properties:
         success:
           type: boolean
           example: false
-        error:
-          type: string
-          example: error message
-      required:
-        - success
-        - error
-    ZodError:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: false
-        error:
+        errors:
           type: array
           items:
             type: object
@@ -97,7 +85,7 @@ components:
               - code
       required:
         - success
-        - error
+        - errors
     AuthSession:
       type: object
       properties:
