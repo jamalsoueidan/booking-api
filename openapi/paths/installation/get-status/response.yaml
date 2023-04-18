@@ -10,3 +10,8 @@ properties:
         type: boolean
         example: true
         description: if true, it's already installed!
+    required:
+      - done
+required:
+  - success
+  - payload

@@ -7,3 +7,6 @@ properties:
     type: array
     items:
       $ref: "../../user/_types/user.yaml"
+required:
+  - success
+  - payload

@@ -49,6 +49,8 @@ components:
       $ref: "./schemas/zod-error.yaml"
 
     # Auth
+    AuthSession:
+      $ref: "./paths/auth/_types/auth-session.yaml"
     AuthLoginRequest:
       $ref: "./paths/auth/schemas/login-request.yaml"
     AuthLoginResponse:

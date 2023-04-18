@@ -5,3 +5,6 @@ properties:
     example: true
   payload:
     $ref: "../_types/booking.yaml"
+required:
+  - success
+  - payload

@@ -1,0 +1,33 @@
+type: object
+properties:
+  authId:
+    type: string
+  userId:
+    type: string
+  role:
+    type: integer
+    format: int32
+  group:
+    type: string
+  iat:
+    type: integer
+    format: int64
+    nullable: true
+  exp:
+    type: integer
+    format: int64
+    nullable: true
+  isOwner:
+    type: boolean
+  isAdmin:
+    type: boolean
+  isUser:
+    type: boolean
+required:
+  - authId
+  - userId
+  - role
+  - group
+  - isOwner
+  - isAdmin
+  - isUser

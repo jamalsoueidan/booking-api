@@ -7,3 +7,6 @@ properties:
     type: boolean
     example: true
     description: If true everything went good.
+required:
+  - success
+  - payload

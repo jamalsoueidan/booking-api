@@ -9,6 +9,8 @@ properties:
       token:
         type: string
         example: Token to be saved in browser
+    required:
+      - token
 required:
   - success
-  - token
+  - payload

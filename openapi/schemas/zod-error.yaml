@@ -24,3 +24,6 @@ properties:
         - path
         - message
         - code
+required:
+  - success
+  - error

@@ -5,3 +5,6 @@ properties:
     example: true
   payload:
     $ref: "../../setting/payload.yaml"
+required:
+  - success
+  - payload

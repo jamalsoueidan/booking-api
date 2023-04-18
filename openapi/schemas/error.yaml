@@ -6,3 +6,6 @@ properties:
   error:
     type: string
     example: "error message"
+required:
+  - success
+  - error

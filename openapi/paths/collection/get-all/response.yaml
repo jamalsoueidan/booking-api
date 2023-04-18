@@ -7,3 +7,6 @@ properties:
     type: array
     items:
       $ref: "./payload.yaml"
+required:
+  - success
+  - payload
