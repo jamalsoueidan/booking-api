@@ -314,7 +314,9 @@ components:
         position:
           type: string
         postal:
-          type: integer
+          oneOf:
+            - type: string
+            - type: number
         timeZone:
           type: string
           default: Europe/Copenhagen
@@ -355,11 +357,15 @@ components:
         position:
           type: string
         postal:
-          type: integer
+          oneOf:
+            - type: string
+            - type: number
         timeZone:
           type: string
           default: Europe/Copenhagen
       required:
+        - active
+        - address
         - fullname
         - email
         - phone
@@ -428,11 +434,15 @@ components:
         position:
           type: string
         postal:
-          type: integer
+          oneOf:
+            - type: string
+            - type: number
         timeZone:
           type: string
           default: Europe/Copenhagen
       required:
+        - active
+        - address
         - fullname
         - email
         - phone
