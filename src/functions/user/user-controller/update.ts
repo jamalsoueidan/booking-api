@@ -10,6 +10,10 @@ export type UserControllerUpdateRequest = {
 
 export type UserControllerUpdateResponse = User;
 
+export const UserControllerUpdateBodySchema = UserZodSchema.omit({
+  _id: true,
+});
+
 export type UserControllerUpdateBody = Partial<User>;
 
 export const UserControllerUpdateQuerySchema = UserZodSchema.pick({
@@ -22,16 +26,17 @@ export const UserControllerUpdate = _(
   jwtVerify,
   onlyAdmin,
   ({ query, body, session }: SessionKey<UserControllerUpdateRequest>) => {
-    const validateQueryData = UserControllerUpdateQuerySchema.parse(query);
+    const validateQuery = UserControllerUpdateQuerySchema.parse(query);
+    const validateBody = UserControllerUpdateBodySchema.parse(body);
     if (session.isAdmin) {
       return UserServiceFindByIdAndUpdate(
-        { ...validateQueryData, group: session.group },
+        { ...validateQuery, group: session.group },
         {
-          ...body,
+          ...validateBody,
           group: session.group,
         }
       );
     }
-    return UserServiceFindByIdAndUpdate(validateQueryData, body);
+    return UserServiceFindByIdAndUpdate(validateQuery, validateBody);
   }
 );

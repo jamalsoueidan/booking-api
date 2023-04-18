@@ -10,7 +10,19 @@ export const UserZodSchema = z.object({
   active: z.boolean().default(true),
   avatar: z.string().url({ message: "Invalid url" }),
   position: z.string(),
-  postal: z.number().min(4).positive(),
+  postal: z
+    .number()
+    .or(z.string())
+    .refine(
+      (value) => {
+        const numberValue =
+          typeof value === "string" ? parseFloat(value) : value;
+
+        // Check if the number is positive and has at least 4 digits
+        return numberValue > 0 && numberValue.toString().length >= 4;
+      },
+      { message: "Postal must be a positive number with a minimum of 4 digits" }
+    ),
   address: z.string().nonempty(),
   group: z.string().default("all"),
   language: z.string().default("da"),
