@@ -31,7 +31,13 @@ export const BookingControllerCreate = _(
       // user can only create for self self
       if (session.isUser) {
         if (userId !== session.userId) {
-          throw new ForbiddenError("You can't create booking for another user");
+          throw new ForbiddenError([
+            {
+              path: ["userId"],
+              message: "NOT_ALLOWED",
+              code: "custom",
+            },
+          ]);
         }
       } else if (session.isAdmin) {
         const allStaff = await UserServiceGetUserIdsbyGroup({
@@ -39,7 +45,13 @@ export const BookingControllerCreate = _(
         });
         const notFound = !allStaff.find((s) => s === userId);
         if (notFound) {
-          throw new ForbiddenError("You can't create booking in another group");
+          throw new ForbiddenError([
+            {
+              path: ["userId"],
+              message: "NOT_ALLOWED",
+              code: "custom",
+            },
+          ]);
         }
       }
     }

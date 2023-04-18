@@ -70,7 +70,7 @@ describe("BookingControllerCreate", () => {
     );
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody?.error.length).toBe(5);
+    expect(res.jsonBody?.errors).toHaveLength(5);
   });
 
   it("User: Should not be able to create booking for another user", async () => {
@@ -95,7 +95,7 @@ describe("BookingControllerCreate", () => {
     );
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody?.error).toBeDefined();
+    expect(res.jsonBody?.errors).toBeDefined();
   });
 
   it("User: Should be able to create booking", async () => {
@@ -145,7 +145,7 @@ describe("BookingControllerCreate", () => {
     );
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody?.error).toBeDefined();
+    expect(res.jsonBody?.errors).toBeDefined();
   });
 
   it("Admin: Should be able to create booking for all users in the same group", async () => {

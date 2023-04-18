@@ -2,4 +2,4 @@ description: Unauthorized
 content:
   application/json:
     schema:
-      $ref: "../schemas/error.yaml"
+      $ref: "../schemas/errors.yaml"

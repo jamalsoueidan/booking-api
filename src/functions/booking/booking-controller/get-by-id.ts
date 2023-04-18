@@ -34,7 +34,13 @@ export const BookingControllerGetById = _(
     const validate = BookingControllerGetByIdQuerySchema.parse(query);
     const booking = await BookingServiceGetById(validate);
     if (!booking) {
-      throw new NotFoundError("booking not exist");
+      throw new NotFoundError([
+        {
+          path: ["booking"],
+          message: "NOT_FOUND",
+          code: "custom",
+        },
+      ]);
     }
     return booking;
   }

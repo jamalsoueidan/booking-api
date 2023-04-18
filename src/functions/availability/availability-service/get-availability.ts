@@ -25,7 +25,9 @@ export const AvailabilityServiceGetAvailability = async ({
   });
 
   if (!product) {
-    throw new NotFoundError("product not found");
+    throw new NotFoundError([
+      { path: ["product"], message: "NOT_FOUND", code: "custom" },
+    ]);
   }
 
   const userIds = product.users.map((s) => s.userId);

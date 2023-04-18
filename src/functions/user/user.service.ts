@@ -31,7 +31,13 @@ export const UserServiceFindByIdAndUpdate = async (
     new: true,
   });
   if (!user) {
-    throw new NotFoundError("User not found");
+    throw new NotFoundError([
+      {
+        path: ["userId"],
+        message: "NOT_FOUND",
+        code: "custom",
+      },
+    ]);
   }
 
   await AuthServiceUpdate(
@@ -59,7 +65,13 @@ type UserServiceGetByIdProps = {
 export const UserServiceGetById = async (props: UserServiceGetByIdProps) => {
   const user = await UserModel.findOne(props).lean();
   if (!user) {
-    throw new NotFoundError("no user found");
+    throw new NotFoundError([
+      {
+        path: ["userId"],
+        message: "NOT_FOUND",
+        code: "custom",
+      },
+    ]);
   }
   return user;
 };

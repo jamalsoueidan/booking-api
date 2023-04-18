@@ -3,7 +3,7 @@ properties:
   success:
     type: boolean
     example: false
-  error:
+  errors:
     type: array
     items:
       type: object
@@ -26,4 +26,4 @@ properties:
         - code
 required:
   - success
-  - error
+  - errors

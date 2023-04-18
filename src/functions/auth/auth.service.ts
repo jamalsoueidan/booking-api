@@ -17,12 +17,24 @@ export const AuthServiceLogin = async (props: AuthServiceLoginProps) => {
   });
 
   if (!auth) {
-    throw new ForbiddenError("identification or password is incorrect");
+    throw new ForbiddenError([
+      {
+        path: ["identification", "password"],
+        message: "IDENTIFICATION_INCORRECT",
+        code: "custom",
+      },
+    ]);
   }
 
   const correctPassword = await compare(props.password, auth.password || "");
   if (!correctPassword) {
-    throw new ForbiddenError("identification or password is incorrect");
+    throw new ForbiddenError([
+      {
+        path: ["identification", "password"],
+        message: "IDENTIFICATION_INCORRECT",
+        code: "custom",
+      },
+    ]);
   }
 
   return { token: jwtCreateToken(auth.toJSON()) };
@@ -38,7 +50,13 @@ export const AuthServiceReceivePassword = async (
   const user = await AuthModel.findOne(props);
 
   if (!user) {
-    throw new NotFoundError("phone number not exist");
+    throw new NotFoundError([
+      {
+        path: ["phone"],
+        message: "NOT_FOUND",
+        code: "custom",
+      },
+    ]);
   }
 
   const password = generate({

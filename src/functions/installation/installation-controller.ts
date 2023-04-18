@@ -28,7 +28,9 @@ export const InstallationControllerSetup = _(
   async ({ body }: InstallationControllerSetupRequest) => {
     const users = await UserModel.find().lean();
     if (users.length > 0) {
-      throw new ForbiddenError("not allowed");
+      throw new ForbiddenError([
+        { path: ["setup"], message: "NOT_ALLOWED", code: "custom" },
+      ]);
     }
 
     const validateBody = InstallationControllerSetupBodySchema.parse(body);

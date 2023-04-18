@@ -1,23 +1,17 @@
-export class UnauthorizedError extends Error {
+import { ZodError } from "zod";
+
+export class UnauthorizedError extends ZodError {
   status = 401;
-  constructor(message: string) {
-    super(message);
-    this.name = message;
-  }
 }
 
-export class NotFoundError extends Error {
+export class NotFoundError extends ZodError {
   status = 404;
-  constructor(message: string) {
-    super(message);
-    this.name = message;
-  }
 }
 
-export class ForbiddenError extends Error {
+export class ForbiddenError extends ZodError {
   status = 403;
-  constructor(message: string) {
-    super(message);
-    this.name = message;
-  }
+}
+
+export class BadError extends ZodError {
+  status = 400;
 }

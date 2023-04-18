@@ -49,7 +49,7 @@ describe("UserControllerCreateUser", () => {
       await UserControllerCreateUser(request, context);
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody).toHaveProperty("error");
+    expect(res.jsonBody).toHaveProperty("errors");
   });
 
   it("Admin: Should be able to create user in the same group", async () => {
@@ -76,6 +76,6 @@ describe("UserControllerCreateUser", () => {
       await UserControllerCreateUser(request, context);
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody).toHaveProperty("error");
+    expect(res.jsonBody).toHaveProperty("errors");
   });
 });

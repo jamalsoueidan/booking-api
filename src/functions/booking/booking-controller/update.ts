@@ -41,9 +41,9 @@ export const BookingControllerUpdate = _(
       const booking = await BookingServiceGetUserId(query._id);
       if (session.isUser) {
         if (booking?.userId.toString() !== session.userId) {
-          throw new ForbiddenError(
-            "not allowed to update booking for other users"
-          );
+          throw new ForbiddenError([
+            { path: ["userId"], message: "NOT_ALLOWED", code: "custom" },
+          ]);
         }
       }
 
@@ -58,9 +58,9 @@ export const BookingControllerUpdate = _(
         );
 
         if (!currentBookingBelongsSameGroup) {
-          throw new ForbiddenError(
-            "not allowed to update booking outside your group"
-          );
+          throw new ForbiddenError([
+            { path: ["group"], message: "NOT_ALLOWED", code: "custom" },
+          ]);
         }
 
         const updateBookingBelongsSameGroup = userIds.includes(
@@ -68,9 +68,9 @@ export const BookingControllerUpdate = _(
         );
 
         if (!updateBookingBelongsSameGroup) {
-          throw new ForbiddenError(
-            "can't update booking for user another group"
-          );
+          throw new ForbiddenError([
+            { path: ["group"], message: "NOT_ALLOWED", code: "custom" },
+          ]);
         }
       }
     }

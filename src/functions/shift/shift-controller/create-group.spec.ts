@@ -106,7 +106,7 @@ describe("ShiftControllerCreateGroup", () => {
     );
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody?.error.length).toEqual(4);
+    expect(res.jsonBody?.errors).toHaveLength(4);
   });
 
   it("User: Should able to create group for himself", async () => {
@@ -214,7 +214,7 @@ describe("ShiftControllerCreateGroup", () => {
     );
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody).toHaveProperty("error");
-    expect(typeof res.jsonBody?.error).toBe("string");
+    expect(res.jsonBody).toHaveProperty("errors");
+    expect(res.jsonBody?.errors.length).toBeGreaterThanOrEqual(1);
   });
 });

@@ -57,7 +57,7 @@ describe("ShiftControllerGetAll", () => {
     );
 
     expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody?.error.length).toEqual(3);
+    expect(res.jsonBody?.errors).toHaveLength(3);
   });
 
   it("User should be able to access shifts for other users within the same group.", async () => {
@@ -97,7 +97,7 @@ describe("ShiftControllerGetAll", () => {
       context
     );
 
-    expect(res.jsonBody).toHaveProperty("error");
+    expect(res.jsonBody).toHaveProperty("errors");
     expect(res.jsonBody?.success).toBeFalsy();
   });
 
@@ -138,7 +138,7 @@ describe("ShiftControllerGetAll", () => {
       context
     );
 
-    expect(res.jsonBody).toHaveProperty("error");
+    expect(res.jsonBody).toHaveProperty("errors");
     expect(res.jsonBody?.success).toBeFalsy();
   });
 });
