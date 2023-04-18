@@ -65,6 +65,9 @@ components:
         error:
           type: string
           example: error message
+      required:
+        - success
+        - error
     ZodError:
       type: object
       properties:
@@ -92,6 +95,43 @@ components:
               - path
               - message
               - code
+      required:
+        - success
+        - error
+    AuthSession:
+      type: object
+      properties:
+        authId:
+          type: string
+        userId:
+          type: string
+        role:
+          type: integer
+          format: int32
+        group:
+          type: string
+        iat:
+          type: integer
+          format: int64
+          nullable: true
+        exp:
+          type: integer
+          format: int64
+          nullable: true
+        isOwner:
+          type: boolean
+        isAdmin:
+          type: boolean
+        isUser:
+          type: boolean
+      required:
+        - authId
+        - userId
+        - role
+        - group
+        - isOwner
+        - isAdmin
+        - isUser
     AuthLoginRequest:
       type: object
       properties:
@@ -116,9 +156,11 @@ components:
             token:
               type: string
               example: Token to be saved in browser
+          required:
+            - token
       required:
         - success
-        - token
+        - payload
     AuthPasswordRequest:
       type: object
       properties:
@@ -134,9 +176,17 @@ components:
         success:
           type: boolean
           example: true
-        message:
-          type: string
-          example: Password received successfully
+        payload:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Password received successfully
+          required:
+            - message
+      required:
+        - success
+        - payload
     InstallationGetStatusResponse:
       type: object
       properties:
@@ -150,6 +200,11 @@ components:
               type: boolean
               example: true
               description: 'if true, it''s already installed!'
+          required:
+            - done
+      required:
+        - success
+        - payload
     InstallationSetupBody:
       type: object
       properties:
@@ -195,6 +250,9 @@ components:
           type: boolean
           example: true
           description: If true everything went good.
+      required:
+        - success
+        - payload
     Setting:
       type: object
       properties:
@@ -326,6 +384,9 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/User'
+      required:
+        - success
+        - payload
     UserGetAllResponse:
       type: object
       properties:
@@ -336,6 +397,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
+      required:
+        - success
+        - payload
     UserGetByIdResponse:
       type: object
       properties:
@@ -344,6 +408,9 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/User'
+      required:
+        - success
+        - payload
     UserUpdateBody:
       type: object
       properties:
@@ -390,6 +457,9 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/User'
+      required:
+        - success
+        - payload
     Shift:
       type: object
       properties:
@@ -1004,6 +1074,9 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/Booking'
+      required:
+        - success
+        - payload
     BookingGetAll:
       type: object
       properties:
@@ -1138,6 +1211,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BookingGetAll'
+      required:
+        - success
+        - payload
     BookingGetByIdResponse:
       type: object
       properties:
@@ -1146,6 +1222,9 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/Booking'
+      required:
+        - success
+        - payload
     BookingUpdateBody:
       type: object
       properties:
@@ -1180,6 +1259,9 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/Booking'
+      required:
+        - success
+        - payload
     CollectionGetAll:
       type: object
       properties:
@@ -1251,6 +1333,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CollectionGetAll'
+      required:
+        - success
+        - payload
     CollectionGetAllUser:
       type: object
       properties:
@@ -1400,6 +1485,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AvailabilityShift'
+      required:
+        - success
+        - payload
     AvailabilityGetUsersResponse:
       type: object
       properties:
@@ -1410,6 +1498,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
+      required:
+        - success
+        - payload
     AvailabilityGetSettingsResponse:
       type: object
       properties:
@@ -1418,6 +1509,9 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/Setting'
+      required:
+        - success
+        - payload
 paths:
   /auth/login:
     post:
