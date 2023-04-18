@@ -3,9 +3,12 @@ properties:
   success:
     type: boolean
     example: true
-  token:
-    type: string
-    example: Token to be saved in browser
+  payload:
+    type: object
+    properties:
+      token:
+        type: string
+        example: Token to be saved in browser
 required:
   - success
   - token
