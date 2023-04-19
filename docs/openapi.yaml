@@ -652,7 +652,7 @@ components:
         start:
           type: string
           format: date-time
-        day:
+        days:
           $ref: '#/components/schemas/ShiftDay'
         tag:
           $ref: '#/components/schemas/ShiftTag'
@@ -660,7 +660,7 @@ components:
         - end
         - userId
         - start
-        - day
+        - days
         - tag
     ShiftCreateGroupResponse:
       type: object
@@ -757,7 +757,7 @@ components:
         start:
           type: string
           format: date-time
-        day:
+        days:
           $ref: '#/components/schemas/ShiftDay'
         tag:
           $ref: '#/components/schemas/ShiftTag'
@@ -765,7 +765,7 @@ components:
         - end
         - userId
         - start
-        - day
+        - days
         - tag
     ShiftUpdateGroupResponse:
       type: object
