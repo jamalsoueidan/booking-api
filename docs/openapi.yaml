@@ -100,6 +100,7 @@ components:
       required:
         - start
         - end
+        - user
     AvailabilityShift:
       type: object
       properties:
