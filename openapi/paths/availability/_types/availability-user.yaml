@@ -1,0 +1,12 @@
+type: object
+allOf:
+  - $ref: "../../user/_types/user.yaml"
+  - type: object
+    properties:
+      userId:
+        type: string
+      tag:
+        $ref: "../../shift/_types/tag.yaml"
+    required:
+      - userId
+      - tag

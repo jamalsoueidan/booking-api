@@ -86,6 +86,89 @@ components:
       required:
         - success
         - errors
+    AvailabilityHour:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+    AvailabilityShift:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        bufferTime:
+          type: integer
+        duration:
+          type: integer
+        total:
+          type: integer
+        hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/AvailabilityHour'
+    AvailabilityUser:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            userId:
+              type: string
+            tag:
+              $ref: '#/components/schemas/ShiftTag'
+          required:
+            - userId
+            - tag
+    AvailabilityGetAvailabilityResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/AvailabilityShift'
+      required:
+        - success
+        - payload
+    AvailabilityGetUsersResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/AvailabilityUser'
+      required:
+        - success
+        - payload
+    AvailabilityGetSettingsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Setting'
+      required:
+        - success
+        - payload
     AuthSession:
       type: object
       properties:
@@ -1436,76 +1519,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ShopifySearchCustomers'
-    AvailabilityHour:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/User'
-        start:
-          type: string
-          format: date-time
-        end:
-          type: string
-          format: date-time
-    AvailabilityShift:
-      type: object
-      properties:
-        date:
-          type: string
-          format: date
-        start:
-          type: string
-          format: date-time
-        end:
-          type: string
-          format: date-time
-        bufferTime:
-          type: integer
-        duration:
-          type: integer
-        total:
-          type: integer
-        hours:
-          type: array
-          items:
-            $ref: '#/components/schemas/AvailabilityHour'
-    AvailabilityGetAvailabilityResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/AvailabilityShift'
-      required:
-        - success
-        - payload
-    AvailabilityGetUsersResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-      required:
-        - success
-        - payload
-    AvailabilityGetSettingsResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Setting'
-      required:
-        - success
-        - payload
 paths:
   /auth/login:
     post:

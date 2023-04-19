@@ -46,6 +46,20 @@ components:
     Errors:
       $ref: "./schemas/errors.yaml"
 
+    # Availability
+    AvailabilityHour:
+      $ref: paths/availability/_types/availability-hour.yaml
+    AvailabilityShift:
+      $ref: paths/availability/_types/availability-shift.yaml
+    AvailabilityUser:
+      $ref: paths/availability/_types/availability-user.yaml
+    AvailabilityGetAvailabilityResponse:
+      $ref: paths/availability/get-availability/response.yaml
+    AvailabilityGetUsersResponse:
+      $ref: paths/availability/get-users/response.yaml
+    AvailabilityGetSettingsResponse:
+      $ref: paths/availability/get-settings/response.yaml
+
     # Auth
     AuthSession:
       $ref: "./paths/auth/_types/auth-session.yaml"
@@ -196,17 +210,6 @@ components:
     ShopifySearchCustomersResponse:
       $ref: "./paths/shopify/search-customers/response.yaml"
 
-    # Availability
-    AvailabilityHour:
-      $ref: paths/availability/_types/availability-hour.yaml
-    AvailabilityShift:
-      $ref: paths/availability/_types/availability-shift.yaml
-    AvailabilityGetAvailabilityResponse:
-      $ref: paths/availability/get-availability/response.yaml
-    AvailabilityGetUsersResponse:
-      $ref: paths/availability/get-users/response.yaml
-    AvailabilityGetSettingsResponse:
-      $ref: paths/availability/get-settings/response.yaml
 paths:
   # auth
   /auth/login:
