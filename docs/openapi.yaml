@@ -97,6 +97,9 @@ components:
         end:
           type: string
           format: date-time
+      required:
+        - start
+        - end
     AvailabilityShift:
       type: object
       properties:
@@ -119,6 +122,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AvailabilityHour'
+      required:
+        - date
+        - start
+        - end
+        - bufferTime
+        - duration
+        - total
+        - hours
     AvailabilityUser:
       type: object
       allOf:
