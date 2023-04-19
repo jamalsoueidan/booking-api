@@ -8,7 +8,7 @@ parameters:
 post:
   tags:
     - Shift
-  operationId: shiftCreateGroup
+  operationId: userShiftCreateGroup
   summary: POST Create shift group
   description: This endpoint create new shift group
   requestBody:

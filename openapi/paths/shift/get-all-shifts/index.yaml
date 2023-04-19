@@ -22,9 +22,9 @@ parameters:
 get:
   tags:
     - Shift
-  operationId: shiftGetAll
-  summary: GET Get all shifts
-  description: This endpoint get all shifts
+  operationId: userShiftGetAll
+  summary: GET Get all shifts for user
+  description: This endpoint get all shifts for user
   responses:
     "200":
       description: "Response ShiftDestroyGroup model"
