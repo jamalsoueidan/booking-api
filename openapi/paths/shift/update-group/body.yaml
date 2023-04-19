@@ -6,7 +6,7 @@ properties:
   start:
     type: string
     format: date-time
-  day:
+  days:
     $ref: "../_types/day.yaml"
   tag:
     $ref: "../_types/tag.yaml"
@@ -15,5 +15,5 @@ required:
   - end
   - userId
   - start
-  - day
+  - days
   - tag
