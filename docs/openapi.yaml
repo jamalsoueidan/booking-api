@@ -2188,7 +2188,7 @@ paths:
     post:
       tags:
         - Shift
-      operationId: shiftCreate
+      operationId: userShiftCreate
       summary: POST Create shift
       description: This endpoint create new shift
       requestBody:
@@ -2225,7 +2225,7 @@ paths:
     post:
       tags:
         - Shift
-      operationId: shiftCreateGroup
+      operationId: userShiftCreateGroup
       summary: POST Create shift group
       description: This endpoint create new shift group
       requestBody:
@@ -2268,7 +2268,7 @@ paths:
     get:
       tags:
         - Shift
-      operationId: shiftGetGroup
+      operationId: userShiftGetGroup
       summary: GET Get shift group
       description: This endpoint get shift group by id
       responses:
@@ -2291,7 +2291,7 @@ paths:
     put:
       tags:
         - Shift
-      operationId: shiftUpdateGroup
+      operationId: userShiftUpdateGroup
       summary: PUT Update shift group
       description: This endpoint update shift group
       requestBody:
@@ -2320,7 +2320,7 @@ paths:
     delete:
       tags:
         - Shift
-      operationId: shiftDestroyGroup
+      operationId: userShiftDestroyGroup
       summary: DEL Delete shift group
       description: This endpoint delete shift group
       responses:
@@ -2348,12 +2348,26 @@ paths:
         required: true
         schema:
           type: string
+      - name: start
+        in: query
+        description: start of the date
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: end
+        in: query
+        description: end of the date
+        required: true
+        schema:
+          type: string
+          format: date-time
     get:
       tags:
         - Shift
-      operationId: shiftGetAll
-      summary: GET Get all shifts
-      description: This endpoint get all shifts
+      operationId: userShiftGetAll
+      summary: GET Get all shifts for user
+      description: This endpoint get all shifts for user
       responses:
         '200':
           description: Response ShiftDestroyGroup model
@@ -2386,7 +2400,7 @@ paths:
     put:
       tags:
         - Shift
-      operationId: shiftUpdate
+      operationId: userShiftUpdate
       summary: PUT Update shift
       description: This endpoint update shift
       requestBody:
@@ -2415,7 +2429,7 @@ paths:
     delete:
       tags:
         - Shift
-      operationId: shiftDestroy
+      operationId: userShiftDestroy
       summary: DEL Delete shift
       description: This endpoint delete shift
       responses:
