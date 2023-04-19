@@ -5,6 +5,20 @@ parameters:
     required: true
     schema:
       type: string
+  - name: start
+    in: query
+    description: start of the date
+    required: true
+    schema:
+      type: string
+      format: date-time
+  - name: end
+    in: query
+    description: end of the date
+    required: true
+    schema:
+      type: string
+      format: date-time
 get:
   tags:
     - Shift
