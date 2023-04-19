@@ -587,7 +587,7 @@ components:
           format: date-time
         tag:
           $ref: '#/components/schemas/ShiftTag'
-        day:
+        days:
           $ref: '#/components/schemas/ShiftDay'
       required:
         - _id
@@ -596,7 +596,7 @@ components:
         - userId
         - start
         - tag
-        - day
+        - days
     ShiftDay:
       type: array
       items:
