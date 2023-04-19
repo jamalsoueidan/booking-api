@@ -8,3 +8,6 @@ properties:
   end:
     type: string
     format: date-time
+required:
+  - start
+  - end

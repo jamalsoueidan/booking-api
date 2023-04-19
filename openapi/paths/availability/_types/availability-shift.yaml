@@ -19,3 +19,11 @@ properties:
     type: array
     items:
       $ref: "./availability-hour.yaml"
+required:
+  - date
+  - start
+  - end
+  - bufferTime
+  - duration
+  - total
+  - hours
