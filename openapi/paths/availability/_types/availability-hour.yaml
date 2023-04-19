@@ -11,3 +11,4 @@ properties:
 required:
   - start
   - end
+  - user
