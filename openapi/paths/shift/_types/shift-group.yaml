@@ -14,7 +14,7 @@ properties:
     format: date-time
   tag:
     $ref: "../_types/tag.yaml"
-  day:
+  days:
     $ref: "../_types/day.yaml"
 required:
   - _id
@@ -23,4 +23,4 @@ required:
   - userId
   - start
   - tag
-  - day
+  - days
