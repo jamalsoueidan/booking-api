@@ -4,20 +4,15 @@ import { jwtVerify } from "~/library/jwt";
 import { ShiftRestrictUser } from "../shift-middleware/shift-restrictions";
 import { ShiftServiceUpdate } from "../shift.service";
 import { Shift, ShiftSchema } from "../shift.types";
+import { ShiftControllerCreateBodySchema } from "./create";
 
 export type ShiftControllerUpdateRequest = {
   query: ShiftControllerUpdateQuery;
   body: ShiftControllerUpdateBody;
 };
 
-export const ShiftControllerUpdateBodySchema = ShiftSchema.pick({
-  tag: true,
-  start: true,
-  end: true,
-});
-
 export type ShiftControllerUpdateBody = z.infer<
-  typeof ShiftControllerUpdateBodySchema
+  typeof ShiftControllerCreateBodySchema
 >;
 
 export const ShiftControllerUpdateQuerySchema = ShiftSchema.pick({
@@ -36,7 +31,7 @@ export const ShiftControllerUpdate = _(
   ShiftRestrictUser,
   async ({ query, body }: ShiftControllerUpdateRequest) => {
     const validateQuery = ShiftControllerUpdateQuerySchema.parse(query);
-    const validateBody = ShiftControllerUpdateBodySchema.parse(body);
+    const validateBody = ShiftControllerCreateBodySchema.parse(body);
     return ShiftServiceUpdate(validateQuery, validateBody);
   }
 );

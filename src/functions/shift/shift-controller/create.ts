@@ -1,6 +1,8 @@
+import { isSameDay } from "date-fns";
 import { z } from "zod";
 import { _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
+import { isDurationAtLeastOneHour } from "../shift-middleware/shift-refinement";
 import { ShiftRestrictUser } from "../shift-middleware/shift-restrictions";
 import { ShiftServiceCreate } from "../shift.service";
 import { Shift, ShiftSchema } from "../shift.types";
@@ -14,20 +16,16 @@ export const ShiftControllerCreateBodySchema = ShiftSchema.pick({
   tag: true,
   start: true,
   end: true,
-}).refine(
-  (data) => {
-    const durationInHours =
-      (data.end.getTime() - data.start.getTime()) / 1000 / 60 / 60;
-
-    // validate the start, and end is same day!
-    return data.start < data.end && durationInHours >= 1;
-  },
-  {
+})
+  .refine((data) => isDurationAtLeastOneHour(data.start, data.end), {
     message:
       "Start time must be before end time, and the time distance must be at least 1 hour.",
     path: ["start", "end"],
-  }
-);
+  })
+  .refine((data) => isSameDay(data.start, data.end), {
+    message: "Start and end times must be on the same day.",
+    path: ["start", "end"],
+  });
 
 export type ShiftControllerCreateBody = z.infer<
   typeof ShiftControllerCreateBodySchema
