@@ -146,7 +146,7 @@ export const ShiftServiceCreateGroup = async (
   );
 
   await ShiftModel.insertMany(shifts);
-  return shifts;
+  return ShiftModel.find({ userId, groupId });
 };
 
 type ShiftServiceUpdateGroupQueryProps = ShiftServiceGetGroupProps;

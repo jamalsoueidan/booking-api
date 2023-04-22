@@ -20,7 +20,7 @@ post:
 
   responses:
     "200":
-      description: "Response with .."
+      description: "Response with all new shift groups"
       content:
         application/json:
           schema:

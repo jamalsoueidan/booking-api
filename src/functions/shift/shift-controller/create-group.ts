@@ -4,7 +4,7 @@ import { jwtVerify } from "~/library/jwt";
 import { isDurationAtLeastOneHour } from "../shift-middleware/shift-refinement";
 import { ShiftRestrictUser } from "../shift-middleware/shift-restrictions";
 import { ShiftServiceCreateGroup } from "../shift.service";
-import { Shift, ShiftDaysSchema, ShiftSchema } from "../shift.types";
+import { ShiftDaysSchema, ShiftSchema } from "../shift.types";
 
 export type ShiftControllerCreateGroupRequest = {
   query: ShiftControllerCreateGroupQuery;
@@ -37,7 +37,9 @@ export type ShiftControllerCreateGroupQuery = z.infer<
   typeof ShiftControllerCreateGroupQuerySchema
 >;
 
-export type ShiftControllerCreateGroupResponse = Array<Omit<Shift, "_id">>;
+export type ShiftControllerCreateGroupResponse = Awaited<
+  ReturnType<typeof ShiftServiceCreateGroup>
+>;
 
 export const ShiftControllerCreateGroup = _(
   jwtVerify,

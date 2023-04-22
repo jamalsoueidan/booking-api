@@ -1,12 +1,8 @@
 type: object
 properties:
-  _id:
-    type: string
   end:
     type: string
     format: date-time
-  groupId:
-    type: string
   userId:
     type: string
   start:
@@ -17,9 +13,7 @@ properties:
   days:
     $ref: "../_types/day.yaml"
 required:
-  - _id
   - end
-  - groupId
   - userId
   - start
   - tag

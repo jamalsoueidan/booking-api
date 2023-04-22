@@ -4,4 +4,6 @@ properties:
     type: boolean
     example: true
   payload:
-    $ref: ../_types/shift-group.yaml
+    type: array
+    items:
+      $ref: ../_types/modify-shift-group.yaml
