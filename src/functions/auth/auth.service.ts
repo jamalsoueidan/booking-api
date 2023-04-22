@@ -74,6 +74,12 @@ export const AuthServiceReceivePassword = async (
       message: `Din adgangskode: ${password}`,
     });*/
 
+  // for the sake of testing right now in production instead of SMS
+  return {
+    message: "Check your phone",
+    password,
+  };
+
   return {
     message: "Check your phone",
     ...(process.env["AZURE_FUNCTIONS_ENVIRONMENT"] === "Development"

@@ -25,6 +25,7 @@ export const ShiftControllerGetAll = _(
   jwtVerify,
   ShiftRestrictGroup,
   async ({ query }: ShiftControllerGetAllRequest) => {
+    // validate the start and end is only one month range!
     const { end, userId, start } = ShiftControllerGetAllSchema.parse(query);
     return ShiftServiceGetAll({ end, userId, start });
   }

@@ -14,7 +14,20 @@ export const ShiftControllerCreateBodySchema = ShiftSchema.pick({
   tag: true,
   start: true,
   end: true,
-});
+}).refine(
+  (data) => {
+    const durationInHours =
+      (data.end.getTime() - data.start.getTime()) / 1000 / 60 / 60;
+
+    // validate the start, and end is same day!
+    return data.start < data.end && durationInHours >= 1;
+  },
+  {
+    message:
+      "Start time must be before end time, and the time distance must be at least 1 hour.",
+    path: ["start", "end"],
+  }
+);
 
 export type ShiftControllerCreateBody = z.infer<
   typeof ShiftControllerCreateBodySchema
