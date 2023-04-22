@@ -559,6 +559,8 @@ components:
           format: date-time
         userId:
           type: string
+        groupId:
+          type: string
         start:
           type: string
           format: date-time
@@ -570,7 +572,7 @@ components:
         - userId
         - start
         - tag
-    ShiftGroup:
+    ShiftModifyGroup:
       type: object
       properties:
         _id:
@@ -587,12 +589,30 @@ components:
           format: date-time
         tag:
           $ref: '#/components/schemas/ShiftTag'
-        days:
-          $ref: '#/components/schemas/ShiftDay'
       required:
         - _id
         - end
         - groupId
+        - userId
+        - start
+        - tag
+    ShiftGetGroup:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        userId:
+          type: string
+        start:
+          type: string
+          format: date-time
+        tag:
+          $ref: '#/components/schemas/ShiftTag'
+        days:
+          $ref: '#/components/schemas/ShiftDay'
+      required:
+        - end
         - userId
         - start
         - tag
@@ -669,7 +689,9 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/ShiftGroup'
+          type: array
+          items:
+            $ref: '#/components/schemas/ShiftModifyGroup'
     ShiftDestroy:
       type: object
       properties:
@@ -726,7 +748,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/ShiftGroup'
+          $ref: '#/components/schemas/ShiftGetGroup'
     ShiftUpdateBody:
       type: object
       properties:
@@ -777,7 +799,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/ShiftGroup'
+          $ref: '#/components/schemas/ShiftModifyGroup'
     ProductGetAll:
       type: object
       properties:
@@ -2239,7 +2261,7 @@ paths:
               $ref: '#/components/schemas/ShiftCreateGroupBody'
       responses:
         '200':
-          description: Response with ..
+          description: Response with all new shift groups
           content:
             application/json:
               schema:
