@@ -90,6 +90,7 @@ type ShiftServiceGetGroupProps = {
 };
 
 type ShiftServiceGetGroupBody = ShiftBody & {
+  userId: string;
   days: Array<ShiftDaysInterval>;
   groupId: string;
 };
@@ -121,6 +122,8 @@ export const ShiftServiceGetGroup = async (
       if (shift.groupId) {
         body.groupId = shift.groupId;
       }
+
+      body.userId = shift.userId.toString();
       return body;
     },
     {
@@ -129,6 +132,7 @@ export const ShiftServiceGetGroup = async (
       start: new Date(),
       tag: Tag.all_day,
       groupId: "",
+      userId: "",
     }
   );
 };
