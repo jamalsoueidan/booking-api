@@ -6,4 +6,4 @@ properties:
   payload:
     type: array
     items:
-      $ref: ../_types/modify-shift-group.yaml
+      $ref: ../_types/shift-group.yaml
