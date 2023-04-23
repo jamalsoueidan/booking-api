@@ -572,7 +572,7 @@ components:
         - userId
         - start
         - tag
-    ShiftModifyGroup:
+    ShiftGroup:
       type: object
       properties:
         _id:
@@ -596,7 +596,7 @@ components:
         - userId
         - start
         - tag
-    ShiftGetGroup:
+    ShiftCollectionGroup:
       type: object
       properties:
         end:
@@ -694,7 +694,7 @@ components:
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/ShiftModifyGroup'
+            $ref: '#/components/schemas/ShiftGroup'
     ShiftDestroy:
       type: object
       properties:
@@ -751,7 +751,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/ShiftGetGroup'
+          $ref: '#/components/schemas/ShiftCollectionGroup'
     ShiftUpdateBody:
       type: object
       properties:
@@ -802,7 +802,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/ShiftModifyGroup'
+          $ref: '#/components/schemas/ShiftGroup'
     ProductGetAll:
       type: object
       properties:
