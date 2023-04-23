@@ -5,6 +5,8 @@ properties:
     format: date-time
   userId:
     type: string
+  groupId:
+    type: string
   start:
     type: string
     format: date-time
@@ -15,6 +17,7 @@ properties:
 required:
   - end
   - userId
+  - groupId
   - start
   - tag
   - days

@@ -89,16 +89,17 @@ type ShiftServiceGetGroupProps = {
   userId: string;
 };
 
-type ShiftServiceGroupBody = ShiftBody & {
+type ShiftServiceGetGroupBody = ShiftBody & {
   days: Array<ShiftDaysInterval>;
+  groupId: string;
 };
 
 export const ShiftServiceGetGroup = async (
   query: ShiftServiceGetGroupProps
 ) => {
   const shifts = await ShiftModel.find(query).sort({ start: "asc" }); // sort is important to generate the body for editing group
-  return shifts.reduce<ShiftServiceGroupBody>(
-    (body: ShiftServiceGroupBody, shift: IShift, currentIndex: number) => {
+  return shifts.reduce<ShiftServiceGetGroupBody>(
+    (body: ShiftServiceGetGroupBody, shift: IShift, currentIndex: number) => {
       const day = format(
         shift.start,
         "EEEE"
@@ -117,14 +118,27 @@ export const ShiftServiceGetGroup = async (
         // eslint-disable-next-line no-param-reassign
         body.end = shift.end;
       }
+      if (shift.groupId) {
+        body.groupId = shift.groupId;
+      }
       return body;
     },
-    { days: [], end: new Date(), start: new Date(), tag: Tag.all_day }
+    {
+      days: [],
+      end: new Date(),
+      start: new Date(),
+      tag: Tag.all_day,
+      groupId: "",
+    }
   );
 };
 
 type ShiftServiceCreateGroupQuery = {
   userId: string;
+};
+
+type ShiftServiceGroupBody = ShiftBody & {
+  days: Array<ShiftDaysInterval>;
 };
 
 export const ShiftServiceCreateGroup = async (

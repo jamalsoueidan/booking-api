@@ -31,6 +31,7 @@ export const ShiftControllerUpdateGroup = _(
     const validateQuery = ShiftControllerDestroyGroupQuerySchema.parse(query);
     await ShiftServiceDestroyGroup(validateQuery);
     const validateBody = ShiftControllerCreateGroupBodySchema.parse(body);
+    // validated that the tag is the same used as before!
     return ShiftServiceCreateGroup(validateQuery, validateBody);
   }
 );
