@@ -7,3 +7,6 @@ properties:
     type: array
     items:
       $ref: ../_types/shift.yaml
+required:
+  - success
+  - payload
