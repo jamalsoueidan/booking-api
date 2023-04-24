@@ -72,15 +72,10 @@ export const ShiftServiceUpdate = (
 
 type ShiftServiceDestroyProps = Pick<Shift, "_id" | "userId">;
 
-export type ShiftServiceDestroyReturn = {
-  acknowledged: boolean;
-  deletedCount: number;
-};
-
 export const ShiftServiceDestroy = async ({
   _id,
   userId,
-}: ShiftServiceDestroyProps): Promise<ShiftServiceDestroyReturn> => {
+}: ShiftServiceDestroyProps) => {
   return ShiftModel.deleteOne({ _id, userId });
 };
 
@@ -183,13 +178,8 @@ type ShiftServiceDestroyGroupProps = {
   userId: string;
 };
 
-export type ShiftServiceDestroyGroupReturn = {
-  acknowledged: boolean;
-  deletedCount: number;
-};
-
 export const ShiftServiceDestroyGroup = async (
   query: ShiftServiceDestroyGroupProps
-): Promise<ShiftServiceDestroyGroupReturn> => {
+) => {
   return ShiftModel.deleteMany(query);
 };

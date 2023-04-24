@@ -109,8 +109,6 @@ components:
       $ref: "./paths/shift/_types/shift.yaml"
     ShiftGroup:
       $ref: "./paths/shift/_types/shift-group.yaml"
-    ShiftCollectionGroup:
-      $ref: "./paths/shift/_types/shift-collection-group.yaml"
     ShiftDay:
       $ref: "./paths/shift/_types/day.yaml"
     ShiftTag:
