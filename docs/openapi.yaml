@@ -642,6 +642,9 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/Shift'
+      required:
+        - success
+        - payload
     ShiftCreateGroupBody:
       type: object
       properties:
@@ -671,6 +674,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Shift'
+      required:
+        - success
+        - payload
     ShiftDestroy:
       type: object
       properties:
@@ -689,6 +695,9 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/ShiftDestroy'
+      required:
+        - success
+        - payload
     ShiftDestroyGroup:
       type: object
       properties:
@@ -707,6 +716,9 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/ShiftDestroyGroup'
+      required:
+        - success
+        - payload
     ShiftGetAllResponse:
       type: object
       properties:
@@ -739,6 +751,9 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/ShiftGroup'
+      required:
+        - success
+        - payload
     ShiftUpdateBody:
       type: object
       properties:
@@ -763,6 +778,9 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/Shift'
+      required:
+        - success
+        - payload
     ShiftUpdateGroupBody:
       type: object
       properties:
@@ -792,6 +810,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Shift'
+      required:
+        - success
+        - payload
     ProductGetAll:
       type: object
       properties:
