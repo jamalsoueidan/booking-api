@@ -1,16 +1,9 @@
 get:
-  parameters:
-    - name: group
-      in: query
-      description: Filter users by a specific group. Only 'owner' role can use this parameter.
-      required: false
-      schema:
-        type: string
   tags:
-    - User
-  operationId: userGetById
-  summary: GET Get user
-  description: This endpoint gets user object
+    - Shift
+  operationId: userShiftGetById
+  summary: GET Get shift
+  description: This endpoint gets shift object
   responses:
     "200":
       description: Response with payload
