@@ -11,6 +11,7 @@ import {
   ShiftControllerUpdate,
   ShiftControllerUpdateGroup,
 } from "./shift/shift-controller";
+import { ShiftControllerGetById } from "./shift/shift-controller/get-by-id";
 
 app.http("shiftGetAll", {
   methods: ["GET"],
@@ -24,6 +25,13 @@ app.http("shiftCreate", {
   authLevel: "anonymous",
   route: "user/{userId?}/shift",
   handler: ShiftControllerCreate,
+});
+
+app.http("shiftGetById", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "user/{userId?}/shift/{_id?}",
+  handler: ShiftControllerGetById,
 });
 
 app.http("shiftUpdate", {

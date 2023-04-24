@@ -47,11 +47,16 @@ export const ShiftServiceCreate = async (
   });
 };
 
-type ShiftServiceUpdateProps = {
-  _id: string;
-  userId: string;
+type ShiftServiceGetByIdProps = Pick<Shift, "_id" | "userId">;
+
+export const ShiftServiceGetById = async ({
+  _id,
+  userId,
+}: ShiftServiceGetByIdProps) => {
+  return ShiftModel.findOne({ _id, userId });
 };
 
+type ShiftServiceUpdateProps = Pick<Shift, "_id" | "userId">;
 type ShiftServiceUpdateBodyProps = Omit<ShiftBody, "tag">;
 
 export const ShiftServiceUpdate = (

@@ -131,6 +131,8 @@ components:
       $ref: "./paths/shift/destroy-group/response.yaml"
     ShiftGetAllResponse:
       $ref: "./paths/shift/get-all-shifts/response.yaml"
+    ShiftGetByIdResponse:
+      $ref: "./paths/shift/get-by-id/response.yaml"
     ShiftGetGroupResponse:
       $ref: "./paths/shift/get-group/response.yaml"
     ShiftUpdateBody:

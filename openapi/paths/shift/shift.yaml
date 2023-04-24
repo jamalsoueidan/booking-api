@@ -1,7 +1,7 @@
 parameters:
   - name: id
     in: path
-    description: The ID of the user
+    description: The ID of the shift
     required: true
     schema:
       type: string
@@ -12,6 +12,8 @@ parameters:
     schema:
       type: string
 
+get:
+  $ref: "./get-by-id/index.yaml#/get"
 put:
   $ref: "./update/index.yaml#/put"
 delete:
