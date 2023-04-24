@@ -720,6 +720,17 @@ components:
       required:
         - success
         - payload
+    ShiftGetByIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Shift'
+      required:
+        - success
+        - payload
     ShiftGetGroupResponse:
       type: object
       properties:
@@ -2393,7 +2404,7 @@ paths:
     parameters:
       - name: id
         in: path
-        description: The ID of the user
+        description: The ID of the shift
         required: true
         schema:
           type: string
@@ -2403,6 +2414,29 @@ paths:
         required: true
         schema:
           type: string
+    get:
+      tags:
+        - Shift
+      operationId: userShiftGetById
+      summary: GET Get shift
+      description: This endpoint gets shift object
+      responses:
+        '200':
+          description: Response with payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftGetByIdResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security:
+        - BearerAuth: []
     put:
       tags:
         - Shift
@@ -2528,7 +2562,7 @@ paths:
       description: This endpoint gets user object
       responses:
         '200':
-          description: Response with UserModel payload
+          description: Response with payload
           content:
             application/json:
               schema:
