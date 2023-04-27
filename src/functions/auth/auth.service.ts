@@ -90,8 +90,9 @@ export const AuthServiceReceivePassword = async (
 
 export type AuthCreateBodyRequest = Omit<Auth, "_id" | "password">;
 
-export const AuthServiceCreate = (body: AuthCreateBodyRequest) =>
-  AuthModel.create(body);
+export const AuthServiceCreate = (body: AuthCreateBodyRequest) => {
+  return AuthModel.create(body);
+};
 
 export const AuthServiceUpdate = (
   filter: Partial<Auth>,

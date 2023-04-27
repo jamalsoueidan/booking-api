@@ -11,7 +11,7 @@ export const UserServiceCreate = async (
 
   await AuthServiceCreate({
     ...body,
-    userId: user._id,
+    userId: user._id.toString(),
     role,
   });
 

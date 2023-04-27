@@ -41,7 +41,7 @@ app.http("shiftUpdate", {
   handler: ShiftControllerUpdate,
 });
 
-app.http("shiftUpdate", {
+app.http("shiftDelete", {
   methods: ["DELETE"],
   authLevel: "anonymous",
   route: "user/{userId?}/shift/{_id?}",
@@ -73,7 +73,7 @@ app.http("shiftUpdateGroup", {
   handler: ShiftControllerUpdateGroup,
 });
 
-app.http("shiftUpdateGroup", {
+app.http("shiftDeleteGroup", {
   methods: ["DELETE"],
   authLevel: "anonymous",
   route: "user/{userId?}/shift-group/{groupId?}",
