@@ -1,5 +1,18 @@
 import { z } from "zod";
 
+const stringOrBoolean = z.union([z.boolean(), z.string()]);
+
+const stringToBoolean = stringOrBoolean.transform((value) => {
+  if (typeof value === "string") {
+    if (value.toLowerCase() === "true") {
+      return true;
+    } else if (value.toLowerCase() === "false") {
+      return false;
+    }
+  }
+  return value;
+});
+
 export const UserZodSchema = z.object({
   _id: z.string(),
   fullname: z.string().nonempty().min(8),
@@ -7,7 +20,7 @@ export const UserZodSchema = z.object({
   phone: z.string().refine((str) => /^\d{8}$/.test(str), {
     message: "Invalid phone number format",
   }),
-  active: z.boolean().default(true),
+  active: stringToBoolean.default(true),
   avatar: z.string().url({ message: "Invalid url" }),
   position: z.string(),
   postal: z

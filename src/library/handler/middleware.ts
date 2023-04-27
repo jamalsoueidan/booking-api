@@ -54,7 +54,7 @@ export const _ =
         return props;
       }
 
-      props.jsonBody = { errors: "unknown", succes: false };
+      props.jsonBody = { errors: err, succes: false };
       props.status = 500;
       return props;
     }
