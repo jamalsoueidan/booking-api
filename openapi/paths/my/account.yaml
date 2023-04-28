@@ -27,7 +27,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: "../user/create/body.yaml"
+          $ref: "../user/update/body.yaml"
 
   responses:
     "200":
