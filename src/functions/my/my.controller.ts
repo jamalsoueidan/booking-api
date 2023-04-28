@@ -1,7 +1,7 @@
 import { SessionKey, _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 
-import { User, UserControllerUpdateBodySchema } from "../user";
+import { User } from "../user";
 import {
   MyServiceGetAccount,
   MyServiceUpdateAccount,
@@ -27,7 +27,11 @@ export type MyControllerUpdateAccountBody = MyServiceUpdateAccountBody;
 export const MyControllerUpdateAccount = _(
   jwtVerify,
   ({ body, session }: SessionKey<MyControllerUpdateAccountRequest>) => {
-    const validateBody = UserControllerUpdateBodySchema.parse(body);
-    return MyServiceUpdateAccount({ _id: session.userId }, validateBody);
+    //we need to validate my account, since we split the form in 2.
+    // form with settings and language
+    // form with the rest of the fields,
+    // we need to handle this somehow
+    // don't allow active to be updated from here!
+    return MyServiceUpdateAccount({ _id: session.userId }, body);
   }
 );
