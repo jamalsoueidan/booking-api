@@ -33,7 +33,7 @@ export const login = async (role: AuthRole) => {
   });
 
   const user = await UserServiceCreate(newUser, role);
-  const auth = await AuthModel.findOne({ userId: user._id });
+  const auth = await AuthModel.findOne({ userId: user?._id });
 
   if (!auth) {
     return {};

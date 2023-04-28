@@ -11,6 +11,7 @@ export type ShiftControllerCreateGroupRequest = {
   body: ShiftControllerCreateGroupBody;
 };
 
+// Add validation for same hour different dates on create grroups
 export const ShiftControllerCreateGroupBodySchema = ShiftSchema.pick({
   tag: true,
   start: true,
