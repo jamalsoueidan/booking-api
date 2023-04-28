@@ -1,7 +1,7 @@
 import { SessionKey, _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 
-import { User } from "../user";
+import { User, UserControllerUpdateBodySchema } from "../user";
 import {
   MyServiceGetAccount,
   MyServiceUpdateAccount,
@@ -12,7 +12,9 @@ export type MyControllerGetAccountResponse = User;
 
 export const MyControllerGetAccount = _(
   jwtVerify,
-  ({ session }: SessionKey<{}>) => MyServiceGetAccount({ _id: session.userId })
+  ({ session }: SessionKey<{}>) => {
+    return MyServiceGetAccount({ _id: session.userId });
+  }
 );
 
 export type MyControllerUpdateAccountRequest = {
@@ -24,6 +26,8 @@ export type MyControllerUpdateAccountBody = MyServiceUpdateAccountBody;
 
 export const MyControllerUpdateAccount = _(
   jwtVerify,
-  ({ body, session }: SessionKey<MyControllerUpdateAccountRequest>) =>
-    MyServiceUpdateAccount({ _id: session.userId }, body)
+  ({ body, session }: SessionKey<MyControllerUpdateAccountRequest>) => {
+    const validateBody = UserControllerUpdateBodySchema.parse(body);
+    return MyServiceUpdateAccount({ _id: session.userId }, validateBody);
+  }
 );

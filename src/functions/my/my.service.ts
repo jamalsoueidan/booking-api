@@ -21,4 +21,6 @@ export type MyServiceUpdateAccountBody = UserControllerUpdateBody;
 export const MyServiceUpdateAccount = (
   query: MyServiceUpdateAccountQuery,
   body: MyServiceUpdateAccountBody
-) => UserServiceFindByIdAndUpdate(query, body);
+) => {
+  return UserServiceFindByIdAndUpdate(query, body);
+};

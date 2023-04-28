@@ -44,6 +44,7 @@ export const UserServiceFindByIdAndUpdate = async (
   const user = await UserModel.findOneAndUpdate(query, body, {
     new: true,
   });
+
   if (!user) {
     throw new NotFoundError([
       {
@@ -55,7 +56,7 @@ export const UserServiceFindByIdAndUpdate = async (
   }
 
   await AuthServiceUpdate(
-    { userId: user._id },
+    { userId: query._id },
     { email: user.email, phone: user.phone, group: user.group }
   );
 

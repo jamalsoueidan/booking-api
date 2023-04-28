@@ -1,5 +1,6 @@
 import { compare } from "bcryptjs";
 import { generate } from "generate-password";
+import { Types } from "mongoose";
 import { ForbiddenError, NotFoundError } from "~/library/handler";
 import { jwtCreateToken } from "~/library/jwt";
 import { AuthModel } from "./auth.model";
@@ -97,4 +98,11 @@ export const AuthServiceCreate = (body: AuthCreateBodyRequest) => {
 export const AuthServiceUpdate = (
   filter: Partial<Auth>,
   body: Partial<AuthCreateBodyRequest>
-) => AuthModel.findOneAndUpdate(filter, body);
+) => {
+  return AuthModel.updateOne(
+    {
+      userId: new Types.ObjectId(filter.userId),
+    },
+    body
+  );
+};
