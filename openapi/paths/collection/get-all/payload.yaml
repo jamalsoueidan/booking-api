@@ -17,9 +17,9 @@ properties:
     items:
       $ref: "./product.yaml"
 required:
-  - fullname
-  - email
-  - phone
-  - postal
-  - position
-  - avatar
+  - _id
+  - title
+  - collectionId
+  - hidden
+  - items
+  - products
