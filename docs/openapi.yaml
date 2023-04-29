@@ -1409,12 +1409,12 @@ components:
           items:
             $ref: '#/components/schemas/CollectionGetAllProduct'
       required:
-        - fullname
-        - email
-        - phone
-        - postal
-        - position
-        - avatar
+        - _id
+        - title
+        - collectionId
+        - hidden
+        - items
+        - products
     CollectionGetAllProduct:
       type: object
       properties:
@@ -1441,7 +1441,6 @@ components:
           type: integer
       required:
         - _id
-        - collectionId
         - hidden
         - imageUrl
         - productId
