@@ -1973,14 +1973,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserCreateBody'
+              $ref: '#/components/schemas/UserUpdateBody'
       responses:
         '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserCreateResponse'
+                $ref: '#/components/schemas/UserUpdateResponse'
         '401':
           $ref: '#/components/responses/UnauthorizedResponse'
         '403':
