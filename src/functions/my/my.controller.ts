@@ -12,7 +12,9 @@ export type MyControllerGetAccountResponse = User;
 
 export const MyControllerGetAccount = _(
   jwtVerify,
-  ({ session }: SessionKey<{}>) => MyServiceGetAccount({ _id: session.userId })
+  ({ session }: SessionKey<{}>) => {
+    return MyServiceGetAccount({ _id: session.userId });
+  }
 );
 
 export type MyControllerUpdateAccountRequest = {
@@ -24,6 +26,12 @@ export type MyControllerUpdateAccountBody = MyServiceUpdateAccountBody;
 
 export const MyControllerUpdateAccount = _(
   jwtVerify,
-  ({ body, session }: SessionKey<MyControllerUpdateAccountRequest>) =>
-    MyServiceUpdateAccount({ _id: session.userId }, body)
+  ({ body, session }: SessionKey<MyControllerUpdateAccountRequest>) => {
+    //we need to validate my account, since we split the form in 2.
+    // form with settings and language
+    // form with the rest of the fields,
+    // we need to handle this somehow
+    // don't allow active to be updated from here!
+    return MyServiceUpdateAccount({ _id: session.userId }, body);
+  }
 );

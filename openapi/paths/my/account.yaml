@@ -27,7 +27,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: "../user/create/body.yaml"
+          $ref: "../user/update/body.yaml"
 
   responses:
     "200":
@@ -35,7 +35,7 @@ put:
       content:
         application/json:
           schema:
-            $ref: "../user/create/response.yaml"
+            $ref: "../user/update/response.yaml"
     "401":
       $ref: "../../responses/unauthorized.yaml"
     "403":

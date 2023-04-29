@@ -1,4 +1,5 @@
-import { NotFoundError } from "~/library/handler";
+import { BadError, NotFoundError } from "~/library/handler";
+import { isMongooseError } from "~/library/mongoose";
 import { AuthRole, AuthServiceCreate, AuthServiceUpdate } from "../auth";
 import { UserModel } from "./user.model";
 import { User } from "./user.types";
@@ -7,15 +8,28 @@ export const UserServiceCreate = async (
   body: Omit<User, "_id">,
   role: AuthRole = AuthRole.user
 ) => {
-  const user = await UserModel.create(body);
+  try {
+    const user = await UserModel.create(body);
 
-  await AuthServiceCreate({
-    ...body,
-    userId: user._id.toString(),
-    role,
-  });
+    await AuthServiceCreate({
+      ...body,
+      userId: user._id.toString(),
+      role,
+    });
 
-  return user;
+    return user;
+  } catch (err: any) {
+    if (isMongooseError(err)) {
+      throw new BadError([
+        {
+          message: "DUPLICATED_PHONE_IN_DB",
+          code: "custom",
+          path: Object.keys(err.keyValue),
+        },
+      ]);
+    }
+    throw err;
+  }
 };
 
 export const UserServiceFindAll = (props: any = {}) => UserModel.find(props);
@@ -30,6 +44,7 @@ export const UserServiceFindByIdAndUpdate = async (
   const user = await UserModel.findOneAndUpdate(query, body, {
     new: true,
   });
+
   if (!user) {
     throw new NotFoundError([
       {
@@ -41,7 +56,7 @@ export const UserServiceFindByIdAndUpdate = async (
   }
 
   await AuthServiceUpdate(
-    { userId: user._id },
+    { userId: query._id },
     { email: user.email, phone: user.phone, group: user.group }
   );
 

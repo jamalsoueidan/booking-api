@@ -1,3 +1,5 @@
+import { faker } from "@faker-js/faker";
+import { ZodError } from "zod";
 import { createUser } from "~/library/jest/helpers";
 import {
   UserServiceCreate,
@@ -14,7 +16,7 @@ const user: Omit<User, "_id"> = {
   active: true,
   address: "asdpkads 12",
   avatar: "https://test.dk/test.png",
-  email: "test@test.com",
+  email: faker.internet.email(),
   fullname: "jamasdeidan",
   group: "a",
   language: "da",
@@ -28,6 +30,18 @@ describe("UserService", () => {
   it("Should create a user", async () => {
     const newUser = await UserServiceCreate(user);
     expect(newUser).not.toBeNull();
+  });
+
+  it("Should not be able to create a user with same phone", async () => {
+    try {
+      await UserServiceCreate(user);
+      await UserServiceCreate({
+        ...user,
+        email: faker.internet.email(),
+      });
+    } catch (err) {
+      expect(err).toBeInstanceOf(ZodError);
+    }
   });
 
   it("Should get list of user", async () => {
@@ -76,13 +90,13 @@ describe("UserService", () => {
     const userGroupB = await createUser({ group: "b" });
 
     let users = await UserServiceGetUserIdsbyGroup({
-      group: userGroupA.group,
+      group: userGroupA?.group || "a",
     });
 
     expect(users.length).toBe(3);
 
     users = await UserServiceGetUserIdsbyGroup({
-      group: userGroupB.group,
+      group: userGroupB?.group || "b",
     });
 
     expect(users.length).toBe(1);
