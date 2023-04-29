@@ -4,6 +4,4 @@ properties:
     type: boolean
     example: true
   payload:
-    type: array
-    items:
-      $ref: "./payload.yaml"
+    $ref: "./payload.yaml"
