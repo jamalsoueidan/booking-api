@@ -1,4 +1,5 @@
 import { SessionKey, _ } from "~/library/handler";
+import { jwtVerify } from "~/library/jwt";
 import {
   CollectionServiceGetAll,
   CollectionServiceGetAllProps,
@@ -12,6 +13,7 @@ export type CollectionControllerGetAllRequest = {
 export type CollectionControllerGetAllResponse = CollectionServiceGetAllReturn;
 
 export const CollectionControllerGetAll = _(
+  jwtVerify,
   ({ query, session }: SessionKey<CollectionControllerGetAllRequest>) => {
     if (!session.isOwner) {
       query.group = session.group;
