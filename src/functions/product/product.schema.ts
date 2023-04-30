@@ -37,7 +37,11 @@ export const ProductMongooseSchema = new Schema<
     index: true,
     type: Boolean,
   },
-  imageUrl: String,
+  image: {
+    url: String,
+    width: Number,
+    height: Number,
+  },
   productId: {
     index: true,
     required: true,

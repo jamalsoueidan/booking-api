@@ -47,10 +47,10 @@ export const CollectionServiceGetAll = async ({
   group,
 }: CollectionServiceGetAllProps = {}) => {
   const collections = await CollectionModel.find().lean();
-  const products: ProductServiceGetByIdReturn[] = [];
   const aggregateCollections: CollectionServiceGetAllReturn = [];
 
   for (const collection of collections) {
+    const products: ProductServiceGetByIdReturn[] = [];
     for (const productId of collection.productIds) {
       const product = await ProductServiceGetById({ productId, group });
       if (product) {

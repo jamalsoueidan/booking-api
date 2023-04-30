@@ -13,6 +13,8 @@ describe("ShopifyServiceInsertCollections", () => {
             title: "Kurbehandlinger",
             image: {
               url: "https://cdn.shopify.com/s/files/1/0682/4060/5458/collections/433297_medium_zoom-4b.jpg?v=1670173558",
+              width: 100,
+              height: 100,
             },
             productIds: [],
           },
@@ -21,6 +23,8 @@ describe("ShopifyServiceInsertCollections", () => {
             title: "Reflekser/Striper",
             image: {
               url: "https://cdn.shopify.com/s/files/1/0682/4060/5458/collections/Balayage.webp?v=1670173633",
+              width: 100,
+              height: 100,
             },
             productIds: [],
           },
