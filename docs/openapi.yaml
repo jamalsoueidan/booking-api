@@ -1536,9 +1536,7 @@ components:
           type: boolean
           example: true
         payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/ShopifyLoadData'
+          $ref: '#/components/schemas/ShopifyLoadData'
     ShopifySearchCustomers:
       type: object
       properties:
