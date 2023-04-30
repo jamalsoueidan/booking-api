@@ -5,6 +5,8 @@ export type ShopifyCollection = {
   title: string;
   image?: {
     url: string;
+    width: number;
+    height: number;
   };
   productIds: Array<number>; // added extra
 };
@@ -23,6 +25,8 @@ const query = gql`
         title
         image {
           url
+          width
+          height
         }
       }
     }

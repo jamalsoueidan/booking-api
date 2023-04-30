@@ -25,6 +25,8 @@ const query = gql`
           title
           featuredImage {
             url
+            width
+            height
           }
         }
       }

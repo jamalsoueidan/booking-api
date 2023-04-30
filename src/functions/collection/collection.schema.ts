@@ -28,6 +28,10 @@ export const CollectionMongooseSchema = new mongoose.Schema<
       type: Number,
     },
   ],
-  imageUrl: String,
+  image: {
+    url: String,
+    width: Number,
+    height: Number,
+  },
   title: String,
 });

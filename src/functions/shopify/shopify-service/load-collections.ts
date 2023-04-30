@@ -27,7 +27,7 @@ const ShopifyServiceInsertProducts = async (products: ShopifyProduct[]) => {
         $set: {
           productId: ShopifyHelperGetId(c.id),
           title: c.title,
-          image: c.featuredImage?.url,
+          image: c.featuredImage,
         },
       },
       upsert: true,

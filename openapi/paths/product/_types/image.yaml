@@ -1,0 +1,12 @@
+type: object
+properties:
+  url:
+    type: string
+  width:
+    type: number
+  height:
+    type: number
+required:
+  - url
+  - width
+  - height

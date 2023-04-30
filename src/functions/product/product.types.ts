@@ -8,7 +8,11 @@ export const ProductZodSchema = z.object({
   buffertime: z.number().default(0).optional(),
   duration: z.number().default(60).optional(),
   hidden: z.boolean().default(false),
-  imageUrl: z.string(),
+  image: z.object({
+    url: z.string(),
+    width: z.number(),
+    height: z.number(),
+  }),
   productId: z.number(),
   users: z.array(
     z.object({

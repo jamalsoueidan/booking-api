@@ -46,6 +46,9 @@ components:
     Errors:
       $ref: "./schemas/errors.yaml"
 
+    Image:
+      $ref: "./paths/product/_types/image.yaml"
+
     # Availability
     AvailabilityHour:
       $ref: paths/availability/_types/availability-hour.yaml
@@ -195,12 +198,8 @@ components:
     # Collection
     CollectionGetAll:
       $ref: "./paths/collection/get-all/payload.yaml"
-    CollectionGetAllProduct:
-      $ref: "./paths/collection/get-all/product.yaml"
     CollectionGetAllResponse:
       $ref: "./paths/collection/get-all/response.yaml"
-    CollectionGetAllUser:
-      $ref: "./paths/collection/get-all/user.yaml"
 
     # Shopify
     ShopifyLoadData:

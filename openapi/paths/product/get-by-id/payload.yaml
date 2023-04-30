@@ -4,8 +4,8 @@ properties:
     type: string
   hidden:
     type: boolean
-  imageUrl:
-    type: string
+  image:
+    $ref: "../_types/image.yaml"
   productId:
     type: integer
   users:
@@ -23,9 +23,7 @@ properties:
     type: integer
 required:
   - _id
-  - collectionId
   - hidden
-  - imageUrl
   - productId
   - users
   - title

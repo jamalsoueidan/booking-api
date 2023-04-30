@@ -3,6 +3,10 @@ export interface Collection {
   hidden: boolean;
   title: string;
   collectionId: number;
-  imageUrl: string;
+  image: {
+    url: string;
+    width: number;
+    height: number;
+  };
   productIds: number[];
 }
