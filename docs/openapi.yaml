@@ -86,6 +86,19 @@ components:
       required:
         - success
         - errors
+    Image:
+      type: object
+      properties:
+        url:
+          type: string
+        width:
+          type: number
+        height:
+          type: number
+      required:
+        - url
+        - width
+        - height
     AvailabilityHour:
       type: object
       properties:
@@ -944,8 +957,8 @@ components:
           type: string
         hidden:
           type: boolean
-        imageUrl:
-          type: string
+        image:
+          $ref: '#/components/schemas/Image'
         productId:
           type: integer
         users:
@@ -963,9 +976,7 @@ components:
           type: integer
       required:
         - _id
-        - collectionId
         - hidden
-        - imageUrl
         - productId
         - users
         - title
@@ -1008,6 +1019,9 @@ components:
           example: true
         payload:
           $ref: '#/components/schemas/ProductGetById'
+      required:
+        - success
+        - payload
     ProductUpdateBody:
       type: object
       properties:
@@ -1402,53 +1416,19 @@ components:
         hidden:
           type: boolean
           default: false
-        items:
-          type: number
+        image:
+          $ref: '#/components/schemas/Image'
         products:
           type: array
           items:
-            $ref: '#/components/schemas/CollectionGetAllProduct'
+            $ref: '#/components/schemas/ProductGetById'
       required:
         - _id
         - title
         - collectionId
+        - productIds
         - hidden
-        - items
         - products
-    CollectionGetAllProduct:
-      type: object
-      properties:
-        _id:
-          type: string
-        hidden:
-          type: boolean
-        imageUrl:
-          type: string
-        productId:
-          type: integer
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/CollectionGetAllUser'
-        title:
-          type: string
-        active:
-          type: boolean
-          default: true
-        buffertime:
-          type: integer
-        duration:
-          type: integer
-      required:
-        - _id
-        - hidden
-        - imageUrl
-        - productId
-        - users
-        - title
-        - active
-        - buffertime
-        - duration
     CollectionGetAllResponse:
       type: object
       properties:
@@ -1462,34 +1442,6 @@ components:
       required:
         - success
         - payload
-    CollectionGetAllUser:
-      type: object
-      properties:
-        userId:
-          type: string
-        tag:
-          type: string
-        fullname:
-          type: string
-        email:
-          type: string
-        phone:
-          type: string
-        avatar:
-          type: string
-        position:
-          type: string
-        postal:
-          type: integer
-      required:
-        - userId
-        - tag
-        - fullname
-        - email
-        - phone
-        - avatar
-        - position
-        - postal
     ShopifyLoadData:
       type: object
       properties:
