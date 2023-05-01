@@ -15,7 +15,7 @@ properties:
   products:
     type: array
     items:
-      $ref: ../../product/get-by-id/payload.yaml
+      $ref: ../../product/_types/product.yaml
 required:
   - _id
   - title

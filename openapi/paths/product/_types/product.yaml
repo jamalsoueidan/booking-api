@@ -2,18 +2,12 @@ type: object
 properties:
   _id:
     type: string
-  collectionId:
-    type: integer
   hidden:
     type: boolean
-  imageUrl:
-    type: string
+  image:
+    $ref: "./image.yaml"
   productId:
     type: integer
-  users:
-    type: array
-    items:
-      $ref: "./user.yaml"
   title:
     type: string
   active:
@@ -25,9 +19,7 @@ properties:
     type: integer
 required:
   - _id
-  - collectionId
   - hidden
-  - imageUrl
   - productId
   - users
   - title

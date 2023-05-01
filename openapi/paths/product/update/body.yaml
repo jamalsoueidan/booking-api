@@ -2,10 +2,6 @@ type: object
 properties:
   hidden:
     type: boolean
-  users:
-    type: array
-    items:
-      $ref: "./body-user.yaml"
   active:
     type: boolean
     default: true

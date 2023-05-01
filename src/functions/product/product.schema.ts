@@ -1,15 +1,7 @@
-import { Document, Model, Schema, Types } from "mongoose";
-import { Tag, TagKeys } from "../shift";
+import { Document, Model, Schema } from "mongoose";
 import { Product } from "./product.types";
 
-type ProductMongooseUser = {
-  userId: Types.ObjectId;
-  tag: Tag;
-};
-
-export interface IProduct extends Omit<Product, "_id" | "users"> {
-  users: Array<ProductMongooseUser>;
-}
+export interface IProduct extends Omit<Product, "_id"> {}
 
 export interface IProductDocument extends IProduct, Document {}
 
@@ -48,19 +40,5 @@ export const ProductMongooseSchema = new Schema<
     unique: true,
     type: Number,
   },
-  users: [
-    {
-      userId: {
-        ref: "user",
-        required: true,
-        type: Schema.Types.ObjectId,
-      },
-      tag: {
-        enum: TagKeys,
-        required: true,
-        type: String,
-      },
-    },
-  ],
   title: String,
 });

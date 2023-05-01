@@ -148,30 +148,16 @@ components:
       $ref: "./paths/shift/update-group/response.yaml"
 
     # Product
-    ProductGetAll:
-      $ref: "./paths/product/get-all/payload.yaml"
-    ProductGetAllUser:
-      $ref: "./paths/product/get-all/user.yaml"
+    Product:
+      $ref: "./paths/product/_types/product.yaml"
     ProductGetAllResponse:
       $ref: "./paths/product/get-all/response.yaml"
-    ProductGetAvailableUsers:
-      $ref: "./paths/product/get-available-users/payload.yaml"
-    ProductGetAvailableUsersResponse:
-      $ref: "./paths/product/get-available-users/response.yaml"
-    ProductGetById:
-      $ref: "./paths/product/get-by-id/payload.yaml"
-    ProductGetByIdUser:
-      $ref: "./paths/product/get-by-id/user.yaml"
     ProductGetByIdResponse:
       $ref: "./paths/product/get-by-id/response.yaml"
     ProductUpdateBody:
       $ref: "./paths/product/update/body.yaml"
-    ProductUpdateBodyUser:
-      $ref: "./paths/product/update/body-user.yaml"
     ProductUpdateResponse:
       $ref: "./paths/product/update/response.yaml"
-    ProductUpdateUser:
-      $ref: "./paths/product/update/user.yaml"
 
     # Booking
     Booking:
@@ -251,8 +237,6 @@ paths:
   # product
   /products:
     $ref: "./paths/product/get-all/index.yaml"
-  /products/get-available-users:
-    $ref: "./paths/product/get-available-users/index.yaml"
   /products/{id}:
     $ref: "./paths/product/product.yaml"
 
