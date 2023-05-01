@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { _ } from "~/library/handler";
+import { SessionKey, _ } from "~/library/handler";
 import { jwtVerify } from "~/library/jwt";
 import { ProductUsersServiceAdd } from "../product-users.service";
 import { ProductUsersZodSchema } from "../product-users.types";
@@ -10,11 +10,10 @@ export type ProductUsersControllerAddRequest = {
 
 export const ProductUsersServiceAddBodySchema = ProductUsersZodSchema.omit({
   _id: true,
-  pid: true,
 });
 
-export type ProductUsersControllerAddResponse = ReturnType<
-  typeof ProductUsersServiceAdd
+export type ProductUsersControllerAddResponse = Awaited<
+  ReturnType<typeof ProductUsersServiceAdd>
 >;
 
 /*
@@ -22,7 +21,11 @@ make sure he only adding his own userId
 */
 export const ProductUsersControllerAdd = _(
   jwtVerify,
-  async ({ body }: ProductUsersControllerAddRequest) => {
+  async ({ body, session }: SessionKey<ProductUsersControllerAddRequest>) => {
+    if (!session.isOwner) {
+      body.userId = session.userId;
+    }
+
     const validateBody = ProductUsersServiceAddBodySchema.parse(body);
     return ProductUsersServiceAdd(validateBody);
   }

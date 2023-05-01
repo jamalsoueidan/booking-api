@@ -4,10 +4,12 @@ import { Tag } from "../shift";
 
 export const ProductUsersZodSchema = z.object({
   _id: z.string(),
-  productId: z.string().refine(isObjectId, {
-    message: "userId must be a valid ObjectId",
-  }),
-  pid: z.number(),
+  productId: z
+    .string()
+    .or(z.number())
+    .transform((value) =>
+      typeof value === "string" ? parseInt(value, 10) : value
+    ),
   userId: z.string().refine(isObjectId, {
     message: "userId must be a valid ObjectId",
   }),

@@ -2,10 +2,8 @@ import { Document, Model, Schema, Types } from "mongoose";
 import { TagKeys } from "../shift";
 import { ProductUsers } from "./product-users.types";
 
-export interface IProductUsers
-  extends Omit<ProductUsers, "_id" | "userId" | "productId"> {
+export interface IProductUsers extends Omit<ProductUsers, "_id" | "userId"> {
   userId: Types.ObjectId;
-  productId: Types.ObjectId;
 }
 
 export interface IProductUsersDocument extends IProductUsers, Document {}
@@ -16,16 +14,10 @@ export const ProductUsersMongooseSchema = new Schema<
   IProductUsersDocument,
   IProductUsersModel
 >({
-  pid: {
+  productId: {
     index: true,
     required: true,
     type: Number,
-  },
-  productId: {
-    ref: "product",
-    index: true,
-    required: true,
-    type: Schema.Types.ObjectId,
   },
   userId: {
     ref: "user",

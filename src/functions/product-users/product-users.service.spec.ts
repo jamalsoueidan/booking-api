@@ -1,47 +1,67 @@
-import { IProductDocument } from "~/functions/product";
 import { Tag } from "~/functions/shift";
 import { IUserDocument } from "~/functions/user";
 import { createProduct, createUser } from "~/library/jest/helpers";
 import {
   ProductUsersServiceAdd,
   ProductUsersServiceGetAll,
+  ProductUsersServiceRemove,
 } from "./product-users.service";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-const pid = 123456789;
+const productId = 123456789;
 
 describe("ProductUsersService", () => {
-  let product: IProductDocument;
   let user: IUserDocument;
 
   beforeEach(async () => {
-    product = await createProduct({ pid });
     user = await createUser();
   });
 
   it("Should be able to add user to product", async () => {
-    const query = {
-      productId: product._id,
+    const product = await createProduct({ productId });
+    const findProduct = await ProductUsersServiceAdd({
+      productId: product.productId,
       userId: user._id,
       tag: Tag.all_day,
-    };
-
-    const findProduct = await ProductUsersServiceAdd(query);
-    expect(findProduct?.pid).toEqual(pid);
+    });
+    expect(findProduct?.productId).toEqual(productId);
   });
 
   it("Should be able to find all products user belongs to", async () => {
-    const query = {
-      productId: product._id,
+    const product = await createProduct({ productId });
+    const product2 = await createProduct({ productId: 3432 });
+
+    await ProductUsersServiceAdd({
+      productId: product.productId,
       userId: user._id,
       tag: Tag.all_day,
-    };
+    });
 
-    await ProductUsersServiceAdd(query);
+    await ProductUsersServiceAdd({
+      productId: product2.productId,
+      userId: user._id,
+      tag: Tag.middle_of_week,
+    });
 
     const products = await ProductUsersServiceGetAll({ userId: user._id });
-    console.log(products);
-    expect(products.length).toEqual(1);
+    expect(products.length).toEqual(2);
+  });
+
+  it("Should be able to remove user from product", async () => {
+    const product = await createProduct({ productId });
+    const findProduct = await ProductUsersServiceAdd({
+      productId: product.productId,
+      userId: user._id,
+      tag: Tag.all_day,
+    });
+    expect(findProduct?.productId).toEqual(productId);
+
+    const remove = await ProductUsersServiceRemove({
+      productId: product.productId,
+      userId: user._id,
+    });
+
+    expect(remove.deletedCount).toBe(1);
   });
 });
