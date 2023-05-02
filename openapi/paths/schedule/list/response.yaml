@@ -1,0 +1,12 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  payload:
+    type: array
+    items:
+      $ref: ../_types/schedule.yaml
+required:
+  - success
+  - payload

@@ -104,7 +104,7 @@ describe("Schedule Service", () => {
     await ScheduleServiceCreate({ name, customerId });
     await ScheduleServiceCreate({ name: "Test Schedule 2", customerId });
 
-    const schedules = await ScheduleServiceList(customerId);
+    const schedules = await ScheduleServiceList({ customerId });
 
     expect(schedules.length).toEqual(2);
   });

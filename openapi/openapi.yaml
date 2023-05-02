@@ -55,6 +55,8 @@ components:
       $ref: paths/schedule/create/response.yaml
     ScheduleCreateBody:
       $ref: paths/schedule/create/body.yaml
+    ScheduleListResponse:
+      $ref: paths/schedule/list/response.yaml
 
     Errors:
       $ref: "./schemas/errors.yaml"
@@ -228,6 +230,8 @@ paths:
   # schedule
   /customer/{customerId}/schedule:
     $ref: "./paths/schedule/create/index.yaml"
+  /customer/{customerId}/schedules:
+    $ref: "./paths/schedule/list/index.yaml"
 
   # auth
   /auth/login:

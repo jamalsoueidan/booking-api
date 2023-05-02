@@ -9,11 +9,11 @@ import {
   ScheduleControllerCreate,
   ScheduleControllerCreateRequest,
   ScheduleControllerCreateResponse,
-} from "./schedule.controller";
+} from "./create";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("ScheduleController", () => {
+describe("ScheduleControllerCreate", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
