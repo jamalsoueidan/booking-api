@@ -3,7 +3,7 @@ import "module-alias/register";
 import { ScheduleControllerCreate, ScheduleControllerList } from "./schedule";
 
 app.http("scheduleCreate", {
-  methods: ["GET"],
+  methods: ["POST"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/schedule",
   handler: ScheduleControllerCreate,
