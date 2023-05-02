@@ -35,9 +35,9 @@ export const ScheduleServiceUpdate = async (
 };
 
 export const ScheduleServiceList = async (
-  customerId: Schedule["customerId"]
+  filter: Pick<Schedule, "customerId">
 ) => {
-  return ScheduleModel.find({ customerId });
+  return ScheduleModel.find(filter);
 };
 
 export const ScheduleServiceGet = async (props: Create) => {

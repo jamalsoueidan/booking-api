@@ -1,0 +1,29 @@
+parameters:
+  - name: customerId
+    in: path
+    description: The ID of the customerId
+    required: true
+    schema:
+      type: string
+get:
+  tags:
+    - Schedule
+  operationId: customerScheduleList
+  summary: GET Get all schedule for customer
+  description: This endpoint get all schedule for customer
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+
+  security:
+    - BearerAuth: []
