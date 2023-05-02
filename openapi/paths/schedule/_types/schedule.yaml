@@ -1,0 +1,18 @@
+type: object
+properties:
+  _id:
+    type: string
+  name:
+    type: string
+  customerId:
+    type: number
+  slots:
+    type: array
+    items:
+      $ref: ./slot.yaml
+
+required:
+  - _id
+  - name
+  - customerId
+  - slots
