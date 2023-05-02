@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
-import { jwtVerify } from "~/library/jwt";
 import { ScheduleServiceCreate } from "./schedule.service";
 import { ScheduleZodSchema } from "./schedule.types";
 
@@ -22,7 +21,6 @@ export type ScheduleControllerCreateResponse = Awaited<
 >;
 
 export const ScheduleControllerCreate = _(
-  jwtVerify,
   ({ query, body }: ScheduleControllerCreateRequest) => {
     const validateQuery = ScheduleControllerCreateQuerySchema.parse(query);
     const validateBody = ScheduleControllerCreateBodySchema.parse(body);
