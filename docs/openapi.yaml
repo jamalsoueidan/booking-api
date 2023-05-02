@@ -56,6 +56,80 @@ components:
           schema:
             $ref: '#/components/schemas/Errors'
   schemas:
+    Day:
+      type: string
+      enum:
+        - monday
+        - tuesday
+        - wednesday
+        - thursday
+        - friday
+        - saturday
+        - sunday
+    Interval:
+      type: object
+      properties:
+        _id:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+      required:
+        - _id
+        - from
+        - to
+    Slot:
+      type: object
+      properties:
+        _id:
+          type: string
+        day:
+          $ref: '#/components/schemas/Day'
+        intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Interval'
+      required:
+        - _id
+        - day
+        - intervals
+    Schedule:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        customerId:
+          type: number
+        slots:
+          type: array
+          items:
+            $ref: '#/components/schemas/Slot'
+      required:
+        - _id
+        - name
+        - customerId
+        - slots
+    ScheduleCreateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Schedule'
+      required:
+        - success
+        - payload
+    ScheduleCreateBody:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
     Errors:
       type: object
       properties:
@@ -1519,6 +1593,43 @@ components:
           items:
             $ref: '#/components/schemas/ShopifySearchCustomers'
 paths:
+  '/customer/{customerId}/schedule':
+    parameters:
+      - name: customerId
+        in: path
+        description: The ID of the customerId
+        required: true
+        schema:
+          type: string
+    post:
+      tags:
+        - Schedule
+      operationId: customerScheduleCreate
+      summary: POST Create schedule
+      description: This endpoint create new schedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleCreateBody'
+      responses:
+        '200':
+          description: Response with schedule payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleCreateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security:
+        - BearerAuth: []
   /auth/login:
     post:
       tags:
