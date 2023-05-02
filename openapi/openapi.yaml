@@ -43,6 +43,19 @@ components:
 
   schemas:
     # errors
+    Day:
+      $ref: paths/schedule/_types/day.yaml
+    Interval:
+      $ref: paths/schedule/_types/interval.yaml
+    Slot:
+      $ref: paths/schedule/_types/slot.yaml
+    Schedule:
+      $ref: paths/schedule/_types/schedule.yaml
+    ScheduleCreateResponse:
+      $ref: paths/schedule/create/response.yaml
+    ScheduleCreateBody:
+      $ref: paths/schedule/create/body.yaml
+
     Errors:
       $ref: "./schemas/errors.yaml"
 
@@ -212,6 +225,10 @@ components:
       $ref: "./paths/shopify/search-customers/response.yaml"
 
 paths:
+  # schedule
+  /customer/{customerId}/schedule:
+    $ref: "./paths/schedule/create/index.yaml"
+
   # auth
   /auth/login:
     $ref: "./paths/auth/login.yaml"

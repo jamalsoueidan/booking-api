@@ -1,0 +1,15 @@
+type: object
+properties:
+  _id:
+    type: string
+  day:
+    $ref: "../_types/day.yaml"
+  intervals:
+    type: array
+    items:
+      $ref: ./interval.yaml
+
+required:
+  - _id
+  - day
+  - intervals
