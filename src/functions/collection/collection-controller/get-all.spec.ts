@@ -1,17 +1,12 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { AuthRole } from "~/functions/auth";
-import { ProductServiceUpdate } from "~/functions/product";
 import { Tag } from "~/functions/shift";
 import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
-import {
-  createCollection,
-  createProduct,
-  createUserWithShift,
-} from "~/library/jest/helpers";
+import { createCollection, createProduct } from "~/library/jest/helpers";
 import { clearDatabase, connect, disconnect } from "~/library/jest/mongoose";
 import { CollectionServiceAddProduct } from "../collection.service";
 import {
@@ -47,27 +42,9 @@ describe("CollectionControllerGetAll", () => {
       product2.productId
     );
 
-    const { user } = await createUserWithShift({
-      group: "a",
-      tag,
-    });
-
-    const { user: user2 } = await createUserWithShift({
-      group: "b",
-      tag,
-    });
-
-    await ProductServiceUpdate(product1?._id, {
-      users: [
-        { userId: user._id, tag },
-        { userId: user2._id, tag: Tag.end_of_week },
-      ],
-    });
-
     const context: InvocationContext = createContext();
     const request: HttpRequest =
       await createHttpRequest<CollectionControllerGetAllRequest>({
-        query: {},
         loginAs: AuthRole.owner,
       });
 

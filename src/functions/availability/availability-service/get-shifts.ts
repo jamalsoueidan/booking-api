@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { ShiftModel, Tag } from "~/functions/shift";
 import { DateHelpers } from "~/library/helper-date";
 import { AvailabilityHourUser } from "../availability.types";
@@ -28,7 +29,7 @@ export const AvailabilityServiceGetShifts = ({
           $lt: DateHelpers.closeOfDay(end),
         },
         userId: {
-          $in: userIds,
+          $in: userIds.map((s) => new mongoose.Types.ObjectId(s)),
         },
         start: {
           $gte: DateHelpers.beginningOfDay(start),

@@ -36,7 +36,7 @@ export const login = async (role: AuthRole) => {
   const auth = await AuthModel.findOne({ userId: user?._id });
 
   if (!auth) {
-    return {};
+    throw new Error("auth not exist");
   }
 
   return { token: jwtCreateToken(auth?.toJSON()), user, auth };

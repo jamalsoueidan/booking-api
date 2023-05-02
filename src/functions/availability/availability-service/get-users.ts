@@ -1,5 +1,5 @@
 import mongoose, { PipelineStage } from "mongoose";
-import { ProductModel } from "~/functions/product";
+import { ProductUsersModel } from "~/functions/product-users/product-users.model";
 import { AvailabilityUser } from "../availability.types";
 
 export type AvailabilityServiceGetUsersProps = {
@@ -16,67 +16,56 @@ export const AvailabilityServiceGetUsers = ({
   let pipeline: PipelineStage[] = [
     {
       $match: {
-        active: true,
         productId,
+        ...(userId ? { userId: new mongoose.Types.ObjectId(userId) } : null),
       },
     },
-    {
-      $unwind: "$users",
-    },
-  ];
-
-  if (userId) {
-    pipeline.push({
-      $match: {
-        "users.userId": new mongoose.Types.ObjectId(userId),
-      },
-    });
-  }
-
-  pipeline = [
-    ...pipeline,
     {
       $lookup: {
-        as: "users.user",
-        foreignField: "_id",
-        from: "User",
-        localField: "users.userId",
+        from: "Product",
+        as: "product",
+        let: { productId: "$productId" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$productId", "$$productId"] },
+                  { $eq: ["$active", true] },
+                ],
+              },
+            },
+          },
+        ],
       },
     },
     {
       $unwind: {
-        path: "$users.user",
+        path: "$product",
       },
     },
     {
-      $addFields: {
-        "users.user.userId": "$users.user._id",
-        "users.user.tag": "$users.tag",
+      $lookup: {
+        from: "User",
+        as: "user",
+        let: { userId: "$userId" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$_id", "$$userId"] },
+                  { $eq: ["$active", true] },
+                ],
+              },
+            },
+          },
+        ],
       },
     },
     {
-      $addFields: {
-        "_id.users": "$users.user",
-      },
-    },
-    {
-      $replaceRoot: {
-        newRoot: "$_id",
-      },
-    },
-    {
-      $replaceRoot: {
-        newRoot: "$users",
-      },
-    },
-    { $match: { active: true } },
-    {
-      $project: {
-        __v: 0,
-        active: 0,
-        email: 0,
-        phone: 0,
-        shop: 0,
+      $unwind: {
+        path: "$user",
       },
     },
   ];
@@ -84,10 +73,10 @@ export const AvailabilityServiceGetUsers = ({
   if (group) {
     pipeline.push({
       $match: {
-        group,
+        "user.group": group,
       },
     });
   }
 
-  return ProductModel.aggregate<AvailabilityUser>(pipeline);
+  return ProductUsersModel.aggregate<AvailabilityUser>(pipeline);
 };

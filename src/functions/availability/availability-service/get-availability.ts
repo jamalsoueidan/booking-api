@@ -1,8 +1,9 @@
+import { ProductModel } from "~/functions/product";
+import { ProductUsersModel } from "~/functions/product-users/product-users.model";
 import { NotFoundError } from "~/library/handler";
 import { AvailabilityServiceCreateAvailability } from "./create-availability";
 import { AvailabilityServiceGetBookings } from "./get-bookings";
 import { AvailabilityServiceGetCarts } from "./get-carts";
-import { AvailabilityServiceGetProduct } from "./get-product";
 import { AvailabilityServiceGetShifts } from "./get-shifts";
 import { AvailabilityServiceRemoveAvailability } from "./remove-availability";
 
@@ -19,9 +20,8 @@ export const AvailabilityServiceGetAvailability = async ({
   end,
   productId,
 }: AvailabilityServiceGetAvailabilityProps) => {
-  const product = await AvailabilityServiceGetProduct({
+  const product = await ProductModel.findOne({
     productId,
-    userId,
   });
 
   if (!product) {
@@ -30,8 +30,12 @@ export const AvailabilityServiceGetAvailability = async ({
     ]);
   }
 
-  const userIds = product.users.map((s) => s.userId);
-  const tag = product.users.map((s) => s.tag);
+  const productUsers = await ProductUsersModel.find({
+    productId,
+    userId,
+  });
+  const userIds = productUsers.map(({ userId }) => userId.toString());
+  const tag = productUsers.map(({ tag }) => tag);
 
   const schedules = await AvailabilityServiceGetShifts({
     end,
@@ -40,10 +44,14 @@ export const AvailabilityServiceGetAvailability = async ({
     tag,
   });
 
+  console.log(userId, schedules);
+
   let createdAvailabilities = AvailabilityServiceCreateAvailability(
     product,
     schedules
   );
+
+  console.log(createdAvailabilities);
 
   const bookings = await AvailabilityServiceGetBookings({
     end,

@@ -1,8 +1,5 @@
-import {
-  IProductDocument,
-  ProductServiceGetById,
-  ProductServiceUpdate,
-} from "~/functions/product";
+import { IProductDocument, ProductServiceGetById } from "~/functions/product";
+import { ProductUsersServiceAdd } from "~/functions/product-users/product-users.service";
 import { Tag } from "~/functions/shift";
 import { createUserWithShift } from "./shift";
 import { DEFAULT_GROUP } from "./user";
@@ -23,8 +20,10 @@ export const createUserWithShiftAndUpdateProduct = async ({
     tag,
   });
 
-  await ProductServiceUpdate(product._id, {
-    users: [{ userId: user._id, tag }],
+  await ProductUsersServiceAdd({
+    productId: product.productId,
+    userId: user._id,
+    tag,
   });
 
   const updatedProduct = await ProductServiceGetById({ id: product.id });

@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { addDays, addHours, isWithinInterval, setHours } from "date-fns";
 import { BookingModel } from "~/functions/booking";
 import { CartModel } from "~/functions/cart";
-import { ProductServiceUpdate } from "~/functions/product";
+import { ProductUsersServiceAdd } from "~/functions/product-users/product-users.service";
 import { Tag } from "~/functions/shift";
 import {
   createProduct,
@@ -58,8 +58,10 @@ describe("AvailabilityServiceGetAvailability", () => {
       tag,
     });
 
-    await ProductServiceUpdate(product._id, {
-      users: [{ userId: user._id, tag }],
+    await ProductUsersServiceAdd({
+      productId: product.productId,
+      userId: user._id,
+      tag,
     });
 
     const query = {
@@ -203,11 +205,16 @@ describe("AvailabilityServiceGetAvailability", () => {
     const { user: user1 } = await createUserWithShift({ tag });
     const { user: user2 } = await createUserWithShift({ tag });
 
-    await ProductServiceUpdate(product._id, {
-      users: [
-        { userId: user1._id, tag },
-        { userId: user2._id, tag },
-      ],
+    await ProductUsersServiceAdd({
+      productId: product.productId,
+      userId: user1._id,
+      tag,
+    });
+
+    await ProductUsersServiceAdd({
+      productId: product.productId,
+      userId: user2._id,
+      tag,
     });
 
     const query = {
@@ -231,11 +238,16 @@ describe("AvailabilityServiceGetAvailability", () => {
     const { user: user1 } = await createUserWithShift({ tag });
     const { user: user2 } = await createUserWithShift({ tag });
 
-    await ProductServiceUpdate(product._id, {
-      users: [
-        { userId: user1._id, tag },
-        { userId: user2._id, tag },
-      ],
+    await ProductUsersServiceAdd({
+      productId: product.productId,
+      userId: user1._id,
+      tag,
+    });
+
+    await ProductUsersServiceAdd({
+      productId: product.productId,
+      userId: user2._id,
+      tag,
     });
 
     const query = {

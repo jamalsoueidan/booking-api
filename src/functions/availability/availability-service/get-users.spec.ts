@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { ProductServiceUpdate } from "~/functions/product";
+import { ProductUsersServiceAdd } from "~/functions/product-users/product-users.service";
 import { Tag } from "~/functions/shift";
 import { UserServiceFindByIdAndUpdate } from "~/functions/user";
 import {
@@ -35,11 +35,17 @@ describe("AvailabilityServiceGetUsers", () => {
     const { user: user2 } = await createUserWithShift({ tag });
 
     const product = await createProduct({ productId });
-    await ProductServiceUpdate(product._id, {
-      users: [
-        { userId: user1._id, tag },
-        { userId: user2._id, tag },
-      ],
+
+    await ProductUsersServiceAdd({
+      productId: product.productId,
+      userId: user1._id,
+      tag,
+    });
+
+    await ProductUsersServiceAdd({
+      productId: product.productId,
+      userId: user2._id,
+      tag,
     });
 
     const allUsers = await AvailabilityServiceGetUsers({

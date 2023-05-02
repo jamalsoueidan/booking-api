@@ -45,6 +45,5 @@ describe("ShopifyServiceLoadCollections", () => {
     expect(collection?.productIds).toContainEqual(8022089138450);
 
     const product = await ProductModel.findOne({ productId: 8022089171218 });
-    expect(product?.users.length).toBe(0);
   });
 });

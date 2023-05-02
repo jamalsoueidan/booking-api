@@ -64,4 +64,37 @@ describe("ProductUsersService", () => {
 
     expect(remove.deletedCount).toBe(1);
   });
+
+  it("Should not be able to add user to non-existent product", async () => {
+    const nonExistentProductId = 987654321;
+
+    await expect(
+      ProductUsersServiceAdd({
+        productId: nonExistentProductId,
+        userId: user._id,
+        tag: Tag.all_day,
+      })
+    ).rejects.toThrowError(Error);
+  });
+
+  it("Should not remove user from a non-existent product", async () => {
+    const nonExistentProductId = 987654321;
+    const remove = await ProductUsersServiceRemove({
+      productId: nonExistentProductId,
+      userId: user._id,
+    });
+
+    expect(remove.deletedCount).toBe(0);
+  });
+
+  it("Should not remove non-existent user from a product", async () => {
+    const product = await createProduct({ productId });
+    const user = await createUser();
+    const remove = await ProductUsersServiceRemove({
+      productId: product.productId,
+      userId: user._id,
+    });
+
+    expect(remove.deletedCount).toBe(0);
+  });
 });
