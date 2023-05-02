@@ -3,52 +3,58 @@ import { ScheduleModel } from "./schedule.model";
 import { Schedule } from "./schedule.types";
 
 type Create = Pick<Schedule, "name" | "customerId">;
+type Destroy = Pick<Schedule, "_id" | "customerId">;
+type Update = Pick<Schedule, "_id" | "customerId">;
+type List = Pick<Schedule, "customerId">;
+type Get = Pick<Schedule, "_id" | "customerId">;
 
 export const ScheduleServiceCreate = async (props: Create) => {
   const newSchedule = new ScheduleModel(props);
   return newSchedule.save();
 };
 
-export const ScheduleServiceDestroy = async (props: Create) => {
+export const ScheduleServiceDestroy = async (props: Destroy) => {
   return ScheduleModel.deleteOne(props);
 };
 
 export const ScheduleServiceUpdate = async (
-  filter: Create,
+  filter: Update,
   scheduleData: Partial<Schedule>
 ) => {
   const updatedSchedule = await ScheduleModel.findOneAndUpdate(
     filter,
     scheduleData,
     { new: true }
-  ).orFail(
-    new NotFoundError([
-      {
-        code: "custom",
-        message: "SCHEDULE_NOT_FOUND",
-        path: ["schedule"],
-      },
-    ])
-  );
+  )
+    .lean()
+    .orFail(
+      new NotFoundError([
+        {
+          code: "custom",
+          message: "SCHEDULE_NOT_FOUND",
+          path: ["schedule"],
+        },
+      ])
+    );
 
   return updatedSchedule;
 };
 
-export const ScheduleServiceList = async (
-  filter: Pick<Schedule, "customerId">
-) => {
-  return ScheduleModel.find(filter);
+export const ScheduleServiceList = async (filter: List) => {
+  return ScheduleModel.find(filter).lean();
 };
 
-export const ScheduleServiceGet = async (props: Create) => {
-  const schedule = await ScheduleModel.findOne(props).orFail(
-    new NotFoundError([
-      {
-        code: "custom",
-        message: "SCHEDULE_NOT_FOUND",
-        path: ["schedule"],
-      },
-    ])
-  );
+export const ScheduleServiceGet = async (props: Get) => {
+  const schedule = await ScheduleModel.findOne(props)
+    .lean()
+    .orFail(
+      new NotFoundError([
+        {
+          code: "custom",
+          message: "SCHEDULE_NOT_FOUND",
+          path: ["schedule"],
+        },
+      ])
+    );
   return schedule;
 };

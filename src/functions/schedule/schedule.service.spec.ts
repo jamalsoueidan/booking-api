@@ -23,7 +23,7 @@ describe("Schedule Service", () => {
 
   test("deleteSchedule should delete an existing schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
-    const deleteResult = await ScheduleServiceDestroy({ name, customerId });
+    const deleteResult = await ScheduleServiceDestroy(newSchedule);
 
     expect(deleteResult.deletedCount).toEqual(1);
   });
@@ -64,7 +64,7 @@ describe("Schedule Service", () => {
     };
 
     const updatedSchedule = await ScheduleServiceUpdate(
-      { name, customerId },
+      { _id: newSchedule._id, customerId: newSchedule.customerId },
       updatedScheduleData
     );
 
@@ -88,11 +88,12 @@ describe("Schedule Service", () => {
   });
 
   test("updateSchedule should throw NotFoundError when schedule is not found", async () => {
+    const newSchedule = await ScheduleServiceCreate({ name, customerId });
     const updatedScheduleName = "Updated Test Schedule";
 
     await expect(
       ScheduleServiceUpdate(
-        { name, customerId },
+        { _id: newSchedule._id, customerId: 0 },
         {
           name: updatedScheduleName,
         }
@@ -111,7 +112,7 @@ describe("Schedule Service", () => {
 
   test("getById should return a specific schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
-    const retrievedSchedule = await ScheduleServiceGet({ name, customerId });
+    const retrievedSchedule = await ScheduleServiceGet(newSchedule);
 
     expect(retrievedSchedule._id.toString()).toEqual(
       newSchedule._id.toString()
@@ -119,8 +120,9 @@ describe("Schedule Service", () => {
   });
 
   test("getById should throw NotFoundError when schedule is not found", async () => {
-    await expect(ScheduleServiceGet({ name, customerId })).rejects.toThrow(
-      NotFoundError
-    );
+    const newSchedule = await ScheduleServiceCreate({ name, customerId });
+    await expect(
+      ScheduleServiceGet({ _id: newSchedule._id, customerId: 0 })
+    ).rejects.toThrow(NotFoundError);
   });
 });
