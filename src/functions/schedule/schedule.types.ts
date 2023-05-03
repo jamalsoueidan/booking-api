@@ -1,20 +1,25 @@
-import mongoose from "mongoose";
 import { z } from "zod";
+import {
+  BooleanOrStringType,
+  NumberOrStringType,
+  StringOrObjectIdType,
+} from "./zod.types";
 
-const NumberOrStringType = z
-  .union([z.number(), z.string()])
-  .transform((value) =>
-    typeof value === "string" ? parseInt(value, 10) : value
-  );
+export const BlockDateZodSchema = z.object({
+  end: z.coerce.date(),
+  start: z.coerce.date(),
+});
 
-const isValidObjectId = (value: any): value is string =>
-  mongoose.Types.ObjectId.isValid(value);
+export type ScheduleBlockDate = z.infer<typeof BlockDateZodSchema>;
 
-const ObjectIdType = z
-  .custom<string>(isValidObjectId, {
-    message: "Invalid ObjectId",
-  })
-  .transform((value) => new mongoose.Types.ObjectId(value));
+export const ScheduleProductZodSchema = z.object({
+  productId: NumberOrStringType,
+  visible: BooleanOrStringType,
+  duration: NumberOrStringType,
+  breakTime: NumberOrStringType,
+});
+
+export type ScheduleProduct = z.infer<typeof ScheduleProductZodSchema>;
 
 export const IntervalZodSchema = z.object({
   from: z.string().regex(/^([01][0-9]|2[0-3]):[0-5][0-9]$/),
@@ -23,7 +28,7 @@ export const IntervalZodSchema = z.object({
 
 export type ScheduleInterval = z.infer<typeof IntervalZodSchema>;
 
-export const SlotZodSchema = z.object({
+export const ScheduleSlotZodSchema = z.object({
   day: z.enum([
     "monday",
     "tuesday",
@@ -36,13 +41,25 @@ export const SlotZodSchema = z.object({
   intervals: z.array(IntervalZodSchema),
 });
 
-export type ScheduleSlot = z.infer<typeof SlotZodSchema>;
+export type ScheduleSlot = z.infer<typeof ScheduleSlotZodSchema>;
+
+export const ScheduleSlotsZodSchema = z.array(ScheduleSlotZodSchema).refine(
+  (slots) => {
+    const uniqueDays = new Set(slots.map((slot) => slot.day));
+    return uniqueDays.size === slots.length;
+  },
+  {
+    message: "Days must be unique within slots array.",
+  }
+);
 
 export const ScheduleZodSchema = z.object({
-  _id: z.union([z.string(), ObjectIdType]),
+  _id: StringOrObjectIdType,
   name: z.string(),
   customerId: NumberOrStringType,
-  slots: z.array(SlotZodSchema),
+  slots: ScheduleSlotsZodSchema,
+  products: z.array(ScheduleProductZodSchema),
+  blockDates: z.array(BlockDateZodSchema),
 });
 
 export type Schedule = z.infer<typeof ScheduleZodSchema>;

@@ -1,7 +1,7 @@
 import { z } from "zod";
+import { ScheduleZodSchema } from "~/functions/schedule/schedule.types";
+import { ScheduleServiceCreate } from "~/functions/schedule/services";
 import { _ } from "~/library/handler";
-import { ScheduleServiceCreate } from "../schedule.service";
-import { ScheduleZodSchema } from "../schedule.types";
 
 export type ScheduleControllerCreateRequest = {
   query: z.infer<typeof ScheduleControllerCreateQuerySchema>;

@@ -1,11 +1,11 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { AuthRole } from "~/functions/auth";
+import { ScheduleServiceCreate } from "~/functions/schedule/services";
 import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
-import { ScheduleServiceCreate } from "../schedule.service";
 import {
   ScheduleControllerList,
   ScheduleControllerListRequest,

@@ -1,0 +1,13 @@
+type: object
+properties:
+  visible:
+    type: boolean
+  duration:
+    type: number
+  breakTime:
+    type: number
+
+required:
+  - visible
+  - duration
+  - breakTime

@@ -1,0 +1,26 @@
+parameters:
+  - name: customerId
+    in: path
+    description: The ID of the customerId
+    required: true
+    schema:
+      type: string
+  - name: scheduleId
+    in: path
+    description: The ID of the scheduleId
+    required: true
+    schema:
+      type: string
+  - name: productId
+    in: path
+    description: The ID of the productId
+    required: true
+    schema:
+      type: string
+
+get:
+  $ref: "./get/index.yaml#/get"
+put:
+  $ref: "./create-or-update/index.yaml#/put"
+delete:
+  $ref: "./destroy/index.yaml#/delete"

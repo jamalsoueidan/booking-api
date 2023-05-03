@@ -12,16 +12,7 @@ info:
   x-tagGroups:
     - name: all api endpoints
       tags:
-        - Auth
-        - Availability
-        - Booking
-        - Installation
-        - My Account
-        - Product
-        - Setting
-        - Shift
-        - Shopify
-        - User
+        - Schedule
 servers:
   - url: https://booking-shopify-api.azurewebsites.net/api
 components:
@@ -42,289 +33,63 @@ components:
       $ref: "./responses/unauthorized.yaml"
 
   schemas:
-    # errors
+    Errors:
+      $ref: "./schemas/errors.yaml"
+
+    Destroy:
+      $ref: paths/schedule/_types/destroy.yaml
     Day:
       $ref: paths/schedule/_types/day.yaml
     Interval:
       $ref: paths/schedule/_types/interval.yaml
     Slot:
       $ref: paths/schedule/_types/slot.yaml
+    Product:
+      $ref: paths/schedule/_types/product.yaml
     Schedule:
       $ref: paths/schedule/_types/schedule.yaml
-    ScheduleCreateResponse:
-      $ref: paths/schedule/create/response.yaml
     ScheduleCreateBody:
       $ref: paths/schedule/create/body.yaml
+    ScheduleCreateResponse:
+      $ref: paths/schedule/create/response.yaml
+    ScheduleDestroyResponse:
+      $ref: paths/schedule/destroy/response.yaml
     ScheduleListResponse:
       $ref: paths/schedule/list/response.yaml
+    ScheduleGetResponse:
+      $ref: paths/schedule/get/response.yaml
+    ScheduleUpdateResponse:
+      $ref: paths/schedule/update/response.yaml
+    ScheduleUpdateBody:
+      $ref: paths/schedule/update/body.yaml
 
-    Errors:
-      $ref: "./schemas/errors.yaml"
+    ScheduleSlotsUpdateResponse:
+      $ref: paths/schedule/slots/update/response.yaml
+    ScheduleSlotsUpdateBody:
+      $ref: paths/schedule/slots/update/body.yaml
 
-    Image:
-      $ref: "./paths/product/_types/image.yaml"
-
-    # Availability
-    AvailabilityHour:
-      $ref: paths/availability/_types/availability-hour.yaml
-    AvailabilityShift:
-      $ref: paths/availability/_types/availability-shift.yaml
-    AvailabilityUser:
-      $ref: paths/availability/_types/availability-user.yaml
-    AvailabilityGetAvailabilityResponse:
-      $ref: paths/availability/get-availability/response.yaml
-    AvailabilityGetUsersResponse:
-      $ref: paths/availability/get-users/response.yaml
-    AvailabilityGetSettingsResponse:
-      $ref: paths/availability/get-settings/response.yaml
-
-    # Auth
-    AuthSession:
-      $ref: "./paths/auth/_types/auth-session.yaml"
-    AuthLoginRequest:
-      $ref: "./paths/auth/schemas/login-request.yaml"
-    AuthLoginResponse:
-      $ref: "./paths/auth/schemas/login-response.yaml"
-    AuthPasswordRequest:
-      $ref: "./paths/auth/schemas/receive-password-request.yaml"
-    AuthPasswordResponse:
-      $ref: "./paths/auth/schemas/receive-password-response.yaml"
-
-    # Installation
-    InstallationGetStatusResponse:
-      $ref: "./paths/installation/get-status/response.yaml"
-    InstallationSetupBody:
-      $ref: "./paths/installation/setup/body.yaml"
-    InstallationSetupResponse:
-      $ref: "./paths/installation/setup/response.yaml"
-
-    # setting
-    Setting:
-      $ref: "./paths/setting/payload.yaml"
-    SettingBody:
-      $ref: "./paths/setting/body.yaml"
-    SettingResponse:
-      $ref: "./paths/setting/response.yaml"
-
-    # user
-    User:
-      $ref: "./paths/user/_types/user.yaml"
-    UserCreateBody:
-      $ref: "./paths/user/create/body.yaml"
-    UserCreateResponse:
-      $ref: "./paths/user/create/response.yaml"
-    UserGetAllResponse:
-      $ref: "./paths/user/get-all/response.yaml"
-    UserGetByIdResponse:
-      $ref: "./paths/user/get-by-id/response.yaml"
-    UserUpdateBody:
-      $ref: "./paths/user/update/body.yaml"
-    UserUpdateResponse:
-      $ref: "./paths/user/update/response.yaml"
-
-    # shift
-    Shift:
-      $ref: "./paths/shift/_types/shift.yaml"
-    ShiftGroup:
-      $ref: "./paths/shift/_types/shift-group.yaml"
-    ShiftDay:
-      $ref: "./paths/shift/_types/day.yaml"
-    ShiftTag:
-      $ref: "./paths/shift/_types/tag.yaml"
-    ShiftCreateBody:
-      $ref: "./paths/shift/create/body.yaml"
-    ShiftCreateResponse:
-      $ref: "./paths/shift/create/response.yaml"
-    ShiftCreateGroupBody:
-      $ref: "./paths/shift/create-group/body.yaml"
-    ShiftCreateGroupResponse:
-      $ref: "./paths/shift/create-group/response.yaml"
-    ShiftDestroy:
-      $ref: "./paths/shift/destroy/payload.yaml"
-    ShiftDestroyResponse:
-      $ref: "./paths/shift/destroy/response.yaml"
-    ShiftDestroyGroup:
-      $ref: "./paths/shift/destroy-group/payload.yaml"
-    ShiftDestroyGroupResponse:
-      $ref: "./paths/shift/destroy-group/response.yaml"
-    ShiftGetAllResponse:
-      $ref: "./paths/shift/get-all-shifts/response.yaml"
-    ShiftGetByIdResponse:
-      $ref: "./paths/shift/get-by-id/response.yaml"
-    ShiftGetGroupResponse:
-      $ref: "./paths/shift/get-group/response.yaml"
-    ShiftUpdateBody:
-      $ref: "./paths/shift/update/body.yaml"
-    ShiftUpdateResponse:
-      $ref: "./paths/shift/update/response.yaml"
-    ShiftUpdateGroupBody:
-      $ref: "./paths/shift/update-group/body.yaml"
-    ShiftUpdateGroupResponse:
-      $ref: "./paths/shift/update-group/response.yaml"
-
-    # Product
-    ProductGetAll:
-      $ref: "./paths/product/get-all/payload.yaml"
-    ProductGetAllUser:
-      $ref: "./paths/product/get-all/user.yaml"
-    ProductGetAllResponse:
-      $ref: "./paths/product/get-all/response.yaml"
-    ProductGetAvailableUsers:
-      $ref: "./paths/product/get-available-users/payload.yaml"
-    ProductGetAvailableUsersResponse:
-      $ref: "./paths/product/get-available-users/response.yaml"
-    ProductGetById:
-      $ref: "./paths/product/get-by-id/payload.yaml"
-    ProductGetByIdUser:
-      $ref: "./paths/product/get-by-id/user.yaml"
-    ProductGetByIdResponse:
-      $ref: "./paths/product/get-by-id/response.yaml"
-    ProductUpdateBody:
-      $ref: "./paths/product/update/body.yaml"
-    ProductUpdateBodyUser:
-      $ref: "./paths/product/update/body-user.yaml"
-    ProductUpdateResponse:
-      $ref: "./paths/product/update/response.yaml"
-    ProductUpdateUser:
-      $ref: "./paths/product/update/user.yaml"
-
-    # Booking
-    Booking:
-      $ref: "./paths/booking/_types/booking.yaml"
-    BookingCreateBody:
-      $ref: "./paths/booking/create/body.yaml"
-    BookingCreateResponse:
-      $ref: "./paths/booking/create/response.yaml"
-    BookingGetAll:
-      $ref: "./paths/booking/get-all/payload.yaml"
-    BookingGetAllCustomer:
-      $ref: "./paths/booking/get-all/customer.yaml"
-    BookingGetAllProduct:
-      $ref: "./paths/booking/get-all/product.yaml"
-    BookingGetAllResponse:
-      $ref: "./paths/booking/get-all/response.yaml"
-    BookingGetByIdResponse:
-      $ref: "./paths/booking/get-by-id/response.yaml"
-    BookingUpdateBody:
-      $ref: "./paths/booking/update/body.yaml"
-    BookingUpdateResponse:
-      $ref: "./paths/booking/update/response.yaml"
-
-    # Collection
-    CollectionGetAll:
-      $ref: "./paths/collection/get-all/payload.yaml"
-    CollectionGetAllResponse:
-      $ref: "./paths/collection/get-all/response.yaml"
-
-    # Shopify
-    ShopifyLoadData:
-      $ref: "./paths/shopify/load-data/payload.yaml"
-    ShopifyLoadDataResponse:
-      $ref: "./paths/shopify/load-data/response.yaml"
-    ShopifySearchCustomers:
-      $ref: "./paths/shopify/search-customers/payload.yaml"
-    ShopifySearchCustomersResponse:
-      $ref: "./paths/shopify/search-customers/response.yaml"
-
+    ScheduleProductCreateOrUpdateResponse:
+      $ref: paths/schedule/product/create-or-update/response.yaml
+    ScheduleProductCreateOrUpdateBody:
+      $ref: paths/schedule/product/create-or-update/body.yaml
+    ScheduleProductDestroyResponse:
+      $ref: paths/schedule/product/destroy/response.yaml
+    ScheduleProductGetResponse:
+      $ref: paths/schedule/product/get/response.yaml
 paths:
   # schedule
   /customer/{customerId}/schedule:
     $ref: "./paths/schedule/create/index.yaml"
   /customer/{customerId}/schedules:
     $ref: "./paths/schedule/list/index.yaml"
+  /customer/{customerId}/schedule/{scheduleId}:
+    $ref: "./paths/schedule/schedule.yaml"
 
-  # auth
-  /auth/login:
-    $ref: "./paths/auth/login.yaml"
-  /auth/receive-password:
-    $ref: "./paths/auth/receive-password.yaml"
+  /customer/{customerId}/schedule/{scheduleId}/slots:
+    $ref: paths/schedule/slots/update/index.yaml
 
-  # Availability
-  /availability/{productId}/get-availability:
-    $ref: paths/availability/get-availability/index.yaml
-  /availability/{productId}/get-settings:
-    $ref: paths/availability/get-settings/index.yaml
-  /availability/{productId}/get-users:
-    $ref: paths/availability/get-users/index.yaml
-
-  # booking
-  /booking:
-    $ref: "./paths/booking/create/index.yaml"
-  /booking/{id}:
-    $ref: "./paths/booking/booking.yaml"
-  /bookings:
-    $ref: "./paths/booking/get-all/index.yaml"
-
-  # installation
-  /installation/get-status:
-    $ref: "./paths/installation/get-status/index.yaml"
-  /installation/setup:
-    $ref: "./paths/installation/setup/index.yaml"
-
-  # collections
-  /collections:
-    $ref: "./paths/collection/get-all/index.yaml"
-
-  # my-account
-  /my-account:
-    $ref: "./paths/my/account.yaml"
-
-  # product
-  /products:
-    $ref: "./paths/product/get-all/index.yaml"
-  /products/get-available-users:
-    $ref: "./paths/product/get-available-users/index.yaml"
-  /products/{id}:
-    $ref: "./paths/product/product.yaml"
-
-  # setting
-  /setting:
-    $ref: "./paths/setting/index.yaml"
-
-  # shopify
-  /shopify/load-data:
-    $ref: "./paths/shopify/load-data/index.yaml"
-  /shopify/search-customers:
-    $ref: "./paths/shopify/search-customers/index.yaml"
-
-  # shift
-  /user/{userId}/shift:
-    $ref: "./paths/shift/create/index.yaml"
-  /user/{userId}/shift-group:
-    $ref: "./paths/shift/create-group/index.yaml"
-  /user/{userId}/shift-group/{groupId}:
-    $ref: "./paths/shift/group.yaml"
-  /user/{userId}/shifts:
-    $ref: "./paths/shift/get-all-shifts/index.yaml"
-  /user/{userId}/shift/{id}:
-    $ref: "./paths/shift/shift.yaml"
-
-  # user
-  /users:
-    $ref: "./paths/user/get-all/index.yaml"
-  /user:
-    $ref: "./paths/user/create/index.yaml"
-  /user/{id}:
-    $ref: "./paths/user/user.yaml"
-
+  /customer/{customerId}/schedule/{scheduleId}/product/{productId}:
+    $ref: paths/schedule/product/product.yaml
 tags:
-  - name: Auth
-    description: Login and reset password
-  - name: Availability
-    description: Public Api for availability
-  - name: Booking
-    description: Manage bookings
-  - name: Installation
-    description: Installation of the platform
-  - name: My Account
-    description: Manage logged in user data.
-  - name: Product
-    description: Manage products
-  - name: Setting
-    description: Setting Api
-  - name: Shift
-    description: Manage shifts for user.
-  - name: Shopify
-    description: Shopify api
-  - name: User
-    description: Manage users.
+  - name: Schedule
+    description: Schedule

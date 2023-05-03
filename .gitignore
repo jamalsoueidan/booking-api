@@ -99,3 +99,7 @@ __queuestorage__
 __azurite_db*__.json
 
 .DS_Store
+
+!api/mutator/*
+api/model
+api/*.ts

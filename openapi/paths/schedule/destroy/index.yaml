@@ -1,0 +1,22 @@
+delete:
+  tags:
+    - Schedule
+  operationId: customerScheduleDestroy
+  summary: GET destroy schedule
+  description: This endpoint destroy schedule for customer
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+
+  security:
+    - BearerAuth: []
