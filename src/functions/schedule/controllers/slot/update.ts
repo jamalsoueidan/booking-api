@@ -1,28 +1,28 @@
 import { z } from "zod";
 import { ScheduleZodSchema } from "~/functions/schedule/schedule.types";
-import { ScheduleServiceUpdateSlot } from "~/functions/schedule/services";
+import { ScheduleSlotServiceUpdate } from "~/functions/schedule/services";
 import { _ } from "~/library/handler";
 
-export type ScheduleControllerUpdateSlotRequest = {
-  query: z.infer<typeof ScheduleControllerUpdateSlotQuerySchema>;
-  body: z.infer<typeof ScheduleControllerUpdateSlotBodySchema>;
+export type ScheduleSlotControllerUpdateRequest = {
+  query: z.infer<typeof ScheduleSlotControllerUpdateQuerySchema>;
+  body: z.infer<typeof ScheduleSlotControllerUpdateBodySchema>;
 };
 
-const ScheduleControllerUpdateSlotQuerySchema = z.object({
+const ScheduleSlotControllerUpdateQuerySchema = z.object({
   scheduleId: ScheduleZodSchema.shape._id,
   customerId: ScheduleZodSchema.shape.customerId,
 });
 
-const ScheduleControllerUpdateSlotBodySchema = ScheduleZodSchema.shape.slots;
+const ScheduleSlotControllerUpdateBodySchema = ScheduleZodSchema.shape.slots;
 
-export type ScheduleControllerUpdateSlotResponse = Awaited<
-  ReturnType<typeof ScheduleServiceUpdateSlot>
+export type ScheduleSlotControllerUpdateResponse = Awaited<
+  ReturnType<typeof ScheduleSlotServiceUpdate>
 >;
 
-export const ScheduleControllerUpdateSlot = _(
-  ({ query, body }: ScheduleControllerUpdateSlotRequest) => {
-    const validateQuery = ScheduleControllerUpdateSlotQuerySchema.parse(query);
-    const validateBody = ScheduleControllerUpdateSlotBodySchema.parse(body);
-    return ScheduleServiceUpdateSlot(validateQuery, validateBody);
+export const ScheduleSlotControllerUpdate = _(
+  ({ query, body }: ScheduleSlotControllerUpdateRequest) => {
+    const validateQuery = ScheduleSlotControllerUpdateQuerySchema.parse(query);
+    const validateBody = ScheduleSlotControllerUpdateBodySchema.parse(body);
+    return ScheduleSlotServiceUpdate(validateQuery, validateBody);
   }
 );

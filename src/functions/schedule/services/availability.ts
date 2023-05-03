@@ -81,12 +81,19 @@ function generateTimeSlots(
   return slots;
 }
 
-export async function getAvailability(
-  customerId: number,
-  productId: number,
-  startDate: Date,
-  endDate: Date
-): Promise<Array<{ date: string; slots: string[] }>> {
+export type ScheduleAvailabilityServiceGetByProductAndCustomerFilter = {
+  customerId: number;
+  productId: number;
+  startDate: Date;
+  endDate: Date;
+};
+
+export const ScheduleAvailabilityServiceGetByProductAndCustomer = async ({
+  customerId,
+  productId,
+  startDate,
+  endDate,
+}: ScheduleAvailabilityServiceGetByProductAndCustomerFilter) => {
   const schedule = await ScheduleModel.findOne({ customerId }).orFail(
     new NotFoundError([
       {
@@ -165,4 +172,4 @@ export async function getAvailability(
   }
 
   return availableSlots;
-}
+};

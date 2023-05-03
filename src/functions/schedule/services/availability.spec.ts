@@ -1,10 +1,10 @@
 import { BookingModel } from "~/functions/booking";
 import { ScheduleModel } from "~/functions/schedule/schedule.model";
-import { getAvailability } from "./availability";
+import { ScheduleAvailabilityServiceGetByProductAndCustomer } from "./availability";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("getAvailability", () => {
+describe("ScheduleAvailabilityService", () => {
   const scheduleData = {
     name: "Test Schedule",
     customerId: 1,
@@ -38,12 +38,12 @@ describe("getAvailability", () => {
     const customerId = 1;
     const productId = 99;
 
-    const result = await getAvailability(
+    const result = await ScheduleAvailabilityServiceGetByProductAndCustomer({
       customerId,
       productId,
       startDate,
-      endDate
-    );
+      endDate,
+    });
 
     expect(result).toBeDefined();
     expect(Array.isArray(result)).toBeTruthy();
@@ -85,12 +85,12 @@ describe("getAvailability", () => {
     }
 
     // Fetch available slots and filter out the booked slots
-    const result = await getAvailability(
+    const result = await ScheduleAvailabilityServiceGetByProductAndCustomer({
       customerId,
       productId,
       startDate,
-      endDate
-    );
+      endDate,
+    });
 
     const day = result.find(
       (entry) => entry.date === "2023-05-01T00:00:00.000Z"
@@ -118,12 +118,12 @@ describe("getAvailability", () => {
     const productId = 99;
 
     // Fetch available slots and filter out the blocked slots
-    const result = await getAvailability(
+    const result = await ScheduleAvailabilityServiceGetByProductAndCustomer({
       customerId,
       productId,
       startDate,
-      endDate
-    );
+      endDate,
+    });
 
     const day = result.find(
       (entry) => entry.date === "2023-05-01T00:00:00.000Z"

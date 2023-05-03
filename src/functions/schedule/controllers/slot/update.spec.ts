@@ -9,14 +9,14 @@ import {
 } from "~/library/jest/azure";
 
 import {
-  ScheduleControllerUpdateSlot,
-  ScheduleControllerUpdateSlotRequest,
-  ScheduleControllerUpdateSlotResponse,
+  ScheduleSlotControllerUpdate,
+  ScheduleSlotControllerUpdateRequest,
+  ScheduleSlotControllerUpdateResponse,
 } from "./update";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("ScheduleControllerUpdateSlot", () => {
+describe("ScheduleSlotControllerUpdate", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
@@ -30,7 +30,7 @@ describe("ScheduleControllerUpdateSlot", () => {
       customerId: 123,
     });
 
-    const updatedScheduleData: ScheduleControllerUpdateSlotRequest["body"] = [
+    const updatedScheduleData: ScheduleSlotControllerUpdateRequest["body"] = [
       {
         day: "wednesday",
         intervals: [
@@ -42,7 +42,7 @@ describe("ScheduleControllerUpdateSlot", () => {
       },
     ];
 
-    request = await createHttpRequest<ScheduleControllerUpdateSlotRequest>({
+    request = await createHttpRequest<ScheduleSlotControllerUpdateRequest>({
       query: {
         customerId: 123,
         scheduleId: newSchedule._id,
@@ -51,8 +51,8 @@ describe("ScheduleControllerUpdateSlot", () => {
       loginAs: AuthRole.owner,
     });
 
-    const res: HttpSuccessResponse<ScheduleControllerUpdateSlotResponse> =
-      await ScheduleControllerUpdateSlot(request, context);
+    const res: HttpSuccessResponse<ScheduleSlotControllerUpdateResponse> =
+      await ScheduleSlotControllerUpdate(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody?.payload?.slots).toHaveLength(1);
@@ -64,7 +64,7 @@ describe("ScheduleControllerUpdateSlot", () => {
       customerId: 123,
     });
 
-    const updatedScheduleData: ScheduleControllerUpdateSlotRequest["body"] = [
+    const updatedScheduleData: ScheduleSlotControllerUpdateRequest["body"] = [
       {
         day: "wednesday",
         intervals: [
@@ -85,7 +85,7 @@ describe("ScheduleControllerUpdateSlot", () => {
       },
     ];
 
-    request = await createHttpRequest<ScheduleControllerUpdateSlotRequest>({
+    request = await createHttpRequest<ScheduleSlotControllerUpdateRequest>({
       query: {
         customerId: 123,
         scheduleId: newSchedule._id,
@@ -94,7 +94,7 @@ describe("ScheduleControllerUpdateSlot", () => {
       loginAs: AuthRole.owner,
     });
 
-    const res: HttpErrorResponse = await ScheduleControllerUpdateSlot(
+    const res: HttpErrorResponse = await ScheduleSlotControllerUpdate(
       request,
       context
     );

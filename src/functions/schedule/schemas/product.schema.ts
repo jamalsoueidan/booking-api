@@ -7,7 +7,7 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       type: Number,
       index: true,
     },
-    visibile: {
+    visible: {
       type: Boolean,
       default: true,
     },
