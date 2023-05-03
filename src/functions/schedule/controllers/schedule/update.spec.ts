@@ -47,6 +47,6 @@ describe("ScheduleControllerUpdate", () => {
       await ScheduleControllerUpdate(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
-    expect(res.jsonBody?.payload.name).toHaveProperty(updatedScheduleName);
+    expect(res.jsonBody?.payload.name).toBe(updatedScheduleName);
   });
 });

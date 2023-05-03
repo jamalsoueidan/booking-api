@@ -53,7 +53,6 @@ export const BookingMongooseSchema = new Schema<
   productId: Number,
   userId: {
     ref: "user",
-    required: true,
     type: Schema.Types.ObjectId,
   },
   start: {
