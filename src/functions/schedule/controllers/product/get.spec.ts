@@ -8,14 +8,14 @@ import {
 } from "~/library/jest/azure";
 import { ScheduleProductServiceCreateOrUpdate } from "../../services/product";
 import {
-  ScheduleProductControllerDestroy,
-  ScheduleProductControllerDestroyRequest,
-  ScheduleProductControllerDestroyResponse,
-} from "./destroy";
+  ScheduleProductControllerGet,
+  ScheduleProductControllerGetRequest,
+  ScheduleProductControllerGetResponse,
+} from "./get";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("ScheduleProductControllerDestroy", () => {
+describe("ScheduleProductControllerGet", () => {
   let context: InvocationContext;
   let request: HttpRequest;
   const productId = 1000;
@@ -24,7 +24,7 @@ describe("ScheduleProductControllerDestroy", () => {
     context = createContext();
   });
 
-  it("should be able to destroy schedule", async () => {
+  it("should be able to get schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({
       name: "asd",
       customerId: 123,
@@ -45,7 +45,7 @@ describe("ScheduleProductControllerDestroy", () => {
 
     expect(newProduct?.products).toHaveLength(1);
 
-    request = await createHttpRequest<ScheduleProductControllerDestroyRequest>({
+    request = await createHttpRequest<ScheduleProductControllerGetRequest>({
       query: {
         customerId: newSchedule.customerId,
         scheduleId: newSchedule._id,
@@ -54,10 +54,10 @@ describe("ScheduleProductControllerDestroy", () => {
       loginAs: AuthRole.owner,
     });
 
-    const res: HttpSuccessResponse<ScheduleProductControllerDestroyResponse> =
-      await ScheduleProductControllerDestroy(request, context);
+    const res: HttpSuccessResponse<ScheduleProductControllerGetResponse> =
+      await ScheduleProductControllerGet(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
-    expect(res.jsonBody?.payload?.products).toHaveLength(0);
+    expect(res.jsonBody?.payload?.productId).toBe(productId);
   });
 });

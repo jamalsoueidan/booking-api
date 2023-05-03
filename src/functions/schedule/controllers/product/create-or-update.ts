@@ -15,10 +15,11 @@ export type ScheduleProductControllerCreateOrUpdateRequest = {
 const ScheduleProductControllerCreateOrUpdateQuerySchema = z.object({
   scheduleId: ScheduleZodSchema.shape._id,
   customerId: ScheduleZodSchema.shape.customerId,
+  productId: ScheduleProductZodSchema.shape.productId,
 });
 
 const ScheduleProductControllerCreateOrUpdateBodySchema =
-  ScheduleProductZodSchema;
+  ScheduleProductZodSchema.omit({ productId: true });
 
 export type ScheduleProductControllerCreateOrUpdateResponse = Awaited<
   ReturnType<typeof ScheduleProductServiceCreateOrUpdate>

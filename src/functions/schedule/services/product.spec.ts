@@ -1,6 +1,7 @@
 import {
   ScheduleProductServiceCreateOrUpdate,
   ScheduleProductServiceDestroy,
+  ScheduleProductServiceGet,
 } from "./product";
 import { ScheduleServiceCreate } from "./schedule";
 
@@ -14,7 +15,6 @@ describe("ScheduleProductService", () => {
   it("createOrUpdateProduct should add a new product to the schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
     const newProduct = {
-      productId,
       visible: true,
       duration: 60,
       breakTime: 0,
@@ -24,21 +24,51 @@ describe("ScheduleProductService", () => {
       {
         scheduleId: newSchedule._id,
         customerId: newSchedule.customerId,
+        productId,
       },
       newProduct
     );
 
     const foundProduct = updatedSchedule?.products.find(
-      (p) => p.productId === newProduct.productId
+      (p) => p.productId === productId
     );
 
-    expect(JSON.stringify(foundProduct)).toEqual(JSON.stringify(newProduct));
+    expect(JSON.stringify(foundProduct)).toEqual(
+      JSON.stringify({ productId, ...newProduct })
+    );
+  });
+
+  it("createOrUpdateProduct should find a product", async () => {
+    const newSchedule = await ScheduleServiceCreate({ name, customerId });
+    const newProduct = {
+      visible: true,
+      duration: 60,
+      breakTime: 0,
+    };
+
+    const updatedSchedule = await ScheduleProductServiceCreateOrUpdate(
+      {
+        scheduleId: newSchedule._id,
+        customerId: newSchedule.customerId,
+        productId,
+      },
+      newProduct
+    );
+
+    const foundProduct = await ScheduleProductServiceGet({
+      scheduleId: newSchedule._id,
+      customerId: newSchedule.customerId,
+      productId,
+    });
+
+    expect(JSON.stringify(foundProduct)).toEqual(
+      JSON.stringify({ productId, ...newProduct })
+    );
   });
 
   it("createOrUpdateProduct should update an existing product in the schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
     const newProduct = {
-      productId,
       visible: true,
       duration: 60,
       breakTime: 0,
@@ -48,6 +78,7 @@ describe("ScheduleProductService", () => {
       {
         scheduleId: newSchedule._id,
         customerId: newSchedule.customerId,
+        productId,
       },
       newProduct
     );
@@ -57,23 +88,23 @@ describe("ScheduleProductService", () => {
       {
         scheduleId: newSchedule._id,
         customerId: newSchedule.customerId,
+        productId,
       },
       updatedProduct
     );
 
     const foundProduct = updatedSchedule?.products.find(
-      (p) => p.productId === newProduct.productId
+      (p) => p.productId === productId
     );
 
     expect(JSON.stringify(foundProduct)).toEqual(
-      JSON.stringify(updatedProduct)
+      JSON.stringify({ productId, ...updatedProduct })
     );
   });
 
   it("removeProduct should remove an existing product from the schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
     const newProduct = {
-      productId,
       visible: true,
       duration: 60,
       breakTime: 0,
@@ -82,6 +113,7 @@ describe("ScheduleProductService", () => {
       {
         scheduleId: newSchedule._id,
         customerId: newSchedule.customerId,
+        productId,
       },
       newProduct
     );
@@ -93,7 +125,7 @@ describe("ScheduleProductService", () => {
     });
 
     const foundProduct = updatedSchedule?.products.find(
-      (p) => p.productId === newProduct.productId
+      (p) => p.productId === productId
     );
 
     expect(foundProduct).toBe(undefined);
@@ -110,7 +142,6 @@ describe("ScheduleProductService", () => {
     });
 
     const newProduct = {
-      productId,
       visible: true,
       duration: 60,
       breakTime: 0,
@@ -121,6 +152,7 @@ describe("ScheduleProductService", () => {
       {
         scheduleId: newSchedule1._id,
         customerId: newSchedule1.customerId,
+        productId,
       },
       newProduct
     );
@@ -131,6 +163,7 @@ describe("ScheduleProductService", () => {
         {
           scheduleId: newSchedule2._id,
           customerId: newSchedule2.customerId,
+          productId,
         },
         newProduct
       )

@@ -36,7 +36,6 @@ describe("ScheduleProductControllerUpdate", () => {
 
     const updatedScheduleData: ScheduleProductControllerCreateOrUpdateRequest["body"] =
       {
-        productId,
         visible: true,
         duration: 60,
         breakTime: 0,
@@ -47,6 +46,7 @@ describe("ScheduleProductControllerUpdate", () => {
         query: {
           customerId,
           scheduleId: newSchedule._id,
+          productId,
         },
         body: updatedScheduleData,
         loginAs: AuthRole.owner,
@@ -56,12 +56,12 @@ describe("ScheduleProductControllerUpdate", () => {
       await ScheduleProductControllerCreateOrUpdate(request, context);
 
     const foundProduct = res.jsonBody?.payload?.products.find(
-      (p) => p.productId === updatedScheduleData.productId
+      (p) => p.productId === productId
     );
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(JSON.stringify(foundProduct)).toEqual(
-      JSON.stringify(updatedScheduleData)
+      JSON.stringify({ productId, ...updatedScheduleData })
     );
   });
 
@@ -76,7 +76,6 @@ describe("ScheduleProductControllerUpdate", () => {
     });
 
     const newProduct = {
-      productId,
       visible: true,
       duration: 60,
       breakTime: 0,
@@ -87,13 +86,13 @@ describe("ScheduleProductControllerUpdate", () => {
       {
         scheduleId: newSchedule1._id,
         customerId: newSchedule1.customerId,
+        productId,
       },
       newProduct
     );
 
     const updatedScheduleData: ScheduleProductControllerCreateOrUpdateRequest["body"] =
       {
-        productId,
         visible: true,
         duration: 60,
         breakTime: 0,
@@ -104,6 +103,7 @@ describe("ScheduleProductControllerUpdate", () => {
         query: {
           customerId: 123,
           scheduleId: newSchedule2._id,
+          productId,
         },
         body: updatedScheduleData,
         loginAs: AuthRole.owner,

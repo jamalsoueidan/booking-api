@@ -1,4 +1,4 @@
-export * from "./controllers/availability";
+export * from "./controllers/product";
 export * from "./controllers/schedule";
 export * from "./controllers/slot";
 export * from "./schedule.model";
