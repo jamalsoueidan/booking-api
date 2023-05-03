@@ -10,9 +10,14 @@ properties:
     type: array
     items:
       $ref: ./slot.yaml
+  products:
+    type: array
+    items:
+      $ref: ./product.yaml
 
 required:
   - _id
   - name
   - customerId
   - slots
+  - products

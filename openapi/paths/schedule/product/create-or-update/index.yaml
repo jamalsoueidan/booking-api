@@ -1,0 +1,31 @@
+put:
+  tags:
+    - Product
+  operationId: customerScheduleProductCreateOrUpdate
+  summary: PUT Create OR Update schedule product
+  description: This endpoint update schedule product
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./body.yaml"
+
+  responses:
+    "200":
+      description: Response with schedule product payload
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
+
+  security:
+    - BearerAuth: []

@@ -1,0 +1,16 @@
+type: object
+properties:
+  productId:
+    type: number
+  visible:
+    type: boolean
+  duration:
+    type: number
+  breakTime:
+    type: number
+
+required:
+  - productId
+  - visible
+  - duration
+  - breakTime

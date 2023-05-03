@@ -1,10 +1,7 @@
 type: object
 properties:
-  from:
-    type: string
-  to:
+  name:
     type: string
 
 required:
-  - from
-  - to
+  - name
