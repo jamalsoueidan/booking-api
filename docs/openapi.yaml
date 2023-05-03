@@ -12,16 +12,7 @@ info:
   x-tagGroups:
     - name: all api endpoints
       tags:
-        - Auth
-        - Availability
-        - Booking
-        - Installation
-        - My Account
-        - Product
-        - Setting
-        - Shift
-        - Shopify
-        - User
+        - Schedule
 servers:
   - url: 'https://booking-shopify-api.azurewebsites.net/api'
 components:
@@ -56,93 +47,6 @@ components:
           schema:
             $ref: '#/components/schemas/Errors'
   schemas:
-    Day:
-      type: string
-      enum:
-        - monday
-        - tuesday
-        - wednesday
-        - thursday
-        - friday
-        - saturday
-        - sunday
-    Interval:
-      type: object
-      properties:
-        _id:
-          type: string
-        from:
-          type: string
-        to:
-          type: string
-      required:
-        - _id
-        - from
-        - to
-    Slot:
-      type: object
-      properties:
-        _id:
-          type: string
-        day:
-          $ref: '#/components/schemas/Day'
-        intervals:
-          type: array
-          items:
-            $ref: '#/components/schemas/Interval'
-      required:
-        - _id
-        - day
-        - intervals
-    Schedule:
-      type: object
-      properties:
-        _id:
-          type: string
-        name:
-          type: string
-        customerId:
-          type: number
-        slots:
-          type: array
-          items:
-            $ref: '#/components/schemas/Slot'
-      required:
-        - _id
-        - name
-        - customerId
-        - slots
-    ScheduleCreateResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Schedule'
-      required:
-        - success
-        - payload
-    ScheduleCreateBody:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-        - name
-    ScheduleListResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/Schedule'
-      required:
-        - success
-        - payload
     Errors:
       type: object
       properties:
@@ -173,1429 +77,117 @@ components:
       required:
         - success
         - errors
-    Image:
+    Destroy:
       type: object
       properties:
-        url:
-          type: string
-        width:
+        deletedCount:
           type: number
-        height:
-          type: number
-      required:
-        - url
-        - width
-        - height
-    AvailabilityHour:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/User'
-        start:
-          type: string
-          format: date-time
-        end:
-          type: string
-          format: date-time
-      required:
-        - start
-        - end
-        - user
-    AvailabilityShift:
-      type: object
-      properties:
-        date:
-          type: string
-          format: date
-        start:
-          type: string
-          format: date-time
-        end:
-          type: string
-          format: date-time
-        bufferTime:
-          type: integer
-        duration:
-          type: integer
-        total:
-          type: integer
-        hours:
-          type: array
-          items:
-            $ref: '#/components/schemas/AvailabilityHour'
-      required:
-        - date
-        - start
-        - end
-        - bufferTime
-        - duration
-        - total
-        - hours
-    AvailabilityUser:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/User'
-        - type: object
-          properties:
-            userId:
-              type: string
-            tag:
-              $ref: '#/components/schemas/ShiftTag'
-          required:
-            - userId
-            - tag
-    AvailabilityGetAvailabilityResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/AvailabilityShift'
-      required:
-        - success
-        - payload
-    AvailabilityGetUsersResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/AvailabilityUser'
-      required:
-        - success
-        - payload
-    AvailabilityGetSettingsResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Setting'
-      required:
-        - success
-        - payload
-    AuthSession:
-      type: object
-      properties:
-        authId:
-          type: string
-        userId:
-          type: string
-        role:
-          type: integer
-          format: int32
-        group:
-          type: string
-        iat:
-          type: integer
-          format: int64
-          nullable: true
-        exp:
-          type: integer
-          format: int64
-          nullable: true
-        isOwner:
-          type: boolean
-        isAdmin:
-          type: boolean
-        isUser:
+        acknowledged:
           type: boolean
       required:
-        - authId
-        - userId
-        - role
-        - group
-        - isOwner
-        - isAdmin
-        - isUser
-    AuthLoginRequest:
-      type: object
-      properties:
-        identification:
-          type: string
-          example: 31317428
-        password:
-          type: string
-          example: code
-      required:
-        - identification
-        - password
-    AuthLoginResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: object
-          properties:
-            token:
-              type: string
-              example: Token to be saved in browser
-          required:
-            - token
-      required:
-        - success
-        - payload
-    AuthPasswordRequest:
-      type: object
-      properties:
-        phone:
-          type: string
-          example: 31317428
-          description: The phone number associated with the password
-      required:
-        - phone
-    AuthPasswordResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Password received successfully
-          required:
-            - message
-      required:
-        - success
-        - payload
-    InstallationGetStatusResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: object
-          properties:
-            done:
-              type: boolean
-              example: true
-              description: 'if true, it''s already installed!'
-          required:
-            - done
-      required:
-        - success
-        - payload
-    InstallationSetupBody:
-      type: object
-      properties:
-        address:
-          type: string
-        avatar:
-          type: string
-        email:
-          type: string
-          uniqueItems: true
-        fullname:
-          type: string
-        group:
-          type: string
-          default: all
-        language:
-          type: string
-          default: da
-        phone:
-          type: string
-          uniqueItems: true
-        position:
-          type: string
-        postal:
-          type: integer
-        timeZone:
-          type: string
-          default: Europe/Copenhagen
-      required:
-        - fullname
-        - email
-        - phone
-        - postal
-        - position
-        - avatar
-    InstallationSetupResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: boolean
-          example: true
-          description: If true everything went good.
-      required:
-        - success
-        - payload
-    Setting:
-      type: object
-      properties:
-        _id:
-          type: string
-        language:
-          type: string
-          enum:
-            - en-US
-            - da-DK
-        timeZone:
-          type: string
-        status:
-          type: boolean
-      required:
-        - _id
-        - shop
-        - language
-        - timeZone
-        - status
-    SettingBody:
-      type: object
-      properties:
-        language:
-          type: string
-          enum:
-            - en-US
-            - da-DK
-        timeZone:
-          type: string
-        status:
-          type: boolean
-      required:
-        - language
-        - timeZone
-        - status
-    SettingResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Setting'
-    User:
-      type: object
-      properties:
-        _id:
-          type: string
-        active:
-          type: boolean
-          default: true
-        address:
-          type: string
-        avatar:
-          type: string
-        email:
-          type: string
-          uniqueItems: true
-        fullname:
-          type: string
-        group:
-          type: string
-          default: all
-        language:
-          type: string
-          default: da
-        phone:
-          type: string
-          uniqueItems: true
-        position:
-          type: string
-        postal:
-          type: string
-        timeZone:
-          type: string
-          default: Europe/Copenhagen
-      required:
-        - _id
-        - active
-        - address
-        - fullname
-        - email
-        - phone
-        - postal
-        - position
-        - avatar
-    UserCreateBody:
-      type: object
-      properties:
-        active:
-          type: boolean
-          default: true
-        address:
-          type: string
-        avatar:
-          type: string
-        email:
-          type: string
-          uniqueItems: true
-        fullname:
-          type: string
-        group:
-          type: string
-          default: all
-        language:
-          type: string
-          default: da
-        phone:
-          type: string
-          uniqueItems: true
-        position:
-          type: string
-        postal:
-          type: string
-        timeZone:
-          type: string
-          default: Europe/Copenhagen
-      required:
-        - active
-        - address
-        - fullname
-        - email
-        - phone
-        - postal
-        - position
-        - avatar
-    UserCreateResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/User'
-      required:
-        - success
-        - payload
-    UserGetAllResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-      required:
-        - success
-        - payload
-    UserGetByIdResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/User'
-      required:
-        - success
-        - payload
-    UserUpdateBody:
-      type: object
-      properties:
-        active:
-          type: boolean
-          default: true
-        address:
-          type: string
-        avatar:
-          type: string
-        email:
-          type: string
-          uniqueItems: true
-        fullname:
-          type: string
-        group:
-          type: string
-          default: all
-        language:
-          type: string
-          default: da
-        phone:
-          type: string
-          uniqueItems: true
-        position:
-          type: string
-        postal:
-          type: string
-        timeZone:
-          type: string
-          default: Europe/Copenhagen
-      required:
-        - active
-        - address
-        - fullname
-        - email
-        - phone
-        - postal
-        - position
-        - avatar
-    UserUpdateResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/User'
-      required:
-        - success
-        - payload
-    Shift:
-      type: object
-      properties:
-        _id:
-          type: string
-        end:
-          type: string
-          format: date-time
-        userId:
-          type: string
-        groupId:
-          type: string
-        start:
-          type: string
-          format: date-time
-        tag:
-          $ref: '#/components/schemas/ShiftTag'
-      required:
-        - _id
-        - end
-        - userId
-        - start
-        - tag
-    ShiftGroup:
-      type: object
-      properties:
-        end:
-          type: string
-          format: date-time
-        userId:
-          type: string
-        groupId:
-          type: string
-        start:
-          type: string
-          format: date-time
-        tag:
-          $ref: '#/components/schemas/ShiftTag'
-        days:
-          $ref: '#/components/schemas/ShiftDay'
-      required:
-        - end
-        - userId
-        - groupId
-        - start
-        - tag
-        - days
-    ShiftDay:
-      type: array
-      items:
-        type: string
-        enum:
-          - monday
-          - tuesday
-          - wednesday
-          - thursday
-          - friday
-          - saturday
-      minItems: 1
-      uniqueItems: true
-    ShiftTag:
+        - deletedCount
+        - acknowledged
+    Day:
       type: string
       enum:
-        - weekday
-        - weekend
-        - all_day
-        - end_of_week
-        - start_of_week
-        - middle_of_week
-    ShiftCreateBody:
+        - monday
+        - tuesday
+        - wednesday
+        - thursday
+        - friday
+        - saturday
+        - sunday
+    Interval:
       type: object
       properties:
-        end:
+        from:
           type: string
-          format: date-time
-        start:
+        to:
           type: string
-          format: date-time
-        tag:
-          $ref: '#/components/schemas/ShiftTag'
       required:
-        - end
-        - userId
-        - start
-        - tag
-    ShiftCreateResponse:
+        - from
+        - to
+    Slot:
       type: object
       properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Shift'
-      required:
-        - success
-        - payload
-    ShiftCreateGroupBody:
-      type: object
-      properties:
-        end:
-          type: string
-          format: date-time
-        start:
-          type: string
-          format: date-time
-        days:
-          $ref: '#/components/schemas/ShiftDay'
-        tag:
-          $ref: '#/components/schemas/ShiftTag'
-      required:
-        - end
-        - userId
-        - start
-        - days
-        - tag
-    ShiftCreateGroupResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
+        day:
+          $ref: '#/components/schemas/Day'
+        intervals:
           type: array
           items:
-            $ref: '#/components/schemas/Shift'
+            $ref: '#/components/schemas/Interval'
       required:
-        - success
-        - payload
-    ShiftDestroy:
+        - day
+        - intervals
+    Product:
       type: object
       properties:
-        acknowledged:
+        productId:
+          type: number
+        visible:
           type: boolean
-        deletedCount:
+        duration:
+          type: number
+        breakTime:
           type: number
       required:
-        - acknowledged
-        - deletedCount
-    ShiftDestroyResponse:
+        - productId
+        - visible
+        - duration
+        - breakTime
+    Schedule:
       type: object
       properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/ShiftDestroy'
-      required:
-        - success
-        - payload
-    ShiftDestroyGroup:
-      type: object
-      properties:
-        acknowledged:
-          type: boolean
-        deletedCount:
+        _id:
+          type: string
+        name:
+          type: string
+        customerId:
           type: number
-      required:
-        - acknowledged
-        - deletedCount
-    ShiftDestroyGroupResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/ShiftDestroyGroup'
-      required:
-        - success
-        - payload
-    ShiftGetAllResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
+        slots:
           type: array
           items:
-            $ref: '#/components/schemas/Shift'
-      required:
-        - success
-        - payload
-    ShiftGetByIdResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Shift'
-      required:
-        - success
-        - payload
-    ShiftGetGroupResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/ShiftGroup'
-      required:
-        - success
-        - payload
-    ShiftUpdateBody:
-      type: object
-      properties:
-        end:
-          type: string
-          format: date-time
-        start:
-          type: string
-          format: date-time
-        tag:
-          $ref: '#/components/schemas/ShiftTag'
-      required:
-        - end
-        - userId
-        - start
-        - tag
-    ShiftUpdateResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Shift'
-      required:
-        - success
-        - payload
-    ShiftUpdateGroupBody:
-      type: object
-      properties:
-        end:
-          type: string
-          format: date-time
-        start:
-          type: string
-          format: date-time
-        days:
-          $ref: '#/components/schemas/ShiftDay'
-        tag:
-          $ref: '#/components/schemas/ShiftTag'
-      required:
-        - end
-        - userId
-        - start
-        - days
-        - tag
-    ShiftUpdateGroupResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/Shift'
-      required:
-        - success
-        - payload
-    ProductGetAll:
-      type: object
-      properties:
-        _id:
-          type: string
-        hidden:
-          type: boolean
-        imageUrl:
-          type: string
-        productId:
-          type: integer
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductGetAllUser'
-        title:
-          type: string
-        active:
-          type: boolean
-          default: true
-        buffertime:
-          type: integer
-        duration:
-          type: integer
-      required:
-        - _id
-        - collectionId
-        - hidden
-        - imageUrl
-        - productId
-        - users
-        - title
-        - active
-        - buffertime
-        - duration
-    ProductGetAllUser:
-      type: object
-      properties:
-        userId:
-          type: string
-        tag:
-          type: string
-        fullname:
-          type: string
-        email:
-          type: string
-        phone:
-          type: string
-        avatar:
-          type: string
-        position:
-          type: string
-        postal:
-          type: integer
-      required:
-        - userId
-        - tag
-        - fullname
-        - email
-        - phone
-        - avatar
-        - position
-        - postal
-    ProductGetAllResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductGetAll'
-    ProductGetAvailableUsers:
-      type: object
-      properties:
-        _id:
-          type: string
-        tag:
-          type: string
-        fullname:
-          type: string
-        email:
-          type: string
-        phone:
-          type: string
-        avatar:
-          type: string
-        position:
-          type: string
-        postal:
-          type: integer
-        tags:
-          type: array
-          items:
-            type: string
-            enum:
-              - weekday
-              - weekend
-              - all_day
-              - end_of_week
-              - start_of_week
-              - middle_of_week
-          minItems: 1
-      required:
-        - _id
-        - tag
-        - fullname
-        - email
-        - phone
-        - avatar
-        - position
-        - postal
-        - tags
-    ProductGetAvailableUsersResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductGetAvailableUsers'
-    ProductGetById:
-      type: object
-      properties:
-        _id:
-          type: string
-        hidden:
-          type: boolean
-        image:
-          $ref: '#/components/schemas/Image'
-        productId:
-          type: integer
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductGetByIdUser'
-        title:
-          type: string
-        active:
-          type: boolean
-          default: true
-        buffertime:
-          type: integer
-        duration:
-          type: integer
-      required:
-        - _id
-        - hidden
-        - productId
-        - users
-        - title
-        - active
-        - buffertime
-        - duration
-    ProductGetByIdUser:
-      type: object
-      properties:
-        userId:
-          type: string
-        tag:
-          type: string
-        fullname:
-          type: string
-        email:
-          type: string
-        phone:
-          type: string
-        avatar:
-          type: string
-        position:
-          type: string
-        postal:
-          type: integer
-      required:
-        - userId
-        - tag
-        - fullname
-        - email
-        - phone
-        - avatar
-        - position
-        - postal
-    ProductGetByIdResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/ProductGetById'
-      required:
-        - success
-        - payload
-    ProductUpdateBody:
-      type: object
-      properties:
-        hidden:
-          type: boolean
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductUpdateBodyUser'
-        active:
-          type: boolean
-          default: true
-        buffertime:
-          type: integer
-        duration:
-          type: integer
-      required:
-        - hidden
-        - users
-        - active
-        - buffertime
-        - duration
-    ProductUpdateBodyUser:
-      type: object
-      properties:
-        userId:
-          type: string
-        tag:
-          type: string
-      required:
-        - userId
-        - tag
-    ProductUpdateResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: object
-          properties:
-            _id:
-              type: string
-            collectionId:
-              type: integer
-            hidden:
-              type: boolean
-            imageUrl:
-              type: string
-            productId:
-              type: integer
-            users:
-              type: array
-              items:
-                $ref: '#/components/schemas/ProductUpdateUser'
-            title:
-              type: string
-            active:
-              type: boolean
-              default: true
-            buffertime:
-              type: integer
-            duration:
-              type: integer
-          required:
-            - _id
-            - collectionId
-            - hidden
-            - imageUrl
-            - productId
-            - users
-            - title
-            - active
-            - buffertime
-            - duration
-    ProductUpdateUser:
-      type: object
-      properties:
-        userId:
-          type: string
-        tag:
-          type: string
-        fullname:
-          type: string
-        email:
-          type: string
-        phone:
-          type: string
-        avatar:
-          type: string
-        position:
-          type: string
-        postal:
-          type: integer
-      required:
-        - userId
-        - tag
-        - fullname
-        - email
-        - phone
-        - avatar
-        - position
-        - postal
-    Booking:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: A valid ObjectId
-        productId:
-          type: integer
-        orderId:
-          type: integer
-        lineItemId:
-          type: integer
-        lineItemTotal:
-          type: integer
-        customerId:
-          type: integer
-        userId:
-          type: string
-          description: A valid ObjectId
-        end:
-          type: string
-          format: date-time
-        start:
-          type: string
-          format: date-time
-        anyAvailable:
-          type: boolean
-        fulfillmentStatus:
-          type: string
-          enum:
-            - cancelled
-            - refunded
-            - fulfilled
-            - booked
-            - default
-        title:
-          type: string
-        timeZone:
-          type: string
-        isEdit:
-          type: boolean
-        isSelfBooked:
-          type: boolean
-      required:
-        - _id
-        - productId
-        - orderId
-        - lineItemId
-        - lineItemTotal
-        - customerId
-        - userId
-        - end
-        - start
-        - fulfillmentStatus
-        - title
-        - timeZone
-    BookingCreateBody:
-      type: object
-      properties:
-        productId:
-          type: integer
-        customerId:
-          type: integer
-        userId:
-          type: string
-          description: A valid ObjectId
-        end:
-          type: string
-          format: date-time
-        start:
-          type: string
-          format: date-time
-        title:
-          type: string
-      required:
-        - _id
-        - productId
-        - customerId
-        - userId
-        - end
-        - start
-        - title
-    BookingCreateResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Booking'
-      required:
-        - success
-        - payload
-    BookingGetAll:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: A valid ObjectId
-        productId:
-          type: integer
-        orderId:
-          type: integer
-        lineItemId:
-          type: integer
-        lineItemTotal:
-          type: integer
-        customerId:
-          type: integer
-        userId:
-          type: string
-          description: A valid ObjectId
-        end:
-          type: string
-          format: date-time
-        start:
-          type: string
-          format: date-time
-        anyAvailable:
-          type: boolean
-        fulfillmentStatus:
-          type: string
-          enum:
-            - cancelled
-            - refunded
-            - fulfilled
-            - booked
-            - default
-        title:
-          type: string
-        timeZone:
-          type: string
-        isEdit:
-          type: boolean
-        isSelfBooked:
-          type: boolean
-        customer:
-          $ref: '#/components/schemas/BookingGetAllCustomer'
-        product:
-          $ref: '#/components/schemas/BookingGetAllProduct'
-        user:
-          $ref: '#/components/schemas/User'
-      required:
-        - _id
-        - productId
-        - orderId
-        - lineItemId
-        - lineItemTotal
-        - customerId
-        - userId
-        - end
-        - start
-        - fulfillmentStatus
-        - title
-        - timeZone
-        - customer
-        - product
-        - user
-    BookingGetAllCustomer:
-      type: object
-      properties:
-        _id:
-          type: string
-        customerId:
-          type: integer
-          format: int32
-        firstName:
-          type: string
-        lastName:
-          type: string
-        fullname:
-          type: string
-        email:
-          type: string
-        phone:
-          type: string
-      required:
-        - _id
-        - customerId
-        - firstName
-        - lastName
-        - fullname
-        - email
-        - phone
-    BookingGetAllProduct:
-      type: object
-      properties:
-        _id:
-          type: string
-        hidden:
-          type: boolean
-        imageUrl:
-          type: string
-        productId:
-          type: integer
-        userId:
-          type: string
-        title:
-          type: string
-        active:
-          type: boolean
-          default: true
-        buffertime:
-          type: integer
-        duration:
-          type: integer
-      required:
-        - _id
-        - collectionId
-        - hidden
-        - imageUrl
-        - productId
-        - userId
-        - title
-        - active
-        - buffertime
-        - duration
-    BookingGetAllResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/BookingGetAll'
-      required:
-        - success
-        - payload
-    BookingGetByIdResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Booking'
-      required:
-        - success
-        - payload
-    BookingUpdateBody:
-      type: object
-      properties:
-        productId:
-          type: integer
-        customerId:
-          type: integer
-        userId:
-          type: string
-          description: A valid ObjectId
-        end:
-          type: string
-          format: date-time
-        start:
-          type: string
-          format: date-time
-        title:
-          type: string
-      required:
-        - _id
-        - productId
-        - customerId
-        - userId
-        - end
-        - start
-        - title
-    BookingUpdateResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Booking'
-      required:
-        - success
-        - payload
-    CollectionGetAll:
-      type: object
-      properties:
-        _id:
-          type: string
-        title:
-          type: string
-        collectionId:
-          type: number
-          uniqueItems: true
-        hidden:
-          type: boolean
-          default: false
-        image:
-          $ref: '#/components/schemas/Image'
+            $ref: '#/components/schemas/Slot'
         products:
           type: array
           items:
-            $ref: '#/components/schemas/ProductGetById'
+            $ref: '#/components/schemas/Product'
       required:
         - _id
-        - title
-        - collectionId
-        - productIds
-        - hidden
+        - name
+        - customerId
+        - slots
         - products
-    CollectionGetAllResponse:
+    ScheduleCreateBody:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    ScheduleCreateResponse:
       type: object
       properties:
         success:
           type: boolean
           example: true
         payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/CollectionGetAll'
+          $ref: '#/components/schemas/Schedule'
       required:
         - success
         - payload
-    ShopifyLoadData:
-      type: object
-      properties:
-        id:
-          type: string
-        purgeHistoryDeleteUri:
-          type: string
-          description: The URI used to delete the object's history.
-        restartPostUri:
-          type: string
-          description: The URI used to restart the object.
-        resumePostUri:
-          type: string
-          description: The URI used to resume the object.
-        rewindPostUri:
-          type: string
-          description: The URI used to rewind the object.
-        sendEventPostUri:
-          type: string
-          description: The URI used to send an event to the object.
-        statusQueryGetUri:
-          type: string
-          description: The URI used to query the object's status (use this!)
-        suspendPostUri:
-          type: string
-          description: The URI used to suspend the object.
-        terminatePostUri:
-          type: string
-          description: The URI used to terminate the object.
-      required:
-        - id
-        - purgeHistoryDeleteUri
-        - restartPostUri
-        - resumePostUri
-        - rewindPostUri
-        - sendEventPostUri
-        - statusQueryGetUri
-        - suspendPostUri
-        - terminatePostUri
-    ShopifyLoadDataResponse:
+    ScheduleDestroyResponse:
       type: object
       properties:
         success:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/ShopifyLoadData'
-    ShopifySearchCustomers:
-      type: object
-      properties:
-        id:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-        phone:
-          type: string
+          $ref: '#/components/schemas/Destroy'
       required:
-        - id
-        - firstName
-        - lastName
-        - email
-        - phone
-    ShopifySearchCustomersResponse:
+        - success
+        - payload
+    ScheduleListResponse:
       type: object
       properties:
         success:
@@ -1604,7 +196,100 @@ components:
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/ShopifySearchCustomers'
+            $ref: '#/components/schemas/Schedule'
+      required:
+        - success
+        - payload
+    ScheduleGetResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Schedule'
+      required:
+        - success
+        - payload
+    ScheduleUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Schedule'
+      required:
+        - success
+        - payload
+    ScheduleUpdateBody:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    ScheduleSlotsUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Schedule'
+      required:
+        - success
+        - payload
+    ScheduleSlotsUpdateBody:
+      type: array
+      items:
+        $ref: '#/components/schemas/Slot'
+    ScheduleProductCreateOrUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Product'
+      required:
+        - success
+        - payload
+    ScheduleProductCreateOrUpdateBody:
+      type: object
+      properties:
+        visible:
+          type: boolean
+        duration:
+          type: number
+        breakTime:
+          type: number
+      required:
+        - visible
+        - duration
+        - breakTime
+    ScheduleProductDestroyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Destroy'
+      required:
+        - success
+        - payload
+    ScheduleProductGetResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Product'
+      required:
+        - success
+        - payload
 paths:
   '/customer/{customerId}/schedule':
     parameters:
@@ -1672,781 +357,60 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth: []
-  /auth/login:
-    post:
-      tags:
-        - Auth
-      operationId: authLogin
-      summary: Logs in a user
-      description: This endpoint return to you token for authentication.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthLoginRequest'
-      responses:
-        '200':
-          description: Login success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthLoginResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-      security: []
-  /auth/receive-password:
-    post:
-      tags:
-        - Auth
-      operationId: authReceivePassword
-      summary: Receive password
-      description: This endpoint receives a password using a phone number provided in the request body.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthPasswordRequest'
-      responses:
-        '200':
-          description: Password received successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthPasswordResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-      security: []
-  '/availability/{productId}/get-availability':
+  '/customer/{customerId}/schedule/{scheduleId}':
     parameters:
-      - name: productId
+      - name: customerId
         in: path
-        description: This field for productId from shopify
+        description: The ID of the customerId
         required: true
         schema:
           type: string
-      - name: start
-        in: query
-        description: This field filter by start date
-        required: true
-        schema:
-          type: string
-          format: date-time
-      - name: end
-        in: query
-        description: This field filter by end date
-        required: true
-        schema:
-          type: string
-          format: date-time
-      - name: userId
-        in: query
-        description: This field filter by userId.
-        required: false
-        schema:
-          type: string
-          description: A valid ObjectId
-    get:
-      tags:
-        - Availability
-      operationId: availabilityGetAvailability
-      summary: GET Get all availabilty
-      description: This endpoint get all availability for product (and for userId)
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AvailabilityGetAvailabilityResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security: []
-  '/availability/{productId}/get-settings':
-    parameters:
-      - name: productId
+      - name: scheduleId
         in: path
-        description: This field for productId from shopify
+        description: The ID of the scheduleId
         required: true
         schema:
           type: string
     get:
       tags:
-        - Availability
-      operationId: availabilityGetSettings
-      summary: GET Get settings
-      description: This endpoint get all settings for product
+        - Schedule
+      operationId: customerScheduleGet
+      summary: GET Get schedule for customer
+      description: This endpoint get schedule for customer
       responses:
         '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AvailabilityGetSettingsResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security: []
-  '/availability/{productId}/get-users':
-    parameters:
-      - name: productId
-        in: path
-        description: This field for productId from shopify
-        required: true
-        schema:
-          type: string
-    get:
-      tags:
-        - Availability
-      operationId: availabilityGetUsers
-      summary: GET Get all users
-      description: This endpoint get all users for product
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AvailabilityGetUsersResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security: []
-  /booking:
-    post:
-      tags:
-        - Booking
-      operationId: bookingCreate
-      summary: POST Create booking
-      description: This endpoint create new booking
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BookingCreateBody'
-      responses:
-        '200':
-          description: Response with booking model
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BookingCreateResponse'
+                $ref: '#/components/schemas/ScheduleGetResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
           $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
-  '/booking/{id}':
-    parameters:
-      - name: id
-        in: path
-        description: The ID of the booking
-        required: true
-        schema:
-          type: string
-    get:
-      parameters:
-        - name: userId
-          in: query
-          description: This field filter by userId(s). (Only 'owner' role can set this parameter)
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                description: A valid ObjectId
-              - type: array
-                items:
-                  type: string
-                  description: A valid ObjectId
-      tags:
-        - Booking
-      operationId: bookingGetById
-      summary: GET Get user
-      description: This endpoint gets user object
-      responses:
-        '200':
-          description: Response with payload
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BookingGetByIdResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
-    put:
-      tags:
-        - Booking
-      operationId: bookingUpdateById
-      summary: PUT Update user
-      description: This endpoint update user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BookingUpdateBody'
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BookingUpdateResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security:
-        - BearerAuth:
-            - owner
-            - admin
-  /bookings:
-    parameters:
-      - name: start
-        in: query
-        description: This field filter by start date
-        required: true
-        schema:
-          type: string
-          format: date-time
-      - name: end
-        in: query
-        description: This field filter by end date
-        required: true
-        schema:
-          type: string
-          format: date-time
-      - name: userId
-        in: query
-        description: This field filter by userId(s). (Only 'owner' role can set this parameter)
-        required: false
-        schema:
-          oneOf:
-            - type: string
-              description: A valid ObjectId
-            - type: array
-              items:
-                type: string
-                description: A valid ObjectId
-    get:
-      tags:
-        - Booking
-      operationId: bookingGetAll
-      summary: GET Get all bookings
-      description: This endpoint get all bookings
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BookingGetAllResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
-  /installation/get-status:
-    get:
-      tags:
-        - Installation
-      operationId: installationGetStatus
-      summary: GET get status of the installation
-      description: This endpoint gets the status of the installation
-      responses:
-        '200':
-          description: Response payload
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InstallationGetStatusResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security: []
-  /installation/setup:
-    post:
-      tags:
-        - Installation
-      operationId: installationSetup
-      summary: POST create user
-      description: This endpoint setup the platform by creating first user as owner
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/InstallationSetupBody'
-      responses:
-        '200':
-          description: Response payload
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InstallationSetupResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security: []
-  /collections:
-    parameters:
-      - name: group
-        in: query
-        description: 'The field filter by user group, only show collections that have products that contains this specific user group'
-        required: false
-        schema:
-          type: string
-    get:
-      tags:
-        - Collection
-      operationId: collectionGetAll
-      summary: GET All collections
-      description: This endpoint gets all collection
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CollectionGetAllResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security:
-        - BearerAuth: []
-  /my-account:
-    get:
-      tags:
-        - My Account
-      operationId: myAccountGet
-      summary: Get my-account data
-      description: This endpoint get account data.
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserGetByIdResponse'
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
       security:
         - BearerAuth: []
     put:
       tags:
-        - My Account
-      operationId: myAccountUpdate
-      summary: Update my-account data
-      description: This endpoint update account
+        - Schedule
+      operationId: customerScheduleUpdate
+      summary: POST Update schedule
+      description: This endpoint update schedule
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserUpdateBody'
+              $ref: '#/components/schemas/ScheduleUpdateBody'
       responses:
         '200':
-          description: Response
+          description: Response with schedule payload
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserUpdateResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
-  /products:
-    parameters:
-      - name: group
-        in: query
-        description: 'The field filter by user group, only show products that contain users with specific group'
-        required: false
-        schema:
-          type: string
-      - name: userId
-        in: query
-        description: 'This field to filter by user id, only show products where this user is assigned to.'
-        required: false
-        schema:
-          type: string
-    get:
-      tags:
-        - Product
-      operationId: productGetAll
-      summary: GET Get all products
-      description: This endpoint get all products
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductGetAllResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
-  /products/get-available-users:
-    parameters:
-      - name: group
-        in: query
-        description: Filter products by a specific user group. Only 'owner' role can use this parameter.
-        required: false
-        schema:
-          type: string
-    get:
-      tags:
-        - Product
-      operationId: productGetAvailableUsers
-      summary: GET Get all available users
-      description: This endpoint get all available users
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductGetAvailableUsersResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth:
-            - owner
-            - admin
-  '/products/{id}':
-    parameters:
-      - name: id
-        in: path
-        description: The ID of the product
-        required: true
-        schema:
-          type: string
-    put:
-      tags:
-        - Product
-      operationId: productUpdateById
-      summary: PUT Update product
-      description: This endpoint update product
-      requestBody:
-        description: Body
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProductUpdateBody'
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductUpdateResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth:
-            - owner
-            - admin
-    get:
-      parameters:
-        - name: group
-          in: query
-          description: Filter products by a specific user group. (Only 'owner' role can use this parameter)
-          required: false
-          schema:
-            type: string
-      tags:
-        - Product
-      operationId: productGetById
-      summary: GET Get product
-      description: This endpoint gets product object
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductGetByIdResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
-  /setting:
-    get:
-      tags:
-        - Setting
-      operationId: settingGet
-      summary: Get settings
-      description: This endpoint get settings.
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SettingResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security:
-        - BearerAuth: []
-    put:
-      tags:
-        - Setting
-      operationId: settingUpdate
-      summary: Update settings
-      description: This endpoint update setting
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SettingBody'
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SettingResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth:
-            - owner
-  /shopify/load-data:
-    get:
-      tags:
-        - Shopify
-      operationId: shopifyLoadData
-      summary: GET Load Shopify Data
-      description: This endpoint load all shopify collections and products
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ShopifyLoadDataResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security:
-        - BearerAuth: []
-  /shopify/search-customers:
-    get:
-      tags:
-        - Shopify
-      operationId: shopifySearchCustomers
-      summary: GET Search Shopify Customers
-      description: This endpoint can search in shopify customers
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ShopifySearchCustomersResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security:
-        - BearerAuth: []
-  '/user/{userId}/shift':
-    parameters:
-      - name: userId
-        in: path
-        description: The ID of the user
-        required: true
-        schema:
-          type: string
-    post:
-      tags:
-        - Shift
-      operationId: userShiftCreate
-      summary: POST Create shift
-      description: This endpoint create new shift
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ShiftCreateBody'
-      responses:
-        '200':
-          description: Response with Array of ShiftModel payload
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ShiftCreateResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
-  '/user/{userId}/shift-group':
-    parameters:
-      - name: userId
-        in: path
-        description: The ID of the user
-        required: true
-        schema:
-          type: string
-    post:
-      tags:
-        - Shift
-      operationId: userShiftCreateGroup
-      summary: POST Create shift group
-      description: This endpoint create new shift group
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ShiftCreateGroupBody'
-      responses:
-        '200':
-          description: Response with all new shift groups
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ShiftCreateGroupResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
-  '/user/{userId}/shift-group/{groupId}':
-    parameters:
-      - name: userId
-        in: path
-        description: The ID of the user
-        required: true
-        schema:
-          type: string
-      - name: groupId
-        in: path
-        description: The ID of the group
-        required: true
-        schema:
-          type: string
-    get:
-      tags:
-        - Shift
-      operationId: userShiftGetGroup
-      summary: GET Get shift group
-      description: This endpoint get shift group by id
-      responses:
-        '200':
-          description: get shift group
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ShiftGetGroupResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
-    put:
-      tags:
-        - Shift
-      operationId: userShiftUpdateGroup
-      summary: PUT Update shift group
-      description: This endpoint update shift group
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ShiftUpdateGroupBody'
-      responses:
-        '200':
-          description: Response with updated model
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ShiftUpdateGroupResponse'
+                $ref: '#/components/schemas/ScheduleUpdateResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -2459,17 +423,58 @@ paths:
         - BearerAuth: []
     delete:
       tags:
-        - Shift
-      operationId: userShiftDestroyGroup
-      summary: DEL Delete shift group
-      description: This endpoint delete shift group
+        - Schedule
+      operationId: customerScheduleDestroy
+      summary: GET destroy schedule
+      description: This endpoint destroy schedule for customer
       responses:
         '200':
-          description: Response ShiftDestroyGroup model
+          description: Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShiftDestroyGroupResponse'
+                $ref: '#/components/schemas/ScheduleDestroyResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security:
+        - BearerAuth: []
+  '/customer/{customerId}/schedule/{scheduleId}/slots':
+    parameters:
+      - name: customerId
+        in: path
+        description: The ID of the customerId
+        required: true
+        schema:
+          type: string
+      - name: scheduleId
+        in: path
+        description: The ID of the scheduleId
+        required: true
+        schema:
+          type: string
+    put:
+      tags:
+        - Slot
+      operationId: customerScheduleSlotUpdate
+      summary: PUT Update schedule slot
+      description: This endpoint update schedule slot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleSlotsUpdateBody'
+      responses:
+        '200':
+          description: Response with schedule payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleSlotsUpdateResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -2480,76 +485,39 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
-  '/user/{userId}/shifts':
+  '/customer/{customerId}/schedule/{scheduleId}/product/{productId}':
     parameters:
-      - name: userId
+      - name: customerId
         in: path
-        description: The ID of the user
+        description: The ID of the customerId
         required: true
         schema:
           type: string
-      - name: start
-        in: query
-        description: start of the date
-        required: true
-        schema:
-          type: string
-          format: date-time
-      - name: end
-        in: query
-        description: end of the date
-        required: true
-        schema:
-          type: string
-          format: date-time
-    get:
-      tags:
-        - Shift
-      operationId: userShiftGetAll
-      summary: GET Get all shifts for user
-      description: This endpoint get all shifts for user
-      responses:
-        '200':
-          description: Response ShiftDestroyGroup model
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ShiftGetAllResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security:
-        - BearerAuth: []
-  '/user/{userId}/shift/{id}':
-    parameters:
-      - name: id
+      - name: scheduleId
         in: path
-        description: The ID of the shift
+        description: The ID of the scheduleId
         required: true
         schema:
           type: string
-      - name: userId
+      - name: productId
         in: path
-        description: The ID of the user
+        description: The ID of the productId
         required: true
         schema:
           type: string
     get:
       tags:
-        - Shift
-      operationId: userShiftGetById
-      summary: GET Get shift
-      description: This endpoint gets shift object
+        - Product
+      operationId: customerScheduleProductGet
+      summary: GET Get schedule product for customer
+      description: This endpoint get schedule product for customer
       responses:
         '200':
-          description: Response with payload
+          description: Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShiftGetByIdResponse'
+                $ref: '#/components/schemas/ScheduleProductGetResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -2562,23 +530,23 @@ paths:
         - BearerAuth: []
     put:
       tags:
-        - Shift
-      operationId: userShiftUpdate
-      summary: PUT Update shift
-      description: This endpoint update shift
+        - Product
+      operationId: customerScheduleProductCreateOrUpdate
+      summary: PUT Create OR Update schedule product
+      description: This endpoint update schedule product
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ShiftUpdateBody'
+              $ref: '#/components/schemas/ScheduleProductCreateOrUpdateBody'
       responses:
         '200':
-          description: ''
+          description: Response with schedule product payload
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShiftUpdateResponse'
+                $ref: '#/components/schemas/ScheduleProductCreateOrUpdateResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -2591,17 +559,17 @@ paths:
         - BearerAuth: []
     delete:
       tags:
-        - Shift
-      operationId: userShiftDestroy
-      summary: DEL Delete shift
-      description: This endpoint delete shift
+        - Product
+      operationId: customerScheduleProductDestroy
+      summary: GET destroy schedule product
+      description: This endpoint destroy schedule product for customer
       responses:
         '200':
-          description: response
+          description: Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShiftDestroyResponse'
+                $ref: '#/components/schemas/ScheduleProductDestroyResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -2612,141 +580,6 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
       security:
         - BearerAuth: []
-  /users:
-    get:
-      tags:
-        - User
-      operationId: userGetAll
-      summary: GET All users
-      description: 'This endpoint gets all users, in case you are logged in as admin or user, only same group'
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserGetAllResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security:
-        - BearerAuth: []
-  /user:
-    post:
-      tags:
-        - User
-      operationId: userCreate
-      summary: POST Create user
-      description: This endpoint create new user with api key
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserCreateBody'
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserCreateResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security:
-        - BearerAuth:
-            - owner
-            - admin
-  '/user/{id}':
-    parameters:
-      - name: id
-        in: path
-        description: The ID of the user
-        required: true
-        schema:
-          type: string
-    get:
-      parameters:
-        - name: group
-          in: query
-          description: Filter users by a specific group. Only 'owner' role can use this parameter.
-          required: false
-          schema:
-            type: string
-      tags:
-        - User
-      operationId: userGetById
-      summary: GET Get user
-      description: This endpoint gets user object
-      responses:
-        '200':
-          description: Response with payload
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserGetByIdResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
-    put:
-      tags:
-        - User
-      operationId: userUpdateById
-      summary: PUT Update user
-      description: This endpoint update user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserUpdateBody'
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserUpdateResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security:
-        - BearerAuth:
-            - owner
-            - admin
 tags:
-  - name: Auth
-    description: Login and reset password
-  - name: Availability
-    description: Public Api for availability
-  - name: Booking
-    description: Manage bookings
-  - name: Installation
-    description: Installation of the platform
-  - name: My Account
-    description: Manage logged in user data.
-  - name: Product
-    description: Manage products
-  - name: Setting
-    description: Setting Api
-  - name: Shift
-    description: Manage shifts for user.
-  - name: Shopify
-    description: Shopify api
-  - name: User
-    description: Manage users.
+  - name: Schedule
+    description: Schedule
