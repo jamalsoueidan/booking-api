@@ -1,21 +1,20 @@
 import { z } from "zod";
+import { ScheduleServiceUpdate } from "~/functions/schedule/schedule-service/schedule";
+import { ScheduleZodSchema } from "~/functions/schedule/schedule.types";
 import { _ } from "~/library/handler";
-import { ScheduleServiceUpdate } from "../schedule.service";
-import { ScheduleZodSchema } from "../schedule.types";
 
 export type ScheduleControllerUpdateRequest = {
   query: z.infer<typeof ScheduleControllerUpdateQuerySchema>;
   body: z.infer<typeof ScheduleControllerUpdateBodySchema>;
 };
 
-const ScheduleControllerUpdateQuerySchema = ScheduleZodSchema.pick({
-  customerId: true,
-  _id: true,
+const ScheduleControllerUpdateQuerySchema = z.object({
+  scheduleId: ScheduleZodSchema.shape._id,
+  customerId: ScheduleZodSchema.shape.customerId,
 });
 
-const ScheduleControllerUpdateBodySchema = ScheduleZodSchema.omit({
-  _id: true,
-  customerId: true,
+const ScheduleControllerUpdateBodySchema = ScheduleZodSchema.pick({
+  name: true,
 });
 
 export type ScheduleControllerUpdateResponse = Awaited<

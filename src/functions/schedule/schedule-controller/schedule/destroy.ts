@@ -1,15 +1,15 @@
 import { z } from "zod";
+import { ScheduleServiceDestroy } from "~/functions/schedule/schedule-service/schedule";
+import { ScheduleZodSchema } from "~/functions/schedule/schedule.types";
 import { _ } from "~/library/handler";
-import { ScheduleServiceDestroy } from "../schedule.service";
-import { ScheduleZodSchema } from "../schedule.types";
 
 export type ScheduleControllerDestroyRequest = {
   query: z.infer<typeof ScheduleControllerDestroyQuerySchema>;
 };
 
-const ScheduleControllerDestroyQuerySchema = ScheduleZodSchema.pick({
-  customerId: true,
-  _id: true,
+const ScheduleControllerDestroyQuerySchema = z.object({
+  scheduleId: ScheduleZodSchema.shape._id,
+  customerId: ScheduleZodSchema.shape.customerId,
 });
 
 export type ScheduleControllerDestroyResponse = Awaited<

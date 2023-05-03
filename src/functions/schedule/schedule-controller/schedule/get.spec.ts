@@ -1,11 +1,11 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { AuthRole } from "~/functions/auth";
+import { ScheduleServiceCreate } from "~/functions/schedule/schedule-service/schedule";
 import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
-import { ScheduleServiceCreate } from "../schedule.service";
 import {
   ScheduleControllerGet,
   ScheduleControllerGetRequest,
@@ -31,7 +31,7 @@ describe("ScheduleControllerGet", () => {
 
     request = await createHttpRequest<ScheduleControllerGetRequest>({
       query: {
-        _id: newSchedule._id,
+        scheduleId: newSchedule._id,
         customerId,
       },
       loginAs: AuthRole.owner,
