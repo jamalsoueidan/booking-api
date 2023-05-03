@@ -13,14 +13,14 @@ describe("ScheduleService", () => {
   const customerId = 123;
   const name = "Test Schedule";
 
-  test("createSchedule should create a new schedule", async () => {
+  it("createSchedule should create a new schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
 
     expect(newSchedule.name).toEqual(name);
     expect(newSchedule.customerId).toEqual(customerId);
   });
 
-  test("deleteSchedule should delete an existing schedule", async () => {
+  it("deleteSchedule should delete an existing schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
     const deleteResult = await ScheduleServiceDestroy({
       scheduleId: newSchedule._id,
@@ -30,12 +30,15 @@ describe("ScheduleService", () => {
     expect(deleteResult.deletedCount).toEqual(1);
   });
 
-  test("updateSchedule should update schedule", async () => {
+  it("updateSchedule should update schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
     const updatedScheduleName = "Updated Test Schedule";
 
     const updatedSchedule = await ScheduleServiceUpdate(
-      { scheduleId: newSchedule._id, customerId: newSchedule.customerId },
+      {
+        scheduleId: newSchedule._id,
+        customerId: newSchedule.customerId,
+      },
       {
         name: updatedScheduleName,
       }
@@ -45,7 +48,7 @@ describe("ScheduleService", () => {
     });
   });
 
-  test("updateSchedule should throw NotFoundError when schedule is not found", async () => {
+  it("updateSchedule should throw NotFoundError when schedule is not found", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
     const updatedScheduleName = "Updated Test Schedule";
 
@@ -59,16 +62,16 @@ describe("ScheduleService", () => {
     ).rejects.toThrow(NotFoundError);
   });
 
-  test("getAllSchedules should return all schedules for a customerId", async () => {
+  it("getAllSchedules should return all schedules for a customerId", async () => {
     await ScheduleServiceCreate({ name, customerId });
-    await ScheduleServiceCreate({ name: "Test Schedule 2", customerId });
+    await ScheduleServiceCreate({ name: "asd", customerId: 123 });
 
     const schedules = await ScheduleServiceList({ customerId });
 
     expect(schedules.length).toEqual(2);
   });
 
-  test("getById should return a specific schedule", async () => {
+  it("getById should return a specific schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
     const retrievedSchedule = await ScheduleServiceGet({
       scheduleId: newSchedule._id,
@@ -80,7 +83,7 @@ describe("ScheduleService", () => {
     );
   });
 
-  test("getById should throw NotFoundError when schedule is not found", async () => {
+  it("getById should throw NotFoundError when schedule is not found", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
     await expect(
       ScheduleServiceGet({ scheduleId: newSchedule._id, customerId: 0 })

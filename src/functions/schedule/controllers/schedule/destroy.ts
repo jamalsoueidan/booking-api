@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { ScheduleServiceDestroy } from "~/functions/schedule/schedule-service/schedule";
 import { ScheduleZodSchema } from "~/functions/schedule/schedule.types";
+import { ScheduleServiceDestroy } from "~/functions/schedule/services";
 import { _ } from "~/library/handler";
 
 export type ScheduleControllerDestroyRequest = {

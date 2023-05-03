@@ -24,9 +24,18 @@ const ObjectIdType = z
 
 const StringOrObjectIdType = z.union([z.string(), ObjectIdType]);
 
+export const BlockDateZodSchema = z.object({
+  end: z.coerce.date(),
+  start: z.coerce.date(),
+});
+
+export type ScheduleBlockDate = z.infer<typeof BlockDateZodSchema>;
+
 export const ProductZodSchema = z.object({
   productId: NumberOrStringType,
   visibile: BooleanOrStringType,
+  duration: NumberOrStringType,
+  breakTime: NumberOrStringType,
 });
 
 export type ScheduleProduct = z.infer<typeof ProductZodSchema>;
@@ -39,7 +48,6 @@ export const IntervalZodSchema = z.object({
 export type ScheduleInterval = z.infer<typeof IntervalZodSchema>;
 
 export const SlotZodSchema = z.object({
-  _id: StringOrObjectIdType,
   day: z.enum([
     "monday",
     "tuesday",
@@ -54,12 +62,23 @@ export const SlotZodSchema = z.object({
 
 export type ScheduleSlot = z.infer<typeof SlotZodSchema>;
 
+export const SlotsZodSchema = z.array(SlotZodSchema).refine(
+  (slots) => {
+    const uniqueDays = new Set(slots.map((slot) => slot.day));
+    return uniqueDays.size === slots.length;
+  },
+  {
+    message: "Days must be unique within slots array.",
+  }
+);
+
 export const ScheduleZodSchema = z.object({
   _id: StringOrObjectIdType,
   name: z.string(),
   customerId: NumberOrStringType,
-  slots: z.array(SlotZodSchema),
+  slots: SlotsZodSchema,
   products: z.array(ProductZodSchema),
+  blockDates: z.array(BlockDateZodSchema),
 });
 
 export type Schedule = z.infer<typeof ScheduleZodSchema>;

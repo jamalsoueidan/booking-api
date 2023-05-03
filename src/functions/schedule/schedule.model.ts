@@ -3,7 +3,7 @@ import {
   IScheduleDocument,
   IScheduleModel,
   ScheduleMongooseSchema,
-} from "./schedule.schema";
+} from "./schemas/schedule.schema";
 
 export const ScheduleModel = mongoose.model<IScheduleDocument, IScheduleModel>(
   "schedule",

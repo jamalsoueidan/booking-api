@@ -7,7 +7,20 @@ type ScheduleServiceCreateBody = Pick<Schedule, "name" | "customerId">;
 export const ScheduleServiceCreate = async (
   props: ScheduleServiceCreateBody
 ) => {
-  const newSchedule = new ScheduleModel(props);
+  const newSchedule = new ScheduleModel({
+    ...props,
+    slots: [
+      {
+        day: "monday",
+        intervals: [
+          {
+            from: "8:00",
+            to: "16:00",
+          },
+        ],
+      },
+    ],
+  });
   return newSchedule.save();
 };
 
@@ -36,9 +49,13 @@ export const ScheduleServiceUpdate = async (
   filter: ScheduleServiceUpdateProps,
   body: ScheduleServiceUpdateBody
 ) => {
-  const updatedSchedule = await ScheduleModel.findOneAndUpdate(filter, body, {
-    new: true,
-  }).orFail(
+  const updatedSchedule = await ScheduleModel.findOneAndUpdate(
+    { _id: filter.scheduleId, customerId: filter.customerId },
+    body,
+    {
+      new: true,
+    }
+  ).orFail(
     new NotFoundError([
       {
         code: "custom",
@@ -62,8 +79,11 @@ type ScheduleServiceGetProps = {
   customerId: Schedule["customerId"];
 };
 
-export const ScheduleServiceGet = async (props: ScheduleServiceGetProps) => {
-  const schedule = await ScheduleModel.findOne(props)
+export const ScheduleServiceGet = async (filter: ScheduleServiceGetProps) => {
+  const schedule = await ScheduleModel.findOne({
+    _id: filter.scheduleId,
+    customerId: filter.customerId,
+  })
     .lean()
     .orFail(
       new NotFoundError([
