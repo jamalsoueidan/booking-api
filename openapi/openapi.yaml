@@ -83,6 +83,8 @@ components:
       $ref: paths/customer/create-or-update/response.yaml
     CustomerCreateOrUpdateBody:
       $ref: paths/customer/create-or-update/body.yaml
+    CustomerProductsResponse:
+      $ref: paths/customer/products/response.yaml
 
     # User
     UserGetResponse:
@@ -93,6 +95,9 @@ paths:
 
   /customer/{customerId}:
     $ref: "./paths/customer/customer.yaml"
+
+  /customer/{customerId}/products:
+    $ref: "./paths/customer/products/index.yaml"
 
   # schedule
   /customer/{customerId}/schedule:

@@ -1,7 +1,7 @@
 parameters:
   - name: customerId
     in: path
-    description: customerId is needded
+    description: customerId is needed
     required: true
     schema:
       type: string

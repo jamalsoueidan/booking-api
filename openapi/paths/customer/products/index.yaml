@@ -1,19 +1,19 @@
-put:
+parameters:
+  - name: customerId
+    in: path
+    description: customerId is needed
+    required: true
+    schema:
+      type: string
+get:
   tags:
     - Customer
-  operationId: customerCreateOrUpdate
-  summary: PUT Create or Update user
-  description: This endpoint creates new or updates user
-  requestBody:
-    required: true
-    content:
-      application/json:
-        schema:
-          $ref: "./body.yaml"
-
+  operationId: customerProductsGet
+  summary: GET Get products for customer
+  description: This endpoint get products for customer
   responses:
     "200":
-      description: Response
+      description: "Response"
       content:
         application/json:
           schema:
