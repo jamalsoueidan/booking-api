@@ -1,6 +1,6 @@
 parameters:
   - name: customerId
-    in: query
+    in: path
     description: get by customerId
     required: true
     schema:
