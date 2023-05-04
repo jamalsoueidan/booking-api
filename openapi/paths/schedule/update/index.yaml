@@ -2,7 +2,7 @@ put:
   tags:
     - Schedule
   operationId: customerScheduleUpdate
-  summary: POST Update schedule
+  summary: PUT Update schedule
   description: This endpoint update schedule
   requestBody:
     required: true

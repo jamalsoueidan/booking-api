@@ -2,7 +2,7 @@ delete:
   tags:
     - Schedule
   operationId: customerScheduleDestroy
-  summary: GET destroy schedule
+  summary: DEL destroy schedule
   description: This endpoint destroy schedule for customer
   responses:
     "200":
