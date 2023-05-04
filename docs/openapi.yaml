@@ -540,7 +540,7 @@ paths:
       tags:
         - Schedule
       operationId: customerScheduleUpdate
-      summary: POST Update schedule
+      summary: PUT Update schedule
       description: This endpoint update schedule
       requestBody:
         required: true
@@ -568,7 +568,7 @@ paths:
       tags:
         - Schedule
       operationId: customerScheduleDestroy
-      summary: GET destroy schedule
+      summary: DEL destroy schedule
       description: This endpoint destroy schedule for customer
       responses:
         '200':
@@ -700,7 +700,7 @@ paths:
       tags:
         - Product
       operationId: customerScheduleProductDestroy
-      summary: GET destroy schedule product
+      summary: DEL destroy schedule product
       description: This endpoint destroy schedule product for customer
       responses:
         '200':
