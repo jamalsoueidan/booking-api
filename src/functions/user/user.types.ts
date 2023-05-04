@@ -5,18 +5,9 @@ export const UserZodSchema = z.object({
   _id: z.string(),
   customerId: GidFormat,
   title: z.string(),
-  username: z.string().refine(
-    (value) => {
-      // Regular expression to match URL-friendly characters
-      const urlFriendlyRegex = /^[a-zA-Z0-9-_]+$/;
-      return urlFriendlyRegex.test(value);
-    },
-    {
-      // Custom error message to show when the validation fails
-      message:
-        "Username must be URL-friendly (only letters, numbers, hyphens, and underscores are allowed)",
-    }
-  ),
+  username: z
+    .string()
+    .transform((input) => input.replace(/[^a-zA-Z0-9-_]/g, "-")),
   fullname: z.string(),
   description: z.string(),
   social_urls: z.object({
