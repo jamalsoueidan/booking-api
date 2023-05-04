@@ -9,7 +9,7 @@ import {
 app.http("userCreateOrUpdate", {
   methods: ["PUT"],
   authLevel: "anonymous",
-  route: "customer/{customerId?",
+  route: "customer/{customerId?}",
   handler: UserControllerCreateOrUpdate,
 });
 
