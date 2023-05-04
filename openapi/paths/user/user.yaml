@@ -1,11 +1,9 @@
 parameters:
-  - name: id
+  - name: username
     in: path
-    description: The customer ID or username
+    description: username
     required: true
     schema:
       type: string
 get:
   $ref: "./get/index.yaml#/get"
-put:
-  $ref: "./create-or-update/index.yaml#/put"

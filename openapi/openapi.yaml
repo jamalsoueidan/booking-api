@@ -31,7 +31,8 @@ components:
       $ref: "./schemas/errors.yaml"
     User:
       $ref: paths/user/_types/user.yaml
-
+    Customer:
+      $ref: paths/customer/_types/customer.yaml
     Destroy:
       $ref: paths/schedule/_types/destroy.yaml
     Day:
@@ -78,15 +79,25 @@ components:
       $ref: paths/schedule/product/get/response.yaml
 
     # User
-    UserCreateOrUpdateResponse:
-      $ref: paths/user/create-or-update/response.yaml
-    UserCreateOrUpdateBody:
-      $ref: paths/user/create-or-update/body.yaml
+    CustomerCreateOrUpdateResponse:
+      $ref: paths/customer/create-or-update/response.yaml
+    CustomerCreateOrUpdateBody:
+      $ref: paths/customer/create-or-update/body.yaml
+    CustomerProductsResponse:
+      $ref: paths/customer/products/response.yaml
+
+    # User
     UserGetResponse:
       $ref: paths/user/get/response.yaml
 paths:
-  /customer/{id}:
+  /user/{username}:
     $ref: "./paths/user/user.yaml"
+
+  /customer/{customerId}:
+    $ref: "./paths/customer/customer.yaml"
+
+  /customer/{customerId}/products:
+    $ref: "./paths/customer/products/index.yaml"
 
   # schedule
   /customer/{customerId}/schedule:

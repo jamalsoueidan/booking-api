@@ -1,0 +1,40 @@
+type: object
+properties:
+  customerId:
+    type: string
+  title:
+    type: string
+  username:
+    type: string
+    pattern: ^[a-zA-Z0-9-_]+$
+  fullname:
+    type: string
+  description:
+    type: string
+  social_urls:
+    type: object
+    properties:
+      youtube:
+        type: string
+      twitter:
+        type: string
+      instagram:
+        type: string
+  active:
+    type: string
+  avatar:
+    type: string
+    format: uri
+  speaks:
+    type: array
+    items:
+      type: string
+required:
+  - customerId
+  - title
+  - fullname
+  - avatar
+  - speaks
+  - active
+  - social_urls
+  - description

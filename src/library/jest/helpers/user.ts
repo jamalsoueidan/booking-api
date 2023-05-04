@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
-import { User, UserServiceCreateOrUpdate } from "~/functions/user";
+import { CustomerServiceCreateOrUpdate } from "~/functions/customer";
+import { User } from "~/functions/user";
 
 export const DEFAULT_GROUP = "all";
 
@@ -23,5 +24,5 @@ export const createUser = (
   fitler: Pick<User, "customerId">,
   props: Partial<User> = {}
 ) => {
-  return UserServiceCreateOrUpdate(fitler, getUserObject(props));
+  return CustomerServiceCreateOrUpdate(fitler, getUserObject(props));
 };
