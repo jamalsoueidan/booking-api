@@ -46,8 +46,8 @@ describe("ScheduleProductControllerUpdate", () => {
         query: {
           customerId,
           scheduleId: newSchedule._id,
-          productId,
-        },
+          productId: "gid://shopify/Customer/1000",
+        } as any,
         body: updatedScheduleData,
         loginAs: AuthRole.owner,
       });

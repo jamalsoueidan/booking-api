@@ -10,6 +10,38 @@ export const BooleanOrStringType = z
     return value;
   });
 
+export const GidFormat = z
+  .union([z.number(), z.string()])
+  .refine(
+    (value) => {
+      if (typeof value === "number") {
+        return true;
+      } else if (typeof value === "string") {
+        const gidRegex = /^gid:\/\/shopify\/[A-Za-z]+\/(\d+)$/;
+        const parsedInt = parseInt(value, 10);
+        return !isNaN(parsedInt) || gidRegex.test(value);
+      }
+      return false;
+    },
+    {
+      message: "Invalid GidFormat. Could not parse the value.",
+    }
+  )
+  .transform((value) => {
+    if (typeof value === "number") {
+      return value;
+    } else {
+      const gidRegex = /^gid:\/\/shopify\/[A-Za-z]+\/(\d+)$/;
+      const match = gidRegex.exec(value);
+
+      if (match) {
+        return parseInt(match[1], 10);
+      } else {
+        return parseInt(value, 10);
+      }
+    }
+  });
+
 export const NumberOrStringType = z
   .union([z.number(), z.string()])
   .transform((value) =>
