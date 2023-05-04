@@ -5,7 +5,7 @@ export const DEFAULT_GROUP = "all";
 
 export const getUserObject = (props: Partial<User> = {}) => ({
   title: faker.name.jobTitle(),
-  username: faker.internet.userName(),
+  username: faker.internet.userName().toLowerCase(),
   fullname: faker.name.fullName(),
   social_urls: {
     instagram: faker.internet.url(),

@@ -16,6 +16,6 @@ app.http("userCreateOrUpdate", {
 app.http("userGet", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "customer/{customerId?}",
+  route: "customer/{username?}",
   handler: UserControllerGet,
 });

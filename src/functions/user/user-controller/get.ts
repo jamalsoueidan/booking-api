@@ -4,17 +4,13 @@ import { _ } from "~/library/handler";
 import { UserServiceGet } from "../user.service";
 import { UserZodSchema } from "../user.types";
 
-export const UserServiceGetUserByIdSchema = UserZodSchema.pick({
-  customerId: true,
-});
-
-export type UserServiceGetUserByIdQuery = z.infer<
-  typeof UserServiceGetUserByIdSchema
->;
-
 export type UserControllerGetRequest = {
-  query: UserServiceGetUserByIdQuery;
+  query: z.infer<typeof UserServiceGetUserByIdSchema>;
 };
+
+export const UserServiceGetUserByIdSchema = UserZodSchema.pick({
+  username: true,
+});
 
 export type UserControllerGetResponse = Awaited<
   ReturnType<typeof UserServiceGet>

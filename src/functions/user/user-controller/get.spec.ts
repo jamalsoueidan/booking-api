@@ -17,10 +17,10 @@ describe("UserControllerGet", () => {
   let context: InvocationContext = createContext();
   let request: HttpRequest;
 
-  it("Owner: Should be able to get user by id in all groups", async () => {
+  it("Should be able to get user by username", async () => {
     const user = await createUser({ customerId: 123 });
     request = await createHttpRequest<UserControllerGetRequest>({
-      query: { customerId: user.customerId },
+      query: { username: user.username },
     });
 
     const res: HttpSuccessResponse<UserControllerGetResponse> =
