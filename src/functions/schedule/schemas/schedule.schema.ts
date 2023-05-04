@@ -21,7 +21,6 @@ export const ScheduleMongooseSchema = new Schema<
 >({
   name: {
     type: String,
-    unique: true,
     index: true,
   },
   customerId: {
@@ -71,8 +70,35 @@ ScheduleMongooseSchema.pre<IScheduleDocument>("save", async function (next) {
       throw new BadError([
         {
           code: "custom",
-          message: "ProductId must be unique across all schedules",
+          message: "ProductId must be unique across all schedules user",
           path: ["products"],
+        },
+      ]);
+    }
+    next();
+  } catch (error: any) {
+    next(error);
+  }
+});
+
+ScheduleMongooseSchema.pre<IScheduleDocument>("save", async function (next) {
+  try {
+    const existingScheduleWithProduct = await mongoose
+      .model("schedule")
+      .findOne({
+        customerId: this.customerId,
+        name: this.name,
+      });
+
+    if (
+      existingScheduleWithProduct &&
+      existingScheduleWithProduct._id.toString() !== this._id.toString()
+    ) {
+      throw new BadError([
+        {
+          code: "custom",
+          message: "name must be unique across all schedules user",
+          path: ["name"],
         },
       ]);
     }

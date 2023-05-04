@@ -1,9 +1,0 @@
-type: object
-properties:
-  userId:
-    type: string
-  tag:
-    type: string
-required:
-  - userId
-  - tag
