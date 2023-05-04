@@ -113,6 +113,47 @@ components:
         - active
         - social_urls
         - description
+    Customer:
+      type: object
+      properties:
+        customerId:
+          type: string
+        title:
+          type: string
+        username:
+          type: string
+          pattern: '^[a-zA-Z0-9-_]+$'
+        fullname:
+          type: string
+        description:
+          type: string
+        social_urls:
+          type: object
+          properties:
+            youtube:
+              type: string
+            twitter:
+              type: string
+            instagram:
+              type: string
+        active:
+          type: string
+        avatar:
+          type: string
+          format: uri
+        speaks:
+          type: array
+          items:
+            type: string
+      required:
+        - customerId
+        - title
+        - fullname
+        - avatar
+        - speaks
+        - active
+        - social_urls
+        - description
     Destroy:
       type: object
       properties:
@@ -326,18 +367,18 @@ components:
       required:
         - success
         - payload
-    UserCreateOrUpdateResponse:
+    CustomerCreateOrUpdateResponse:
       type: object
       properties:
         success:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/User'
+          $ref: '#/components/schemas/Customer'
       required:
         - success
         - payload
-    UserCreateOrUpdateBody:
+    CustomerCreateOrUpdateBody:
       type: object
       properties:
         title:
@@ -370,6 +411,19 @@ components:
       required:
         - fullname
         - avatar
+    CustomerProductsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            type: number
+      required:
+        - success
+        - payload
     UserGetResponse:
       type: object
       properties:
@@ -382,11 +436,11 @@ components:
         - success
         - payload
 paths:
-  '/customer/{id}':
+  '/user/{username}':
     parameters:
-      - name: id
+      - name: username
         in: path
-        description: The customer ID or username
+        description: username
         required: true
         schema:
           type: string
@@ -412,10 +466,18 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
+  '/customer/{customerId}':
+    parameters:
+      - name: customerId
+        in: path
+        description: customerId is needed
+        required: true
+        schema:
+          type: string
     put:
       tags:
-        - User
-      operationId: userCreateOrUpdate
+        - Customer
+      operationId: customerCreateOrUpdate
       summary: PUT Create or Update user
       description: This endpoint creates new or updates user
       requestBody:
@@ -423,14 +485,42 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserCreateOrUpdateBody'
+              $ref: '#/components/schemas/CustomerCreateOrUpdateBody'
       responses:
         '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserCreateOrUpdateResponse'
+                $ref: '#/components/schemas/CustomerCreateOrUpdateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
+  '/customer/{customerId}/products':
+    parameters:
+      - name: customerId
+        in: path
+        description: customerId is needed
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Customer
+      operationId: customerProductsGet
+      summary: GET Get products for customer
+      description: This endpoint get products for customer
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerProductsResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
