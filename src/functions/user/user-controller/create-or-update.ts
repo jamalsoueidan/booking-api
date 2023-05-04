@@ -3,37 +3,36 @@ import { _ } from "~/library/handler";
 import { UserServiceCreateOrUpdate } from "../user.service";
 import { UserZodSchema } from "../user.types";
 
-export type UserControllerCreateUserOrUpdateRequest = {
-  query: UserControllerCreateUserOrUpdateQuery;
-  body: UserControllerCreateUserOrUpdateBody;
+export type UserControllerCreateOrUpdateRequest = {
+  query: UserControllerCreateOrUpdateQuery;
+  body: UserControllerCreateOrUpdateBody;
 };
 
-export const UserControllerCreateUserOrUpdateQuerySchema = UserZodSchema.pick({
+export const UserControllerCreateOrUpdateQuerySchema = UserZodSchema.pick({
   customerId: true,
 });
 
-export type UserControllerCreateUserOrUpdateQuery = z.infer<
-  typeof UserControllerCreateUserOrUpdateQuerySchema
+export type UserControllerCreateOrUpdateQuery = z.infer<
+  typeof UserControllerCreateOrUpdateQuerySchema
 >;
 
-export const UserControllerCreateUserOrUpdateSchema = UserZodSchema.omit({
+export const UserControllerCreateOrUpdateSchema = UserZodSchema.omit({
   _id: true,
   customerId: true,
 });
 
-export type UserControllerCreateUserOrUpdateBody = z.infer<
-  typeof UserControllerCreateUserOrUpdateSchema
+export type UserControllerCreateOrUpdateBody = z.infer<
+  typeof UserControllerCreateOrUpdateSchema
 >;
 
-export type UserControllerCreateUserOrUpdateResponse = Awaited<
+export type UserControllerCreateOrUpdateResponse = Awaited<
   ReturnType<typeof UserServiceCreateOrUpdate>
 >;
 
-export const UserControllerCreateUserOrUpdate = _(
-  ({ query, body }: UserControllerCreateUserOrUpdateRequest) => {
-    const validateQuery =
-      UserControllerCreateUserOrUpdateQuerySchema.parse(query);
-    const validateBody = UserControllerCreateUserOrUpdateSchema.parse(body);
+export const UserControllerCreateOrUpdate = _(
+  ({ query, body }: UserControllerCreateOrUpdateRequest) => {
+    const validateQuery = UserControllerCreateOrUpdateQuerySchema.parse(query);
+    const validateBody = UserControllerCreateOrUpdateSchema.parse(body);
     return UserServiceCreateOrUpdate(validateQuery, validateBody);
   }
 );

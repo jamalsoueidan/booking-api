@@ -1,9 +1,9 @@
 put:
   tags:
     - User
-  operationId: userCreate
-  summary: PUT Create user
-  description: This endpoint create new user
+  operationId: userCreateOrUpdate
+  summary: PUT Create or Update user
+  description: This endpoint creates new or updates user
   requestBody:
     required: true
     content:
@@ -24,3 +24,5 @@ put:
       $ref: "../../../responses/unauthorized.yaml"
     "403":
       $ref: "../../../responses/forbidden.yaml"
+
+  security: []

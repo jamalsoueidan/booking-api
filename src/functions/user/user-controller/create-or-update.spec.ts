@@ -10,9 +10,9 @@ import {
   UserServiceCreateOrUpdateBody,
 } from "../user.service";
 import {
-  UserControllerCreateUserOrUpdate,
-  UserControllerCreateUserOrUpdateRequest,
-  UserControllerCreateUserOrUpdateResponse,
+  UserControllerCreateOrUpdate,
+  UserControllerCreateOrUpdateRequest,
+  UserControllerCreateOrUpdateResponse,
 } from "./create-or-update";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -42,13 +42,13 @@ describe("UserControllerCreateOrUpdate", () => {
   });
 
   it("Should be able to create user", async () => {
-    request = await createHttpRequest<UserControllerCreateUserOrUpdateRequest>({
+    request = await createHttpRequest<UserControllerCreateOrUpdateRequest>({
       query,
       body,
     });
 
-    const res: HttpSuccessResponse<UserControllerCreateUserOrUpdateResponse> =
-      await UserControllerCreateUserOrUpdate(request, context);
+    const res: HttpSuccessResponse<UserControllerCreateOrUpdateResponse> =
+      await UserControllerCreateOrUpdate(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
@@ -58,7 +58,7 @@ describe("UserControllerCreateOrUpdate", () => {
   it("Should able to update user", async () => {
     await UserServiceCreateOrUpdate(query, body);
 
-    request = await createHttpRequest<UserControllerCreateUserOrUpdateRequest>({
+    request = await createHttpRequest<UserControllerCreateOrUpdateRequest>({
       query,
       body: {
         ...body,
@@ -66,8 +66,8 @@ describe("UserControllerCreateOrUpdate", () => {
       },
     });
 
-    const res: HttpSuccessResponse<UserControllerCreateUserOrUpdateResponse> =
-      await UserControllerCreateUserOrUpdate(request, context);
+    const res: HttpSuccessResponse<UserControllerCreateOrUpdateResponse> =
+      await UserControllerCreateOrUpdate(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");

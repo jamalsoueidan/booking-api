@@ -29,6 +29,8 @@ components:
   schemas:
     Errors:
       $ref: "./schemas/errors.yaml"
+    User:
+      $ref: paths/user/_types/user.yaml
 
     Destroy:
       $ref: paths/schedule/_types/destroy.yaml
@@ -42,6 +44,8 @@ components:
       $ref: paths/schedule/_types/product.yaml
     Schedule:
       $ref: paths/schedule/_types/schedule.yaml
+
+    # Schedule
     ScheduleCreateBody:
       $ref: paths/schedule/create/body.yaml
     ScheduleCreateResponse:
@@ -57,11 +61,13 @@ components:
     ScheduleUpdateBody:
       $ref: paths/schedule/update/body.yaml
 
+    # Slots
     ScheduleSlotsUpdateResponse:
       $ref: paths/schedule/slots/update/response.yaml
     ScheduleSlotsUpdateBody:
       $ref: paths/schedule/slots/update/body.yaml
 
+    # Product
     ScheduleProductCreateOrUpdateResponse:
       $ref: paths/schedule/product/create-or-update/response.yaml
     ScheduleProductCreateOrUpdateBody:
@@ -70,7 +76,18 @@ components:
       $ref: paths/schedule/product/destroy/response.yaml
     ScheduleProductGetResponse:
       $ref: paths/schedule/product/get/response.yaml
+
+    # User
+    UserCreateOrUpdateResponse:
+      $ref: paths/user/create-or-update/response.yaml
+    UserCreateOrUpdateBody:
+      $ref: paths/user/create-or-update/body.yaml
+    UserGetResponse:
+      $ref: paths/user/get/response.yaml
 paths:
+  /customer/{customerId}:
+    $ref: "./paths/user/user.yaml"
+
   # schedule
   /customer/{customerId}/schedule:
     $ref: "./paths/schedule/create/index.yaml"
@@ -84,6 +101,7 @@ paths:
 
   /customer/{customerId}/schedule/{scheduleId}/product/{productId}:
     $ref: paths/schedule/product/product.yaml
+
 tags:
   - name: Schedule
     description: Schedule
