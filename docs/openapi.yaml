@@ -16,11 +16,6 @@ info:
 servers:
   - url: 'https://booking-shopify-api.azurewebsites.net/api'
 components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
   responses:
     BadResponse:
       description: Bad Request
@@ -77,6 +72,47 @@ components:
       required:
         - success
         - errors
+    User:
+      type: object
+      properties:
+        customerId:
+          type: string
+        title:
+          type: string
+        username:
+          type: string
+          pattern: '^[a-zA-Z0-9-_]+$'
+        fullname:
+          type: string
+        description:
+          type: string
+        social_urls:
+          type: object
+          properties:
+            youtube:
+              type: string
+            twitter:
+              type: string
+            instagram:
+              type: string
+        active:
+          type: string
+        avatar:
+          type: string
+          format: uri
+        speaks:
+          type: array
+          items:
+            type: string
+      required:
+        - customerId
+        - title
+        - fullname
+        - avatar
+        - speaks
+        - active
+        - social_urls
+        - description
     Destroy:
       type: object
       properties:
@@ -290,7 +326,118 @@ components:
       required:
         - success
         - payload
+    UserCreateOrUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/User'
+      required:
+        - success
+        - payload
+    UserCreateOrUpdateBody:
+      type: object
+      properties:
+        title:
+          type: string
+        username:
+          type: string
+          pattern: '^[a-zA-Z0-9-_]+$'
+        fullname:
+          type: string
+        description:
+          type: string
+        social_urls:
+          type: object
+          properties:
+            youtube:
+              type: string
+            twitter:
+              type: string
+            instagram:
+              type: string
+        active:
+          type: string
+        avatar:
+          type: string
+          format: uri
+        speaks:
+          type: array
+          items:
+            type: string
+      required:
+        - fullname
+        - avatar
+    UserGetResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/User'
+      required:
+        - success
+        - payload
 paths:
+  '/customer/{customerId}':
+    parameters:
+      - name: customerId
+        in: query
+        description: get by customerId
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - User
+      operationId: userGetById
+      summary: GET Get user
+      description: This endpoint gets user object
+      responses:
+        '200':
+          description: Response with payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+    put:
+      tags:
+        - User
+      operationId: userCreateOrUpdate
+      summary: PUT Create or Update user
+      description: This endpoint creates new or updates user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateOrUpdateBody'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateOrUpdateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
   '/customer/{customerId}/schedule':
     parameters:
       - name: customerId
@@ -326,8 +473,7 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
+      security: []
   '/customer/{customerId}/schedules':
     parameters:
       - name: customerId
@@ -355,8 +501,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedResponse'
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
-      security:
-        - BearerAuth: []
+      security: []
   '/customer/{customerId}/schedule/{scheduleId}':
     parameters:
       - name: customerId
@@ -390,8 +535,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedResponse'
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
-      security:
-        - BearerAuth: []
+      security: []
     put:
       tags:
         - Schedule
@@ -419,8 +563,7 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
+      security: []
     delete:
       tags:
         - Schedule
@@ -440,8 +583,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedResponse'
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
-      security:
-        - BearerAuth: []
+      security: []
   '/customer/{customerId}/schedule/{scheduleId}/slots':
     parameters:
       - name: customerId
@@ -483,8 +625,7 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
+      security: []
   '/customer/{customerId}/schedule/{scheduleId}/product/{productId}':
     parameters:
       - name: customerId
@@ -526,8 +667,7 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
+      security: []
     put:
       tags:
         - Product
@@ -555,8 +695,7 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
+      security: []
     delete:
       tags:
         - Product
@@ -578,8 +717,7 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
-      security:
-        - BearerAuth: []
+      security: []
 tags:
   - name: Schedule
     description: Schedule
