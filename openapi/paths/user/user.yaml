@@ -1,7 +1,7 @@
 parameters:
-  - name: customerId
+  - name: id
     in: path
-    description: get by customerId
+    description: The customer ID or username
     required: true
     schema:
       type: string

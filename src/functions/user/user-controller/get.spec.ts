@@ -20,7 +20,7 @@ describe("UserControllerGet", () => {
   it("Owner: Should be able to get user by id in all groups", async () => {
     const user = await createUser({ customerId: 123 });
     request = await createHttpRequest<UserControllerGetRequest>({
-      query: { customerId: user.customerId },
+      query: { username: user.username },
     });
 
     const res: HttpSuccessResponse<UserControllerGetResponse> =

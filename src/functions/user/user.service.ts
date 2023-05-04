@@ -31,7 +31,7 @@ export const UserServiceCreateOrUpdate = async (
   );
 };
 
-export type UserServiceGetProps = Pick<User, "customerId">;
+export type UserServiceGetProps = Pick<User, "username">;
 
 export const UserServiceGet = (props: UserServiceGetProps) => {
   return UserModel.findOne(props).orFail(

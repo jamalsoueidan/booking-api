@@ -5,7 +5,7 @@ import { UserServiceGet } from "../user.service";
 import { UserZodSchema } from "../user.types";
 
 export const UserServiceGetUserByIdSchema = UserZodSchema.pick({
-  customerId: true,
+  username: true,
 });
 
 export type UserServiceGetUserByIdQuery = z.infer<

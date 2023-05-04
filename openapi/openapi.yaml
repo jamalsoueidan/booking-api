@@ -85,7 +85,7 @@ components:
     UserGetResponse:
       $ref: paths/user/get/response.yaml
 paths:
-  /customer/{customerId}:
+  /customer/{id}:
     $ref: "./paths/user/user.yaml"
 
   # schedule

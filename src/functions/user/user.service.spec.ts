@@ -72,10 +72,11 @@ describe("UserService", () => {
   it("Should find user", async () => {
     // Create multiple users
     const filter = { customerId: faker.datatype.number() };
+    const username = faker.internet.userName();
     // Create a user first
     const userData: UserServiceCreateOrUpdateBody = {
       title: faker.name.jobTitle(),
-      username: faker.internet.userName(),
+      username,
       fullname: faker.name.fullName(),
       social_urls: {
         instagram: faker.internet.url(),
@@ -90,7 +91,7 @@ describe("UserService", () => {
 
     await UserServiceCreateOrUpdate(filter, userData);
 
-    const findUser = await UserServiceGet(filter);
+    const findUser = await UserServiceGet({ username });
 
     expect(findUser.fullname).toEqual(userData.fullname);
   });
