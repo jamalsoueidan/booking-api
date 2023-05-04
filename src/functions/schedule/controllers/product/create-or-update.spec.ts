@@ -1,5 +1,5 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { AuthRole } from "~/functions/auth";
+
 import { ScheduleServiceCreate } from "~/functions/schedule/services";
 import {
   HttpErrorResponse,
@@ -46,10 +46,9 @@ describe("ScheduleProductControllerUpdate", () => {
         query: {
           customerId,
           scheduleId: newSchedule._id,
-          productId: "gid://shopify/Customer/1000",
+          productId: "1000",
         } as any,
         body: updatedScheduleData,
-        loginAs: AuthRole.owner,
       });
 
     const res: HttpSuccessResponse<ScheduleProductControllerCreateOrUpdateResponse> =
@@ -106,7 +105,6 @@ describe("ScheduleProductControllerUpdate", () => {
           productId,
         },
         body: updatedScheduleData,
-        loginAs: AuthRole.owner,
       });
 
     const res: HttpErrorResponse =

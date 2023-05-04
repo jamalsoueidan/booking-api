@@ -1,23 +1,17 @@
-put:
+get:
   tags:
-    - Schedule
-  operationId: customerScheduleUpdate
-  summary: POST Update schedule
-  description: This endpoint update schedule
-  requestBody:
-    required: true
-    content:
-      application/json:
-        schema:
-          $ref: "./body.yaml"
-
+    - User
+  operationId: userGetById
+  summary: GET Get user
+  description: This endpoint gets user object
   responses:
     "200":
-      description: Response with schedule payload
+      description: Response with payload
       content:
         application/json:
           schema:
             $ref: "./response.yaml"
+
     "400":
       $ref: "../../../responses/bad.yaml"
     "401":

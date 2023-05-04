@@ -1,5 +1,4 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { AuthRole } from "~/functions/auth";
 import { ScheduleServiceCreate } from "~/functions/schedule/services";
 import {
   HttpSuccessResponse,
@@ -34,7 +33,6 @@ describe("ScheduleControllerGet", () => {
         scheduleId: newSchedule._id,
         customerId,
       },
-      loginAs: AuthRole.owner,
     });
 
     const res: HttpSuccessResponse<ScheduleControllerGetResponse> =

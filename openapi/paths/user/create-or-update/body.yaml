@@ -1,7 +1,5 @@
 type: object
 properties:
-  customerId:
-    type: string
   title:
     type: string
   username:
@@ -30,11 +28,5 @@ properties:
     items:
       type: string
 required:
-  - customerId
-  - title
   - fullname
   - avatar
-  - speaks
-  - active
-  - social_urls
-  - description

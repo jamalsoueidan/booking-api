@@ -1,9 +1,9 @@
 put:
   tags:
-    - Schedule
-  operationId: customerScheduleUpdate
-  summary: POST Update schedule
-  description: This endpoint update schedule
+    - User
+  operationId: userCreateOrUpdate
+  summary: PUT Create or Update user
+  description: This endpoint creates new or updates user
   requestBody:
     required: true
     content:
@@ -13,7 +13,7 @@ put:
 
   responses:
     "200":
-      description: Response with schedule payload
+      description: Response
       content:
         application/json:
           schema:
@@ -24,7 +24,5 @@ put:
       $ref: "../../../responses/unauthorized.yaml"
     "403":
       $ref: "../../../responses/forbidden.yaml"
-    "404":
-      $ref: "../../../responses/not-found.yaml"
 
   security: []

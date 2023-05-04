@@ -4,7 +4,7 @@ import {
   GidFormat,
   NumberOrStringType,
   StringOrObjectIdType,
-} from "./zod.types";
+} from "~/library/zod";
 
 export const BlockDateZodSchema = z.object({
   end: z.coerce.date(),

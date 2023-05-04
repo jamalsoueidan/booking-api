@@ -25,5 +25,4 @@ get:
     "403":
       $ref: "../../../responses/forbidden.yaml"
 
-  security:
-    - BearerAuth: []
+  security: []

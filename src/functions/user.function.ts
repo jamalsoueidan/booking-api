@@ -2,36 +2,20 @@ import "module-alias/register";
 
 import { app } from "@azure/functions";
 import {
-  UserControllerCreateUser,
-  UserControllerGetAllUsers,
-  UserControllerGetById,
-  UserControllerUpdate,
-} from "./user";
+  UserControllerCreateOrUpdate,
+  UserControllerGet,
+} from "./user/user-controller";
 
-app.http("userGetAll", {
-  methods: ["GET"],
-  authLevel: "anonymous",
-  route: "users",
-  handler: UserControllerGetAllUsers,
-});
-
-app.http("userCreateUser", {
-  methods: ["POST"],
-  authLevel: "anonymous",
-  route: "user",
-  handler: UserControllerCreateUser,
-});
-
-app.http("userGetById", {
-  methods: ["GET"],
-  authLevel: "anonymous",
-  route: "user/{_id?}",
-  handler: UserControllerGetById,
-});
-
-app.http("userUpdateById", {
+app.http("userCreateOrUpdate", {
   methods: ["PUT"],
   authLevel: "anonymous",
-  route: "user/{_id?}",
-  handler: UserControllerUpdate,
+  route: "customerId/{customerId?",
+  handler: UserControllerCreateOrUpdate,
+});
+
+app.http("userGet", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customerId/{customerId?}",
+  handler: UserControllerGet,
 });
