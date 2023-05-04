@@ -382,18 +382,18 @@ components:
         - success
         - payload
 paths:
-  '/customer/{customerId}':
+  '/customer/{id}':
     parameters:
-      - name: customerId
+      - name: id
         in: path
-        description: get by customerId
+        description: The customer ID or username
         required: true
         schema:
           type: string
     get:
       tags:
         - User
-      operationId: userGetById
+      operationId: userGet
       summary: GET Get user
       description: This endpoint gets user object
       responses:
