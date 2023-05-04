@@ -11,34 +11,31 @@ export const UserMongooseSchema = new mongoose.Schema<
   IUserDocument,
   IUserModel
 >({
-  active: { default: true, type: Boolean },
-  address: String,
-  avatar: { required: true, type: String },
-  email: {
-    type: String,
-    unique: true,
-  },
-  fullname: { required: true, type: String },
-  language: {
-    default: "da",
-    required: true,
-    type: String,
-  },
-  group: {
-    default: "all", // should be changed later to null, nobody can see each other till they are part of group
-    index: true,
-    type: String,
-  },
-  phone: { required: true, type: String, unique: true },
-  position: { required: true, type: String }, // makeup? hair?
-  postal: {
-    index: true,
-    required: true,
+  customerId: {
     type: Number,
+    unique: true,
+    index: true,
   },
-  timeZone: {
-    default: "Europe/Copenhagen",
-    required: true,
+  title: String,
+  username: {
     type: String,
+    unqiue: true,
+    index: true,
+  },
+  fullname: {
+    type: String,
+    required: true,
+  },
+  social_urls: {
+    instagram: String,
+    youtube: String,
+    twitter: String,
+  },
+  description: String,
+  active: { default: true, type: Boolean },
+  avatar: { required: true, type: String },
+  speaks: {
+    type: [String],
+    required: true,
   },
 });

@@ -1,104 +1,46 @@
-import { BadError, NotFoundError } from "~/library/handler";
-import { isMongooseError } from "~/library/mongoose";
-import { AuthRole, AuthServiceCreate, AuthServiceUpdate } from "../auth";
+import { NotFoundError } from "~/library/handler";
 import { UserModel } from "./user.model";
 import { User } from "./user.types";
 
-export const UserServiceCreate = async (
-  body: Omit<User, "_id">,
-  role: AuthRole = AuthRole.user
+export type UserServiceCreateOrUpdate = Pick<User, "customerId">;
+export type UserServiceCreateOrUpdateBody = Omit<User, "_id" | "customerId">;
+
+export const UserServiceCreateOrUpdate = async (
+  filter: Pick<User, "customerId">,
+  body: UserServiceCreateOrUpdateBody
 ) => {
-  try {
-    const user = await UserModel.create(body);
+  // Use `await` to get the user from the database
+  const user = await UserModel.findOne(filter);
 
-    await AuthServiceCreate({
-      ...body,
-      userId: user._id.toString(),
-      role,
-    });
-
-    return user;
-  } catch (err: any) {
-    if (isMongooseError(err)) {
-      throw new BadError([
-        {
-          message: "DUPLICATED_PHONE_IN_DB",
-          code: "custom",
-          path: Object.keys(err.keyValue),
-        },
-      ]);
-    }
-    throw err;
+  if (!user) {
+    // Create a new user
+    const newUser = new UserModel({ ...body, customerId: filter.customerId });
+    return newUser.save();
   }
-};
 
-export const UserServiceFindAll = (props: any = {}) => UserModel.find(props);
-
-type UserServiceFindByIdAndUpdateQuery = Pick<User, "_id"> &
-  Partial<Pick<User, "group">>;
-
-export const UserServiceFindByIdAndUpdate = async (
-  query: UserServiceFindByIdAndUpdateQuery,
-  body: Partial<Omit<User, "_id">>
-) => {
-  const user = await UserModel.findOneAndUpdate(query, body, {
+  return UserModel.findOneAndUpdate(filter, body, {
     new: true,
-  });
-
-  if (!user) {
-    throw new NotFoundError([
+  }).orFail(
+    new NotFoundError([
       {
         path: ["userId"],
         message: "NOT_FOUND",
         code: "custom",
       },
-    ]);
-  }
-
-  await AuthServiceUpdate(
-    { userId: query._id },
-    { email: user.email, phone: user.phone, group: user.group }
+    ])
   );
-
-  return user;
 };
 
-export const UserServiceGetUserIdsbyGroup = async ({
-  group,
-}: {
-  group: string;
-}): Promise<Array<string>> => {
-  const users = await UserModel.find({ group }, "_id");
-  return users.map(({ _id }) => _id.toString());
-};
+export type UserServiceGetProps = Pick<User, "customerId">;
 
-type UserServiceGetByIdProps = {
-  _id: string;
-  group?: string;
-};
-
-export const UserServiceGetById = async (props: UserServiceGetByIdProps) => {
-  const user = await UserModel.findOne(props).lean();
-  if (!user) {
-    throw new NotFoundError([
+export const UserServiceGet = (props: UserServiceGetProps) => {
+  return UserModel.findOne(props).orFail(
+    new NotFoundError([
       {
         path: ["userId"],
         message: "NOT_FOUND",
         code: "custom",
       },
-    ]);
-  }
-  return user;
-};
-
-type UserServiceBelongsToSameGroup = {
-  userId: string;
-  group: string;
-};
-
-export const UserServiceBelongsToSameGroup = async (
-  props: UserServiceBelongsToSameGroup
-) => {
-  const user = await UserModel.findById(props.userId, "group");
-  return user?.group === props.group;
+    ])
+  );
 };

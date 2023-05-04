@@ -1,8 +1,0 @@
-type: string
-enum:
-  - "weekday"
-  - "weekend"
-  - "all_day"
-  - "end_of_week"
-  - "start_of_week"
-  - "middle_of_week"

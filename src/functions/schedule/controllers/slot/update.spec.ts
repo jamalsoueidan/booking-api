@@ -1,5 +1,4 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { AuthRole } from "~/functions/auth";
 import { ScheduleServiceCreate } from "~/functions/schedule/services";
 import {
   HttpErrorResponse,
@@ -48,7 +47,6 @@ describe("ScheduleSlotControllerUpdate", () => {
         scheduleId: newSchedule._id,
       },
       body: updatedScheduleData,
-      loginAs: AuthRole.owner,
     });
 
     const res: HttpSuccessResponse<ScheduleSlotControllerUpdateResponse> =
@@ -91,7 +89,6 @@ describe("ScheduleSlotControllerUpdate", () => {
         scheduleId: newSchedule._id,
       },
       body: updatedScheduleData,
-      loginAs: AuthRole.owner,
     });
 
     const res: HttpErrorResponse = await ScheduleSlotControllerUpdate(

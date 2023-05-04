@@ -33,5 +33,4 @@ get:
     "404":
       $ref: "../../../responses/not-found.yaml"
 
-  security:
-    - BearerAuth: []
+  security: []

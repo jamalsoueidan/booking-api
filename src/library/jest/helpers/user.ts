@@ -1,43 +1,27 @@
 import { faker } from "@faker-js/faker";
-import { AuthModel, AuthRole } from "~/functions/auth";
-import { User, UserServiceCreate } from "~/functions/user";
-import { jwtCreateToken } from "~/library/jwt";
+import { User, UserServiceCreateOrUpdate } from "~/functions/user";
 
 export const DEFAULT_GROUP = "all";
 
 export const getUserObject = (props: Partial<User> = {}) => ({
-  active: true,
-  address: "asdiojdsajioadsoji",
-  avatar: faker.image.imageUrl(undefined, undefined, "jpg"),
-  email: faker.internet.email(),
+  title: faker.name.jobTitle(),
+  username: faker.internet.userName(),
   fullname: faker.name.fullName(),
-  group: DEFAULT_GROUP,
-  language: "da",
-  phone: faker.phone.number("########"),
-  position: "2",
-  postal: 8000,
-  timeZone: "Europe/Copenhagen",
+  social_urls: {
+    instagram: faker.internet.url(),
+    youtube: faker.internet.url(),
+    twitter: faker.internet.url(),
+  },
+  description: faker.lorem.paragraph(),
+  active: true,
+  avatar: faker.internet.avatar(),
+  speaks: [faker.random.locale()],
   ...props,
 });
 
-export const createUser = (props: Partial<User> = {}) => {
-  return UserServiceCreate(getUserObject(props));
-};
-
-export const login = async (role: AuthRole) => {
-  const newUser = getUserObject({
-    email: faker.internet.email(),
-    fullname: faker.name.fullName(),
-    group: "all",
-    phone: "31317428",
-  });
-
-  const user = await UserServiceCreate(newUser, role);
-  const auth = await AuthModel.findOne({ userId: user?._id });
-
-  if (!auth) {
-    return {};
-  }
-
-  return { token: jwtCreateToken(auth?.toJSON()), user, auth };
+export const createUser = (
+  fitler: Pick<User, "customerId">,
+  props: Partial<User> = {}
+) => {
+  return UserServiceCreateOrUpdate(fitler, getUserObject(props));
 };

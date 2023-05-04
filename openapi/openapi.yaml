@@ -16,12 +16,6 @@ info:
 servers:
   - url: https://booking-shopify-api.azurewebsites.net/api
 components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
   responses:
     BadResponse:
       $ref: "./responses/bad.yaml"

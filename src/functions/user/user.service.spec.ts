@@ -1,104 +1,97 @@
 import { faker } from "@faker-js/faker";
-import { ZodError } from "zod";
-import { createUser } from "~/library/jest/helpers";
+import { UserModel } from "./user.model";
 import {
-  UserServiceCreate,
-  UserServiceFindAll,
-  UserServiceFindByIdAndUpdate,
-  UserServiceGetById,
-  UserServiceGetUserIdsbyGroup,
+  UserServiceCreateOrUpdate,
+  UserServiceCreateOrUpdateBody,
+  UserServiceGet,
 } from "./user.service";
-import { User } from "./user.types";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-const user: Omit<User, "_id"> = {
-  active: true,
-  address: "asdpkads 12",
-  avatar: "https://test.dk/test.png",
-  email: faker.internet.email(),
-  fullname: "jamasdeidan",
-  group: "a",
-  language: "da",
-  phone: "+4531317428",
-  position: "1",
-  postal: 8000,
-  timeZone: "Europe/Copenhagen",
-};
-
 describe("UserService", () => {
+  afterEach(async () => {
+    // Clean up the database after each test
+    await UserModel.deleteMany({});
+  });
+
   it("Should create a user", async () => {
-    const newUser = await UserServiceCreate(user);
-    expect(newUser).not.toBeNull();
-  });
-
-  it("Should not be able to create a user with same phone", async () => {
-    try {
-      await UserServiceCreate(user);
-      await UserServiceCreate({
-        ...user,
-        email: faker.internet.email(),
-      });
-    } catch (err) {
-      expect(err).toBeInstanceOf(ZodError);
-    }
-  });
-
-  it("Should get list of user", async () => {
-    await UserServiceCreate(user);
-    const allUser = await UserServiceFindAll();
-    expect(allUser.length).toEqual(1);
-  });
-
-  it("Should update user", async () => {
-    await UserServiceCreate(user);
-    const allUser = await UserServiceFindAll();
-    const oneUser = allUser.pop();
-
-    const body = {
-      fullname: "jamal soueidan",
-      email: "asd@asd.dk",
-      phone: "31317428",
-      postal: 8220,
-      position: "<string>",
-      avatar: "<string>",
+    const userData: UserServiceCreateOrUpdateBody = {
+      title: faker.name.jobTitle(),
+      username: faker.internet.userName(),
+      fullname: faker.name.fullName(),
+      social_urls: {
+        instagram: faker.internet.url(),
+        youtube: faker.internet.url(),
+        twitter: faker.internet.url(),
+      },
+      description: faker.lorem.paragraph(),
+      active: true,
+      avatar: faker.internet.avatar(),
+      speaks: [faker.random.locale()],
     };
 
-    const updateUser = await UserServiceFindByIdAndUpdate(oneUser?._id, body);
-    expect(updateUser?.fullname).toEqual(body.fullname);
+    const newUser = await UserServiceCreateOrUpdate(
+      { customerId: faker.datatype.number() },
+      userData
+    );
+
+    expect(newUser).toMatchObject(userData);
   });
 
-  it("Should get one user by id", async () => {
-    await UserServiceCreate(user);
-    const allUser = await UserServiceFindAll();
-    const fromAllUser = allUser.pop();
+  it("Should update a user by customerId", async () => {
+    const filter = { customerId: faker.datatype.number() };
+    // Create a user first
+    const userData: UserServiceCreateOrUpdateBody = {
+      title: faker.name.jobTitle(),
+      username: faker.internet.userName(),
+      fullname: faker.name.fullName(),
+      social_urls: {
+        instagram: faker.internet.url(),
+        youtube: faker.internet.url(),
+        twitter: faker.internet.url(),
+      },
+      description: faker.lorem.paragraph(),
+      active: true,
+      avatar: faker.internet.avatar(),
+      speaks: [faker.random.locale()],
+    };
 
-    const oneUser = await UserServiceGetById({
-      _id: fromAllUser?._id,
-    });
-    expect(oneUser?._id).toEqual(fromAllUser?._id);
+    const createdUser = await UserServiceCreateOrUpdate(filter, userData);
+
+    // Update the user
+    const updatedData: UserServiceCreateOrUpdateBody = {
+      ...userData,
+      fullname: faker.name.fullName(),
+    };
+
+    const updatedUser = await UserServiceCreateOrUpdate(filter, updatedData);
+
+    expect(updatedUser.fullname).toEqual(updatedData.fullname);
   });
 
-  it("Should return all user in the same group", async () => {
-    const userGroupA = await createUser({
-      group: "a",
-    });
+  it("Should find user", async () => {
+    // Create multiple users
+    const filter = { customerId: faker.datatype.number() };
+    // Create a user first
+    const userData: UserServiceCreateOrUpdateBody = {
+      title: faker.name.jobTitle(),
+      username: faker.internet.userName(),
+      fullname: faker.name.fullName(),
+      social_urls: {
+        instagram: faker.internet.url(),
+        youtube: faker.internet.url(),
+        twitter: faker.internet.url(),
+      },
+      description: faker.lorem.paragraph(),
+      active: true,
+      avatar: faker.internet.avatar(),
+      speaks: [faker.random.locale()],
+    };
 
-    await createUser({ group: "a" });
-    await createUser({ group: "a" });
+    await UserServiceCreateOrUpdate(filter, userData);
 
-    const userGroupB = await createUser({ group: "b" });
+    const findUser = await UserServiceGet(filter);
 
-    let users = await UserServiceGetUserIdsbyGroup({
-      group: userGroupA?.group || "a",
-    });
-
-    expect(users.length).toBe(3);
-
-    users = await UserServiceGetUserIdsbyGroup({
-      group: userGroupB?.group || "b",
-    });
-
-    expect(users.length).toBe(1);
+    expect(findUser.fullname).toEqual(userData.fullname);
   });
 });

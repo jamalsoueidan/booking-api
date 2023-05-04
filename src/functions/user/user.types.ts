@@ -1,45 +1,32 @@
 import { z } from "zod";
-
-const stringOrBoolean = z.union([z.boolean(), z.string()]);
-
-const stringToBoolean = stringOrBoolean.transform((value) => {
-  if (typeof value === "string") {
-    if (value.toLowerCase() === "true") {
-      return true;
-    } else if (value.toLowerCase() === "false") {
-      return false;
-    }
-  }
-  return value;
-});
+import { BooleanOrStringType, GidFormat } from "~/library/zod";
 
 export const UserZodSchema = z.object({
   _id: z.string(),
-  fullname: z.string().nonempty().min(8),
-  email: z.string().email({ message: "Invalid email address" }),
-  phone: z.string().refine((str) => /^\d{8}$/.test(str), {
-    message: "Invalid phone number format",
+  customerId: GidFormat,
+  title: z.string(),
+  username: z.string().refine(
+    (value) => {
+      // Regular expression to match URL-friendly characters
+      const urlFriendlyRegex = /^[a-zA-Z0-9-_]+$/;
+      return urlFriendlyRegex.test(value);
+    },
+    {
+      // Custom error message to show when the validation fails
+      message:
+        "Username must be URL-friendly (only letters, numbers, hyphens, and underscores are allowed)",
+    }
+  ),
+  fullname: z.string(),
+  description: z.string(),
+  social_urls: z.object({
+    youtube: z.string(),
+    twitter: z.string(),
+    instagram: z.string(),
   }),
-  active: stringToBoolean.default(true),
+  active: BooleanOrStringType,
   avatar: z.string().url({ message: "Invalid url" }),
-  position: z.string(),
-  postal: z
-    .number()
-    .or(z.string())
-    .refine(
-      (value) => {
-        const numberValue =
-          typeof value === "string" ? parseFloat(value) : value;
-
-        // Check if the number is positive and has at least 4 digits
-        return numberValue > 0 && numberValue.toString().length >= 4;
-      },
-      { message: "Postal must be a positive number with a minimum of 4 digits" }
-    ),
-  address: z.string().nonempty(),
-  group: z.string().default("all"),
-  language: z.string().default("da"),
-  timeZone: z.string().default("Europe/Copenhagen"),
+  speaks: z.array(z.string()),
 });
 
 export type User = z.infer<typeof UserZodSchema>;

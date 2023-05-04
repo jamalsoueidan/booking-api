@@ -1,9 +1,7 @@
-import { Document, Model, Schema, Types } from "mongoose";
+import { Document, Model, Schema } from "mongoose";
 import { Booking, BookingFulfillmentStatus } from "./booking.types";
 
-export interface IBooking extends Omit<Booking, "_id" | "userId"> {
-  userId: Types.ObjectId;
-}
+export interface IBooking extends Omit<Booking, "_id"> {}
 
 export interface IBookingDocument extends IBooking, Document {}
 
@@ -13,11 +11,14 @@ export const BookingMongooseSchema = new Schema<
   IBookingDocument,
   IBookingModel
 >({
-  anyAvailable: {
-    default: false,
-    type: Boolean,
+  productId: {
+    type: Number,
+    index: true,
   },
-  customerId: Number,
+  customerId: {
+    type: Number,
+    index: true,
+  },
   end: {
     index: true,
     required: true,
@@ -29,16 +30,7 @@ export const BookingMongooseSchema = new Schema<
     index: true,
     type: String,
   },
-  isEdit: {
-    default: false,
-    type: Boolean,
-  },
-  isSelfBooked: {
-    default: false,
-    type: Boolean,
-  },
   lineItemId: {
-    index: true,
     type: Number,
     unqiue: true,
   },
@@ -50,16 +42,8 @@ export const BookingMongooseSchema = new Schema<
     index: true,
     type: Number,
   },
-  productId: Number,
-  userId: {
-    ref: "user",
-    type: Schema.Types.ObjectId,
-  },
   start: {
-    index: true,
     required: true,
     type: Date,
   },
-  timeZone: String,
-  title: String,
 });

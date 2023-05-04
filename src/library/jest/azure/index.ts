@@ -6,8 +6,6 @@ import {
   InvocationContextInit,
 } from "@azure/functions";
 import { ZodIssue } from "zod";
-import { AuthRole } from "../../../functions/auth/auth.types";
-import { login } from "../helpers";
 
 export interface HttpSuccessResponse<T = unknown> extends HttpResponseInit {
   jsonBody?: {
@@ -71,7 +69,6 @@ export type HandlerProps<
   }
 > = PickByValueType<T, object> & {
   headers?: any;
-  loginAs?: AuthRole;
   token?: string;
 };
 
@@ -82,10 +79,6 @@ export async function createHttpRequest<
     params?: any;
   } = {}
 >(props: HandlerProps<T>): Promise<HttpRequest> {
-  if (props?.loginAs) {
-    const { token } = await login(props.loginAs);
-    props.headers = { ...props?.headers, authorization: `Bearer: ${token}` };
-  }
   if (props?.token) {
     props.headers = {
       ...props?.headers,

@@ -6,7 +6,6 @@ import {
   InvocationContext,
 } from "@azure/functions";
 import { ZodError } from "zod";
-import { jwtDecode, jwtGetToken } from "../jwt";
 import { connect } from "../mongoose";
 import {
   BadError,
@@ -66,11 +65,6 @@ const executeControllerWithParams = async (
   request: HttpRequest,
   handler: Function
 ) => {
-  const getSession = async () => {
-    const token = jwtGetToken(request.headers);
-    return token ? await jwtDecode(token) : {};
-  };
-
   const getQueries = () => {
     const queryUsed = Object.fromEntries(request.query.entries());
     return Object.keys(queryUsed).length > 0 ? queryUsed : {};
@@ -99,10 +93,6 @@ const executeControllerWithParams = async (
   if (requiredParams.includes("body")) {
     params.body = await getBody();
   }
-  if (requiredParams.includes("session")) {
-    params.session = await getSession();
-  }
-
   return handler(params);
 };
 
