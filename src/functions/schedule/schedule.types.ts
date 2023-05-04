@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   BooleanOrStringType,
+  GidFormat,
   NumberOrStringType,
   StringOrObjectIdType,
 } from "./zod.types";
@@ -13,7 +14,7 @@ export const BlockDateZodSchema = z.object({
 export type ScheduleBlockDate = z.infer<typeof BlockDateZodSchema>;
 
 export const ScheduleProductZodSchema = z.object({
-  productId: NumberOrStringType,
+  productId: GidFormat,
   visible: BooleanOrStringType,
   duration: NumberOrStringType,
   breakTime: NumberOrStringType,
@@ -56,7 +57,7 @@ export const ScheduleSlotsZodSchema = z.array(ScheduleSlotZodSchema).refine(
 export const ScheduleZodSchema = z.object({
   _id: StringOrObjectIdType,
   name: z.string(),
-  customerId: NumberOrStringType,
+  customerId: GidFormat,
   slots: ScheduleSlotsZodSchema,
   products: z.array(ScheduleProductZodSchema),
   blockDates: z.array(BlockDateZodSchema),

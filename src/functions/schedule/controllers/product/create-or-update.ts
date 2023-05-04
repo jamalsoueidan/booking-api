@@ -29,6 +29,7 @@ export const ScheduleProductControllerCreateOrUpdate = _(
   ({ query, body }: ScheduleProductControllerCreateOrUpdateRequest) => {
     const validateQuery =
       ScheduleProductControllerCreateOrUpdateQuerySchema.parse(query);
+
     const validateBody =
       ScheduleProductControllerCreateOrUpdateBodySchema.parse(body);
 
