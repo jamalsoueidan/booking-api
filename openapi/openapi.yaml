@@ -31,8 +31,6 @@ components:
       $ref: "./schemas/errors.yaml"
     User:
       $ref: paths/user/_types/user.yaml
-    Customer:
-      $ref: paths/customer/_types/customer.yaml
     Destroy:
       $ref: paths/schedule/_types/destroy.yaml
     Day:
@@ -78,26 +76,40 @@ components:
     ScheduleProductGetResponse:
       $ref: paths/schedule/product/get/response.yaml
 
-    # User
+    # Customer
+    Customer:
+      $ref: paths/customer/_types/customer.yaml
+    CustomerProductAvailability:
+      $ref: paths/customer/_types/availability.yaml
     CustomerCreateOrUpdateResponse:
       $ref: paths/customer/create-or-update/response.yaml
     CustomerCreateOrUpdateBody:
       $ref: paths/customer/create-or-update/body.yaml
     CustomerProductsResponse:
       $ref: paths/customer/products/response.yaml
+    CustomerProductAvailabilityResponse:
+      $ref: paths/customer/product/availability/response.yaml
 
     # User
     UserGetResponse:
       $ref: paths/user/get/response.yaml
 paths:
+  # User
   /user/{username}:
     $ref: "./paths/user/user.yaml"
 
+  /users:
+    $ref: "./paths/user/list/index.yaml"
+
+  # Customer
   /customer/{customerId}:
     $ref: "./paths/customer/customer.yaml"
 
   /customer/{customerId}/products:
     $ref: "./paths/customer/products/index.yaml"
+
+  /customer/{customerId}/product/{productId}/availability:
+    $ref: paths/customer/product/availability/index.yaml
 
   # schedule
   /customer/{customerId}/schedule:
@@ -112,7 +124,3 @@ paths:
 
   /customer/{customerId}/schedule/{scheduleId}/product/{productId}:
     $ref: paths/schedule/product/product.yaml
-
-tags:
-  - name: Schedule
-    description: Schedule

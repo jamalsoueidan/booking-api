@@ -5,6 +5,7 @@ import {
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
+import { ScheduleProduct, TimeUnit } from "../../schedule.types";
 import { ScheduleProductServiceCreateOrUpdate } from "../../services/product";
 import {
   ScheduleProductControllerDestroy,
@@ -18,6 +19,19 @@ describe("ScheduleProductControllerDestroy", () => {
   let context: InvocationContext;
   let request: HttpRequest;
   const productId = 1000;
+  const product: Omit<ScheduleProduct, "productId"> = {
+    visible: true,
+    duration: 60,
+    breakTime: 0,
+    noticePeriod: {
+      value: 1,
+      unit: TimeUnit.DAYS,
+    },
+    bookingPeriod: {
+      value: 1,
+      unit: TimeUnit.WEEKS,
+    },
+  };
 
   beforeEach(async () => {
     context = createContext();
@@ -35,11 +49,7 @@ describe("ScheduleProductControllerDestroy", () => {
         customerId: newSchedule.customerId,
         productId,
       },
-      {
-        visible: true,
-        breakTime: 0,
-        duration: 60,
-      }
+      product
     );
 
     expect(newProduct?.products).toHaveLength(1);

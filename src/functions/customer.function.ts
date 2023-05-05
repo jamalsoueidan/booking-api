@@ -3,6 +3,7 @@ import "module-alias/register";
 import { app } from "@azure/functions";
 import {
   CustomerControllerCreateOrUpdate,
+  CustomerProductAvailabilityControllerGet,
   CustomerProductsControllerGet,
 } from "./customer";
 
@@ -18,4 +19,11 @@ app.http("customerProductsGet", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/products",
   handler: CustomerProductsControllerGet,
+});
+
+app.http("customerProductAvailabilityGet", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/product/{productId?}/availability",
+  handler: CustomerProductAvailabilityControllerGet,
 });

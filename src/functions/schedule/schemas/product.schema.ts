@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ScheduleProduct } from "../schedule.types";
+import { ScheduleProduct, TimeUnit } from "../schedule.types";
 
 export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
   {
@@ -19,6 +19,22 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       type: Number,
       required: true,
       default: 0, // default to 0 minutes if not provided
+    },
+    noticePeriod: {
+      value: { type: Number, default: 1 },
+      unit: {
+        type: String,
+        enum: Object.values(TimeUnit),
+        default: TimeUnit.HOURS,
+      },
+    },
+    bookingPeriod: {
+      value: { type: Number, default: 1 },
+      unit: {
+        type: String,
+        enum: Object.values(TimeUnit),
+        default: TimeUnit.MONTHS,
+      },
     },
   },
   {

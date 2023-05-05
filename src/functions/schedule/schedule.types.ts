@@ -11,6 +11,28 @@ export const BlockDateZodSchema = z.object({
   start: z.coerce.date(),
 });
 
+export enum TimeUnit {
+  HOURS = "hours",
+  DAYS = "days",
+  WEEKS = "weeks",
+  MONTHS = "months",
+}
+
+const BookingPeriodZodSchema = z.object({
+  value: z.number().min(1, "Value must be greater than or equal to 1"),
+  unit: z.enum([TimeUnit.WEEKS, TimeUnit.MONTHS]),
+});
+
+const NoticePeriodZodSchema = z.object({
+  value: z.number().min(1, "Value must be greater than or equal to 1"),
+  unit: z.enum([
+    TimeUnit.HOURS,
+    TimeUnit.DAYS,
+    TimeUnit.WEEKS,
+    TimeUnit.MONTHS,
+  ]),
+});
+
 export type ScheduleBlockDate = z.infer<typeof BlockDateZodSchema>;
 
 export const ScheduleProductZodSchema = z.object({
@@ -18,6 +40,8 @@ export const ScheduleProductZodSchema = z.object({
   visible: BooleanOrStringType,
   duration: NumberOrStringType,
   breakTime: NumberOrStringType,
+  noticePeriod: NoticePeriodZodSchema,
+  bookingPeriod: BookingPeriodZodSchema,
 });
 
 export type ScheduleProduct = z.infer<typeof ScheduleProductZodSchema>;

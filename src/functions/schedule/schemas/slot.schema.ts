@@ -29,7 +29,7 @@ export const SlotSchema = new mongoose.Schema<ScheduleSlot>(
     },
     intervals: [IntervalSchema],
   },
-  { timestamps: true, _id: false }
+  { _id: false }
 );
 
 function hasOverlappingIntervals(intervals: ScheduleInterval[]): boolean {

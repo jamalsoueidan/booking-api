@@ -3,7 +3,8 @@ import {
   CustomerServiceCreateOrUpdate,
   CustomerServiceCreateOrUpdateBody,
 } from "~/functions/customer/services/customer";
-import { UserServiceGet } from "./user";
+import { createUser } from "~/library/jest/helpers";
+import { UserServiceGet, UserServiceList } from "./user";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -33,5 +34,14 @@ describe("UserService", () => {
     const findUser = await UserServiceGet({ username });
 
     expect(findUser.fullname).toEqual(userData.fullname);
+  });
+
+  it("Should get all users", async () => {
+    await createUser({ customerId: 123 }, { username: "test" });
+    await createUser({ customerId: 321 }, { username: "asd" });
+
+    const users = await UserServiceList();
+
+    expect(users).toHaveLength(2);
   });
 });

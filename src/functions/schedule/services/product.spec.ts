@@ -1,3 +1,4 @@
+import { ScheduleProduct, TimeUnit } from "../schedule.types";
 import {
   ScheduleProductServiceCreateOrUpdate,
   ScheduleProductServiceDestroy,
@@ -11,14 +12,22 @@ describe("ScheduleProductService", () => {
   const customerId = 123;
   const name = "Test Schedule";
   const productId = 1000;
+  const newProduct: Omit<ScheduleProduct, "productId"> = {
+    visible: true,
+    duration: 60,
+    breakTime: 0,
+    noticePeriod: {
+      value: 1,
+      unit: TimeUnit.DAYS,
+    },
+    bookingPeriod: {
+      value: 1,
+      unit: TimeUnit.WEEKS,
+    },
+  };
 
   it("createOrUpdateProduct should add a new product to the schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
-    const newProduct = {
-      visible: true,
-      duration: 60,
-      breakTime: 0,
-    };
 
     const updatedSchedule = await ScheduleProductServiceCreateOrUpdate(
       {
@@ -40,11 +49,6 @@ describe("ScheduleProductService", () => {
 
   it("createOrUpdateProduct should find a product", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
-    const newProduct = {
-      visible: true,
-      duration: 60,
-      breakTime: 0,
-    };
 
     const updatedSchedule = await ScheduleProductServiceCreateOrUpdate(
       {
@@ -61,18 +65,11 @@ describe("ScheduleProductService", () => {
       productId,
     });
 
-    expect(JSON.stringify(foundProduct)).toEqual(
-      JSON.stringify({ productId, ...newProduct })
-    );
+    expect(foundProduct).toMatchObject({ productId, ...newProduct });
   });
 
   it("createOrUpdateProduct should update an existing product in the schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
-    const newProduct = {
-      visible: true,
-      duration: 60,
-      breakTime: 0,
-    };
 
     await ScheduleProductServiceCreateOrUpdate(
       {
@@ -104,11 +101,7 @@ describe("ScheduleProductService", () => {
 
   it("removeProduct should remove an existing product from the schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({ name, customerId });
-    const newProduct = {
-      visible: true,
-      duration: 60,
-      breakTime: 0,
-    };
+
     await ScheduleProductServiceCreateOrUpdate(
       {
         scheduleId: newSchedule._id,
@@ -140,12 +133,6 @@ describe("ScheduleProductService", () => {
       name: "Test Schedule 2",
       customerId,
     });
-
-    const newProduct = {
-      visible: true,
-      duration: 60,
-      breakTime: 0,
-    };
 
     // Add the same product to the first schedule
     await ScheduleProductServiceCreateOrUpdate(

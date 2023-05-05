@@ -18,19 +18,22 @@ export type IScheduleModel = Model<IScheduleDocument>;
 export const ScheduleMongooseSchema = new Schema<
   IScheduleDocument,
   IScheduleModel
->({
-  name: {
-    type: String,
-    index: true,
+>(
+  {
+    name: {
+      type: String,
+      index: true,
+    },
+    customerId: {
+      type: Number,
+      index: true,
+    },
+    slots: [SlotSchema],
+    products: [ProductSchema],
+    blockDates: [BlockDateSchema],
   },
-  customerId: {
-    type: Number,
-    index: true,
-  },
-  slots: [SlotSchema],
-  products: [ProductSchema],
-  blockDates: [BlockDateSchema],
-});
+  { timestamps: true }
+);
 
 ScheduleMongooseSchema.methods.updateSlots = function (
   this: IScheduleDocument,
