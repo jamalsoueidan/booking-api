@@ -113,47 +113,6 @@ components:
         - active
         - social_urls
         - description
-    Customer:
-      type: object
-      properties:
-        customerId:
-          type: string
-        title:
-          type: string
-        username:
-          type: string
-          pattern: '^[a-zA-Z0-9-_]+$'
-        fullname:
-          type: string
-        description:
-          type: string
-        social_urls:
-          type: object
-          properties:
-            youtube:
-              type: string
-            twitter:
-              type: string
-            instagram:
-              type: string
-        active:
-          type: string
-        avatar:
-          type: string
-          format: uri
-        speaks:
-          type: array
-          items:
-            type: string
-      required:
-        - customerId
-        - title
-        - fullname
-        - avatar
-        - speaks
-        - active
-        - social_urls
-        - description
     Destroy:
       type: object
       properties:
@@ -367,6 +326,64 @@ components:
       required:
         - success
         - payload
+    Customer:
+      type: object
+      properties:
+        customerId:
+          type: string
+        title:
+          type: string
+        username:
+          type: string
+          pattern: '^[a-zA-Z0-9-_]+$'
+        fullname:
+          type: string
+        description:
+          type: string
+        social_urls:
+          type: object
+          properties:
+            youtube:
+              type: string
+            twitter:
+              type: string
+            instagram:
+              type: string
+        active:
+          type: string
+        avatar:
+          type: string
+          format: uri
+        speaks:
+          type: array
+          items:
+            type: string
+      required:
+        - customerId
+        - title
+        - fullname
+        - avatar
+        - speaks
+        - active
+        - social_urls
+        - description
+    CustomerProductAvailability:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+          example: '2023-05-05T00:00:00.000Z'
+        slots:
+          type: array
+          items:
+            type: string
+            format: date-time
+          example:
+            - '2023-05-05T08:00:00.000Z'
+      required:
+        - date
+        - slots
     CustomerCreateOrUpdateResponse:
       type: object
       properties:
@@ -424,6 +441,19 @@ components:
       required:
         - success
         - payload
+    CustomerProductAvailabilityResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerProductAvailability'
+      required:
+        - success
+        - payload
     UserGetResponse:
       type: object
       properties:
@@ -457,6 +487,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  /users:
+    get:
+      tags:
+        - User
+      operationId: usersList
+      summary: GET Get all users
+      description: This endpoint get all users
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                required:
+                  - success
+                  - payload
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -521,6 +585,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CustomerProductsResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
+  '/customer/{customerId}/product/{productId}/availability':
+    parameters:
+      - name: customerId
+        in: path
+        description: This field for customerId
+        required: true
+        schema:
+          type: string
+      - name: productId
+        in: path
+        description: This field for productId
+        required: true
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        description: This field filter by start date
+        required: true
+        schema:
+          type: string
+          format: date-time
+    get:
+      tags:
+        - Customer
+      operationId: customerProductAvailabilityGet
+      summary: GET Get all availabilty for customer product
+      description: This endpoint get all availability for product for customerId
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerProductAvailabilityResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -808,6 +913,3 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-tags:
-  - name: Schedule
-    description: Schedule
