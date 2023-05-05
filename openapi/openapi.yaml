@@ -41,6 +41,10 @@ components:
       $ref: paths/schedule/_types/slot.yaml
     Product:
       $ref: paths/schedule/_types/product.yaml
+    ProductBookingUnit:
+      $ref: paths/schedule/_types/product-booking-unit.yaml
+    ProductNoticeUnit:
+      $ref: paths/schedule/_types/product-booking-unit.yaml
     Schedule:
       $ref: paths/schedule/_types/schedule.yaml
 

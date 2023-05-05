@@ -25,13 +25,9 @@ export const ScheduleProductServiceDestroy = async (
       ])
     );
 
-    if (!schedule) {
-      throw new Error("Schedule not found");
-    }
-
     return schedule.removeProduct(filter.productId);
   } catch (error) {
-    console.error("Error adding product:", error);
+    console.error("Error destroying product:", error);
   }
 };
 
@@ -106,10 +102,6 @@ export const ScheduleProductServiceGet = async (
       },
     ])
   );
-
-  if (!schedule) {
-    throw new Error("Schedule not found");
-  }
 
   const productIndex = schedule.products.findIndex(
     (p) => p.productId === filter.productId
