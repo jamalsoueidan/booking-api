@@ -1,3 +1,4 @@
+import { addDays } from "date-fns";
 import { BookingModel } from "~/functions/booking";
 import { ScheduleModel } from "~/functions/schedule/schedule.model";
 import { ScheduleAvailabilityServiceGetByProductAndCustomer } from "./availability";
@@ -34,7 +35,6 @@ describe("ScheduleAvailabilityService", () => {
   it("should return available slots for the given date range and product", async () => {
     await ScheduleModel.create(scheduleData);
     const startDate = new Date("2023-05-01T00:00:00Z");
-    const endDate = new Date("2023-05-31T00:00:00Z");
     const customerId = 1;
     const productId = 99;
 
@@ -42,7 +42,6 @@ describe("ScheduleAvailabilityService", () => {
       customerId,
       productId,
       startDate,
-      endDate,
     });
 
     expect(result).toBeDefined();
@@ -89,7 +88,6 @@ describe("ScheduleAvailabilityService", () => {
       customerId,
       productId,
       startDate,
-      endDate,
     });
 
     const day = result.find(
@@ -113,7 +111,6 @@ describe("ScheduleAvailabilityService", () => {
       ],
     });
     const startDate = new Date("2023-05-01T00:00:00Z");
-    const endDate = new Date("2023-05-31T00:00:00Z");
     const customerId = 1;
     const productId = 99;
 
@@ -122,7 +119,6 @@ describe("ScheduleAvailabilityService", () => {
       customerId,
       productId,
       startDate,
-      endDate,
     });
 
     const day = result.find(
@@ -134,5 +130,127 @@ describe("ScheduleAvailabilityService", () => {
       expect(day.slots).not.toContain("2023-05-01T09:20:00.000Z");
       expect(day.slots).not.toContain("2023-05-01T09:40:00.000Z");
     }
+  });
+
+  it("should respect noticePeriod", async () => {
+    const currentDay = new Date()
+      .toLocaleString("en-US", { weekday: "long" })
+      .toLowerCase();
+
+    await ScheduleModel.create({
+      ...scheduleData,
+      slots: [
+        {
+          day: currentDay,
+          intervals: [
+            {
+              from: "08:00",
+              to: "12:00",
+            },
+            {
+              from: "14:00",
+              to: "18:00",
+            },
+          ],
+        },
+      ],
+      products: [
+        {
+          ...scheduleData.products[0],
+          noticePeriod: {
+            value: 5,
+            unit: "hours",
+          },
+        },
+      ],
+    });
+
+    const startDate = new Date(); // Use the current date
+    startDate.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00.000
+
+    const customerId = 1;
+    const productId = 99;
+
+    const result = await ScheduleAvailabilityServiceGetByProductAndCustomer({
+      customerId,
+      productId,
+      startDate,
+    });
+
+    expect(result).toBeDefined();
+    expect(Array.isArray(result)).toBeTruthy();
+    expect(result.length).toBeGreaterThan(0);
+
+    result.forEach((entry) => {
+      const entryDate = new Date(entry.date);
+      expect(entryDate.getTime()).toBeGreaterThanOrEqual(startDate.getTime());
+    });
+  });
+
+  it("should limit availability to the booking period", async () => {
+    const currentDay = new Date()
+      .toLocaleString("en-US", { weekday: "long" })
+      .toLowerCase();
+    const nextDay = addDays(new Date(), 1)
+      .toLocaleString("en-US", { weekday: "long" })
+      .toLowerCase();
+
+    await ScheduleModel.create({
+      ...scheduleData,
+      slots: [
+        {
+          day: currentDay,
+          intervals: [
+            {
+              from: "08:00",
+              to: "12:00",
+            },
+            {
+              from: "14:00",
+              to: "18:00",
+            },
+          ],
+        },
+        {
+          day: nextDay,
+          intervals: [
+            {
+              from: "08:00",
+              to: "12:00",
+            },
+            {
+              from: "14:00",
+              to: "18:00",
+            },
+          ],
+        },
+      ],
+      products: [
+        {
+          ...scheduleData.products[0],
+          bookingPeriod: {
+            value: 1,
+            unit: "days",
+          },
+        },
+      ],
+    });
+    const startDate = new Date("2023-05-01T00:00:00Z");
+    const customerId = 1;
+    const productId = 99;
+
+    const result = await ScheduleAvailabilityServiceGetByProductAndCustomer({
+      customerId,
+      productId,
+      startDate,
+    });
+
+    // Check that there are no available slots after the booking period
+    result.forEach((entry) => {
+      const entryDate = new Date(entry.date);
+      expect(entryDate.getTime()).toBeLessThanOrEqual(
+        new Date("2023-05-08T00:00:00Z").getTime()
+      );
+    });
   });
 });

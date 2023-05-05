@@ -1,4 +1,8 @@
-import { ScheduleServiceCreate } from "~/functions/schedule";
+import {
+  ScheduleProduct,
+  ScheduleServiceCreate,
+  TimeUnit,
+} from "~/functions/schedule";
 import { ScheduleProductServiceCreateOrUpdate } from "~/functions/schedule/services/product";
 import { CustomerProductsServiceGet } from "./product";
 
@@ -8,10 +12,18 @@ describe("ScheduleProductService", () => {
   const customerId = 123;
 
   it("createOrUpdateProduct should add a new product to the schedule", async () => {
-    const newProduct = {
+    const newProduct: Omit<ScheduleProduct, "productId"> = {
       visible: true,
       duration: 60,
       breakTime: 0,
+      noticePeriod: {
+        value: 1,
+        unit: TimeUnit.DAYS,
+      },
+      bookingPeriod: {
+        value: 1,
+        unit: TimeUnit.WEEKS,
+      },
     };
 
     const anotherCustomerSchedule = await ScheduleServiceCreate({
@@ -52,11 +64,6 @@ describe("ScheduleProductService", () => {
       name: "test",
       customerId,
     });
-    const newProduct2 = {
-      visible: true,
-      duration: 15,
-      breakTime: 0,
-    };
 
     await ScheduleProductServiceCreateOrUpdate(
       {
@@ -64,7 +71,7 @@ describe("ScheduleProductService", () => {
         customerId: newSchedule2.customerId,
         productId: 1002,
       },
-      newProduct2
+      newProduct
     );
 
     await ScheduleProductServiceCreateOrUpdate(
@@ -73,7 +80,7 @@ describe("ScheduleProductService", () => {
         customerId: newSchedule2.customerId,
         productId: 1004,
       },
-      newProduct2
+      newProduct
     );
 
     const products = await CustomerProductsServiceGet({ customerId });

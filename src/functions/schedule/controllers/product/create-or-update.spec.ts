@@ -9,6 +9,7 @@ import {
 } from "~/library/jest/azure";
 
 import { ScheduleProductServiceCreateOrUpdate } from "~/functions/schedule/services/product";
+import { ScheduleProduct, TimeUnit } from "../../schedule.types";
 import {
   ScheduleProductControllerCreateOrUpdate,
   ScheduleProductControllerCreateOrUpdateRequest,
@@ -23,6 +24,19 @@ describe("ScheduleProductControllerUpdate", () => {
   const customerId = 123;
   const name = "Test Schedule";
   const productId = 1000;
+  const newProduct: Omit<ScheduleProduct, "productId"> = {
+    visible: true,
+    duration: 60,
+    breakTime: 0,
+    noticePeriod: {
+      value: 1,
+      unit: TimeUnit.DAYS,
+    },
+    bookingPeriod: {
+      value: 1,
+      unit: TimeUnit.WEEKS,
+    },
+  };
 
   beforeEach(async () => {
     context = createContext();
@@ -34,13 +48,6 @@ describe("ScheduleProductControllerUpdate", () => {
       customerId,
     });
 
-    const updatedScheduleData: ScheduleProductControllerCreateOrUpdateRequest["body"] =
-      {
-        visible: true,
-        duration: 60,
-        breakTime: 0,
-      };
-
     request =
       await createHttpRequest<ScheduleProductControllerCreateOrUpdateRequest>({
         query: {
@@ -48,7 +55,7 @@ describe("ScheduleProductControllerUpdate", () => {
           scheduleId: newSchedule._id,
           productId: "1000",
         } as any,
-        body: updatedScheduleData,
+        body: newProduct,
       });
 
     const res: HttpSuccessResponse<ScheduleProductControllerCreateOrUpdateResponse> =
@@ -60,7 +67,7 @@ describe("ScheduleProductControllerUpdate", () => {
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(JSON.stringify(foundProduct)).toEqual(
-      JSON.stringify({ productId, ...updatedScheduleData })
+      JSON.stringify({ productId, ...newProduct })
     );
   });
 
@@ -74,12 +81,6 @@ describe("ScheduleProductControllerUpdate", () => {
       customerId,
     });
 
-    const newProduct = {
-      visible: true,
-      duration: 60,
-      breakTime: 0,
-    };
-
     // Add the same product to the first schedule
     await ScheduleProductServiceCreateOrUpdate(
       {
@@ -90,13 +91,6 @@ describe("ScheduleProductControllerUpdate", () => {
       newProduct
     );
 
-    const updatedScheduleData: ScheduleProductControllerCreateOrUpdateRequest["body"] =
-      {
-        visible: true,
-        duration: 60,
-        breakTime: 0,
-      };
-
     request =
       await createHttpRequest<ScheduleProductControllerCreateOrUpdateRequest>({
         query: {
@@ -104,7 +98,7 @@ describe("ScheduleProductControllerUpdate", () => {
           scheduleId: newSchedule2._id,
           productId,
         },
-        body: updatedScheduleData,
+        body: newProduct,
       });
 
     const res: HttpErrorResponse =

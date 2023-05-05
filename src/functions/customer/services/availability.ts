@@ -1,4 +1,4 @@
-import { areIntervalsOverlapping } from "date-fns";
+import { add, areIntervalsOverlapping, isWithinInterval } from "date-fns";
 import { BookingModel } from "~/functions/booking";
 import { ScheduleModel } from "~/functions/schedule/schedule.model";
 import { ScheduleInterval } from "~/functions/schedule/schedule.types";
@@ -85,14 +85,12 @@ export type ScheduleAvailabilityServiceGetByProductAndCustomerFilter = {
   customerId: number;
   productId: number;
   startDate: Date;
-  endDate: Date;
 };
 
 export const ScheduleAvailabilityServiceGetByProductAndCustomer = async ({
   customerId,
   productId,
   startDate,
-  endDate,
 }: ScheduleAvailabilityServiceGetByProductAndCustomerFilter) => {
   const schedule = await ScheduleModel.findOne({ customerId }).orFail(
     new NotFoundError([
@@ -120,11 +118,31 @@ export const ScheduleAvailabilityServiceGetByProductAndCustomer = async ({
     ]);
   }
 
+  const noticePeriod = {
+    value: productExists.noticePeriod.value,
+    unit: productExists.noticePeriod.unit,
+  };
+
+  const bookingPeriod = {
+    value: productExists.bookingPeriod.value,
+    unit: productExists.bookingPeriod.unit,
+  };
+
+  const minStartDate = add(new Date(), {
+    [noticePeriod.unit]: noticePeriod.value,
+  });
+
+  const maxEndDate = add(new Date(), {
+    [bookingPeriod.unit]: bookingPeriod.value,
+  });
+
+  const bookingInterval = { start: minStartDate, end: maxEndDate };
+
   const bookedSlots = await getBookedSlots(
     customerId,
     productId,
     startDate,
-    endDate
+    maxEndDate
   );
 
   const productDuration = productExists.duration;
@@ -133,7 +151,7 @@ export const ScheduleAvailabilityServiceGetByProductAndCustomer = async ({
 
   const availableSlots: Array<{ date: string; slots: string[] }> = [];
 
-  while (currentDate < endDate) {
+  while (currentDate < maxEndDate) {
     const dayOfWeek = currentDate
       .toLocaleString("en-US", { weekday: "long" })
       .toLowerCase();
@@ -150,22 +168,22 @@ export const ScheduleAvailabilityServiceGetByProductAndCustomer = async ({
           breakTime
         );
         for (const slot of generatedSlots) {
-          const available = isSlotAvailable(
-            slot,
-            bookedSlots,
-            blockDates,
-            productDuration
-          );
+          const slotDate = new Date(slot);
+          const available =
+            isSlotAvailable(slot, bookedSlots, blockDates, productDuration) &&
+            isWithinInterval(slotDate, bookingInterval);
           if (available) {
             slotsForDay.push(slot);
           }
         }
       }
 
-      availableSlots.push({
-        date: currentDate.toISOString(),
-        slots: slotsForDay,
-      });
+      if (slotsForDay.length > 0) {
+        availableSlots.push({
+          date: currentDate.toISOString(),
+          slots: slotsForDay,
+        });
+      }
     }
 
     currentDate.setUTCDate(currentDate.getUTCDate() + 1);

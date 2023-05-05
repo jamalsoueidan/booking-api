@@ -1,5 +1,9 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { ScheduleServiceCreate } from "~/functions/schedule";
+import {
+  ScheduleProduct,
+  ScheduleServiceCreate,
+  TimeUnit,
+} from "~/functions/schedule";
 import { ScheduleProductServiceCreateOrUpdate } from "~/functions/schedule/services/product";
 import {
   HttpSuccessResponse,
@@ -20,10 +24,18 @@ describe("UserProductsControllerGet", () => {
 
   it("Should be able to get all product ids by customer-id", async () => {
     const customerId = 123;
-    const newProduct = {
+    const newProduct: Omit<ScheduleProduct, "productId"> = {
       visible: true,
       duration: 60,
       breakTime: 0,
+      noticePeriod: {
+        value: 1,
+        unit: TimeUnit.DAYS,
+      },
+      bookingPeriod: {
+        value: 1,
+        unit: TimeUnit.WEEKS,
+      },
     };
 
     const newSchedule = await ScheduleServiceCreate({ name: "ab", customerId });
