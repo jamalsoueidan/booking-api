@@ -1,0 +1,16 @@
+type: object
+properties:
+  date:
+    type: string
+    format: date-time
+    example: "2023-05-05T00:00:00.000Z"
+  slots:
+    type: array
+    items:
+      type: string
+      format: date-time
+    example:
+      - "2023-05-05T08:00:00.000Z"
+required:
+  - date
+  - slots
