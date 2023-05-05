@@ -1,7 +1,11 @@
 import { add, areIntervalsOverlapping, isWithinInterval } from "date-fns";
 import { BookingModel } from "~/functions/booking";
 import { ScheduleModel } from "~/functions/schedule/schedule.model";
-import { ScheduleInterval } from "~/functions/schedule/schedule.types";
+import {
+  Schedule,
+  ScheduleInterval,
+  ScheduleProduct,
+} from "~/functions/schedule/schedule.types";
 import { NotFoundError } from "~/library/handler";
 
 function isSlotAvailable(
@@ -81,17 +85,17 @@ function generateTimeSlots(
   return slots;
 }
 
-export type ScheduleAvailabilityServiceGetByProductAndCustomerFilter = {
-  customerId: number;
-  productId: number;
+export type CustomerProductAvailabilityServiceGetProps = {
+  customerId: Schedule["customerId"];
+  productId: ScheduleProduct["productId"];
   startDate: Date;
 };
 
-export const ScheduleAvailabilityServiceGetByProductAndCustomer = async ({
+export const CustomerProductAvailabilityServiceGet = async ({
   customerId,
   productId,
   startDate,
-}: ScheduleAvailabilityServiceGetByProductAndCustomerFilter) => {
+}: CustomerProductAvailabilityServiceGetProps) => {
   const schedule = await ScheduleModel.findOne({ customerId }).orFail(
     new NotFoundError([
       {

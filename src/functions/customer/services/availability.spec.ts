@@ -1,11 +1,11 @@
 import { addDays } from "date-fns";
 import { BookingModel } from "~/functions/booking";
 import { ScheduleModel } from "~/functions/schedule/schedule.model";
-import { ScheduleAvailabilityServiceGetByProductAndCustomer } from "./availability";
+import { CustomerProductAvailabilityServiceGet } from "./availability";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("ScheduleAvailabilityService", () => {
+describe("CustomerProductAvailabilityServiceGet", () => {
   const scheduleData = {
     name: "Test Schedule",
     customerId: 1,
@@ -38,7 +38,7 @@ describe("ScheduleAvailabilityService", () => {
     const customerId = 1;
     const productId = 99;
 
-    const result = await ScheduleAvailabilityServiceGetByProductAndCustomer({
+    const result = await CustomerProductAvailabilityServiceGet({
       customerId,
       productId,
       startDate,
@@ -84,7 +84,7 @@ describe("ScheduleAvailabilityService", () => {
     }
 
     // Fetch available slots and filter out the booked slots
-    const result = await ScheduleAvailabilityServiceGetByProductAndCustomer({
+    const result = await CustomerProductAvailabilityServiceGet({
       customerId,
       productId,
       startDate,
@@ -115,7 +115,7 @@ describe("ScheduleAvailabilityService", () => {
     const productId = 99;
 
     // Fetch available slots and filter out the blocked slots
-    const result = await ScheduleAvailabilityServiceGetByProductAndCustomer({
+    const result = await CustomerProductAvailabilityServiceGet({
       customerId,
       productId,
       startDate,
@@ -171,7 +171,7 @@ describe("ScheduleAvailabilityService", () => {
     const customerId = 1;
     const productId = 99;
 
-    const result = await ScheduleAvailabilityServiceGetByProductAndCustomer({
+    const result = await CustomerProductAvailabilityServiceGet({
       customerId,
       productId,
       startDate,
@@ -239,7 +239,7 @@ describe("ScheduleAvailabilityService", () => {
     const customerId = 1;
     const productId = 99;
 
-    const result = await ScheduleAvailabilityServiceGetByProductAndCustomer({
+    const result = await CustomerProductAvailabilityServiceGet({
       customerId,
       productId,
       startDate,

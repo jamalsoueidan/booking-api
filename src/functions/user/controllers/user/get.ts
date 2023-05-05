@@ -5,10 +5,10 @@ import { UserServiceGet } from "../../services/user";
 import { UserZodSchema } from "../../user.types";
 
 export type UserControllerGetRequest = {
-  query: z.infer<typeof UserServiceGetUserByIdSchema>;
+  query: z.infer<typeof UserServiceGetSchema>;
 };
 
-export const UserServiceGetUserByIdSchema = UserZodSchema.pick({
+export const UserServiceGetSchema = UserZodSchema.pick({
   username: true,
 });
 
@@ -18,7 +18,7 @@ export type UserControllerGetResponse = Awaited<
 
 export const UserControllerGet = _(
   async ({ query }: UserControllerGetRequest) => {
-    const validateData = UserServiceGetUserByIdSchema.parse(query);
+    const validateData = UserServiceGetSchema.parse(query);
     return UserServiceGet(validateData);
   }
 );
