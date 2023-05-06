@@ -15,7 +15,7 @@ properties:
         type: number
         default: 1
       unit:
-        $ref: "./notice-unit.yaml"
+        $ref: "./product-notice-unit.yaml"
         default: "hours"
   bookingPeriod:
     type: object
@@ -24,7 +24,7 @@ properties:
         type: number
         default: 1
       unit:
-        $ref: "./booking-unit.yaml"
+        $ref: "./product-booking-unit.yaml"
         default: "months"
 
 required:
