@@ -1,4 +1,6 @@
 import { add, areIntervalsOverlapping, isWithinInterval } from "date-fns";
+import { BlockedModel } from "~/functions/blocked/blocked.model";
+import { Blocked } from "~/functions/blocked/blocked.types";
 import { BookingModel } from "~/functions/booking";
 import { ScheduleModel } from "~/functions/schedule/schedule.model";
 import {
@@ -11,7 +13,7 @@ import { NotFoundError } from "~/library/handler";
 function isSlotAvailable(
   slot: string,
   bookedSlots: Array<{ start: Date; end: Date }>,
-  blockDates: Array<{ start: Date; end: Date }>,
+  blockDates: Array<Blocked>,
   productDuration: number
 ): boolean {
   const slotStart = new Date(slot);
@@ -96,7 +98,14 @@ export const CustomerProductAvailabilityServiceGet = async ({
   productId,
   startDate,
 }: CustomerProductAvailabilityServiceGetProps) => {
-  const schedule = await ScheduleModel.findOne({ customerId }).orFail(
+  const schedule = await ScheduleModel.findOne({
+    customerId,
+    products: {
+      $elemMatch: {
+        productId: productId,
+      },
+    },
+  }).orFail(
     new NotFoundError([
       {
         code: "custom",
@@ -106,7 +115,8 @@ export const CustomerProductAvailabilityServiceGet = async ({
     ])
   );
 
-  const blockDates = schedule.blockDates;
+  // should find blocked later then today.
+  const blockDates = await BlockedModel.find({ customerId }).lean();
 
   const productExists = schedule.products.find(
     (product) => product.productId === productId

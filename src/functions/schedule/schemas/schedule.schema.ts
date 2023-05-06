@@ -1,7 +1,6 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 import { BadError } from "~/library/handler";
 import { Schedule, ScheduleSlot } from "../schedule.types";
-import { BlockDateSchema } from "./block-date.schema";
 import { ProductSchema } from "./product.schema";
 import { SlotSchema, validateSlots } from "./slot.schema";
 
@@ -30,7 +29,6 @@ export const ScheduleMongooseSchema = new Schema<
     },
     slots: [SlotSchema],
     products: [ProductSchema],
-    blockDates: [BlockDateSchema],
   },
   { timestamps: true }
 );

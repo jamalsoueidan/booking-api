@@ -6,17 +6,21 @@ import {
   StringOrObjectIdType,
 } from "~/library/zod";
 
-export const BlockDateZodSchema = z.object({
-  end: z.coerce.date(),
-  start: z.coerce.date(),
-});
-
 export enum TimeUnit {
   HOURS = "hours",
   DAYS = "days",
   WEEKS = "weeks",
   MONTHS = "months",
 }
+
+export type Days =
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday"
+  | "sunday";
 
 const BookingPeriodZodSchema = z.object({
   value: z.number().min(1, "Value must be greater than or equal to 1"),
@@ -32,8 +36,6 @@ const NoticePeriodZodSchema = z.object({
     TimeUnit.MONTHS,
   ]),
 });
-
-export type ScheduleBlockDate = z.infer<typeof BlockDateZodSchema>;
 
 export const ScheduleProductZodSchema = z.object({
   productId: GidFormat,
@@ -84,7 +86,6 @@ export const ScheduleZodSchema = z.object({
   customerId: GidFormat,
   slots: ScheduleSlotsZodSchema,
   products: z.array(ScheduleProductZodSchema),
-  blockDates: z.array(BlockDateZodSchema),
 });
 
 export type Schedule = z.infer<typeof ScheduleZodSchema>;
