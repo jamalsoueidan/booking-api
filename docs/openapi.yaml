@@ -166,11 +166,43 @@ components:
           type: number
         breakTime:
           type: number
+        noticePeriod:
+          type: object
+          properties:
+            value:
+              type: number
+              default: 1
+            unit:
+              default: hours
+              type: string
+              enum:
+                - hours
+                - days
+                - weeks
+                - months
+        bookingPeriod:
+          type: object
+          properties:
+            value:
+              type: number
+              default: 1
+            unit:
+              $ref: '#/components/schemas/ProductNoticeUnit'
+              default: months
       required:
         - productId
         - visible
         - duration
         - breakTime
+        - noticePeriod
+        - bookingPeriod
+    ProductBookingUnit:
+      $ref: '#/components/schemas/ProductNoticeUnit'
+    ProductNoticeUnit:
+      type: string
+      enum:
+        - weeks
+        - months
     Schedule:
       type: object
       properties:
