@@ -70,15 +70,18 @@ export const ScheduleSlotZodSchema = z.object({
 
 export type ScheduleSlot = z.infer<typeof ScheduleSlotZodSchema>;
 
-export const ScheduleSlotsZodSchema = z.array(ScheduleSlotZodSchema).refine(
-  (slots) => {
-    const uniqueDays = new Set(slots.map((slot) => slot.day));
-    return uniqueDays.size === slots.length;
-  },
-  {
-    message: "Days must be unique within slots array.",
-  }
-);
+export const ScheduleSlotsZodSchema = z
+  .array(ScheduleSlotZodSchema)
+  .transform((slots) => slots.filter((slot) => slot.intervals.length > 0))
+  .refine(
+    (slots) => {
+      const uniqueDays = new Set(slots.map((slot) => slot.day));
+      return uniqueDays.size === slots.length;
+    },
+    {
+      message: "Days must be unique within slots array.",
+    }
+  );
 
 export const ScheduleZodSchema = z.object({
   _id: StringOrObjectIdType,

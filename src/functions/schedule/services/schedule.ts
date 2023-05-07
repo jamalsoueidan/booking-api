@@ -1,4 +1,4 @@
-import { NotFoundError } from "~/library/handler";
+import { BadError, NotFoundError } from "~/library/handler";
 import { ScheduleModel } from "../schedule.model";
 import { Schedule } from "../schedule.types";
 
@@ -32,10 +32,26 @@ type ScheduleServiceDestroyProps = {
 export const ScheduleServiceDestroy = async (
   props: ScheduleServiceDestroyProps
 ) => {
-  return ScheduleModel.deleteOne({
-    _id: props.scheduleId,
+  // Count the number of schedules for the given customerId
+  const scheduleCount = await ScheduleModel.countDocuments({
     customerId: props.customerId,
   });
+
+  // If there is more than one schedule, proceed with the deletion
+  if (scheduleCount > 1) {
+    return ScheduleModel.deleteOne({
+      _id: props.scheduleId,
+      customerId: props.customerId,
+    });
+  } else {
+    throw new BadError([
+      {
+        code: "custom",
+        message: "SCHEDULE_LAST_ONE",
+        path: ["schedule"],
+      },
+    ]);
+  }
 };
 
 type ScheduleServiceUpdateProps = {
@@ -78,7 +94,7 @@ export const ScheduleServiceList = async (filter: ScheduleServiceListProps) => {
       customerId: filter.customerId,
     });
   }
-  return ScheduleModel.find(filter).lean();
+  return ScheduleModel.find(filter).sort("created_at").lean();
 };
 
 type ScheduleServiceGetProps = {
