@@ -56,27 +56,58 @@ function convertTimeStringToMinutes(time: string): number {
 
 export function validateSlots(slots: ScheduleSlot[]): void {
   // Check for duplicate days
-  const uniqueDays = new Set(slots.map((slot) => slot.day));
-  if (uniqueDays.size !== slots.length) {
+  const dayIndexMap = new Map();
+  let duplicateIndex = -1;
+
+  slots.forEach((slot, index) => {
+    if (dayIndexMap.has(slot.day)) {
+      duplicateIndex = index;
+    } else {
+      dayIndexMap.set(slot.day, index);
+    }
+  });
+
+  if (duplicateIndex !== -1) {
     throw new BadError([
       {
         code: "custom",
         message: "Each day must be unique within slots",
-        path: ["day"],
+        path: [`slots[${duplicateIndex}].day`],
       },
     ]);
   }
 
   // Check for overlapping intervals
-  for (const slot of slots) {
-    if (hasOverlappingIntervals(slot.intervals)) {
+  for (const [slotIndex, slot] of slots.entries()) {
+    const overlappingIntervalsIndex = findOverlappingIntervalsIndex(
+      slot.intervals
+    );
+    if (overlappingIntervalsIndex !== -1) {
       throw new BadError([
         {
           code: "custom",
           message: "Intervals within a slot must not overlap",
-          path: ["intervals"],
+          path: [
+            `slots[${slotIndex}].intervals[${overlappingIntervalsIndex}].to`,
+            `slots[${slotIndex}].intervals[${overlappingIntervalsIndex}].from`,
+          ],
         },
       ]);
     }
   }
+}
+
+function findOverlappingIntervalsIndex(intervals: ScheduleInterval[]): number {
+  for (let i = 0; i < intervals.length; i++) {
+    for (let j = i + 1; j < intervals.length; j++) {
+      if (isOverlapping(intervals[i], intervals[j])) {
+        return i;
+      }
+    }
+  }
+  return -1;
+}
+
+function isOverlapping(a: ScheduleInterval, b: ScheduleInterval): boolean {
+  return a.from < b.to && b.from < a.to;
 }

@@ -73,15 +73,28 @@ export type ScheduleSlot = z.infer<typeof ScheduleSlotZodSchema>;
 export const ScheduleSlotsZodSchema = z
   .array(ScheduleSlotZodSchema)
   .transform((slots) => slots.filter((slot) => slot.intervals.length > 0))
-  .refine(
-    (slots) => {
-      const uniqueDays = new Set(slots.map((slot) => slot.day));
-      return uniqueDays.size === slots.length;
-    },
-    {
-      message: "Days must be unique within slots array.",
+  .superRefine((slots, ctx) => {
+    const dayIndexMap = new Map();
+    let duplicateIndex = -1;
+
+    slots.forEach((slot, index) => {
+      if (dayIndexMap.has(slot.day)) {
+        duplicateIndex = index;
+      } else {
+        dayIndexMap.set(slot.day, index);
+      }
+    });
+
+    if (duplicateIndex !== -1) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Duplicate day found at index ${duplicateIndex}`,
+        path: [`slots[${duplicateIndex}].day`],
+      });
+      return false;
     }
-  );
+    return true;
+  });
 
 export const ScheduleZodSchema = z.object({
   _id: StringOrObjectIdType,
