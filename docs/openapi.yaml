@@ -332,10 +332,30 @@ components:
           type: number
         breakTime:
           type: number
+        noticePeriod:
+          type: object
+          properties:
+            value:
+              type: number
+              default: 1
+            unit:
+              $ref: '#/components/schemas/Product/properties/noticePeriod/properties/unit'
+              default: hours
+        bookingPeriod:
+          type: object
+          properties:
+            value:
+              type: number
+              default: 1
+            unit:
+              $ref: '#/components/schemas/ProductNoticeUnit'
+              default: months
       required:
         - visible
         - duration
         - breakTime
+        - noticePeriod
+        - bookingPeriod
     ScheduleProductDestroyResponse:
       type: object
       properties:
@@ -399,6 +419,19 @@ components:
         - active
         - social_urls
         - description
+    CustomerProductList:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Product'
+        - type: object
+          properties:
+            _id:
+              type: string
+            name:
+              type: string
+          required:
+            - _id
+            - name
     CustomerProductAvailability:
       type: object
       properties:
@@ -460,7 +493,7 @@ components:
       required:
         - fullname
         - avatar
-    CustomerProductsResponse:
+    CustomerProductListIdsResponse:
       type: object
       properties:
         success:
@@ -470,6 +503,17 @@ components:
           type: array
           items:
             type: number
+      required:
+        - success
+        - payload
+    CustomerProductListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/CustomerProductList'
       required:
         - success
         - payload
@@ -607,7 +651,7 @@ paths:
     get:
       tags:
         - Customer
-      operationId: customerProductsGet
+      operationId: customerProductsList
       summary: GET Get products for customer
       description: This endpoint get products for customer
       responses:
@@ -616,7 +660,35 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerProductsResponse'
+                $ref: '#/components/schemas/CustomerProductListResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
+  '/customer/{customerId}/products/ids':
+    parameters:
+      - name: customerId
+        in: path
+        description: customerId is needed
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Customer
+      operationId: customerProductsListIds
+      summary: GET Get product ids for customer
+      description: This endpoint get product ids for customer
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerProductListIdsResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
