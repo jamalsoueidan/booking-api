@@ -11,18 +11,18 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 import {
-  CustomerProductsControllerGet,
-  CustomerProductsControllerGetRequest,
-  CustomerProductsControllerGetResponse,
-} from "./get";
+  CustomerProductsControllerListIds,
+  CustomerProductsControllerListIdsRequest,
+  CustomerProductsControllerListIdsResponse,
+} from "./list-ids";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("UserProductsControllerGet", () => {
+describe("CustomerProductsServiceListIds", () => {
   let context: InvocationContext = createContext();
   let request: HttpRequest;
 
-  it("Should be able to get all product ids by customer-id", async () => {
+  it("Should be able to get all productIds for customer-id in all schedules", async () => {
     const customerId = 123;
     const newProduct: Omit<ScheduleProduct, "productId"> = {
       visible: true,
@@ -72,12 +72,14 @@ describe("UserProductsControllerGet", () => {
       newProduct
     );
 
-    request = await createHttpRequest<CustomerProductsControllerGetRequest>({
-      query: { customerId },
-    });
+    request = await createHttpRequest<CustomerProductsControllerListIdsRequest>(
+      {
+        query: { customerId },
+      }
+    );
 
-    const res: HttpSuccessResponse<CustomerProductsControllerGetResponse> =
-      await CustomerProductsControllerGet(request, context);
+    const res: HttpSuccessResponse<CustomerProductsControllerListIdsResponse> =
+      await CustomerProductsControllerListIds(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");

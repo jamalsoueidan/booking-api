@@ -1,19 +1,35 @@
 import { Schedule, ScheduleModel } from "~/functions/schedule";
 
-type CustomerProductsServiceGetProps = {
+type CustomerProductsServiceListIdsProps = {
   customerId: Schedule["customerId"];
 };
 
-export const CustomerProductsServiceGet = async (
-  filter: CustomerProductsServiceGetProps
+export const CustomerProductsServiceListIds = async (
+  filter: CustomerProductsServiceListIdsProps
 ) => {
   const schedules = await ScheduleModel.find(filter).select(
     "products.productId"
   );
 
-  const productIds = schedules.flatMap((schedule) => {
-    return schedule.products.map((product) => product.productId);
-  });
+  return schedules.flatMap((schedule) =>
+    schedule.products.map((product) => product.productId)
+  );
+};
 
-  return productIds;
+type CustomerProductsServiceListProps = {
+  customerId: Schedule["customerId"];
+};
+
+export const CustomerProductsServiceList = async (
+  filter: CustomerProductsServiceListProps
+) => {
+  const schedules = await ScheduleModel.find(filter).select("products");
+
+  return schedules.flatMap((schedule) =>
+    schedule.products.map((product) => ({
+      _id: schedule._id,
+      name: schedule.name,
+      ...product,
+    }))
+  );
 };

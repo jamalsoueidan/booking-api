@@ -1,10 +1,11 @@
 import "module-alias/register";
+import { CustomerProductsControllerList } from "./customer/controllers/products/list";
 
 import { app } from "@azure/functions";
 import {
   CustomerControllerCreateOrUpdate,
   CustomerProductAvailabilityControllerGet,
-  CustomerProductsControllerGet,
+  CustomerProductsControllerListIds,
 } from "./customer";
 
 app.http("customerCreateOrUpdate", {
@@ -14,11 +15,18 @@ app.http("customerCreateOrUpdate", {
   handler: CustomerControllerCreateOrUpdate,
 });
 
-app.http("customerProductsGet", {
+app.http("customerProductsListIds", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/products/ids",
+  handler: CustomerProductsControllerListIds,
+});
+
+app.http("customerProductsList", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/products",
-  handler: CustomerProductsControllerGet,
+  handler: CustomerProductsControllerList,
 });
 
 app.http("customerProductAvailabilityGet", {
