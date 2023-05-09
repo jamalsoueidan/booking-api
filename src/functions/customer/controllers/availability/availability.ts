@@ -4,7 +4,7 @@ import { _ } from "~/library/handler";
 import { ScheduleProductZodSchema } from "~/functions/schedule";
 import { UserZodSchema } from "~/functions/user";
 import { CustomerProductAvailabilityServiceGet } from "../../services/availability";
-import { CustomerProductsServiceGet } from "../../services/product";
+import { CustomerProductsServiceListIds } from "../../services/product";
 
 export type CustomerProductAvailabilityControllerGetRequest = {
   query: z.infer<typeof CustomerProductAvailabilityControllerGetSchema>;
@@ -17,7 +17,7 @@ export const CustomerProductAvailabilityControllerGetSchema = z.object({
 });
 
 export type CustomerProductAvailabilityControllerGetResponse = Awaited<
-  ReturnType<typeof CustomerProductsServiceGet>
+  ReturnType<typeof CustomerProductsServiceListIds>
 >;
 
 export const CustomerProductAvailabilityControllerGet = _(

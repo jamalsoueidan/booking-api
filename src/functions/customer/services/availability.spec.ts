@@ -235,7 +235,13 @@ describe("CustomerProductAvailabilityServiceGet", () => {
         },
       ],
     });
-    const startDate = new Date("2023-05-01T00:00:00Z");
+    const now = new Date();
+    const startDate = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate()
+    ); // Use today's date at the start of the day
+
     const customerId = 1;
     const productId = 99;
 
@@ -248,9 +254,9 @@ describe("CustomerProductAvailabilityServiceGet", () => {
     // Check that there are no available slots after the booking period
     result.forEach((entry) => {
       const entryDate = new Date(entry.date);
-      expect(entryDate.getTime()).toBeLessThanOrEqual(
-        new Date("2023-05-08T00:00:00Z").getTime()
-      );
+      const nextDay = new Date(startDate);
+      nextDay.setDate(nextDay.getDate() + 1); // Calculate the next day
+      expect(entryDate.getTime()).toBeLessThanOrEqual(nextDay.getTime());
     });
   });
 });
