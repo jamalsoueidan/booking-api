@@ -6,8 +6,28 @@ properties:
     type: number
   breakTime:
     type: number
+  noticePeriod:
+    type: object
+    properties:
+      value:
+        type: number
+        default: 1
+      unit:
+        $ref: "../../_types/product-notice-unit.yaml"
+        default: "hours"
+  bookingPeriod:
+    type: object
+    properties:
+      value:
+        type: number
+        default: 1
+      unit:
+        $ref: "../../_types/product-booking-unit.yaml"
+        default: "months"
 
 required:
   - visible
   - duration
   - breakTime
+  - noticePeriod
+  - bookingPeriod

@@ -8,7 +8,7 @@ parameters:
 get:
   tags:
     - Customer
-  operationId: customerProductsGet
+  operationId: customerProductsList
   summary: GET Get products for customer
   description: This endpoint get products for customer
   responses:
@@ -19,10 +19,10 @@ get:
           schema:
             $ref: "./response.yaml"
     "400":
-      $ref: "../../../responses/bad.yaml"
+      $ref: "../../../../responses/bad.yaml"
     "401":
-      $ref: "../../../responses/unauthorized.yaml"
+      $ref: "../../../../responses/unauthorized.yaml"
     "403":
-      $ref: "../../../responses/forbidden.yaml"
+      $ref: "../../../../responses/forbidden.yaml"
 
   security: []
