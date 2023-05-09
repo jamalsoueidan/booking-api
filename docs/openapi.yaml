@@ -513,7 +513,9 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerProductList'
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerProductList'
       required:
         - success
         - payload
