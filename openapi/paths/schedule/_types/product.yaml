@@ -3,14 +3,20 @@ properties:
   productId:
     type: number
   duration:
-    type: number
+    oneOf:
+      - type: string
+      - type: number
   breakTime:
-    type: number
+    oneOf:
+      - type: string
+      - type: number
   noticePeriod:
     type: object
     properties:
       value:
-        type: number
+        oneOf:
+          - type: string
+          - type: number
         default: 1
       unit:
         $ref: "./product-notice-unit.yaml"
@@ -19,7 +25,9 @@ properties:
     type: object
     properties:
       value:
-        type: number
+        oneOf:
+          - type: string
+          - type: number
         default: 1
       unit:
         $ref: "./product-booking-unit.yaml"
