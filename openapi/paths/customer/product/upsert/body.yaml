@@ -9,25 +9,9 @@ properties:
       - type: string
       - type: number
   noticePeriod:
-    type: object
-    properties:
-      value:
-        oneOf:
-          - type: string
-          - type: number
-      unit:
-        $ref: "../../../schedule/_types/product-notice-unit.yaml"
-        default: "hours"
+    $ref: ../../../schedule/_types/product-notice-period.yaml
   bookingPeriod:
-    type: object
-    properties:
-      value:
-        oneOf:
-          - type: string
-          - type: number
-      unit:
-        $ref: "../../../schedule/_types/product-booking-unit.yaml"
-        default: "months"
+    $ref: ../../../schedule/_types/product-booking-period.yaml
 
 required:
   - duration

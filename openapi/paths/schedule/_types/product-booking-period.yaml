@@ -1,0 +1,12 @@
+type: object
+properties:
+  value:
+    oneOf:
+      - type: string
+      - type: number
+  unit:
+    $ref: "./product-booking-unit.yaml"
+    default: "months"
+required:
+  - value
+  - unit
