@@ -64,7 +64,7 @@ components:
               expected:
                 type: string
               received:
-                type: number
+                type: string
             required:
               - path
               - message
@@ -117,7 +117,7 @@ components:
       type: object
       properties:
         deletedCount:
-          type: number
+          type: string
         acknowledged:
           type: boolean
       required:
@@ -159,18 +159,18 @@ components:
       type: object
       properties:
         productId:
-          type: number
+          type: string
         visible:
           type: boolean
         duration:
-          type: number
+          type: string
         breakTime:
-          type: number
+          type: string
         noticePeriod:
           type: object
           properties:
             value:
-              type: number
+              type: string
               default: 1
             unit:
               default: hours
@@ -184,7 +184,7 @@ components:
           type: object
           properties:
             value:
-              type: number
+              type: string
               default: 1
             unit:
               $ref: '#/components/schemas/ProductNoticeUnit'
@@ -211,7 +211,7 @@ components:
         name:
           type: string
         customerId:
-          type: number
+          type: string
         slots:
           type: array
           items:
@@ -329,14 +329,14 @@ components:
         visible:
           type: boolean
         duration:
-          type: number
+          type: string
         breakTime:
-          type: number
+          type: string
         noticePeriod:
           type: object
           properties:
             value:
-              type: number
+              type: string
               default: 1
             unit:
               $ref: '#/components/schemas/Product/properties/noticePeriod/properties/unit'
@@ -345,7 +345,7 @@ components:
           type: object
           properties:
             value:
-              type: number
+              type: string
               default: 1
             unit:
               $ref: '#/components/schemas/ProductNoticeUnit'
@@ -502,7 +502,7 @@ components:
         payload:
           type: array
           items:
-            type: number
+            type: string
       required:
         - success
         - payload
