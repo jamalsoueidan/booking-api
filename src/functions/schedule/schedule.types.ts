@@ -1,6 +1,5 @@
 import { z } from "zod";
 import {
-  BooleanOrStringType,
   GidFormat,
   NumberOrStringType,
   StringOrObjectIdType,
@@ -39,7 +38,6 @@ const NoticePeriodZodSchema = z.object({
 
 export const ScheduleProductZodSchema = z.object({
   productId: GidFormat,
-  visible: BooleanOrStringType,
   duration: NumberOrStringType,
   breakTime: NumberOrStringType,
   noticePeriod: NoticePeriodZodSchema,

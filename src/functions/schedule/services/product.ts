@@ -41,7 +41,10 @@ export type ScheduleProductServiceCreateOrUpdateBody = ScheduleProduct;
 
 export const ScheduleProductServiceCreateOrUpdate = async (
   filter: ScheduleProductServiceCreateOrUpdateFilter,
-  product: Omit<ScheduleProductServiceCreateOrUpdateBody, "productId">
+  product: Omit<
+    ScheduleProductServiceCreateOrUpdateBody,
+    "productId" | "visible"
+  >
 ) => {
   try {
     const schedule = await ScheduleModel.findOne({

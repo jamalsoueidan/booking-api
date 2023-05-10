@@ -7,10 +7,6 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       type: Number,
       index: true,
     },
-    visible: {
-      type: Boolean,
-      default: true,
-    },
     duration: {
       type: Number,
       default: 60,

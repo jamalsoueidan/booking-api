@@ -1,7 +1,5 @@
 type: object
 properties:
-  visible:
-    type: boolean
   duration:
     type: string
   breakTime:
@@ -26,7 +24,6 @@ properties:
         default: "months"
 
 required:
-  - visible
   - duration
   - breakTime
   - noticePeriod
