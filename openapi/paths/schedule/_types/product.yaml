@@ -17,13 +17,9 @@ properties:
         oneOf:
           - type: string
           - type: number
-        default: 1
       unit:
         $ref: "./product-notice-unit.yaml"
         default: "hours"
-    required:
-      - value
-      - unit
   bookingPeriod:
     type: object
     properties:
@@ -31,13 +27,9 @@ properties:
         oneOf:
           - type: string
           - type: number
-        default: 1
       unit:
         $ref: "./product-booking-unit.yaml"
         default: "months"
-    required:
-      - value
-      - unit
 required:
   - productId
   - duration
