@@ -4,7 +4,7 @@ allOf:
   - type: object
     properties:
       userId:
-        type: string
+        type: number
       tag:
         $ref: "../../shift/_types/tag.yaml"
     required:

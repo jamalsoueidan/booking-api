@@ -1,16 +1,16 @@
 type: object
 properties:
   productId:
-    type: string
+    type: number
   duration:
-    type: string
+    type: number
   breakTime:
-    type: string
+    type: number
   noticePeriod:
     type: object
     properties:
       value:
-        type: string
+        type: number
         default: 1
       unit:
         $ref: "./product-notice-unit.yaml"
@@ -19,7 +19,7 @@ properties:
     type: object
     properties:
       value:
-        type: string
+        type: number
         default: 1
       unit:
         $ref: "./product-booking-unit.yaml"

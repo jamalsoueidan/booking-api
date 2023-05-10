@@ -1,7 +1,7 @@
 type: object
 properties:
   customerId:
-    type: string
+    type: number
   title:
     type: string
   username:
@@ -21,7 +21,7 @@ properties:
       instagram:
         type: string
   active:
-    type: string
+    type: boolean
   avatar:
     type: string
     format: uri
