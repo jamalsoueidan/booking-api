@@ -175,13 +175,9 @@ components:
               oneOf:
                 - type: string
                 - type: number
-              default: 1
             unit:
               $ref: '#/components/schemas/ProductNoticeUnit'
               default: hours
-          required:
-            - value
-            - unit
         bookingPeriod:
           type: object
           properties:
@@ -189,13 +185,9 @@ components:
               oneOf:
                 - type: string
                 - type: number
-              default: 1
             unit:
               $ref: '#/components/schemas/ProductBookingUnit'
               default: months
-          required:
-            - value
-            - unit
       required:
         - productId
         - duration
@@ -351,13 +343,9 @@ components:
               oneOf:
                 - type: string
                 - type: number
-              default: 1
             unit:
               $ref: '#/components/schemas/ProductNoticeUnit'
               default: hours
-          required:
-            - value
-            - unit
         bookingPeriod:
           type: object
           properties:
@@ -365,13 +353,9 @@ components:
               oneOf:
                 - type: string
                 - type: number
-              default: 1
             unit:
               $ref: '#/components/schemas/ProductBookingUnit'
               default: months
-          required:
-            - value
-            - unit
       required:
         - duration
         - breakTime
