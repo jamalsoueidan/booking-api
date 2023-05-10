@@ -13,7 +13,6 @@ describe("ScheduleProductService", () => {
   const name = "Test Schedule";
   const productId = 1000;
   const newProduct: Omit<ScheduleProduct, "productId"> = {
-    visible: true,
     duration: 60,
     breakTime: 0,
     noticePeriod: {

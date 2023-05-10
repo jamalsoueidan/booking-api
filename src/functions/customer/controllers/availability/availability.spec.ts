@@ -39,7 +39,6 @@ describe("CustomerProductAvailabilityControllerGet", () => {
     products: [
       {
         productId,
-        visible: true,
       },
     ],
   };

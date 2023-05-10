@@ -20,7 +20,6 @@ describe("ScheduleProductControllerDestroy", () => {
   let request: HttpRequest;
   const productId = 1000;
   const product: Omit<ScheduleProduct, "productId"> = {
-    visible: true,
     duration: 60,
     breakTime: 0,
     noticePeriod: {

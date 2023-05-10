@@ -16,7 +16,6 @@ describe("CustomerProductsService", () => {
 
   it("should get all productIds in all schedules", async () => {
     const newProduct: Omit<ScheduleProduct, "productId"> = {
-      visible: true,
       duration: 60,
       breakTime: 0,
       noticePeriod: {
@@ -92,7 +91,6 @@ describe("CustomerProductsService", () => {
 
   it("should get all products from all schedules", async () => {
     const newProduct: Omit<ScheduleProduct, "productId"> = {
-      visible: true,
       duration: 60,
       breakTime: 0,
       noticePeriod: {

@@ -22,12 +22,12 @@ export type Days =
   | "sunday";
 
 const BookingPeriodZodSchema = z.object({
-  value: z.number().min(1, "Value must be greater than or equal to 1"),
+  value: NumberOrStringType,
   unit: z.enum([TimeUnit.WEEKS, TimeUnit.MONTHS]),
 });
 
 const NoticePeriodZodSchema = z.object({
-  value: z.number().min(1, "Value must be greater than or equal to 1"),
+  value: NumberOrStringType,
   unit: z.enum([
     TimeUnit.HOURS,
     TimeUnit.DAYS,

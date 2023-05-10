@@ -27,7 +27,6 @@ describe("CustomerProductAvailabilityServiceGet", () => {
     products: [
       {
         productId: 99,
-        visible: true,
       },
     ],
   };
