@@ -160,8 +160,6 @@ components:
       properties:
         productId:
           type: string
-        visible:
-          type: boolean
         duration:
           type: string
         breakTime:
@@ -191,7 +189,6 @@ components:
               default: months
       required:
         - productId
-        - visible
         - duration
         - breakTime
         - noticePeriod
@@ -326,8 +323,6 @@ components:
     ScheduleProductCreateOrUpdateBody:
       type: object
       properties:
-        visible:
-          type: boolean
         duration:
           type: string
         breakTime:
@@ -351,7 +346,6 @@ components:
               $ref: '#/components/schemas/ProductNoticeUnit'
               default: months
       required:
-        - visible
         - duration
         - breakTime
         - noticePeriod
