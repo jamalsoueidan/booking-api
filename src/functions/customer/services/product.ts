@@ -23,7 +23,9 @@ type CustomerProductsServiceListProps = {
 export const CustomerProductsServiceList = async (
   filter: CustomerProductsServiceListProps
 ) => {
-  const schedules = await ScheduleModel.find(filter).select("products");
+  const schedules = await ScheduleModel.find(filter)
+    .select("name products")
+    .lean();
 
   return schedules.flatMap((schedule) =>
     schedule.products.map((product) => ({
