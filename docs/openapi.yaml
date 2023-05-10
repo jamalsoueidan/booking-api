@@ -169,31 +169,41 @@ components:
             - type: string
             - type: number
         noticePeriod:
-          type: object
-          properties:
-            value:
-              oneOf:
-                - type: string
-                - type: number
-            unit:
-              $ref: '#/components/schemas/ProductNoticeUnit'
-              default: hours
+          $ref: '#/components/schemas/ProductNoticePeriod'
         bookingPeriod:
-          type: object
-          properties:
-            value:
-              oneOf:
-                - type: string
-                - type: number
-            unit:
-              $ref: '#/components/schemas/ProductBookingUnit'
-              default: months
+          $ref: '#/components/schemas/ProductNoticePeriod'
       required:
         - productId
         - duration
         - breakTime
         - noticePeriod
         - bookingPeriod
+    ProductBookingPeriod:
+      type: object
+      properties:
+        value:
+          oneOf:
+            - type: string
+            - type: number
+        unit:
+          $ref: '#/components/schemas/ProductBookingUnit'
+          default: months
+      required:
+        - value
+        - unit
+    ProductNoticePeriod:
+      type: object
+      properties:
+        value:
+          oneOf:
+            - type: string
+            - type: number
+        unit:
+          $ref: '#/components/schemas/ProductNoticeUnit'
+          default: hours
+      required:
+        - value
+        - unit
     ProductBookingUnit:
       type: string
       enum:
@@ -337,25 +347,9 @@ components:
             - type: string
             - type: number
         noticePeriod:
-          type: object
-          properties:
-            value:
-              oneOf:
-                - type: string
-                - type: number
-            unit:
-              $ref: '#/components/schemas/ProductNoticeUnit'
-              default: hours
+          $ref: '#/components/schemas/ProductNoticePeriod'
         bookingPeriod:
-          type: object
-          properties:
-            value:
-              oneOf:
-                - type: string
-                - type: number
-            unit:
-              $ref: '#/components/schemas/ProductBookingUnit'
-              default: months
+          $ref: '#/components/schemas/ProductBookingPeriod'
       required:
         - duration
         - breakTime
