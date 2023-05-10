@@ -723,7 +723,7 @@ paths:
     get:
       tags:
         - Customer
-      operationId: customerProductAvailabilityGet
+      operationId: customerProductAvailability
       summary: GET Get all availabilty for customer product
       description: This endpoint get all availability for product for customerId
       responses:
@@ -757,9 +757,9 @@ paths:
     get:
       tags:
         - Product
-      operationId: customerScheduleProductGet
-      summary: GET Get schedule product for customer
-      description: This endpoint get schedule product for customer
+      operationId: customerProductGet
+      summary: GET Get product that exist in one of the schedules for customer
+      description: This endpoint get product for customer
       responses:
         '200':
           description: Response
@@ -779,9 +779,9 @@ paths:
     put:
       tags:
         - Product
-      operationId: customerScheduleProductCreateOrUpdate
-      summary: PUT Create OR Update schedule product
-      description: This endpoint update schedule product
+      operationId: customerProductUpsert
+      summary: PUT Upsert product to schedule
+      description: This endpoint update product that exist in schedule
       requestBody:
         required: true
         content:
@@ -807,9 +807,9 @@ paths:
     delete:
       tags:
         - Product
-      operationId: customerScheduleProductDestroy
-      summary: DEL destroy schedule product
-      description: This endpoint destroy schedule product for customer
+      operationId: customerProductDestroy
+      summary: DEL destroy product
+      description: This endpoint remove product from schedule for customer
       responses:
         '200':
           description: Response
