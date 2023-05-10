@@ -171,12 +171,8 @@ components:
               type: number
               default: 1
             unit:
+              $ref: '#/components/schemas/ProductNoticeUnit'
               default: hours
-              type: string
-              enum:
-                - hours
-                - days
-                - weeks
         bookingPeriod:
           type: object
           properties:
@@ -184,7 +180,7 @@ components:
               type: number
               default: 1
             unit:
-              $ref: '#/components/schemas/ProductNoticeUnit'
+              $ref: '#/components/schemas/ProductBookingUnit'
               default: months
       required:
         - productId
@@ -193,12 +189,16 @@ components:
         - noticePeriod
         - bookingPeriod
     ProductBookingUnit:
-      $ref: '#/components/schemas/ProductNoticeUnit'
-    ProductNoticeUnit:
       type: string
       enum:
         - weeks
         - months
+    ProductNoticeUnit:
+      type: string
+      enum:
+        - hours
+        - days
+        - weeks
     Schedule:
       type: object
       properties:
@@ -308,18 +308,18 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Slot'
-    ScheduleProductCreateOrUpdateResponse:
+    CustomerProductUpsertResponse:
       type: object
       properties:
         success:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/Product'
+          $ref: '#/components/schemas/CustomerProductList'
       required:
         - success
         - payload
-    ScheduleProductCreateOrUpdateBody:
+    CustomerProductUpsertBody:
       type: object
       properties:
         duration:
@@ -333,7 +333,7 @@ components:
               type: string
               default: 1
             unit:
-              $ref: '#/components/schemas/Product/properties/noticePeriod/properties/unit'
+              $ref: '#/components/schemas/ProductNoticeUnit'
               default: hours
         bookingPeriod:
           type: object
@@ -342,32 +342,40 @@ components:
               type: string
               default: 1
             unit:
-              $ref: '#/components/schemas/ProductNoticeUnit'
+              $ref: '#/components/schemas/ProductBookingUnit'
               default: months
       required:
         - duration
         - breakTime
         - noticePeriod
         - bookingPeriod
-    ScheduleProductDestroyResponse:
+    CustomerProductDestroyResponse:
       type: object
       properties:
         success:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/Destroy'
+          type: object
+          properties:
+            deletedCount:
+              type: number
+            acknowledged:
+              type: boolean
+          required:
+            - deletedCount
+            - acknowledged
       required:
         - success
         - payload
-    ScheduleProductGetResponse:
+    CustomerProductGetResponse:
       type: object
       properties:
         success:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/Product'
+          $ref: '#/components/schemas/CustomerProductList'
       required:
         - success
         - payload
@@ -732,6 +740,92 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
       security: []
+  '/customer/{customerId}/product/{productId}':
+    parameters:
+      - name: customerId
+        in: path
+        description: The ID of the customerId
+        required: true
+        schema:
+          type: string
+      - name: productId
+        in: path
+        description: The ID of the productId
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Product
+      operationId: customerScheduleProductGet
+      summary: GET Get schedule product for customer
+      description: This endpoint get schedule product for customer
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerProductGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+    put:
+      tags:
+        - Product
+      operationId: customerScheduleProductCreateOrUpdate
+      summary: PUT Create OR Update schedule product
+      description: This endpoint update schedule product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerProductUpsertBody'
+      responses:
+        '200':
+          description: Response with schedule product payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerProductUpsertResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+    delete:
+      tags:
+        - Product
+      operationId: customerScheduleProductDestroy
+      summary: DEL destroy schedule product
+      description: This endpoint destroy schedule product for customer
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerProductDestroyResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
   '/customer/{customerId}/schedule':
     parameters:
       - name: customerId
@@ -911,98 +1005,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScheduleSlotsUpdateResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security: []
-  '/customer/{customerId}/schedule/{scheduleId}/product/{productId}':
-    parameters:
-      - name: customerId
-        in: path
-        description: The ID of the customerId
-        required: true
-        schema:
-          type: string
-      - name: scheduleId
-        in: path
-        description: The ID of the scheduleId
-        required: true
-        schema:
-          type: string
-      - name: productId
-        in: path
-        description: The ID of the productId
-        required: true
-        schema:
-          type: string
-    get:
-      tags:
-        - Product
-      operationId: customerScheduleProductGet
-      summary: GET Get schedule product for customer
-      description: This endpoint get schedule product for customer
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ScheduleProductGetResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security: []
-    put:
-      tags:
-        - Product
-      operationId: customerScheduleProductCreateOrUpdate
-      summary: PUT Create OR Update schedule product
-      description: This endpoint update schedule product
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScheduleProductCreateOrUpdateBody'
-      responses:
-        '200':
-          description: Response with schedule product payload
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ScheduleProductCreateOrUpdateResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security: []
-    delete:
-      tags:
-        - Product
-      operationId: customerScheduleProductDestroy
-      summary: DEL destroy schedule product
-      description: This endpoint destroy schedule product for customer
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ScheduleProductDestroyResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
