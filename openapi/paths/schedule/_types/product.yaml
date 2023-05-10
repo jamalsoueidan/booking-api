@@ -13,7 +13,7 @@ properties:
   noticePeriod:
     $ref: "./product-notice-period.yaml"
   bookingPeriod:
-    $ref: "./product-notice-period.yaml"
+    $ref: "./product-booking-period.yaml"
 required:
   - productId
   - duration
