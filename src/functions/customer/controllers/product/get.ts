@@ -6,23 +6,22 @@ import {
 import { ScheduleProductServiceGet } from "~/functions/schedule/services/product";
 import { _ } from "~/library/handler";
 
-export type ScheduleProductControllerGetRequest = {
-  query: z.infer<typeof ScheduleProductControllerGetQuerySchema>;
+export type CustomerProductControllerGetRequest = {
+  query: z.infer<typeof CustomerProductControllerGetQuerySchema>;
 };
 
-const ScheduleProductControllerGetQuerySchema = z.object({
-  scheduleId: ScheduleZodSchema.shape._id,
+const CustomerProductControllerGetQuerySchema = z.object({
   customerId: ScheduleZodSchema.shape.customerId,
   productId: ScheduleProductZodSchema.shape.productId,
 });
 
-export type ScheduleProductControllerGetResponse = Awaited<
+export type CustomerProductControllerGetResponse = Awaited<
   ReturnType<typeof ScheduleProductServiceGet>
 >;
 
-export const ScheduleProductControllerGet = _(
-  ({ query }: ScheduleProductControllerGetRequest) => {
-    const validateQuery = ScheduleProductControllerGetQuerySchema.parse(query);
+export const CustomerProductControllerGet = _(
+  ({ query }: CustomerProductControllerGetRequest) => {
+    const validateQuery = CustomerProductControllerGetQuerySchema.parse(query);
     return ScheduleProductServiceGet(validateQuery);
   }
 );

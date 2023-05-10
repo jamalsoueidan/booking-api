@@ -4,7 +4,10 @@ import { CustomerProductsControllerList } from "./customer/controllers/products/
 import { app } from "@azure/functions";
 import {
   CustomerControllerCreateOrUpdate,
-  CustomerProductAvailabilityControllerGet,
+  CustomerProductControllerAvailability,
+  CustomerProductControllerDestroy,
+  CustomerProductControllerGet,
+  CustomerProductControllerUpsert,
   CustomerProductsControllerListIds,
 } from "./customer";
 
@@ -29,9 +32,30 @@ app.http("customerProductsList", {
   handler: CustomerProductsControllerList,
 });
 
-app.http("customerProductAvailabilityGet", {
+app.http("customerProductAvailability", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/product/{productId?}/availability",
-  handler: CustomerProductAvailabilityControllerGet,
+  handler: CustomerProductControllerAvailability,
+});
+
+app.http("customerProductUpsert", {
+  methods: ["PUT"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/product/{productId?}",
+  handler: CustomerProductControllerUpsert,
+});
+
+app.http("customerProductGet", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/product/{productId?}",
+  handler: CustomerProductControllerGet,
+});
+
+app.http("customerProductDestroy", {
+  methods: ["DELETE"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/product/{productId?}",
+  handler: CustomerProductControllerDestroy,
 });

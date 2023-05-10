@@ -9,12 +9,13 @@ import {
 } from "~/library/jest/azure";
 
 import { ScheduleProductServiceCreateOrUpdate } from "~/functions/schedule/services/product";
-import { ScheduleProduct, TimeUnit } from "../../schedule.types";
+
+import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
 import {
-  ScheduleProductControllerCreateOrUpdate,
-  ScheduleProductControllerCreateOrUpdateRequest,
-  ScheduleProductControllerCreateOrUpdateResponse,
-} from "./create-or-update";
+  CustomerProductControllerUpsert,
+  CustomerProductControllerUpsertRequest,
+  CustomerProductControllerUpsertResponse,
+} from "./upsert";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -47,18 +48,17 @@ describe("ScheduleProductControllerUpdate", () => {
       customerId,
     });
 
-    request =
-      await createHttpRequest<ScheduleProductControllerCreateOrUpdateRequest>({
-        query: {
-          customerId,
-          scheduleId: newSchedule._id,
-          productId: "1000",
-        } as any,
-        body: newProduct,
-      });
+    request = await createHttpRequest<CustomerProductControllerUpsertRequest>({
+      query: {
+        customerId,
+        scheduleId: newSchedule._id,
+        productId: "1000",
+      } as any,
+      body: newProduct,
+    });
 
-    const res: HttpSuccessResponse<ScheduleProductControllerCreateOrUpdateResponse> =
-      await ScheduleProductControllerCreateOrUpdate(request, context);
+    const res: HttpSuccessResponse<CustomerProductControllerUpsertResponse> =
+      await CustomerProductControllerUpsert(request, context);
 
     const foundProduct = res.jsonBody?.payload?.products.find(
       (p) => p.productId === productId
@@ -90,18 +90,19 @@ describe("ScheduleProductControllerUpdate", () => {
       newProduct
     );
 
-    request =
-      await createHttpRequest<ScheduleProductControllerCreateOrUpdateRequest>({
-        query: {
-          customerId: 123,
-          scheduleId: newSchedule2._id,
-          productId,
-        },
-        body: newProduct,
-      });
+    request = await createHttpRequest<CustomerProductControllerUpsertRequest>({
+      query: {
+        customerId: 123,
+        scheduleId: newSchedule2._id,
+        productId,
+      },
+      body: newProduct,
+    });
 
-    const res: HttpErrorResponse =
-      await ScheduleProductControllerCreateOrUpdate(request, context);
+    const res: HttpErrorResponse = await CustomerProductControllerUpsert(
+      request,
+      context
+    );
 
     expect(res.jsonBody?.success).toBeFalsy();
     expect(res.jsonBody).toHaveProperty("errors");

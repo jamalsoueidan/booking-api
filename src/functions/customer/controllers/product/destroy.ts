@@ -6,24 +6,24 @@ import {
 import { ScheduleProductServiceDestroy } from "~/functions/schedule/services/product";
 import { _ } from "~/library/handler";
 
-export type ScheduleProductControllerDestroyRequest = {
-  query: z.infer<typeof ScheduleProductControllerDestroyQuerySchema>;
+export type CustomerProductControllerDestroyRequest = {
+  query: z.infer<typeof CustomerProductControllerDestroyQuerySchema>;
 };
 
-const ScheduleProductControllerDestroyQuerySchema = z.object({
+const CustomerProductControllerDestroyQuerySchema = z.object({
   scheduleId: ScheduleZodSchema.shape._id,
   customerId: ScheduleZodSchema.shape.customerId,
   productId: ScheduleProductZodSchema.shape.productId,
 });
 
-export type ScheduleProductControllerDestroyResponse = Awaited<
+export type CustomerProductControllerDestroyResponse = Awaited<
   ReturnType<typeof ScheduleProductServiceDestroy>
 >;
 
-export const ScheduleProductControllerDestroy = _(
-  ({ query }: ScheduleProductControllerDestroyRequest) => {
+export const CustomerProductControllerDestroy = _(
+  ({ query }: CustomerProductControllerDestroyRequest) => {
     const validateQuery =
-      ScheduleProductControllerDestroyQuerySchema.parse(query);
+      CustomerProductControllerDestroyQuerySchema.parse(query);
     return ScheduleProductServiceDestroy(validateQuery);
   }
 );
