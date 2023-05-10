@@ -100,6 +100,7 @@ __azurite_db*__.json
 
 .DS_Store
 
-!api/mutator/*
-api/model
-api/*.ts
+!app/lib/api/mutator/*
+app/lib/api/model
+app/lib/api/*.ts
+app/lib/zod

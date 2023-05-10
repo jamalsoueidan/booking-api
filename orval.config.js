@@ -1,10 +1,10 @@
 module.exports = {
-  "booking-api": {
+  api: {
     output: {
       mode: "split",
-      schemas: "api/model",
+      schemas: "app/lib/api/model",
       client: "axios",
-      target: "api/",
+      target: "app/lib/api/",
       mock: false,
       override: {
         useDates: true,
@@ -13,13 +13,29 @@ module.exports = {
           useInfinite: false,
         },
         mutator: {
-          path: "./api/mutator/query-client.ts",
+          path: "./app/lib/api/mutator/query-client.ts",
           name: "queryClient",
         },
       },
     },
     input: {
       target: "./docs/openapi.yaml",
+    },
+    hooks: {
+      afterAllFilesWrite: "prettier --write",
+    },
+  },
+  zod: {
+    output: {
+      mode: "split",
+      client: "zod",
+      target: "app/lib/zod/",
+    },
+    input: {
+      target: "./docs/openapi.yaml",
+    },
+    hooks: {
+      afterAllFilesWrite: "prettier --write",
     },
   },
 };
