@@ -1,9 +1,9 @@
 put:
   tags:
     - Product
-  operationId: customerScheduleProductCreateOrUpdate
-  summary: PUT Create OR Update schedule product
-  description: This endpoint update schedule product
+  operationId: customerProductUpsert
+  summary: PUT Upsert product to schedule
+  description: This endpoint update product that exist in schedule
   requestBody:
     required: true
     content:

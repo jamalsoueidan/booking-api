@@ -1,9 +1,9 @@
 delete:
   tags:
     - Product
-  operationId: customerScheduleProductDestroy
-  summary: DEL destroy schedule product
-  description: This endpoint destroy schedule product for customer
+  operationId: customerProductDestroy
+  summary: DEL destroy product
+  description: This endpoint remove product from schedule for customer
   responses:
     "200":
       description: "Response"

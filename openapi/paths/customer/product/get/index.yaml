@@ -1,9 +1,9 @@
 get:
   tags:
     - Product
-  operationId: customerScheduleProductGet
-  summary: GET Get schedule product for customer
-  description: This endpoint get schedule product for customer
+  operationId: customerProductGet
+  summary: GET Get product that exist in one of the schedules for customer
+  description: This endpoint get product for customer
   responses:
     "200":
       description: "Response"

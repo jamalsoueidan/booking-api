@@ -21,7 +21,7 @@ parameters:
 get:
   tags:
     - Customer
-  operationId: customerProductAvailabilityGet
+  operationId: customerProductAvailability
   summary: GET Get all availabilty for customer product
   description: This endpoint get all availability for product for customerId
   responses:
