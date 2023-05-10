@@ -64,7 +64,7 @@ components:
               expected:
                 type: string
               received:
-                type: string
+                type: number
             required:
               - path
               - message
@@ -76,7 +76,7 @@ components:
       type: object
       properties:
         customerId:
-          type: string
+          type: number
         title:
           type: string
         username:
@@ -96,7 +96,7 @@ components:
             instagram:
               type: string
         active:
-          type: string
+          type: boolean
         avatar:
           type: string
           format: uri
@@ -117,7 +117,7 @@ components:
       type: object
       properties:
         deletedCount:
-          type: string
+          type: number
         acknowledged:
           type: boolean
       required:
@@ -159,16 +159,16 @@ components:
       type: object
       properties:
         productId:
-          type: string
+          type: number
         duration:
-          type: string
+          type: number
         breakTime:
-          type: string
+          type: number
         noticePeriod:
           type: object
           properties:
             value:
-              type: string
+              type: number
               default: 1
             unit:
               default: hours
@@ -177,12 +177,11 @@ components:
                 - hours
                 - days
                 - weeks
-                - months
         bookingPeriod:
           type: object
           properties:
             value:
-              type: string
+              type: number
               default: 1
             unit:
               $ref: '#/components/schemas/ProductNoticeUnit'
@@ -208,7 +207,7 @@ components:
         name:
           type: string
         customerId:
-          type: string
+          type: number
         slots:
           type: array
           items:
@@ -376,7 +375,7 @@ components:
       type: object
       properties:
         customerId:
-          type: string
+          type: number
         title:
           type: string
         username:
@@ -396,7 +395,7 @@ components:
             instagram:
               type: string
         active:
-          type: string
+          type: boolean
         avatar:
           type: string
           format: uri
@@ -496,7 +495,7 @@ components:
         payload:
           type: array
           items:
-            type: string
+            type: number
       required:
         - success
         - payload
