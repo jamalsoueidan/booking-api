@@ -1,9 +1,9 @@
 type: object
 properties:
   productId:
-    type: integer
+    type: string
   customerId:
-    type: integer
+    type: string
   userId:
     type: string
     description: A valid ObjectId

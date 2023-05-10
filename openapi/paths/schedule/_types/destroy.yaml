@@ -1,7 +1,7 @@
 type: object
 properties:
   deletedCount:
-    type: number
+    type: string
   acknowledged:
     type: boolean
 

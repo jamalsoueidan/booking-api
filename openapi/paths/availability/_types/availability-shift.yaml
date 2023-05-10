@@ -10,11 +10,11 @@ properties:
     type: string
     format: date-time
   bufferTime:
-    type: integer
+    type: string
   duration:
-    type: integer
+    type: string
   total:
-    type: integer
+    type: string
   hours:
     type: array
     items:

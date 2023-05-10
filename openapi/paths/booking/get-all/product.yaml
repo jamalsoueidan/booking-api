@@ -7,7 +7,7 @@ properties:
   imageUrl:
     type: string
   productId:
-    type: integer
+    type: string
   userId:
     type: string
   title:
@@ -16,9 +16,9 @@ properties:
     type: boolean
     default: true
   buffertime:
-    type: integer
+    type: string
   duration:
-    type: integer
+    type: string
 required:
   - _id
   - collectionId

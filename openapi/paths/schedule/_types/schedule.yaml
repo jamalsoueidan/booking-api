@@ -5,7 +5,7 @@ properties:
   name:
     type: string
   customerId:
-    type: number
+    type: string
   slots:
     type: array
     items:

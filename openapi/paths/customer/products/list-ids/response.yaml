@@ -6,7 +6,7 @@ properties:
   payload:
     type: array
     items:
-      type: number
+      type: string
 
 required:
   - success

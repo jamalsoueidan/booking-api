@@ -4,15 +4,15 @@ properties:
     type: string
     description: A valid ObjectId
   productId:
-    type: integer
+    type: string
   orderId:
-    type: integer
+    type: string
   lineItemId:
-    type: integer
+    type: string
   lineItemTotal:
-    type: integer
+    type: string
   customerId:
-    type: integer
+    type: string
   userId:
     type: string
     description: A valid ObjectId

@@ -19,7 +19,7 @@ properties:
         expected:
           type: string
         received:
-          type: number
+          type: string
       required:
         - path
         - message

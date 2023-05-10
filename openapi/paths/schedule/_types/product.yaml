@@ -1,18 +1,18 @@
 type: object
 properties:
   productId:
-    type: number
+    type: string
   visible:
     type: boolean
   duration:
-    type: number
+    type: string
   breakTime:
-    type: number
+    type: string
   noticePeriod:
     type: object
     properties:
       value:
-        type: number
+        type: string
         default: 1
       unit:
         $ref: "./product-notice-unit.yaml"
@@ -21,7 +21,7 @@ properties:
     type: object
     properties:
       value:
-        type: number
+        type: string
         default: 1
       unit:
         $ref: "./product-booking-unit.yaml"

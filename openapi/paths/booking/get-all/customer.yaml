@@ -3,7 +3,7 @@ properties:
   _id:
     type: string
   customerId:
-    type: integer
+    type: string
     format: int32
   firstName:
     type: string

@@ -3,14 +3,14 @@ properties:
   visible:
     type: boolean
   duration:
-    type: number
+    type: string
   breakTime:
-    type: number
+    type: string
   noticePeriod:
     type: object
     properties:
       value:
-        type: number
+        type: string
         default: 1
       unit:
         $ref: "../../_types/product-notice-unit.yaml"
@@ -19,7 +19,7 @@ properties:
     type: object
     properties:
       value:
-        type: number
+        type: string
         default: 1
       unit:
         $ref: "../../_types/product-booking-unit.yaml"
