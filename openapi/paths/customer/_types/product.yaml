@@ -1,6 +1,6 @@
 type: object
 allOf:
-  - $ref: ../../schedule/_types/product.yaml # Replace this with the path to your original schema
+  - $ref: ../../schedule/_types/product.yaml
   - type: object
     properties:
       _id:

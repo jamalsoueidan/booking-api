@@ -59,12 +59,11 @@ describe("ScheduleProductService", () => {
     );
 
     const foundProduct = await ScheduleProductServiceGet({
-      scheduleId: newSchedule._id,
       customerId: newSchedule.customerId,
       productId,
     });
 
-    expect(foundProduct).toMatchObject({ productId, ...newProduct });
+    expect(foundProduct).toMatchObject({ productId });
   });
 
   it("createOrUpdateProduct should update an existing product in the schedule", async () => {

@@ -44,7 +44,7 @@ components:
     ProductBookingUnit:
       $ref: paths/schedule/_types/product-booking-unit.yaml
     ProductNoticeUnit:
-      $ref: paths/schedule/_types/product-booking-unit.yaml
+      $ref: paths/schedule/_types/product-notice-unit.yaml
     Schedule:
       $ref: paths/schedule/_types/schedule.yaml
 
@@ -71,14 +71,14 @@ components:
       $ref: paths/schedule/slots/update/body.yaml
 
     # Product
-    ScheduleProductCreateOrUpdateResponse:
-      $ref: paths/schedule/product/create-or-update/response.yaml
-    ScheduleProductCreateOrUpdateBody:
-      $ref: paths/schedule/product/create-or-update/body.yaml
-    ScheduleProductDestroyResponse:
-      $ref: paths/schedule/product/destroy/response.yaml
-    ScheduleProductGetResponse:
-      $ref: paths/schedule/product/get/response.yaml
+    CustomerProductUpsertResponse:
+      $ref: paths/customer/product/upsert/response.yaml
+    CustomerProductUpsertBody:
+      $ref: paths/customer/product/upsert/body.yaml
+    CustomerProductDestroyResponse:
+      $ref: paths/customer/product/destroy/response.yaml
+    CustomerProductGetResponse:
+      $ref: paths/customer/product/get/response.yaml
 
     # Customer
     Customer:
@@ -121,6 +121,9 @@ paths:
   /customer/{customerId}/product/{productId}/availability:
     $ref: paths/customer/product/availability/index.yaml
 
+  /customer/{customerId}/product/{productId}:
+    $ref: paths/customer/product/product.yaml
+
   # schedule
   /customer/{customerId}/schedule:
     $ref: "./paths/schedule/create/index.yaml"
@@ -131,6 +134,3 @@ paths:
 
   /customer/{customerId}/schedule/{scheduleId}/slots:
     $ref: paths/schedule/slots/update/index.yaml
-
-  /customer/{customerId}/schedule/{scheduleId}/product/{productId}:
-    $ref: paths/schedule/product/product.yaml

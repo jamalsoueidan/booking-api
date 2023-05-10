@@ -5,12 +5,6 @@ parameters:
     required: true
     schema:
       type: string
-  - name: scheduleId
-    in: path
-    description: The ID of the scheduleId
-    required: true
-    schema:
-      type: string
   - name: productId
     in: path
     description: The ID of the productId
@@ -21,6 +15,6 @@ parameters:
 get:
   $ref: "./get/index.yaml#/get"
 put:
-  $ref: "./create-or-update/index.yaml#/put"
+  $ref: "./upsert/index.yaml#/put"
 delete:
   $ref: "./destroy/index.yaml#/delete"

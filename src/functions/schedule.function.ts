@@ -6,9 +6,6 @@ import {
   ScheduleControllerGet,
   ScheduleControllerList,
   ScheduleControllerUpdate,
-  ScheduleProductControllerCreateOrUpdate,
-  ScheduleProductControllerDestroy,
-  ScheduleProductControllerGet,
   ScheduleSlotControllerUpdate,
 } from "./schedule";
 
@@ -52,25 +49,4 @@ app.http("scheduleSlotUpdate", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/schedule/{scheduleId?}/slots",
   handler: ScheduleSlotControllerUpdate,
-});
-
-app.http("scheduleProductUpdate", {
-  methods: ["PUT"],
-  authLevel: "anonymous",
-  route: "customer/{customerId?}/schedule/{scheduleId?}/product/{productId?}",
-  handler: ScheduleProductControllerCreateOrUpdate,
-});
-
-app.http("scheduleProductGet", {
-  methods: ["GET"],
-  authLevel: "anonymous",
-  route: "customer/{customerId?}/schedule/{scheduleId?}/product/{productId?}",
-  handler: ScheduleProductControllerGet,
-});
-
-app.http("scheduleProductDestroy", {
-  methods: ["DELETE"],
-  authLevel: "anonymous",
-  route: "customer/{customerId?}/schedule/{scheduleId?}/product/{productId?}",
-  handler: ScheduleProductControllerDestroy,
 });

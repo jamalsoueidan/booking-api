@@ -6,24 +6,24 @@ import { UserZodSchema } from "~/functions/user";
 import { CustomerProductAvailabilityServiceGet } from "../../services/availability";
 import { CustomerProductsServiceListIds } from "../../services/product";
 
-export type CustomerProductAvailabilityControllerGetRequest = {
-  query: z.infer<typeof CustomerProductAvailabilityControllerGetSchema>;
+export type CustomerProductControllerAvailabilityRequest = {
+  query: z.infer<typeof CustomerProductControllerAvailabilitySchema>;
 };
 
-export const CustomerProductAvailabilityControllerGetSchema = z.object({
+export const CustomerProductControllerAvailabilitySchema = z.object({
   customerId: UserZodSchema.shape.customerId,
   productId: ScheduleProductZodSchema.shape.productId,
   startDate: z.coerce.date(),
 });
 
-export type CustomerProductAvailabilityControllerGetResponse = Awaited<
+export type CustomerProductControllerAvailabilityResponse = Awaited<
   ReturnType<typeof CustomerProductsServiceListIds>
 >;
 
-export const CustomerProductAvailabilityControllerGet = _(
-  async ({ query }: CustomerProductAvailabilityControllerGetRequest) => {
+export const CustomerProductControllerAvailability = _(
+  async ({ query }: CustomerProductControllerAvailabilityRequest) => {
     const validateData =
-      CustomerProductAvailabilityControllerGetSchema.parse(query);
+      CustomerProductControllerAvailabilitySchema.parse(query);
     return CustomerProductAvailabilityServiceGet(validateData);
   }
 );

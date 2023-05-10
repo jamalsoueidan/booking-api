@@ -6,14 +6,14 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 import {
-  CustomerProductAvailabilityControllerGet,
-  CustomerProductAvailabilityControllerGetRequest,
-  CustomerProductAvailabilityControllerGetResponse,
+  CustomerProductControllerAvailability,
+  CustomerProductControllerAvailabilityRequest,
+  CustomerProductControllerAvailabilityResponse,
 } from "./availability";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("CustomerProductAvailabilityControllerGet", () => {
+describe("CustomerProductControllerAvailability", () => {
   let context: InvocationContext;
   let request: HttpRequest;
   const productId = 99;
@@ -52,7 +52,7 @@ describe("CustomerProductAvailabilityControllerGet", () => {
     const startDate = new Date("2023-05-01T00:00:00Z");
 
     request =
-      await createHttpRequest<CustomerProductAvailabilityControllerGetRequest>({
+      await createHttpRequest<CustomerProductControllerAvailabilityRequest>({
         query: {
           customerId,
           productId,
@@ -60,8 +60,8 @@ describe("CustomerProductAvailabilityControllerGet", () => {
         },
       });
 
-    const res: HttpSuccessResponse<CustomerProductAvailabilityControllerGetResponse> =
-      await CustomerProductAvailabilityControllerGet(request, context);
+    const res: HttpSuccessResponse<CustomerProductControllerAvailabilityResponse> =
+      await CustomerProductControllerAvailability(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");

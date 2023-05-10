@@ -85,30 +85,49 @@ export const ScheduleProductServiceCreateOrUpdate = async (
 };
 
 export type ScheduleProductServiceGetFilter = {
-  scheduleId: Schedule["_id"];
   customerId: Schedule["customerId"];
   productId: ScheduleProduct["productId"];
 };
 
 export const ScheduleProductServiceGet = async (
-  filter: ScheduleProductServiceCreateOrUpdateFilter
+  filter: ScheduleProductServiceGetFilter
 ) => {
   const schedule = await ScheduleModel.findOne({
-    _id: filter.scheduleId,
     customerId: filter.customerId,
-  }).orFail(
-    new NotFoundError([
-      {
-        code: "custom",
-        message: "SCHEDULE_NOT_FOUND",
-        path: ["schedule"],
+    products: {
+      $elemMatch: {
+        productId: filter.productId,
       },
-    ])
-  );
+    },
+  })
+    .orFail(
+      new NotFoundError([
+        {
+          code: "custom",
+          message: "PRODUCT_NOT_FOUND",
+          path: ["productId"],
+        },
+      ])
+    )
+    .lean();
 
-  const productIndex = schedule.products.findIndex(
+  const product = schedule.products.find(
     (p) => p.productId === filter.productId
   );
 
-  return schedule.products[productIndex];
+  if (!product) {
+    throw new NotFoundError([
+      {
+        code: "custom",
+        message: "PRODUCT_NOT_FOUND",
+        path: ["productId"],
+      },
+    ]);
+  }
+
+  return {
+    ...product,
+    _id: schedule._id,
+    name: schedule.name,
+  };
 };

@@ -1,21 +1,23 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { ScheduleServiceCreate } from "~/functions/schedule/services";
+import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
+import {
+  ScheduleProductServiceCreateOrUpdate,
+  ScheduleServiceCreate,
+} from "~/functions/schedule/services";
 import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
-import { ScheduleProduct, TimeUnit } from "../../schedule.types";
-import { ScheduleProductServiceCreateOrUpdate } from "../../services/product";
 import {
-  ScheduleProductControllerDestroy,
-  ScheduleProductControllerDestroyRequest,
-  ScheduleProductControllerDestroyResponse,
-} from "./destroy";
+  CustomerProductControllerGet,
+  CustomerProductControllerGetRequest,
+  CustomerProductControllerGetResponse,
+} from "./get";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("ScheduleProductControllerDestroy", () => {
+describe("CustomerProductControllerGet", () => {
   let context: InvocationContext;
   let request: HttpRequest;
   const productId = 1000;
@@ -36,7 +38,7 @@ describe("ScheduleProductControllerDestroy", () => {
     context = createContext();
   });
 
-  it("should be able to destroy schedule", async () => {
+  it("should be able to get schedule", async () => {
     const newSchedule = await ScheduleServiceCreate({
       name: "asd",
       customerId: 123,
@@ -53,18 +55,17 @@ describe("ScheduleProductControllerDestroy", () => {
 
     expect(newProduct?.products).toHaveLength(1);
 
-    request = await createHttpRequest<ScheduleProductControllerDestroyRequest>({
+    request = await createHttpRequest<CustomerProductControllerGetRequest>({
       query: {
         customerId: newSchedule.customerId,
-        scheduleId: newSchedule._id,
         productId,
       },
     });
 
-    const res: HttpSuccessResponse<ScheduleProductControllerDestroyResponse> =
-      await ScheduleProductControllerDestroy(request, context);
+    const res: HttpSuccessResponse<CustomerProductControllerGetResponse> =
+      await CustomerProductControllerGet(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
-    expect(res.jsonBody?.payload?.products).toHaveLength(0);
+    expect(res.jsonBody?.payload?.productId).toBe(productId);
   });
 });
