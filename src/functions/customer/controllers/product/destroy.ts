@@ -3,8 +3,8 @@ import {
   ScheduleProductZodSchema,
   ScheduleZodSchema,
 } from "~/functions/schedule/schedule.types";
-import { ScheduleProductServiceDestroy } from "~/functions/schedule/services/product";
 import { _ } from "~/library/handler";
+import { CustomerProductServiceDestroy } from "../../services";
 
 export type CustomerProductControllerDestroyRequest = {
   query: z.infer<typeof CustomerProductControllerDestroyQuerySchema>;
@@ -17,13 +17,13 @@ const CustomerProductControllerDestroyQuerySchema = z.object({
 });
 
 export type CustomerProductControllerDestroyResponse = Awaited<
-  ReturnType<typeof ScheduleProductServiceDestroy>
+  ReturnType<typeof CustomerProductServiceDestroy>
 >;
 
 export const CustomerProductControllerDestroy = _(
   ({ query }: CustomerProductControllerDestroyRequest) => {
     const validateQuery =
       CustomerProductControllerDestroyQuerySchema.parse(query);
-    return ScheduleProductServiceDestroy(validateQuery);
+    return CustomerProductServiceDestroy(validateQuery);
   }
 );

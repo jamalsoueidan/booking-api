@@ -1,5 +1,7 @@
 type: object
 properties:
+  scheduleId:
+    type: string
   duration:
     oneOf:
       - type: string
@@ -14,6 +16,7 @@ properties:
     $ref: ../../../schedule/_types/product-booking-period.yaml
 
 required:
+  - scheduleId
   - duration
   - breakTime
   - noticePeriod

@@ -4,12 +4,12 @@ import {
   ScheduleServiceCreate,
   TimeUnit,
 } from "~/functions/schedule";
-import { ScheduleProductServiceCreateOrUpdate } from "~/functions/schedule/services/product";
 import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
+import { CustomerProductServiceUpsert } from "../../services";
 import {
   CustomerProductsControllerListIds,
   CustomerProductsControllerListIdsRequest,
@@ -39,13 +39,12 @@ describe("CustomerProductsServiceListIds", () => {
 
     const newSchedule = await ScheduleServiceCreate({ name: "ab", customerId });
 
-    await ScheduleProductServiceCreateOrUpdate(
+    await CustomerProductServiceUpsert(
       {
-        scheduleId: newSchedule._id,
         customerId: newSchedule.customerId,
         productId: 1000,
       },
-      newProduct
+      { ...newProduct, scheduleId: newSchedule._id }
     );
 
     const newSchedule2 = await ScheduleServiceCreate({
@@ -53,22 +52,20 @@ describe("CustomerProductsServiceListIds", () => {
       customerId,
     });
 
-    await ScheduleProductServiceCreateOrUpdate(
+    await CustomerProductServiceUpsert(
       {
-        scheduleId: newSchedule2._id,
         customerId: newSchedule2.customerId,
         productId: 1002,
       },
-      newProduct
+      { ...newProduct, scheduleId: newSchedule2._id }
     );
 
-    await ScheduleProductServiceCreateOrUpdate(
+    await CustomerProductServiceUpsert(
       {
-        scheduleId: newSchedule2._id,
         customerId: newSchedule2.customerId,
         productId: 1004,
       },
-      newProduct
+      { ...newProduct, scheduleId: newSchedule2._id }
     );
 
     request = await createHttpRequest<CustomerProductsControllerListIdsRequest>(
