@@ -2,13 +2,10 @@ import { HttpRequest, InvocationContext } from "@azure/functions";
 
 import { ScheduleServiceCreate } from "~/functions/schedule/services";
 import {
-  HttpErrorResponse,
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
-
-import { ScheduleProductServiceCreateOrUpdate } from "~/functions/schedule/services/product";
 
 import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
 import {
@@ -51,60 +48,15 @@ describe("ScheduleProductControllerUpdate", () => {
     request = await createHttpRequest<CustomerProductControllerUpsertRequest>({
       query: {
         customerId,
-        scheduleId: newSchedule._id,
         productId: "1000",
       } as any,
-      body: newProduct,
+      body: { ...newProduct, scheduleId: newSchedule._id },
     });
 
     const res: HttpSuccessResponse<CustomerProductControllerUpsertResponse> =
       await CustomerProductControllerUpsert(request, context);
 
-    const foundProduct = res.jsonBody?.payload?.products.find(
-      (p) => p.productId === productId
-    );
-
     expect(res.jsonBody?.success).toBeTruthy();
-    expect(JSON.stringify(foundProduct)).toEqual(
-      JSON.stringify({ productId, ...newProduct })
-    );
-  });
-
-  it("should throw error with duplcaited days within slots", async () => {
-    const newSchedule1 = await ScheduleServiceCreate({
-      name: "Test Schedule 1",
-      customerId,
-    });
-    const newSchedule2 = await ScheduleServiceCreate({
-      name: "Test Schedule 2",
-      customerId,
-    });
-
-    // Add the same product to the first schedule
-    await ScheduleProductServiceCreateOrUpdate(
-      {
-        scheduleId: newSchedule1._id,
-        customerId: newSchedule1.customerId,
-        productId,
-      },
-      newProduct
-    );
-
-    request = await createHttpRequest<CustomerProductControllerUpsertRequest>({
-      query: {
-        customerId: 123,
-        scheduleId: newSchedule2._id,
-        productId,
-      },
-      body: newProduct,
-    });
-
-    const res: HttpErrorResponse = await CustomerProductControllerUpsert(
-      request,
-      context
-    );
-
-    expect(res.jsonBody?.success).toBeFalsy();
-    expect(res.jsonBody).toHaveProperty("errors");
+    expect(res.jsonBody?.payload).toMatchObject({ productId, ...newProduct });
   });
 });

@@ -41,14 +41,6 @@ ScheduleMongooseSchema.methods.updateSlots = function (
   return this.save();
 };
 
-ScheduleMongooseSchema.methods.removeProduct = async function (
-  this: IScheduleDocument,
-  productId: number
-): Promise<IScheduleDocument> {
-  this.products = this.products.filter((p) => p.productId !== productId);
-  return this.save();
-};
-
 ScheduleMongooseSchema.pre<IScheduleDocument>("save", async function (next) {
   try {
     const existingScheduleWithProduct = await mongoose

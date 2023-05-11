@@ -1,9 +1,8 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
-import {
-  ScheduleProductServiceCreateOrUpdate,
-  ScheduleServiceCreate,
-} from "~/functions/schedule/services";
+import { ScheduleServiceCreate } from "~/functions/schedule/services";
+
+import { CustomerProductServiceUpsert } from "~/functions/customer/services";
 import {
   HttpSuccessResponse,
   createContext,
@@ -44,16 +43,15 @@ describe("CustomerProductControllerGet", () => {
       customerId: 123,
     });
 
-    const newProduct = await ScheduleProductServiceCreateOrUpdate(
+    const newProduct = await CustomerProductServiceUpsert(
       {
-        scheduleId: newSchedule._id,
         customerId: newSchedule.customerId,
         productId,
       },
-      product
+      { ...product, scheduleId: newSchedule._id }
     );
 
-    expect(newProduct?.products).toHaveLength(1);
+    expect(newProduct?.scheduleId).toStrictEqual(newSchedule._id);
 
     request = await createHttpRequest<CustomerProductControllerGetRequest>({
       query: {

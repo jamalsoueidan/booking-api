@@ -1,9 +1,9 @@
 import { z } from "zod";
+import { CustomerProductServiceGet } from "~/functions/customer/services";
 import {
   ScheduleProductZodSchema,
   ScheduleZodSchema,
 } from "~/functions/schedule/schedule.types";
-import { ScheduleProductServiceGet } from "~/functions/schedule/services/product";
 import { _ } from "~/library/handler";
 
 export type CustomerProductControllerGetRequest = {
@@ -16,12 +16,12 @@ const CustomerProductControllerGetQuerySchema = z.object({
 });
 
 export type CustomerProductControllerGetResponse = Awaited<
-  ReturnType<typeof ScheduleProductServiceGet>
+  ReturnType<typeof CustomerProductServiceGet>
 >;
 
 export const CustomerProductControllerGet = _(
   ({ query }: CustomerProductControllerGetRequest) => {
     const validateQuery = CustomerProductControllerGetQuerySchema.parse(query);
-    return ScheduleProductServiceGet(validateQuery);
+    return CustomerProductServiceGet(validateQuery);
   }
 );

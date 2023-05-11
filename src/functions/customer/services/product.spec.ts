@@ -1,10 +1,9 @@
+import { ScheduleServiceCreate, TimeUnit } from "~/functions/schedule";
 import {
-  ScheduleProduct,
-  ScheduleServiceCreate,
-  TimeUnit,
-} from "~/functions/schedule";
-import { ScheduleProductServiceCreateOrUpdate } from "~/functions/schedule/services/product";
-import {
+  CustomerProductServiceDestroy,
+  CustomerProductServiceGet,
+  CustomerProductServiceUpsert,
+  CustomerProductServiceUpsertBody,
   CustomerProductsServiceList,
   CustomerProductsServiceListIds,
 } from "./product";
@@ -13,9 +12,30 @@ require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerProductsService", () => {
   const customerId = 123;
+  const name = "Test Schedule";
+  const productId = 1000;
+  const newProduct: CustomerProductServiceUpsertBody = {
+    scheduleId: "",
+    duration: 60,
+    breakTime: 0,
+    noticePeriod: {
+      value: 1,
+      unit: TimeUnit.DAYS,
+    },
+    bookingPeriod: {
+      value: 1,
+      unit: TimeUnit.WEEKS,
+    },
+  };
 
-  it("should get all productIds in all schedules", async () => {
-    const newProduct: Omit<ScheduleProduct, "productId"> = {
+  it("should get all productIds for all schedules", async () => {
+    const schedule1 = await ScheduleServiceCreate({
+      name: "ab",
+      customerId: 7,
+    });
+
+    const product1: CustomerProductServiceUpsertBody = {
+      scheduleId: schedule1._id,
       duration: 60,
       breakTime: 0,
       noticePeriod: {
@@ -28,69 +48,69 @@ describe("CustomerProductsService", () => {
       },
     };
 
-    const anotherCustomerSchedule = await ScheduleServiceCreate({
-      name: "ab",
-      customerId: 7,
-    });
-
-    await ScheduleProductServiceCreateOrUpdate(
+    await CustomerProductServiceUpsert(
       {
-        scheduleId: anotherCustomerSchedule._id,
-        customerId: anotherCustomerSchedule.customerId,
+        customerId: schedule1.customerId,
         productId: 999,
       },
-      newProduct
+      product1
     );
 
-    const newSchedule = await ScheduleServiceCreate({ name: "ab", customerId });
+    const schedule2 = await ScheduleServiceCreate({ name: "ab", customerId });
 
-    await ScheduleProductServiceCreateOrUpdate(
+    const product2 = { ...product1, scheduleId: schedule2._id };
+
+    await CustomerProductServiceUpsert(
       {
-        scheduleId: newSchedule._id,
-        customerId: newSchedule.customerId,
+        customerId: schedule2.customerId,
         productId: 1001,
       },
-      newProduct
+      product2
     );
 
-    await ScheduleProductServiceCreateOrUpdate(
+    await CustomerProductServiceUpsert(
       {
-        scheduleId: newSchedule._id,
-        customerId: newSchedule.customerId,
+        customerId: schedule2.customerId,
         productId: 1000,
       },
-      newProduct
+      product2
     );
 
-    const newSchedule2 = await ScheduleServiceCreate({
+    const schedule3 = await ScheduleServiceCreate({
       name: "test",
       customerId,
     });
 
-    await ScheduleProductServiceCreateOrUpdate(
+    const product3 = {
+      ...product1,
+      scheduleId: schedule3._id,
+    };
+
+    await CustomerProductServiceUpsert(
       {
-        scheduleId: newSchedule2._id,
-        customerId: newSchedule2.customerId,
+        customerId: schedule3.customerId,
         productId: 1002,
       },
-      newProduct
+      product3
     );
 
-    await ScheduleProductServiceCreateOrUpdate(
+    await CustomerProductServiceUpsert(
       {
-        scheduleId: newSchedule2._id,
-        customerId: newSchedule2.customerId,
+        customerId: schedule3.customerId,
         productId: 1004,
       },
-      newProduct
+      product3
     );
 
     const products = await CustomerProductsServiceListIds({ customerId });
     expect(products).toEqual([1001, 1000, 1002, 1004]);
   });
 
-  it("should get all products from all schedules", async () => {
-    const newProduct: Omit<ScheduleProduct, "productId"> = {
+  it("should get all products for all schedules", async () => {
+    const schedule1 = await ScheduleServiceCreate({ name: "ab", customerId });
+
+    const product1: CustomerProductServiceUpsertBody = {
+      scheduleId: schedule1._id,
       duration: 60,
       breakTime: 0,
       noticePeriod: {
@@ -103,24 +123,20 @@ describe("CustomerProductsService", () => {
       },
     };
 
-    const newSchedule = await ScheduleServiceCreate({ name: "ab", customerId });
-
-    await ScheduleProductServiceCreateOrUpdate(
+    await CustomerProductServiceUpsert(
       {
-        scheduleId: newSchedule._id,
-        customerId: newSchedule.customerId,
+        customerId: schedule1.customerId,
         productId: 1001,
       },
-      newProduct
+      product1
     );
 
-    await ScheduleProductServiceCreateOrUpdate(
+    await CustomerProductServiceUpsert(
       {
-        scheduleId: newSchedule._id,
-        customerId: newSchedule.customerId,
+        customerId: schedule1.customerId,
         productId: 1000,
       },
-      newProduct
+      product1
     );
 
     const newSchedule2 = await ScheduleServiceCreate({
@@ -128,25 +144,109 @@ describe("CustomerProductsService", () => {
       customerId,
     });
 
-    await ScheduleProductServiceCreateOrUpdate(
+    const product2 = { ...product1, scheduleId: newSchedule2._id };
+
+    await CustomerProductServiceUpsert(
       {
-        scheduleId: newSchedule2._id,
         customerId: newSchedule2.customerId,
         productId: 1002,
       },
-      newProduct
+      product2
     );
 
-    await ScheduleProductServiceCreateOrUpdate(
+    await CustomerProductServiceUpsert(
       {
-        scheduleId: newSchedule2._id,
         customerId: newSchedule2.customerId,
         productId: 1004,
       },
-      newProduct
+      product2
     );
 
     const products = await CustomerProductsServiceList({ customerId });
     expect(products).toHaveLength(4);
+  });
+
+  it("should add a new product to the schedule", async () => {
+    const newSchedule = await ScheduleServiceCreate({ name, customerId });
+
+    const updateProduct = await CustomerProductServiceUpsert(
+      {
+        customerId: newSchedule.customerId,
+        productId,
+      },
+      { ...newProduct, scheduleId: newSchedule._id }
+    );
+
+    expect(updateProduct).toMatchObject({
+      productId,
+      ...newProduct,
+      scheduleId: newSchedule._id,
+    });
+  });
+
+  it("should find a product", async () => {
+    const newSchedule = await ScheduleServiceCreate({ name, customerId });
+
+    const updatedSchedule = await CustomerProductServiceUpsert(
+      {
+        customerId: newSchedule.customerId,
+        productId,
+      },
+      { ...newProduct, scheduleId: newSchedule._id }
+    );
+
+    const foundProduct = await CustomerProductServiceGet({
+      customerId: newSchedule.customerId,
+      productId,
+    });
+
+    expect(foundProduct).toMatchObject({ productId });
+  });
+
+  it("should update an existing product in the schedule", async () => {
+    const newSchedule = await ScheduleServiceCreate({ name, customerId });
+
+    await CustomerProductServiceUpsert(
+      {
+        customerId: newSchedule.customerId,
+        productId,
+      },
+      { ...newProduct, scheduleId: newSchedule._id }
+    );
+
+    const updatedProduct = {
+      ...newProduct,
+      duration: 90,
+      scheduleId: newSchedule._id,
+    };
+
+    const updateProduct = await CustomerProductServiceUpsert(
+      {
+        customerId: newSchedule.customerId,
+        productId,
+      },
+      updatedProduct
+    );
+
+    expect(updateProduct).toMatchObject({ productId, ...updatedProduct });
+  });
+
+  it("should remove an existing product from the schedule", async () => {
+    const newSchedule = await ScheduleServiceCreate({ name, customerId });
+
+    await CustomerProductServiceUpsert(
+      {
+        customerId: newSchedule.customerId,
+        productId,
+      },
+      { ...newProduct, scheduleId: newSchedule._id }
+    );
+
+    const updatedSchedule = await CustomerProductServiceDestroy({
+      customerId: newSchedule.customerId,
+      productId,
+    });
+
+    expect(updatedSchedule?.modifiedCount).toBe(1);
   });
 });
