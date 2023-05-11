@@ -1,10 +1,13 @@
 type: object
 properties:
-  deletedCount:
+  matchedCount:
     type: number
-  acknowledged:
-    type: boolean
+  modifiedCount:
+    type: number
+  upsertedCount:
+    type: number
 
 required:
-  - deletedCount
-  - acknowledged
+  - matchedCount
+  - modifiedCount
+  - upsertedCount

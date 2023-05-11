@@ -3,11 +3,11 @@ allOf:
   - $ref: ../../schedule/_types/product.yaml
   - type: object
     properties:
-      _id:
+      scheduleId:
         type: string
-      name:
+      scheduleName:
         type: string
 
     required:
-      - _id
-      - name
+      - scheduleId
+      - scheduleName

@@ -36,10 +36,8 @@ export const CustomerProductsServiceList = async (
 
   return schedules.flatMap((schedule) =>
     schedule.products.map((product) => ({
-      schedule: {
-        _id: schedule._id,
-        name: schedule.name,
-      },
+      scheduleId: schedule._id,
+      scheduleName: schedule.name,
       ...product,
     }))
   );
