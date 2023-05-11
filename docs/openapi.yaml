@@ -338,6 +338,8 @@ components:
     CustomerProductUpsertBody:
       type: object
       properties:
+        scheduleId:
+          type: string
         duration:
           oneOf:
             - type: string
@@ -351,6 +353,7 @@ components:
         bookingPeriod:
           $ref: '#/components/schemas/ProductBookingPeriod'
       required:
+        - scheduleId
         - duration
         - breakTime
         - noticePeriod
@@ -364,13 +367,16 @@ components:
         payload:
           type: object
           properties:
-            deletedCount:
+            matchedCount:
               type: number
-            acknowledged:
-              type: boolean
+            modifiedCount:
+              type: number
+            upsertedCount:
+              type: number
           required:
-            - deletedCount
-            - acknowledged
+            - matchedCount
+            - modifiedCount
+            - upsertedCount
       required:
         - success
         - payload
@@ -432,13 +438,13 @@ components:
         - $ref: '#/components/schemas/Product'
         - type: object
           properties:
-            _id:
+            scheduleId:
               type: string
-            name:
+            scheduleName:
               type: string
           required:
-            - _id
-            - name
+            - scheduleId
+            - scheduleName
     CustomerProductAvailability:
       type: object
       properties:
