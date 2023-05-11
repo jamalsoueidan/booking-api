@@ -11,7 +11,6 @@ export type CustomerProductControllerDestroyRequest = {
 };
 
 const CustomerProductControllerDestroyQuerySchema = z.object({
-  scheduleId: ScheduleZodSchema.shape._id,
   customerId: ScheduleZodSchema.shape.customerId,
   productId: ScheduleProductZodSchema.shape.productId,
 });

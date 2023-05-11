@@ -59,7 +59,6 @@ describe("CustomerProductControllerDestroy", () => {
     request = await createHttpRequest<CustomerProductControllerDestroyRequest>({
       query: {
         customerId: newSchedule.customerId,
-        scheduleId: newSchedule._id,
         productId,
       },
     });
