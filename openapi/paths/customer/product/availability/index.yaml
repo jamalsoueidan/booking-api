@@ -5,8 +5,8 @@ parameters:
     required: true
     schema:
       type: string
-  - name: productId
-    in: path
+  - name: productIds
+    in: query
     description: This field for productId
     required: true
     schema:

@@ -32,28 +32,6 @@ export const SlotSchema = new mongoose.Schema<ScheduleSlot>(
   { _id: false }
 );
 
-function hasOverlappingIntervals(intervals: ScheduleInterval[]): boolean {
-  const parsedIntervals = intervals.map((interval) => ({
-    from: convertTimeStringToMinutes(interval.from),
-    to: convertTimeStringToMinutes(interval.to),
-  }));
-
-  parsedIntervals.sort((a, b) => a.from - b.from);
-
-  for (let i = 1; i < parsedIntervals.length; i++) {
-    if (parsedIntervals[i].from < parsedIntervals[i - 1].to) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function convertTimeStringToMinutes(time: string): number {
-  const [hours, minutes] = time.split(":").map(Number);
-  return hours * 60 + minutes;
-}
-
 export function validateSlots(slots: ScheduleSlot[]): void {
   // Check for duplicate days
   const dayIndexMap = new Map();

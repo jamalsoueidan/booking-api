@@ -103,3 +103,17 @@ export const ScheduleZodSchema = z.object({
 });
 
 export type Schedule = z.infer<typeof ScheduleZodSchema>;
+
+export type Availability = {
+  day: string;
+  slots: {
+    from: string;
+    to: string;
+    products: {
+      productId: number;
+      from: string;
+      to: string;
+      breakTime: number;
+    }[];
+  }[];
+};

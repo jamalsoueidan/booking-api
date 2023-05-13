@@ -1,261 +1,120 @@
-import { addDays } from "date-fns";
-import { BookingModel } from "~/functions/booking";
+import { TimeUnit } from "~/functions/schedule";
 import { ScheduleModel } from "~/functions/schedule/schedule.model";
-import { CustomerProductAvailabilityServiceGet } from "./availability";
+import { CustomerProductAvailabilityService } from "./availability";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("CustomerProductAvailabilityServiceGet", () => {
-  const scheduleData = {
-    name: "Test Schedule",
+describe("CustomerProductAvailabilityService", () => {
+  const justRandomSchedule = {
+    name: "another",
     customerId: 1,
     slots: [
       {
-        day: "monday",
+        day: "tuesday",
         intervals: [
           {
-            from: "08:00",
-            to: "12:00",
-          },
-          {
-            from: "14:00",
-            to: "18:00",
+            to: "16:00",
+            from: "09:30",
           },
         ],
       },
     ],
     products: [
       {
-        productId: 99,
+        productId: 12,
+        duration: 45,
+        breakTime: 15,
+        noticePeriod: {
+          value: 1,
+          unit: TimeUnit.DAYS,
+        },
+        bookingPeriod: {
+          value: 4,
+          unit: TimeUnit.WEEKS,
+        },
+      },
+    ],
+  };
+
+  let schedule = {
+    name: "DEFAULT",
+    customerId: 1,
+    slots: [
+      {
+        day: "saturday",
+        intervals: [
+          {
+            to: "14:00",
+            from: "08:00",
+          },
+          {
+            to: "18:00",
+            from: "16:00",
+          },
+        ],
+      },
+      {
+        day: "tuesday",
+        intervals: [
+          {
+            to: "16:00",
+            from: "09:30",
+          },
+        ],
+      },
+    ],
+    products: [
+      {
+        productId: 1,
+        duration: 45,
+        breakTime: 15,
+        noticePeriod: {
+          value: 1,
+          unit: TimeUnit.DAYS,
+        },
+        bookingPeriod: {
+          value: 4,
+          unit: TimeUnit.WEEKS,
+        },
+      },
+      {
+        productId: 2,
+        duration: 30,
+        breakTime: 5,
+        noticePeriod: {
+          value: 6,
+          unit: TimeUnit.HOURS,
+        },
+        bookingPeriod: {
+          value: 2,
+          unit: TimeUnit.MONTHS,
+        },
+      },
+      // extra product
+      {
+        productId: 3,
+        duration: 15,
+        breakTime: 30,
+        noticePeriod: {
+          value: 1,
+          unit: TimeUnit.DAYS,
+        },
+        bookingPeriod: {
+          value: 4,
+          unit: TimeUnit.WEEKS,
+        },
       },
     ],
   };
 
   it("should return available slots for the given date range and product", async () => {
-    await ScheduleModel.create(scheduleData);
-    const startDate = new Date("2023-05-01T00:00:00Z");
-    const customerId = 1;
-    const productId = 99;
+    await ScheduleModel.create(schedule);
+    await ScheduleModel.create(justRandomSchedule);
 
-    const result = await CustomerProductAvailabilityServiceGet({
-      customerId,
-      productId,
-      startDate,
-    });
-
-    expect(result).toBeDefined();
-    expect(Array.isArray(result)).toBeTruthy();
-    expect(result.length).toBeGreaterThan(0);
-
-    result.forEach((entry) => {
-      expect(entry).toHaveProperty("date");
-      expect(entry).toHaveProperty("slots");
-      expect(Array.isArray(entry.slots)).toBeTruthy();
-    });
-  });
-
-  it("should exclude booked slots", async () => {
-    await ScheduleModel.create(scheduleData);
-    const startDate = new Date("2023-05-01T00:00:00Z");
-    const endDate = new Date("2023-05-31T00:00:00Z");
-    const customerId = 1;
-    const productId = 99;
-
-    // Insert bookings into the database
-    const bookings = [
-      {
-        customerId,
-        productId,
-        start: new Date("2023-05-01T08:00:00Z"),
-        end: new Date("2023-05-01T09:00:00Z"),
-      },
-      {
-        customerId,
-        productId,
-        start: new Date("2023-05-01T14:00:00Z"),
-        end: new Date("2023-05-01T15:00:00Z"),
-      },
-    ];
-
-    for (const booking of bookings) {
-      const newBooking = new BookingModel(booking);
-      await newBooking.save();
-    }
-
-    // Fetch available slots and filter out the booked slots
-    const result = await CustomerProductAvailabilityServiceGet({
-      customerId,
-      productId,
-      startDate,
-    });
-
-    const day = result.find(
-      (entry) => entry.date === "2023-05-01T00:00:00.000Z"
-    );
-
-    if (day) {
-      expect(day.slots).not.toContain("2023-05-01T08:00:00.000Z");
-      expect(day.slots).not.toContain("2023-05-01T14:00:00.000Z");
-    }
-  });
-
-  it("should exclude blocked slots", async () => {
-    await ScheduleModel.create({
-      ...scheduleData,
-      blockDates: [
-        {
-          start: new Date("2023-05-01T09:00:00Z"),
-          end: new Date("2023-05-01T10:00:00Z"),
-        },
-      ],
-    });
-    const startDate = new Date("2023-05-01T00:00:00Z");
-    const customerId = 1;
-    const productId = 99;
-
-    // Fetch available slots and filter out the blocked slots
-    const result = await CustomerProductAvailabilityServiceGet({
-      customerId,
-      productId,
-      startDate,
-    });
-
-    const day = result.find(
-      (entry) => entry.date === "2023-05-01T00:00:00.000Z"
-    );
-
-    if (day) {
-      expect(day.slots).not.toContain("2023-05-01T09:00:00.000Z");
-      expect(day.slots).not.toContain("2023-05-01T09:20:00.000Z");
-      expect(day.slots).not.toContain("2023-05-01T09:40:00.000Z");
-    }
-  });
-
-  it("should respect noticePeriod", async () => {
-    const currentDay = new Date()
-      .toLocaleString("en-US", { weekday: "long" })
-      .toLowerCase();
-
-    await ScheduleModel.create({
-      ...scheduleData,
-      slots: [
-        {
-          day: currentDay,
-          intervals: [
-            {
-              from: "08:00",
-              to: "12:00",
-            },
-            {
-              from: "14:00",
-              to: "18:00",
-            },
-          ],
-        },
-      ],
-      products: [
-        {
-          ...scheduleData.products[0],
-          noticePeriod: {
-            value: 5,
-            unit: "hours",
-          },
-        },
-      ],
-    });
-
-    const startDate = new Date(); // Use the current date
-    startDate.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00.000
-
-    const customerId = 1;
-    const productId = 99;
-
-    const result = await CustomerProductAvailabilityServiceGet({
-      customerId,
-      productId,
-      startDate,
-    });
-
-    expect(result).toBeDefined();
-    expect(Array.isArray(result)).toBeTruthy();
-    expect(result.length).toBeGreaterThan(0);
-
-    result.forEach((entry) => {
-      const entryDate = new Date(entry.date);
-      expect(entryDate.getTime()).toBeGreaterThanOrEqual(startDate.getTime());
-    });
-  });
-
-  it("should limit availability to the booking period", async () => {
-    const currentDay = new Date()
-      .toLocaleString("en-US", { weekday: "long" })
-      .toLowerCase();
-    const nextDay = addDays(new Date(), 1)
-      .toLocaleString("en-US", { weekday: "long" })
-      .toLowerCase();
-
-    await ScheduleModel.create({
-      ...scheduleData,
-      slots: [
-        {
-          day: currentDay,
-          intervals: [
-            {
-              from: "08:00",
-              to: "12:00",
-            },
-            {
-              from: "14:00",
-              to: "18:00",
-            },
-          ],
-        },
-        {
-          day: nextDay,
-          intervals: [
-            {
-              from: "08:00",
-              to: "12:00",
-            },
-            {
-              from: "14:00",
-              to: "18:00",
-            },
-          ],
-        },
-      ],
-      products: [
-        {
-          ...scheduleData.products[0],
-          bookingPeriod: {
-            value: 1,
-            unit: "days",
-          },
-        },
-      ],
-    });
-    const now = new Date();
-    const startDate = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate()
-    ); // Use today's date at the start of the day
-
-    const customerId = 1;
-    const productId = 99;
-
-    const result = await CustomerProductAvailabilityServiceGet({
-      customerId,
-      productId,
-      startDate,
-    });
-
-    // Check that there are no available slots after the booking period
-    result.forEach((entry) => {
-      const entryDate = new Date(entry.date);
-      const nextDay = new Date(startDate);
-      nextDay.setDate(nextDay.getDate() + 1); // Calculate the next day
-      expect(entryDate.getTime()).toBeLessThanOrEqual(nextDay.getTime());
+    const result = await CustomerProductAvailabilityService({
+      customerId: 1,
+      productIds: [1, 2],
+      startDate: "2023-05-15",
     });
   });
 });

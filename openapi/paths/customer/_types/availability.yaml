@@ -7,10 +7,41 @@ properties:
   slots:
     type: array
     items:
-      type: string
-      format: date-time
-    example:
-      - "2023-05-05T08:00:00.000Z"
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+          example: "2023-05-05T00:00:00.000Z"
+        to:
+          type: string
+          format: date-time
+          example: "2023-05-05T00:00:00.000Z"
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: number
+              from:
+                type: string
+                format: date-time
+                example: "2023-05-05T00:00:00.000Z"
+              to:
+                type: string
+                format: date-time
+                example: "2023-05-05T00:00:00.000Z"
+              breakTime:
+                type: number
+            required:
+              - productId
+              - from
+              - to
+              - breakTime
+      required:
+        - from
+        - to
 required:
   - date
   - slots

@@ -1,5 +1,5 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { ScheduleModel } from "~/functions/schedule";
+import { ScheduleModel, TimeUnit } from "~/functions/schedule";
 import {
   HttpSuccessResponse,
   createContext,
@@ -39,6 +39,16 @@ describe("CustomerProductControllerAvailability", () => {
     products: [
       {
         productId,
+        duration: 30,
+        breakTime: 0,
+        noticePeriod: {
+          unit: TimeUnit.DAYS,
+          value: 1,
+        },
+        bookingPeriod: {
+          unit: TimeUnit.WEEKS,
+          value: 1,
+        },
       },
     ],
   };
@@ -49,13 +59,13 @@ describe("CustomerProductControllerAvailability", () => {
 
   it("Should be able to get availability for product for customer", async () => {
     await ScheduleModel.create(scheduleData);
-    const startDate = new Date("2023-05-01T00:00:00Z");
+    const startDate = "2023-05-01T00:00:00Z";
 
     request =
       await createHttpRequest<CustomerProductControllerAvailabilityRequest>({
         query: {
           customerId,
-          productId,
+          productIds: [productId],
           startDate,
         },
       });
