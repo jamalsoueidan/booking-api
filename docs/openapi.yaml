@@ -490,8 +490,9 @@ components:
             required:
               - from
               - to
+              - products
       required:
-        - date
+        - day
         - slots
     CustomerCreateOrUpdateResponse:
       type: object
