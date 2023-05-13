@@ -2,7 +2,6 @@ type: object
 properties:
   day:
     type: string
-    format: date-time
     example: "2023-05-05T00:00:00.000Z"
   slots:
     type: array
@@ -11,11 +10,9 @@ properties:
       properties:
         from:
           type: string
-          format: date-time
           example: "2023-05-05T00:00:00.000Z"
         to:
           type: string
-          format: date-time
           example: "2023-05-05T00:00:00.000Z"
         products:
           type: array
@@ -26,11 +23,9 @@ properties:
                 type: number
               from:
                 type: string
-                format: date-time
                 example: "2023-05-05T00:00:00.000Z"
               to:
                 type: string
-                format: date-time
                 example: "2023-05-05T00:00:00.000Z"
               breakTime:
                 type: number
