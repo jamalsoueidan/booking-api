@@ -1,14 +1,12 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
-import {
-  ScheduleProductServiceCreateOrUpdate,
-  ScheduleServiceCreate,
-} from "~/functions/schedule/services";
+import { ScheduleServiceCreate } from "~/functions/schedule/services";
 import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
+import { CustomerProductServiceUpsert } from "../../services";
 import {
   CustomerProductControllerDestroy,
   CustomerProductControllerDestroyRequest,
@@ -44,16 +42,19 @@ describe("CustomerProductControllerDestroy", () => {
       customerId: 123,
     });
 
-    const newProduct = await ScheduleProductServiceCreateOrUpdate(
+    const newProduct = await CustomerProductServiceUpsert(
       {
-        scheduleId: newSchedule._id,
         customerId: newSchedule.customerId,
         productId,
       },
-      product
+      { ...product, scheduleId: newSchedule._id }
     );
 
-    expect(newProduct?.products).toHaveLength(1);
+    expect(newProduct).toMatchObject({
+      ...product,
+      scheduleId: newSchedule._id,
+      scheduleName: newSchedule.name,
+    });
 
     request = await createHttpRequest<CustomerProductControllerDestroyRequest>({
       query: {
@@ -67,6 +68,6 @@ describe("CustomerProductControllerDestroy", () => {
       await CustomerProductControllerDestroy(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
-    expect(res.jsonBody?.payload?.products).toHaveLength(0);
+    expect(res.jsonBody?.payload?.modifiedCount).toBe(1);
   });
 });

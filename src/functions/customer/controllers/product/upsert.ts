@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { ScheduleProductServiceCreateOrUpdate } from "~/functions/schedule";
 import {
   ScheduleProductZodSchema,
   ScheduleZodSchema,
 } from "~/functions/schedule/schedule.types";
 
 import { _ } from "~/library/handler";
+import { CustomerProductServiceUpsert } from "../../services";
 
 export type CustomerProductControllerUpsertRequest = {
   query: z.infer<typeof CustomerProductControllerUpsertQuerySchema>;
@@ -13,17 +13,20 @@ export type CustomerProductControllerUpsertRequest = {
 };
 
 const CustomerProductControllerUpsertQuerySchema = z.object({
-  scheduleId: ScheduleZodSchema.shape._id,
   customerId: ScheduleZodSchema.shape.customerId,
   productId: ScheduleProductZodSchema.shape.productId,
 });
 
 const CustomerProductControllerUpsertBodySchema = ScheduleProductZodSchema.omit(
-  { productId: true }
-);
+  {
+    productId: true,
+  }
+).extend({
+  scheduleId: ScheduleZodSchema.shape._id,
+});
 
 export type CustomerProductControllerUpsertResponse = Awaited<
-  ReturnType<typeof ScheduleProductServiceCreateOrUpdate>
+  ReturnType<typeof CustomerProductServiceUpsert>
 >;
 
 export const CustomerProductControllerUpsert = _(
@@ -32,6 +35,6 @@ export const CustomerProductControllerUpsert = _(
       CustomerProductControllerUpsertQuerySchema.parse(query);
     const validateBody = CustomerProductControllerUpsertBodySchema.parse(body);
 
-    return ScheduleProductServiceCreateOrUpdate(validateQuery, validateBody);
+    return CustomerProductServiceUpsert(validateQuery, validateBody);
   }
 );
