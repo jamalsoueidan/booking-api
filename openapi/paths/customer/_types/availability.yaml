@@ -42,6 +42,7 @@ properties:
       required:
         - from
         - to
+        - products
 required:
-  - date
+  - day
   - slots
