@@ -1,19 +1,23 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
 
-import { ScheduleProductZodSchema } from "~/functions/schedule";
 import { UserZodSchema } from "~/functions/user";
-import { CustomerProductAvailabilityServiceGet } from "../../services/availability";
+
+import { CustomerProductAvailabilityService } from "../../services";
 import { CustomerProductsServiceListIds } from "../../services/product";
 
 export type CustomerProductControllerAvailabilityRequest = {
   query: z.infer<typeof CustomerProductControllerAvailabilitySchema>;
 };
 
+const commaSeparatedNumberArray = z
+  .string()
+  .transform((value) => value.split(",").map(Number));
+
 export const CustomerProductControllerAvailabilitySchema = z.object({
   customerId: UserZodSchema.shape.customerId,
-  productId: ScheduleProductZodSchema.shape.productId,
-  startDate: z.coerce.date(),
+  productIds: commaSeparatedNumberArray,
+  startDate: z.string(),
 });
 
 export type CustomerProductControllerAvailabilityResponse = Awaited<
@@ -24,6 +28,6 @@ export const CustomerProductControllerAvailability = _(
   async ({ query }: CustomerProductControllerAvailabilityRequest) => {
     const validateData =
       CustomerProductControllerAvailabilitySchema.parse(query);
-    return CustomerProductAvailabilityServiceGet(validateData);
+    return CustomerProductAvailabilityService(validateData);
   }
 );
