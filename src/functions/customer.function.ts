@@ -35,7 +35,7 @@ app.http("customerProductsList", {
 app.http("customerProductAvailability", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "customer/{customerId?}/product/{productId?}/availability",
+  route: "customer/{customerId?}/product/availability",
   handler: CustomerProductControllerAvailability,
 });
 
