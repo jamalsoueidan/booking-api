@@ -450,7 +450,6 @@ components:
       properties:
         day:
           type: string
-          format: date-time
           example: '2023-05-05T00:00:00.000Z'
         slots:
           type: array
@@ -459,11 +458,9 @@ components:
             properties:
               from:
                 type: string
-                format: date-time
                 example: '2023-05-05T00:00:00.000Z'
               to:
                 type: string
-                format: date-time
                 example: '2023-05-05T00:00:00.000Z'
               products:
                 type: array
@@ -474,11 +471,9 @@ components:
                       type: number
                     from:
                       type: string
-                      format: date-time
                       example: '2023-05-05T00:00:00.000Z'
                     to:
                       type: string
-                      format: date-time
                       example: '2023-05-05T00:00:00.000Z'
                     breakTime:
                       type: number
