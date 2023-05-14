@@ -41,15 +41,11 @@ describe("CustomerProductAvailabilityService", () => {
     customerId: 1,
     slots: [
       {
-        day: "saturday",
+        day: "monday",
         intervals: [
           {
-            to: "14:00",
+            to: "16:00",
             from: "08:00",
-          },
-          {
-            to: "18:00",
-            from: "16:00",
           },
         ],
       },
@@ -65,7 +61,7 @@ describe("CustomerProductAvailabilityService", () => {
     ],
     products: [
       {
-        productId: 1,
+        productId: 43,
         duration: 45,
         breakTime: 15,
         noticePeriod: {
@@ -78,25 +74,24 @@ describe("CustomerProductAvailabilityService", () => {
         },
       },
       {
-        productId: 2,
-        duration: 30,
-        breakTime: 5,
+        productId: 8022089597202,
+        duration: 45,
+        breakTime: 15,
         noticePeriod: {
-          value: 6,
+          value: 1,
           unit: TimeUnit.HOURS,
         },
         bookingPeriod: {
-          value: 2,
-          unit: TimeUnit.MONTHS,
+          value: 4,
+          unit: TimeUnit.WEEKS,
         },
       },
-      // extra product
       {
-        productId: 3,
-        duration: 15,
+        productId: 8022088745234,
+        duration: 120,
         breakTime: 30,
         noticePeriod: {
-          value: 1,
+          value: 6,
           unit: TimeUnit.DAYS,
         },
         bookingPeriod: {
@@ -113,7 +108,7 @@ describe("CustomerProductAvailabilityService", () => {
 
     const result = await CustomerProductAvailabilityService({
       customerId: 1,
-      productIds: [1, 2],
+      productIds: [8022089597202, 8022088745234],
       startDate: "2023-05-15",
     });
   });

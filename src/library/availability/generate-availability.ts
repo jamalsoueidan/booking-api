@@ -1,8 +1,8 @@
-import { add, differenceInMinutes, isAfter, isBefore } from "date-fns";
-import { zonedTimeToUtc } from "date-fns-tz";
+import { add, differenceInMinutes, isBefore } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { Availability, Schedule } from "~/functions/schedule";
 import { calculateMaxNoticeAndMinBookingPeriod } from "~/library/availability";
+import { generateEndDate, generateStartDate } from "./start-end-date";
 
 // Function to convert time string to Date object
 function timeToDate(time: string, date: Date): Date {
@@ -13,10 +13,10 @@ function timeToDate(time: string, date: Date): Date {
 }
 
 // Function to generate availability
-export function generateAvailability(
+export const generateAvailability = (
   schedule: Pick<Schedule, "slots" | "products">,
-  startDate: string
-) {
+  start: string
+) => {
   // Sort products by total time
   const sortedProducts = [...schedule.products].sort(
     (a, b) => b.duration + b.breakTime - (a.duration + a.breakTime)
@@ -26,19 +26,13 @@ export function generateAvailability(
     schedule.products
   );
 
-  const utcDate = zonedTimeToUtc(startDate, "UTC");
-  const noticeDate = add(new Date(), {
-    [noticePeriod.unit]: noticePeriod.value,
-  });
+  let startDate = generateStartDate(start, noticePeriod);
+  const endDate = generateEndDate(schedule, startDate, bookingPeriod);
 
-  const start = isAfter(utcDate, noticeDate) ? utcDate : noticeDate;
-  const end = add(new Date(), { [bookingPeriod.unit]: bookingPeriod.value });
-
-  let currentDate = start;
   const availability: Availability[] = [];
 
-  while (isBefore(currentDate, end)) {
-    const dayOfWeek: string = enUS.localize?.day(currentDate.getDay()) || "";
+  while (isBefore(startDate, endDate)) {
+    const dayOfWeek: string = enUS.localize?.day(startDate.getDay()) || "";
     const daySchedule = schedule.slots.find(
       (slot) => slot.day.toLowerCase() === dayOfWeek.toLowerCase()
     );
@@ -47,8 +41,8 @@ export function generateAvailability(
       const daySlots: Availability["slots"] = [];
 
       for (const interval of daySchedule.intervals) {
-        let slotStart = timeToDate(interval.from, currentDate);
-        let slotEnd = timeToDate(interval.to, currentDate);
+        let slotStart = timeToDate(interval.from, startDate);
+        let slotEnd = timeToDate(interval.to, startDate);
 
         // Calculate total product time
         const totalProductTime = sortedProducts.reduce(
@@ -92,14 +86,14 @@ export function generateAvailability(
 
       if (daySlots.length > 0) {
         availability.push({
-          day: currentDate.toISOString(),
+          day: startDate.toISOString(),
           slots: daySlots,
         });
       }
     }
 
-    currentDate = add(currentDate, { days: 1 });
+    startDate = add(startDate, { days: 1 });
   }
 
   return availability;
-}
+};

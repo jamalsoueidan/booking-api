@@ -22,7 +22,7 @@ describe("generateAvailability", () => {
         breakTime: 15,
         noticePeriod: {
           unit: TimeUnit.DAYS,
-          value: 1,
+          value: 5,
         },
         bookingPeriod: {
           unit: TimeUnit.MONTHS,

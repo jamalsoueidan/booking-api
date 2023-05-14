@@ -2,42 +2,39 @@ import { Schedule, TimeUnit } from "~/functions/schedule";
 import { calculateMaxNoticeAndMinBookingPeriod } from "./calculate-max-notice-and-min-booking-period";
 
 describe("calculateMaxNoticeAndMinBookingPeriod", () => {
-  it("should calculate the correct notice period and booking period", () => {
-    const products: Schedule["products"] = [
+  let products: Schedule["products"];
+
+  beforeEach(() => {
+    products = [
       {
         productId: 1,
-        duration: 45,
+        duration: 60,
         breakTime: 15,
-        noticePeriod: {
-          value: 1,
-          unit: TimeUnit.HOURS,
-        },
-        bookingPeriod: {
-          value: 4,
-          unit: TimeUnit.WEEKS,
-        },
+        noticePeriod: { unit: TimeUnit.DAYS, value: 1 },
+        bookingPeriod: { unit: TimeUnit.WEEKS, value: 2 },
       },
       {
         productId: 2,
         duration: 120,
         breakTime: 30,
-        noticePeriod: {
-          value: 6,
-          unit: TimeUnit.HOURS,
-        },
-        bookingPeriod: {
-          value: 2,
-          unit: TimeUnit.MONTHS,
-        },
+        noticePeriod: { unit: TimeUnit.DAYS, value: 2 },
+        bookingPeriod: { unit: TimeUnit.WEEKS, value: 1 },
+      },
+      {
+        productId: 3,
+        duration: 90,
+        breakTime: 20,
+        noticePeriod: { unit: TimeUnit.DAYS, value: 3 },
+        bookingPeriod: { unit: TimeUnit.WEEKS, value: 3 },
       },
     ];
+  });
 
+  it("should correctly calculate the maximum notice period and minimum booking period", () => {
     const { noticePeriod, bookingPeriod } =
       calculateMaxNoticeAndMinBookingPeriod(products);
 
-    expect(noticePeriod.value).toEqual(1);
-    expect(noticePeriod.unit).toEqual("hours");
-    expect(bookingPeriod.value).toEqual(2);
-    expect(bookingPeriod.unit).toEqual("months");
+    expect(noticePeriod).toEqual({ unit: "days", value: 3 });
+    expect(bookingPeriod).toEqual({ unit: "weeks", value: 3 });
   });
 });

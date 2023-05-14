@@ -1,13 +1,17 @@
-import {
-  addDays,
-  addHours,
-  addMonths,
-  addWeeks,
-  differenceInHours,
-  startOfDay,
-} from "date-fns";
+import { addDays, addHours, addMonths, addWeeks } from "date-fns";
 import { Schedule, TimeUnit } from "~/functions/schedule";
 
+/*
+ * Notice Period: The notice period is the amount of advance notice required for booking an appointment.
+ * It specifies how much time in advance a user or customer must provide before they can schedule an appointment.
+ * The notice period can vary depending on the nature of the appointment and the specific requirements of the service provider.
+ * For example, some businesses may require a notice period of 24 hours, while others may require a week or more.
+ *
+ * Booking Period: The booking period, on the other hand, refers to the duration within which appointments can be scheduled.
+ * It indicates the time frame during which a user or customer can select an available slot for their appointment.
+ * The booking period can vary depending on the application or platform used for appointment scheduling. It might span a few days,
+ * a week, or even longer, depending on the availability and preferences of the service provider.
+ */
 export const calculateMaxNoticeAndMinBookingPeriod = (
   products: Schedule["products"]
 ) => {
@@ -30,7 +34,7 @@ export const calculateMaxNoticeAndMinBookingPeriod = (
       }
 
       if (
-        bookingDuration <
+        bookingDuration >
         calculateUnitValue(acc.bookingPeriod.unit, acc.bookingPeriod.value)
       ) {
         acc.bookingPeriod = curr.bookingPeriod;
@@ -46,17 +50,19 @@ export const calculateMaxNoticeAndMinBookingPeriod = (
 };
 
 const calculateUnitValue = (unit: TimeUnit, value: number) => {
-  const referenceDate = startOfDay(new Date());
+  const referenceDate = new Date();
 
   switch (unit) {
     case "hours":
-      return differenceInHours(referenceDate, addHours(referenceDate, value));
+      return addHours(referenceDate, value).getTime() - referenceDate.getTime();
     case "days":
-      return differenceInHours(referenceDate, addDays(referenceDate, value));
+      return addDays(referenceDate, value).getTime() - referenceDate.getTime();
     case "weeks":
-      return differenceInHours(referenceDate, addWeeks(referenceDate, value));
+      return addWeeks(referenceDate, value).getTime() - referenceDate.getTime();
     case "months":
-      return differenceInHours(referenceDate, addMonths(referenceDate, value));
+      return (
+        addMonths(referenceDate, value).getTime() - referenceDate.getTime()
+      );
     default:
       return 0;
   }

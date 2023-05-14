@@ -12,7 +12,7 @@ export enum TimeUnit {
   MONTHS = "months",
 }
 
-export type Days =
+export type WeekDays =
   | "monday"
   | "tuesday"
   | "wednesday"
@@ -26,6 +26,10 @@ const BookingPeriodZodSchema = z.object({
   unit: z.enum([TimeUnit.WEEKS, TimeUnit.MONTHS]),
 });
 
+export type ScheduleProductBookingPeriod = z.infer<
+  typeof BookingPeriodZodSchema
+>;
+
 const NoticePeriodZodSchema = z.object({
   value: NumberOrStringType,
   unit: z.enum([
@@ -35,6 +39,8 @@ const NoticePeriodZodSchema = z.object({
     TimeUnit.MONTHS,
   ]),
 });
+
+export type ScheduleProductNoticePeriod = z.infer<typeof NoticePeriodZodSchema>;
 
 export const ScheduleProductZodSchema = z.object({
   productId: GidFormat,
