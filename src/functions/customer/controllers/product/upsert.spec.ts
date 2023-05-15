@@ -23,6 +23,7 @@ describe("ScheduleProductControllerUpdate", () => {
   const name = "Test Schedule";
   const productId = 1000;
   const newProduct: Omit<ScheduleProduct, "productId"> = {
+    variantId: 1,
     duration: 60,
     breakTime: 0,
     noticePeriod: {

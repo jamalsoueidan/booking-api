@@ -26,6 +26,7 @@ describe("MultiAvailability", () => {
     products: [
       {
         productId: 9,
+        variantId: 1,
         breakTime: 15,
         duration: 60,
         noticePeriod: {
@@ -39,6 +40,7 @@ describe("MultiAvailability", () => {
       },
       {
         productId: 99,
+        variantId: 1,
         breakTime: 15,
         duration: 60,
         noticePeriod: {
@@ -79,6 +81,7 @@ describe("MultiAvailability", () => {
     products: [
       {
         productId: 101,
+        variantId: 1,
         breakTime: 15,
         duration: 60,
         noticePeriod: {
@@ -92,6 +95,7 @@ describe("MultiAvailability", () => {
       },
       {
         productId: 9912,
+        variantId: 1,
         breakTime: 15,
         duration: 60,
         noticePeriod: {
@@ -123,6 +127,7 @@ describe("MultiAvailability", () => {
     products: [
       {
         productId: 91,
+        variantId: 1,
         breakTime: 15,
         duration: 60,
         noticePeriod: {
@@ -154,6 +159,7 @@ describe("MultiAvailability", () => {
     products: [
       {
         productId: 123,
+        variantId: 1,
         breakTime: 15,
         duration: 60,
         noticePeriod: {

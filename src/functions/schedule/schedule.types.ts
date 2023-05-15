@@ -45,7 +45,7 @@ export type ScheduleProductNoticePeriod = z.infer<typeof NoticePeriodZodSchema>;
 export const ScheduleProductZodSchema = z.object({
   productId: GidFormat,
   variantId: GidFormat,
-  description: z.string(),
+  description: z.string().optional(),
   duration: NumberOrStringType,
   breakTime: NumberOrStringType,
   noticePeriod: NoticePeriodZodSchema,
