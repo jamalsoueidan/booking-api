@@ -7,6 +7,10 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       type: Number,
       index: true,
     },
+    variantId: {
+      type: Number,
+    },
+    description: String,
     duration: {
       type: Number,
       default: 60,

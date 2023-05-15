@@ -65,9 +65,11 @@ export const generateAvailability = (
             });
             slotProducts.push({
               productId: product.productId,
+              variantId: product.variantId,
               from: productStartTime.toISOString(),
               to: productEndTime.toISOString(),
               breakTime: product.breakTime,
+              duration: product.duration,
             });
             productStartTime = add(productEndTime, {
               minutes: product.breakTime,
