@@ -18,8 +18,6 @@ properties:
         type: string
       instagram:
         type: string
-  active:
-    type: string
   avatar:
     type: string
     format: uri
@@ -28,5 +26,8 @@ properties:
     items:
       type: string
 required:
+  - title
+  - username
   - fullname
+  - description
   - avatar

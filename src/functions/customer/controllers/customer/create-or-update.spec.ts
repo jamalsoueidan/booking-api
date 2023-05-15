@@ -27,13 +27,7 @@ describe("CustomerControllerCreateOrUpdate", () => {
     title: faker.name.jobTitle(),
     username: faker.internet.userName(),
     fullname: faker.name.fullName(),
-    social_urls: {
-      instagram: faker.internet.url(),
-      youtube: faker.internet.url(),
-      twitter: faker.internet.url(),
-    },
     description: faker.lorem.paragraph(),
-    active: true,
     avatar: faker.internet.avatar(),
     speaks: [faker.random.locale()],
   };

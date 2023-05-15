@@ -33,11 +33,12 @@ export const UserMongooseSchema = new mongoose.Schema<
       twitter: String,
     },
     description: String,
-    active: { default: true, type: Boolean },
+    //active: { default: true, type: Boolean },
     avatar: { required: true, type: String },
     speaks: {
       type: [String],
       required: true,
+      default: [],
     },
   },
   { timestamps: true }

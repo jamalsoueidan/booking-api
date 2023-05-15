@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BooleanOrStringType, GidFormat } from "~/library/zod";
+import { GidFormat } from "~/library/zod";
 
 export const UserZodSchema = z.object({
   _id: z.string(),
@@ -9,15 +9,17 @@ export const UserZodSchema = z.object({
     .string()
     .transform((input) => input.replace(/[^a-zA-Z0-9-_]/g, "-").toLowerCase()),
   fullname: z.string(),
-  description: z.string(),
-  social_urls: z.object({
-    youtube: z.string(),
-    twitter: z.string(),
-    instagram: z.string(),
-  }),
-  active: BooleanOrStringType,
-  avatar: z.string().url({ message: "Invalid url" }),
-  speaks: z.array(z.string()),
+  description: z.string().optional(),
+  social_urls: z
+    .object({
+      youtube: z.string().optional(),
+      twitter: z.string().optional(),
+      instagram: z.string().optional(),
+    })
+    .optional(),
+  //active: BooleanOrStringType,
+  avatar: z.string().url({ message: "Invalid url" }).optional(),
+  speaks: z.array(z.string()).optional(),
 });
 
 export type User = z.infer<typeof UserZodSchema>;
