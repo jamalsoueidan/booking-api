@@ -18,7 +18,6 @@ describe("CustomerService", () => {
         twitter: faker.internet.url(),
       },
       description: faker.lorem.paragraph(),
-      active: true,
       avatar: faker.internet.avatar(),
       speaks: [faker.random.locale()],
     };
@@ -44,7 +43,6 @@ describe("CustomerService", () => {
         twitter: faker.internet.url(),
       },
       description: faker.lorem.paragraph(),
-      active: true,
       avatar: faker.internet.avatar(),
       speaks: [faker.random.locale()],
     };
