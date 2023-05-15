@@ -3,7 +3,9 @@ import { User } from "./user.types";
 
 export interface IUser extends Omit<User, "_id"> {}
 
-export interface IUserDocument extends IUser, Document {}
+export interface IUserDocument extends IUser, Document {
+  active: boolean;
+}
 
 export interface IUserModel extends Model<IUserDocument> {}
 
@@ -38,6 +40,7 @@ export const UserMongooseSchema = new mongoose.Schema<
     speaks: {
       type: [String],
       required: true,
+      default: [],
     },
   },
   { timestamps: true }

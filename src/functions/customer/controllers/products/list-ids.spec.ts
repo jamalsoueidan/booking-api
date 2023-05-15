@@ -25,6 +25,7 @@ describe("CustomerProductsServiceListIds", () => {
   it("Should be able to get all productIds for customer-id in all schedules", async () => {
     const customerId = 123;
     const newProduct: Omit<ScheduleProduct, "productId"> = {
+      variantId: 1,
       duration: 60,
       breakTime: 0,
       noticePeriod: {

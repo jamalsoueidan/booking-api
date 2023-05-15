@@ -8,6 +8,7 @@ describe("calculateMaxNoticeAndMinBookingPeriod", () => {
     products = [
       {
         productId: 1,
+        variantId: 1,
         duration: 60,
         breakTime: 15,
         noticePeriod: { unit: TimeUnit.DAYS, value: 1 },
@@ -15,6 +16,7 @@ describe("calculateMaxNoticeAndMinBookingPeriod", () => {
       },
       {
         productId: 2,
+        variantId: 1,
         duration: 120,
         breakTime: 30,
         noticePeriod: { unit: TimeUnit.DAYS, value: 2 },
@@ -22,6 +24,7 @@ describe("calculateMaxNoticeAndMinBookingPeriod", () => {
       },
       {
         productId: 3,
+        variantId: 3,
         duration: 90,
         breakTime: 20,
         noticePeriod: { unit: TimeUnit.DAYS, value: 3 },

@@ -14,7 +14,8 @@ export const BooleanOrStringType = z
       return true;
     }
     return value;
-  });
+  })
+  .optional();
 
 export const GidFormat = z
   .union([z.number(), z.string()])

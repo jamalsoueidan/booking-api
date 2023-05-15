@@ -15,6 +15,7 @@ describe("CustomerProductsService", () => {
   const name = "Test Schedule";
   const productId = 1000;
   const newProduct: CustomerProductServiceUpsertBody = {
+    variantId: 1,
     scheduleId: "",
     duration: 60,
     breakTime: 0,
@@ -35,6 +36,7 @@ describe("CustomerProductsService", () => {
     });
 
     const product1: CustomerProductServiceUpsertBody = {
+      variantId: 1,
       scheduleId: schedule1._id,
       duration: 60,
       breakTime: 0,
@@ -110,6 +112,7 @@ describe("CustomerProductsService", () => {
     const schedule1 = await ScheduleServiceCreate({ name: "ab", customerId });
 
     const product1: CustomerProductServiceUpsertBody = {
+      variantId: 1,
       scheduleId: schedule1._id,
       duration: 60,
       breakTime: 0,

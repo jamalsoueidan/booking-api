@@ -18,6 +18,7 @@ describe("generateAvailability", () => {
     products: [
       {
         productId: 1,
+        variantId: 1,
         duration: 60,
         breakTime: 15,
         noticePeriod: {
@@ -31,6 +32,7 @@ describe("generateAvailability", () => {
       },
       {
         productId: 2,
+        variantId: 2,
         duration: 90,
         breakTime: 30,
         noticePeriod: {

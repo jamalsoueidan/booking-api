@@ -21,6 +21,8 @@ properties:
             properties:
               productId:
                 type: number
+              variantId:
+                type: number
               from:
                 type: string
                 example: "2023-05-05T00:00:00.000Z"
@@ -29,11 +31,15 @@ properties:
                 example: "2023-05-05T00:00:00.000Z"
               breakTime:
                 type: number
+              duration:
+                type: number
             required:
               - productId
+              - variantId
               - from
               - to
               - breakTime
+              - duration
       required:
         - from
         - to
