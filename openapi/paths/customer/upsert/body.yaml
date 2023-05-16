@@ -7,9 +7,11 @@ properties:
     pattern: ^[a-zA-Z0-9-_]+$
   fullname:
     type: string
-  description:
+  aboutMe:
     type: string
-  social_urls:
+  shortDescription:
+    type: string
+  socialUrls:
     type: object
     properties:
       youtube:
@@ -29,5 +31,3 @@ required:
   - title
   - username
   - fullname
-  - description
-  - avatar

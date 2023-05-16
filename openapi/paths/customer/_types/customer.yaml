@@ -9,9 +9,11 @@ properties:
     pattern: ^[a-zA-Z0-9-_]+$
   fullname:
     type: string
-  description:
+  aboutMe:
     type: string
-  social_urls:
+  shortDescription:
+    type: string
+  socialUrls:
     type: object
     properties:
       youtube:
@@ -20,8 +22,6 @@ properties:
         type: string
       instagram:
         type: string
-  active:
-    type: boolean
   avatar:
     type: string
     format: uri
@@ -35,6 +35,6 @@ required:
   - fullname
   - avatar
   - speaks
-  - active
-  - social_urls
-  - description
+  - socialUrls
+  - shortDescription
+  - aboutMe

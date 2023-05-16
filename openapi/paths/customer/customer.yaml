@@ -1,9 +1,4 @@
-parameters:
-  - name: customerId
-    in: path
-    description: customerId is needed
-    required: true
-    schema:
-      type: string
 put:
-  $ref: "./create-or-update/index.yaml#/put"
+  $ref: "./upsert/index.yaml#/put"
+get:
+  $ref: "./get/index.yaml#/get"

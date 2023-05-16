@@ -87,14 +87,22 @@ components:
     # Customer
     Customer:
       $ref: paths/customer/_types/customer.yaml
+    CustomerExists:
+      $ref: paths/customer/_types/customer-exists.yaml
     CustomerProductList:
       $ref: paths/customer/_types/product.yaml
     CustomerProductAvailability:
       $ref: paths/customer/_types/availability.yaml
-    CustomerCreateOrUpdateResponse:
-      $ref: paths/customer/create-or-update/response.yaml
-    CustomerCreateOrUpdateBody:
-      $ref: paths/customer/create-or-update/body.yaml
+    CustomerIsBusinessResponse:
+      $ref: paths/customer/is-business/response.yaml
+    CustomersListResponse:
+      $ref: paths/customer/list/response.yaml
+    CustomerGetResponse:
+      $ref: paths/customer/get/response.yaml
+    CustomerUpsertResponse:
+      $ref: paths/customer/upsert/response.yaml
+    CustomerUpsertBody:
+      $ref: paths/customer/upsert/body.yaml
     CustomerProductListIdsResponse:
       $ref: paths/customer/products/list-ids/response.yaml
     CustomerProductListResponse:
@@ -114,8 +122,14 @@ paths:
     $ref: "./paths/user/list/index.yaml"
 
   # Customer
-  /customer/{customerId}:
+  /customers:
+    $ref: "paths/customer/list/index.yaml"
+
+  /customer/{identifier}:
     $ref: "./paths/customer/customer.yaml"
+
+  /customer/{customerId}/isBusiness:
+    $ref: "./paths/customer/is-business/index.yaml"
 
   /customer/{customerId}/products:
     $ref: "./paths/customer/products/list/index.yaml"
