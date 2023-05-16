@@ -9,8 +9,9 @@ export const UserZodSchema = z.object({
     .string()
     .transform((input) => input.replace(/[^a-zA-Z0-9-_]/g, "-").toLowerCase()),
   fullname: z.string(),
-  description: z.string().optional(),
-  social_urls: z
+  aboutMe: z.string().optional(),
+  shortDescription: z.string().optional(),
+  socialUrls: z
     .object({
       youtube: z.string().optional(),
       twitter: z.string().optional(),

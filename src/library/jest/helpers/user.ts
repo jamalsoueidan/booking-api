@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { CustomerServiceCreateOrUpdate } from "~/functions/customer";
+import { CustomerServiceUpsert } from "~/functions/customer";
 import { User } from "~/functions/user";
 
 export const DEFAULT_GROUP = "all";
@@ -8,7 +8,7 @@ export const getUserObject = (props: Partial<User> = {}) => ({
   title: faker.name.jobTitle(),
   username: faker.internet.userName().toLowerCase(),
   fullname: faker.name.fullName(),
-  social_urls: {
+  socialUrls: {
     instagram: faker.internet.url(),
     youtube: faker.internet.url(),
     twitter: faker.internet.url(),
@@ -24,5 +24,5 @@ export const createUser = (
   fitler: Pick<User, "customerId">,
   props: Partial<User> = {}
 ) => {
-  return CustomerServiceCreateOrUpdate(fitler, getUserObject(props));
+  return CustomerServiceUpsert(fitler, getUserObject(props));
 };

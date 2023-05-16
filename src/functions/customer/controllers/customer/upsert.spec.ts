@@ -7,14 +7,14 @@ import {
 } from "~/library/jest/azure";
 
 import {
-  CustomerServiceCreateOrUpdate,
-  CustomerServiceCreateOrUpdateBody,
+  CustomerServiceUpsert,
+  CustomerServiceUpsertBody,
 } from "../../services";
 import {
-  CustomerControllerCreateOrUpdate,
-  CustomerControllerCreateOrUpdateRequest,
-  CustomerControllerCreateOrUpdateResponse,
-} from "./create-or-update";
+  CustomerControllerUpsert,
+  CustomerControllerUpsertRequest,
+  CustomerControllerUpsertResponse,
+} from "./upsert";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -23,11 +23,11 @@ describe("CustomerControllerCreateOrUpdate", () => {
   let request: HttpRequest;
 
   const query = { customerId: faker.datatype.number() };
-  const body: CustomerServiceCreateOrUpdateBody = {
+  const body: CustomerServiceUpsertBody = {
     title: faker.name.jobTitle(),
     username: faker.internet.userName(),
     fullname: faker.name.fullName(),
-    description: faker.lorem.paragraph(),
+    aboutMe: faker.lorem.paragraph(),
     avatar: faker.internet.avatar(),
     speaks: [faker.random.locale()],
   };
@@ -37,13 +37,13 @@ describe("CustomerControllerCreateOrUpdate", () => {
   });
 
   it("Should be able to create user", async () => {
-    request = await createHttpRequest<CustomerControllerCreateOrUpdateRequest>({
+    request = await createHttpRequest<CustomerControllerUpsertRequest>({
       query,
       body,
     });
 
-    const res: HttpSuccessResponse<CustomerControllerCreateOrUpdateResponse> =
-      await CustomerControllerCreateOrUpdate(request, context);
+    const res: HttpSuccessResponse<CustomerControllerUpsertResponse> =
+      await CustomerControllerUpsert(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
@@ -51,9 +51,9 @@ describe("CustomerControllerCreateOrUpdate", () => {
   });
 
   it("Should able to update user", async () => {
-    await CustomerServiceCreateOrUpdate(query, body);
+    await CustomerServiceUpsert(query, body);
 
-    request = await createHttpRequest<CustomerControllerCreateOrUpdateRequest>({
+    request = await createHttpRequest<CustomerControllerUpsertRequest>({
       query,
       body: {
         ...body,
@@ -61,8 +61,8 @@ describe("CustomerControllerCreateOrUpdate", () => {
       },
     });
 
-    const res: HttpSuccessResponse<CustomerControllerCreateOrUpdateResponse> =
-      await CustomerControllerCreateOrUpdate(request, context);
+    const res: HttpSuccessResponse<CustomerControllerUpsertResponse> =
+      await CustomerControllerUpsert(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
