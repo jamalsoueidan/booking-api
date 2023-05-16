@@ -84,9 +84,11 @@ components:
           pattern: '^[a-zA-Z0-9-_]+$'
         fullname:
           type: string
-        description:
+        aboutMe:
           type: string
-        social_urls:
+        shortDescription:
+          type: string
+        socialUrls:
           type: object
           properties:
             youtube:
@@ -109,10 +111,11 @@ components:
         - title
         - fullname
         - avatar
-        - speaks
         - active
-        - social_urls
-        - description
+        - speaks
+        - socialUrls
+        - shortDescription
+        - aboutMe
     Destroy:
       type: object
       properties:
@@ -413,9 +416,11 @@ components:
           pattern: '^[a-zA-Z0-9-_]+$'
         fullname:
           type: string
-        description:
+        aboutMe:
           type: string
-        social_urls:
+        shortDescription:
+          type: string
+        socialUrls:
           type: object
           properties:
             youtube:
@@ -424,8 +429,6 @@ components:
               type: string
             instagram:
               type: string
-        active:
-          type: boolean
         avatar:
           type: string
           format: uri
@@ -439,9 +442,14 @@ components:
         - fullname
         - avatar
         - speaks
-        - active
-        - social_urls
-        - description
+        - socialUrls
+        - shortDescription
+        - aboutMe
+    CustomerExists:
+      type: object
+      properties:
+        exists:
+          type: boolean
     CustomerProductList:
       type: object
       allOf:
@@ -505,7 +513,31 @@ components:
       required:
         - day
         - slots
-    CustomerCreateOrUpdateResponse:
+    CustomerIsBusinessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/CustomerExists'
+      required:
+        - success
+        - payload
+    CustomersListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+      required:
+        - success
+        - payload
+    CustomerGetResponse:
       type: object
       properties:
         success:
@@ -516,7 +548,18 @@ components:
       required:
         - success
         - payload
-    CustomerCreateOrUpdateBody:
+    CustomerUpsertResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Customer'
+      required:
+        - success
+        - payload
+    CustomerUpsertBody:
       type: object
       properties:
         title:
@@ -526,9 +569,11 @@ components:
           pattern: '^[a-zA-Z0-9-_]+$'
         fullname:
           type: string
-        description:
+        aboutMe:
           type: string
-        social_urls:
+        shortDescription:
+          type: string
+        socialUrls:
           type: object
           properties:
             youtube:
@@ -548,8 +593,6 @@ components:
         - title
         - username
         - fullname
-        - description
-        - avatar
     CustomerProductListIdsResponse:
       type: object
       properties:
@@ -665,18 +708,41 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-  '/customer/{customerId}':
-    parameters:
-      - name: customerId
-        in: path
-        description: customerId is needed
-        required: true
-        schema:
-          type: string
-    put:
+  /customers:
+    get:
       tags:
         - Customer
-      operationId: customerCreateOrUpdate
+      operationId: customersList
+      summary: GET Get all customers
+      description: This endpoint get all customers
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomersListResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  '/customer/{identifier}':
+    put:
+      parameters:
+        - name: identifier
+          in: path
+          description: must be customerId
+          required: true
+          schema:
+            type: string
+      tags:
+        - Customer
+      operationId: customerUpsert
       summary: PUT Create or Update user
       description: This endpoint creates new or updates user
       requestBody:
@@ -684,20 +750,79 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CustomerCreateOrUpdateBody'
+              $ref: '#/components/schemas/CustomerUpsertBody'
       responses:
         '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerCreateOrUpdateResponse'
+                $ref: '#/components/schemas/CustomerUpsertResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
           $ref: '#/components/responses/UnauthorizedResponse'
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
+      security: []
+    get:
+      parameters:
+        - name: identifier
+          in: path
+          description: must be username
+          required: true
+          schema:
+            type: string
+      tags:
+        - Customer
+      operationId: customerGet
+      summary: GET Get customer
+      description: This endpoint gets customer object
+      responses:
+        '200':
+          description: Response with payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  '/customer/{customerId}/isBusiness':
+    get:
+      parameters:
+        - name: customerId
+          in: path
+          description: CustomerId from shopify
+          required: true
+          schema:
+            type: string
+      tags:
+        - Customer
+      operationId: customerIsBusiness
+      summary: GET Get customer is business
+      description: This endpoint return if customer is business or not
+      responses:
+        '200':
+          description: Response with payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerIsBusinessResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
   '/customer/{customerId}/products':
     parameters:
