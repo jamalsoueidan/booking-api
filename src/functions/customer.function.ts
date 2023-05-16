@@ -4,6 +4,7 @@ import { CustomerProductsControllerList } from "./customer/controllers/products/
 import { app } from "@azure/functions";
 import {
   CustomerControllerGet,
+  CustomerControllerIsBusiness,
   CustomerControllerList,
   CustomerControllerUpsert,
   CustomerProductControllerAvailability,
@@ -66,7 +67,7 @@ app.http("customerIsBusiness", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/isBusiness",
-  handler: CustomerControllerGet,
+  handler: CustomerControllerIsBusiness,
 });
 
 app.http("customerGet", {

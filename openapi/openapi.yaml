@@ -29,8 +29,8 @@ components:
   schemas:
     Errors:
       $ref: "./schemas/errors.yaml"
-    User:
-      $ref: paths/user/_types/user.yaml
+    #User:
+    #  $ref: paths/user/_types/user.yaml
     Destroy:
       $ref: paths/schedule/_types/destroy.yaml
     Day:
@@ -111,15 +111,15 @@ components:
       $ref: paths/customer/product/availability/response.yaml
 
     # User
-    UserGetResponse:
-      $ref: paths/user/get/response.yaml
+    #UserGetResponse:
+    #  $ref: paths/user/get/response.yaml
 paths:
   # User
-  /user/{username}:
-    $ref: "./paths/user/user.yaml"
+  #/user/{username}:
+  #  $ref: "./paths/user/user.yaml"
 
-  /users:
-    $ref: "./paths/user/list/index.yaml"
+  #/users:
+  #  $ref: "./paths/user/list/index.yaml"
 
   # Customer
   /customers:
