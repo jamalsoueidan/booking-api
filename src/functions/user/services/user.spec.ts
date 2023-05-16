@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import {
-  CustomerServiceCreateOrUpdate,
-  CustomerServiceCreateOrUpdateBody,
+  CustomerServiceUpsert,
+  CustomerServiceUpsertBody,
 } from "~/functions/customer/services/customer";
 import { createUser } from "~/library/jest/helpers";
 import { UserServiceGet, UserServiceList } from "./user";
@@ -14,21 +14,22 @@ describe("UserService", () => {
     const filter = { customerId: faker.datatype.number() };
     const username = faker.internet.userName();
     // Create a user first
-    const userData: CustomerServiceCreateOrUpdateBody = {
+    const userData: CustomerServiceUpsertBody = {
       title: faker.name.jobTitle(),
       username,
       fullname: faker.name.fullName(),
-      social_urls: {
+      socialUrls: {
         instagram: faker.internet.url(),
         youtube: faker.internet.url(),
         twitter: faker.internet.url(),
       },
-      description: faker.lorem.paragraph(),
+      shortDescription: faker.lorem.paragraph(),
+      aboutMe: faker.lorem.paragraph(),
       avatar: faker.internet.avatar(),
       speaks: [faker.random.locale()],
     };
 
-    await CustomerServiceCreateOrUpdate(filter, userData);
+    await CustomerServiceUpsert(filter, userData);
 
     const findUser = await UserServiceGet({ username });
 

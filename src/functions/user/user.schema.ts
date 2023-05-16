@@ -29,12 +29,13 @@ export const UserMongooseSchema = new mongoose.Schema<
       type: String,
       required: true,
     },
-    social_urls: {
+    socialUrls: {
       instagram: String,
       youtube: String,
       twitter: String,
     },
-    description: String,
+    aboutMe: String,
+    shortDescription: String,
     active: { type: Boolean, default: false },
     avatar: { type: String },
     speaks: {

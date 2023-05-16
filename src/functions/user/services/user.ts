@@ -5,7 +5,7 @@ import { User } from "../user.types";
 export type UserServiceGetProps = Pick<User, "username">;
 
 export const UserServiceGet = (props: UserServiceGetProps) => {
-  return UserModel.findOne({ ...props, active: true }).orFail(
+  return UserModel.findOne(props).orFail(
     new NotFoundError([
       {
         path: ["userId"],
@@ -17,8 +17,5 @@ export const UserServiceGet = (props: UserServiceGetProps) => {
 };
 
 export const UserServiceList = () => {
-  return UserModel.find({ active: true })
-    .sort({ createdAt: 1 })
-    .limit(10)
-    .lean();
+  return UserModel.find().sort({ createdAt: 1 }).limit(10).lean();
 };
