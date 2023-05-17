@@ -6,52 +6,53 @@ describe("generateAvailability", () => {
   const schedule: Pick<Schedule, "slots" | "products"> = {
     slots: [
       {
-        day: "friday",
+        day: "wednesday",
         intervals: [
           {
-            from: "08:00",
-            to: "16:00",
+            to: "23:00",
+            from: "18:00",
           },
         ],
       },
     ],
     products: [
       {
-        productId: 1,
-        variantId: 1,
-        duration: 60,
-        breakTime: 15,
+        productId: 8022088646930,
+        variantId: 46727191036231,
+        duration: 10,
+        breakTime: 5,
         noticePeriod: {
+          value: 1,
           unit: TimeUnit.HOURS,
-          value: 5,
         },
         bookingPeriod: {
-          unit: TimeUnit.WEEKS,
           value: 1,
+          unit: TimeUnit.WEEKS,
         },
       },
       {
-        productId: 2,
-        variantId: 2,
-        duration: 90,
-        breakTime: 30,
+        productId: 80220886469,
+        variantId: 46727191036231,
+        duration: 10,
+        breakTime: 5,
         noticePeriod: {
+          value: 1,
           unit: TimeUnit.HOURS,
-          value: 2,
         },
         bookingPeriod: {
-          unit: TimeUnit.WEEKS,
           value: 1,
+          unit: TimeUnit.WEEKS,
         },
       },
     ],
   };
 
-  const startDate = "2023-05-17T21:00:00Z";
+  const startDate = "2023-05-13T22:00:00Z";
 
   it("should generate an array of objects each representing a day", () => {
     const availability = generateAvailability(schedule, startDate);
     expect(Array.isArray(availability)).toBe(true);
+    console.log(JSON.stringify(availability, null, 2));
     availability.forEach((day) => {
       expect(day).toHaveProperty("day");
       expect(day).toHaveProperty("slots");

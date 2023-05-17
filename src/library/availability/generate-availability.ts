@@ -1,4 +1,12 @@
-import { add, differenceInMinutes, format, isBefore, set } from "date-fns";
+import {
+  add,
+  differenceInMinutes,
+  format,
+  isAfter,
+  isBefore,
+  isWithinInterval,
+  set,
+} from "date-fns";
 import { enUS } from "date-fns/locale";
 import { Availability, Schedule } from "~/functions/schedule";
 import { calculateMaxNoticeAndMinBookingPeriod } from "~/library/availability";
@@ -43,6 +51,17 @@ export const generateAvailability = (
       for (const interval of daySchedule.intervals) {
         let slotStart = timeToDate(interval.from, startDate);
         let slotEnd = timeToDate(interval.to, startDate);
+
+        const now = new Date();
+        const currentHour = format(now, "HH:00");
+
+        if (isWithinInterval(now, { start: slotStart, end: slotEnd })) {
+          slotStart = timeToDate(currentHour, startDate);
+        }
+
+        if (isAfter(new Date(), slotStart) || isAfter(slotStart, slotEnd)) {
+          continue;
+        }
 
         // Calculate total product time
         const totalProductTime = sortedProducts.reduce(
