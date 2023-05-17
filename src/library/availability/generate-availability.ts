@@ -1,4 +1,4 @@
-import { add, differenceInMinutes, isBefore } from "date-fns";
+import { add, differenceInMinutes, format, isBefore, set } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { Availability, Schedule } from "~/functions/schedule";
 import { calculateMaxNoticeAndMinBookingPeriod } from "~/library/availability";
@@ -32,7 +32,7 @@ export const generateAvailability = (
   const availability: Availability[] = [];
 
   while (isBefore(startDate, endDate)) {
-    const dayOfWeek: string = enUS.localize?.day(startDate.getDay()) || "";
+    const dayOfWeek: string = format(startDate, "EEEE", { locale: enUS });
     const daySchedule = schedule.slots.find(
       (slot) => slot.day.toLowerCase() === dayOfWeek.toLowerCase()
     );
@@ -88,7 +88,12 @@ export const generateAvailability = (
 
       if (daySlots.length > 0) {
         availability.push({
-          day: startDate.toISOString(),
+          day: set(startDate, {
+            hours: 12,
+            minutes: 0,
+            seconds: 0,
+            milliseconds: 0,
+          }).toISOString(),
           slots: daySlots,
         });
       }

@@ -13,10 +13,7 @@ export const generateStartDate = (
 ) => {
   let startDate = zonedTimeToUtc(start, "UTC");
 
-  const now = new Date();
-  now.setUTCHours(12, 0, 0, 0);
-
-  const noticeDate = add(now, {
+  const noticeDate = add(new Date(), {
     [noticePeriod.unit]: noticePeriod.value,
   });
 

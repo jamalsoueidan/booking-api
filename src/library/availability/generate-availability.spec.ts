@@ -6,7 +6,7 @@ describe("generateAvailability", () => {
   const schedule: Pick<Schedule, "slots" | "products"> = {
     slots: [
       {
-        day: "monday",
+        day: "friday",
         intervals: [
           {
             from: "08:00",
@@ -22,11 +22,11 @@ describe("generateAvailability", () => {
         duration: 60,
         breakTime: 15,
         noticePeriod: {
-          unit: TimeUnit.DAYS,
+          unit: TimeUnit.HOURS,
           value: 5,
         },
         bookingPeriod: {
-          unit: TimeUnit.MONTHS,
+          unit: TimeUnit.WEEKS,
           value: 1,
         },
       },
@@ -41,13 +41,13 @@ describe("generateAvailability", () => {
         },
         bookingPeriod: {
           unit: TimeUnit.WEEKS,
-          value: 2,
+          value: 1,
         },
       },
     ],
   };
 
-  const startDate = "2023-05-01T00:00:00Z";
+  const startDate = "2023-05-17T21:00:00Z";
 
   it("should generate an array of objects each representing a day", () => {
     const availability = generateAvailability(schedule, startDate);
