@@ -19,6 +19,8 @@ properties:
           items:
             type: object
             properties:
+              customerId:
+                type: number
               productId:
                 type: number
               variantId:
@@ -34,6 +36,7 @@ properties:
               duration:
                 type: number
             required:
+              - customerId
               - productId
               - variantId
               - from

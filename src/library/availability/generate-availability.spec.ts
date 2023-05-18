@@ -1,9 +1,13 @@
 import { enUS } from "date-fns/locale";
-import { Schedule, TimeUnit } from "~/functions/schedule";
-import { generateAvailability } from "./generate-availability";
+import { TimeUnit } from "~/functions/schedule";
+import {
+  GenerateAvailabilityProps,
+  generateAvailability,
+} from "./generate-availability";
 
 describe("generateAvailability", () => {
-  const schedule: Pick<Schedule, "slots" | "products"> = {
+  const schedule: GenerateAvailabilityProps["schedule"] = {
+    customerId: 1,
     slots: [
       {
         day: "thursday",

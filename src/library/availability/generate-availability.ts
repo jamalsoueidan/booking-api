@@ -27,10 +27,15 @@ function roundMinutes(date: Date) {
   return date;
 }
 
+export type GenerateAvailabilityProps = {
+  schedule: Pick<Schedule, "slots" | "products" | "customerId">;
+  start: string;
+};
+
 // Function to generate availability
 export const generateAvailability = (
-  schedule: Pick<Schedule, "slots" | "products">,
-  start: string
+  schedule: GenerateAvailabilityProps["schedule"],
+  start: GenerateAvailabilityProps["start"]
 ) => {
   // Sort products by total time
   const sortedProducts = [...schedule.products].sort(
@@ -105,6 +110,7 @@ export const generateAvailability = (
             slotProducts.push({
               productId: product.productId,
               variantId: product.variantId,
+              customerId: schedule.customerId,
               from: productStartTime.toISOString(),
               to: productEndTime.toISOString(),
               breakTime: product.breakTime,

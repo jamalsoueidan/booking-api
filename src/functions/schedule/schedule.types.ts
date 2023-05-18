@@ -166,6 +166,7 @@ export type Availability = {
     from: string;
     to: string;
     products: {
+      customerId: number;
       productId: number;
       variantId: number;
       from: string;
