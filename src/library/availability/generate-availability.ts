@@ -53,13 +53,12 @@ export const generateAvailability = (
         let slotEnd = timeToDate(interval.to, startDate);
 
         const now = new Date();
-        const currentHour = format(now, "HH:00");
-
+        now.setMinutes(0, 0, 0);
         if (isWithinInterval(now, { start: slotStart, end: slotEnd })) {
-          slotStart = timeToDate(currentHour, startDate);
+          slotStart = timeToDate(now.toISOString().slice(11, -8), startDate);
         }
 
-        if (isAfter(new Date(), slotStart) || isAfter(slotStart, slotEnd)) {
+        if (isAfter(now, slotStart) || isAfter(slotStart, slotEnd)) {
           continue;
         }
 

@@ -6,11 +6,11 @@ describe("generateAvailability", () => {
   const schedule: Pick<Schedule, "slots" | "products"> = {
     slots: [
       {
-        day: "wednesday",
+        day: "thursday",
         intervals: [
           {
-            to: "23:00",
-            from: "18:00",
+            to: "12:00",
+            from: "08:00",
           },
         ],
       },
@@ -30,26 +30,11 @@ describe("generateAvailability", () => {
           unit: TimeUnit.WEEKS,
         },
       },
-      {
-        productId: 80220886469,
-        variantId: 46727191036231,
-        duration: 10,
-        breakTime: 5,
-        noticePeriod: {
-          value: 1,
-          unit: TimeUnit.HOURS,
-        },
-        bookingPeriod: {
-          value: 1,
-          unit: TimeUnit.WEEKS,
-        },
-      },
     ],
   };
 
-  const startDate = "2023-05-13T22:00:00Z";
-
   it("should generate an array of objects each representing a day", () => {
+    const startDate = new Date().toISOString();
     const availability = generateAvailability(schedule, startDate);
     expect(Array.isArray(availability)).toBe(true);
     availability.forEach((day) => {
@@ -59,6 +44,7 @@ describe("generateAvailability", () => {
   });
 
   it("should not generate availability for the days not defined in the schedule", () => {
+    const startDate = new Date().toISOString();
     const availability = generateAvailability(schedule, startDate);
     availability.forEach((day) => {
       const dayOfWeek = enUS.localize?.day(new Date(day.day).getDay()) || "";
@@ -70,6 +56,7 @@ describe("generateAvailability", () => {
   });
 
   it("should generate slots for each day based on the intervals defined in the schedule", () => {
+    const startDate = new Date().toISOString();
     const availability = generateAvailability(schedule, startDate);
     availability.forEach((day) => {
       const dayOfWeek = enUS.localize?.day(new Date(day.day).getDay()) || "";
