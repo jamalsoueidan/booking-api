@@ -467,7 +467,7 @@ components:
               - to
               - products
       required:
-        - day
+        - date
         - slots
     CustomerIsBusinessResponse:
       type: object
