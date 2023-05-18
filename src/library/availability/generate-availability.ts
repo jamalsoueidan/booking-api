@@ -52,9 +52,9 @@ export const generateAvailability = (
         let slotStart = timeToDate(interval.from, startDate);
         let slotEnd = timeToDate(interval.to, startDate);
 
-        const now = new Date();
+        const now = startDate;
         now.setMinutes(0, 0, 0);
-        if (isWithinInterval(now, { start: slotStart, end: slotEnd })) {
+        if (isWithinInterval(startDate, { start: slotStart, end: slotEnd })) {
           slotStart = timeToDate(now.toISOString().slice(11, -8), startDate);
         }
 
