@@ -1,5 +1,4 @@
 import { add, isSameDay } from "date-fns";
-import { zonedTimeToUtc } from "date-fns-tz";
 import {
   Schedule,
   ScheduleProductBookingPeriod,
@@ -19,7 +18,9 @@ describe("generateStartDate", () => {
     const expected = add(new Date(), {
       [noticePeriod.unit]: noticePeriod.value,
     });
-    expect(isSameDay(result, zonedTimeToUtc(expected, "UTC"))).toBe(true);
+    expect(result.toISOString().slice(0, -4)).toStrictEqual(
+      expected.toISOString().slice(0, -4)
+    );
   });
 
   it("should return the start date when notice period has already passed", () => {
@@ -28,8 +29,11 @@ describe("generateStartDate", () => {
       unit: TimeUnit.DAYS,
       value: 1,
     };
+
     const result = generateStartDate(startDate.toISOString(), noticePeriod);
-    expect(isSameDay(result, startDate)).toBe(true);
+    expect(result.toISOString().slice(0, -4)).toStrictEqual(
+      startDate.toISOString().slice(0, -4)
+    );
   });
 });
 

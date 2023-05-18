@@ -77,11 +77,19 @@ export const generateAvailability = (
         ) {
           const slotProducts: Availability["slots"][number]["products"] = [];
           let productStartTime = slotStart;
+          let accumulatedBreakTime = 0;
 
-          for (const product of sortedProducts) {
+          for (let i = 0; i < sortedProducts.length; i++) {
+            const product = sortedProducts[i];
+            accumulatedBreakTime += product.breakTime;
+
             const productEndTime = add(productStartTime, {
-              minutes: product.duration,
+              minutes:
+                i === sortedProducts.length - 1
+                  ? product.duration + accumulatedBreakTime
+                  : product.duration,
             });
+
             slotProducts.push({
               productId: product.productId,
               variantId: product.variantId,
@@ -90,9 +98,8 @@ export const generateAvailability = (
               breakTime: product.breakTime,
               duration: product.duration,
             });
-            productStartTime = add(productEndTime, {
-              minutes: product.breakTime,
-            });
+
+            productStartTime = productEndTime;
           }
 
           daySlots.push({

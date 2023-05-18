@@ -52,7 +52,6 @@ describe("generateAvailability", () => {
   it("should generate an array of objects each representing a day", () => {
     const availability = generateAvailability(schedule, startDate);
     expect(Array.isArray(availability)).toBe(true);
-    console.log(JSON.stringify(availability, null, 2));
     availability.forEach((day) => {
       expect(day).toHaveProperty("day");
       expect(day).toHaveProperty("slots");

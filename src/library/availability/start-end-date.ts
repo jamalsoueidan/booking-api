@@ -1,5 +1,4 @@
 import { add, isAfter, isPast } from "date-fns";
-import { zonedTimeToUtc } from "date-fns-tz";
 import {
   Schedule,
   ScheduleProductBookingPeriod,
@@ -11,7 +10,8 @@ export const generateStartDate = (
   start: string,
   noticePeriod: ScheduleProductNoticePeriod
 ) => {
-  let startDate = zonedTimeToUtc(start, "UTC");
+  let startDate = new Date(start);
+
   if (isPast(startDate)) {
     startDate = new Date();
   }
@@ -21,7 +21,6 @@ export const generateStartDate = (
   });
 
   startDate = isAfter(startDate, noticeDate) ? startDate : noticeDate;
-
   return startDate;
 };
 
