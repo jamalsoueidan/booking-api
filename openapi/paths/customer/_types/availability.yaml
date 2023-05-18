@@ -45,5 +45,5 @@ properties:
         - to
         - products
 required:
-  - day
+  - date
   - slots

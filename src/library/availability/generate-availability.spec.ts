@@ -9,8 +9,8 @@ describe("generateAvailability", () => {
         day: "thursday",
         intervals: [
           {
-            to: "21:00",
-            from: "18:00",
+            from: "08:00",
+            to: "16:00",
           },
         ],
       },
