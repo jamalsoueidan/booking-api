@@ -9,8 +9,8 @@ describe("generateAvailability", () => {
         day: "thursday",
         intervals: [
           {
-            to: "12:00",
-            from: "08:00",
+            to: "21:00",
+            from: "18:00",
           },
         ],
       },
@@ -26,7 +26,7 @@ describe("generateAvailability", () => {
           unit: TimeUnit.HOURS,
         },
         bookingPeriod: {
-          value: 1,
+          value: 4,
           unit: TimeUnit.WEEKS,
         },
       },
@@ -38,7 +38,7 @@ describe("generateAvailability", () => {
     const availability = generateAvailability(schedule, startDate);
     expect(Array.isArray(availability)).toBe(true);
     availability.forEach((day) => {
-      expect(day).toHaveProperty("day");
+      expect(day).toHaveProperty("date");
       expect(day).toHaveProperty("slots");
     });
   });
@@ -47,7 +47,7 @@ describe("generateAvailability", () => {
     const startDate = new Date().toISOString();
     const availability = generateAvailability(schedule, startDate);
     availability.forEach((day) => {
-      const dayOfWeek = enUS.localize?.day(new Date(day.day).getDay()) || "";
+      const dayOfWeek = enUS.localize?.day(new Date(day.date).getDay()) || "";
       const daySchedule = schedule.slots.find(
         (slot) => slot.day.toLowerCase() === dayOfWeek.toLowerCase()
       );
@@ -59,7 +59,7 @@ describe("generateAvailability", () => {
     const startDate = new Date().toISOString();
     const availability = generateAvailability(schedule, startDate);
     availability.forEach((day) => {
-      const dayOfWeek = enUS.localize?.day(new Date(day.day).getDay()) || "";
+      const dayOfWeek = enUS.localize?.day(new Date(day.date).getDay()) || "";
       const daySchedule = schedule.slots.find(
         (slot) => slot.day.toLowerCase() === dayOfWeek.toLowerCase()
       );
@@ -69,10 +69,10 @@ describe("generateAvailability", () => {
         expect(day.slots.length).toBeGreaterThan(0);
         day.slots.forEach((slot) => {
           expect(timeToMinutes(new Date(slot.from))).toBeGreaterThanOrEqual(
-            timeToMinutes(timeToDate(interval.from, new Date(day.day)))
+            timeToMinutes(timeToDate(interval.from, new Date(day.date)))
           );
           expect(timeToMinutes(new Date(slot.to))).toBeLessThanOrEqual(
-            timeToMinutes(timeToDate(interval.to, new Date(day.day)))
+            timeToMinutes(timeToDate(interval.to, new Date(day.date)))
           );
         });
       });

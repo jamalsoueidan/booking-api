@@ -2,8 +2,8 @@ import {
   add,
   differenceInMinutes,
   format,
-  isAfter,
   isBefore,
+  isSameDay,
   isWithinInterval,
   set,
 } from "date-fns";
@@ -18,6 +18,13 @@ function timeToDate(time: string, date: Date): Date {
   const newDate = new Date(date);
   newDate.setUTCHours(hour, minute, 0, 0);
   return newDate;
+}
+
+function roundMinutes(date: Date) {
+  date.setUTCHours(date.getUTCHours() + Math.round(date.getUTCMinutes() / 60));
+  date.setUTCMinutes(0, 0, 0); // Resets also seconds and milliseconds
+
+  return date;
 }
 
 // Function to generate availability
@@ -52,14 +59,20 @@ export const generateAvailability = (
         let slotStart = timeToDate(interval.from, startDate);
         let slotEnd = timeToDate(interval.to, startDate);
 
-        const now = startDate;
-        now.setMinutes(0, 0, 0);
-        if (isWithinInterval(startDate, { start: slotStart, end: slotEnd })) {
-          slotStart = timeToDate(now.toISOString().slice(11, -8), startDate);
-        }
-
-        if (isAfter(now, slotStart) || isAfter(slotStart, slotEnd)) {
-          continue;
+        if (isSameDay(new Date(), startDate)) {
+          let now = new Date();
+          now.setUTCHours(
+            startDate.getUTCHours(),
+            startDate.getUTCMinutes(),
+            0,
+            0
+          );
+          if (isWithinInterval(now, { start: slotStart, end: slotEnd })) {
+            now = roundMinutes(now);
+            slotStart = timeToDate(now.toISOString().slice(11, -8), startDate);
+          } else {
+            continue;
+          }
         }
 
         // Calculate total product time
@@ -113,7 +126,7 @@ export const generateAvailability = (
 
       if (daySlots.length > 0) {
         availability.push({
-          day: set(startDate, {
+          date: set(startDate, {
             hours: 12,
             minutes: 0,
             seconds: 0,
