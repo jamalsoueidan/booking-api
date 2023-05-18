@@ -54,13 +54,61 @@ export const ScheduleProductZodSchema = z.object({
 
 export type ScheduleProduct = z.infer<typeof ScheduleProductZodSchema>;
 
-export const IntervalZodSchema = z.object({
-  from: z.string().regex(/^([01][0-9]|2[0-3]):[0-5][0-9]$/),
-  to: z.string().regex(/^([01][0-9]|2[0-3]):[0-5][0-9]$/),
-});
+const HourMinuteSchema = z.string().regex(/^([01][0-9]|2[0-3]):[0-5][0-9]$/);
+
+export const IntervalZodSchema = z
+  .object({
+    from: HourMinuteSchema,
+    to: HourMinuteSchema,
+  })
+  .refine(
+    (data) => {
+      const from = data.from.split(":").map(Number);
+      const to = data.to.split(":").map(Number);
+
+      // check if 'from' is before 'to'
+      if (from[0] > to[0] || (from[0] === to[0] && from[1] >= to[1])) {
+        return false;
+      }
+
+      // check if the interval is minimum one hour
+      if (to[0] - from[0] < 1 && to[1] <= from[1]) {
+        return false;
+      }
+
+      return true;
+    },
+    {
+      message: "Invalid interval: 'from' must be at least an hour before 'to'",
+    }
+  );
 
 export type ScheduleInterval = z.infer<typeof IntervalZodSchema>;
 
+const IntervalArraySchema = z.array(IntervalZodSchema).refine(
+  (data) => {
+    const intervals = data
+      .map((interval) => ({
+        from: interval.from.split(":").map(Number),
+        to: interval.to.split(":").map(Number),
+      }))
+      .sort((a, b) => a.from[0] - b.from[0] || a.from[1] - b.from[1]); // sorting
+
+    for (let i = 0; i < intervals.length - 1; i++) {
+      if (
+        intervals[i].to[0] > intervals[i + 1].from[0] ||
+        (intervals[i].to[0] === intervals[i + 1].from[0] &&
+          intervals[i].to[1] >= intervals[i + 1].from[1])
+      ) {
+        return false;
+      }
+    }
+    return true;
+  },
+  {
+    message: "Invalid schedule: intervals cannot overlap",
+  }
+);
 export const ScheduleSlotZodSchema = z.object({
   day: z.enum([
     "monday",
@@ -71,7 +119,7 @@ export const ScheduleSlotZodSchema = z.object({
     "saturday",
     "sunday",
   ]),
-  intervals: z.array(IntervalZodSchema),
+  intervals: IntervalArraySchema,
 });
 
 export type ScheduleSlot = z.infer<typeof ScheduleSlotZodSchema>;

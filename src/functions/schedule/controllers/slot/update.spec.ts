@@ -99,4 +99,78 @@ describe("ScheduleSlotControllerUpdate", () => {
     expect(res.jsonBody?.success).toBeFalsy();
     expect(res.jsonBody).toHaveProperty("errors");
   });
+
+  it("should throw error with incorrect intervals within slots", async () => {
+    const newSchedule = await ScheduleServiceCreate({
+      name: "asd",
+      customerId: 123,
+    });
+
+    const updatedScheduleData: ScheduleSlotControllerUpdateRequest["body"] = [
+      {
+        day: "wednesday",
+        intervals: [
+          {
+            from: "14:00",
+            to: "12:00",
+          },
+        ],
+      },
+    ];
+
+    request = await createHttpRequest<ScheduleSlotControllerUpdateRequest>({
+      query: {
+        customerId: 123,
+        scheduleId: newSchedule._id,
+      },
+      body: updatedScheduleData,
+    });
+
+    const res: HttpErrorResponse = await ScheduleSlotControllerUpdate(
+      request,
+      context
+    );
+
+    expect(res.jsonBody?.success).toBeFalsy();
+    expect(res.jsonBody).toHaveProperty("errors");
+  });
+
+  it("should throw error with intervals overlapping within slots", async () => {
+    const newSchedule = await ScheduleServiceCreate({
+      name: "asd",
+      customerId: 123,
+    });
+
+    const updatedScheduleData: ScheduleSlotControllerUpdateRequest["body"] = [
+      {
+        day: "wednesday",
+        intervals: [
+          {
+            from: "12:00",
+            to: "15:00",
+          },
+          {
+            from: "14:00",
+            to: "16:00",
+          },
+        ],
+      },
+    ];
+
+    request = await createHttpRequest<ScheduleSlotControllerUpdateRequest>({
+      query: {
+        customerId: 123,
+        scheduleId: newSchedule._id,
+      },
+      body: updatedScheduleData,
+    });
+
+    const res: HttpErrorResponse = await ScheduleSlotControllerUpdate(
+      request,
+      context
+    );
+
+    expect(res.jsonBody?.success).toBeFalsy();
+    expect(res.jsonBody).toHaveProperty("errors");
+  });
 });
