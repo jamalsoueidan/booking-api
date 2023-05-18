@@ -1,6 +1,6 @@
 type: object
 properties:
-  day:
+  date:
     type: string
     example: "2023-05-05T00:00:00.000Z"
   slots:
