@@ -441,6 +441,8 @@ components:
                 items:
                   type: object
                   properties:
+                    customerId:
+                      type: number
                     productId:
                       type: number
                     variantId:
@@ -456,6 +458,7 @@ components:
                     duration:
                       type: number
                   required:
+                    - customerId
                     - productId
                     - variantId
                     - from
