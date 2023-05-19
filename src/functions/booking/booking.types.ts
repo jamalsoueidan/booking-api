@@ -22,6 +22,8 @@ const BuyerSchema = z.object({
 
 const BookingZodSchema = z.object({
   orderId: z.number(),
+  cancelReason: z.string(),
+  cancelledAt: z.date(),
   buyer: BuyerSchema,
   lineItems: z.array(LineItemSchema),
 });

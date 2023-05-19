@@ -18,7 +18,6 @@ Assign the correct value to all env values.
     "FUNCTIONS_WORKER_RUNTIME": "node",
     "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
     "CosmosDbConnectionString": "",
-    "TokenSecret": ""
   }
 }
 ```
@@ -35,7 +34,7 @@ These files are part of the OpenAPI definition but not yet bundled together. The
 
 npm run bundle
 
-## Github Actions:
+## Github Actions
 
 ### pull request
 
@@ -58,11 +57,3 @@ let responseJson = pm.response.json();
 let token = responseJson.payload.token;
 pm.environment.set("bearerToken", token);
 ```
-
-## Todo
-
-Openapi to use-query:
-https://xata.io/blog/openapi-typesafe-react-query-hooks
-
-Google pub/sub setup with shopify:
-https://www.youtube.com/watch?v=m9MQyRWnMdU&ab_channel=ShopifyDevs

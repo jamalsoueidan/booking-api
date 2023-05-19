@@ -16,8 +16,14 @@ const LineItemSchema = new Schema(
     },
     variantId: Number,
     title: String,
-    price: String,
-    total_discount: String,
+    priceSet: {
+      amount: String,
+      currencyCode: String,
+    },
+    totalDiscountSet: {
+      amount: String,
+      currencyCode: String,
+    },
     from: {
       type: Date,
       index: true,
@@ -34,6 +40,7 @@ const LineItemSchema = new Schema(
       type: String,
       enum: ["unfulfilled", "cancelled", "completed"],
       required: true,
+      default: "unfulfilled",
     },
   },
   { _id: false, timestamps: true }
@@ -62,6 +69,8 @@ export const BookingMongooseSchema = new Schema<
       index: true,
       unique: true,
     },
+    cancelReason: String,
+    cancelledAt: Date,
     buyer: BuyerSchema,
     lineItems: [LineItemSchema],
   },
