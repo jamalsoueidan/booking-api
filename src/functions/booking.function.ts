@@ -37,7 +37,13 @@ export async function bookingUpdate(
   // Update buyer
   await BookingModel.updateOne(
     { orderId: response.order.orderId },
-    { $set: { buyer: response.order.buyer } }
+    {
+      $set: {
+        buyer: response.order.buyer,
+        cancelledAt: response.order.cancelledAt,
+        cancelReason: response.order.cancelReason,
+      },
+    }
   );
 
   // Update each line item

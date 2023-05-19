@@ -18,11 +18,11 @@ const LineItemSchema = new Schema(
     title: String,
     priceSet: {
       amount: String,
-      currencyCode: String,
+      currency_code: String, // keep it underscore
     },
     totalDiscountSet: {
       amount: String,
-      currencyCode: String,
+      currency_code: String, // keep it underscore
     },
     from: {
       type: Date,
