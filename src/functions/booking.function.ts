@@ -4,6 +4,7 @@ import {
   HttpResponseInit,
   InvocationContext,
 } from "@azure/functions";
+import { connect } from "../library/mongoose";
 import { BookingModel } from "./booking/booking.model";
 import { Booking } from "./booking/booking.types";
 
@@ -12,11 +13,11 @@ export async function bookingNewPost(
   context: InvocationContext
 ): Promise<HttpResponseInit> {
   context.log(`Http function processed request for url "${request.url}"`);
-
+  await connect();
   const response = (await request.json()) as { order: Booking };
-
   const booking = new BookingModel(response.order);
-  return { jsonBody: booking.save() };
+  const order = await booking.save();
+  return { jsonBody: order };
 }
 
 app.http("bookingNewPost", {
@@ -31,12 +32,18 @@ export async function bookingUpdate(
   context: InvocationContext
 ): Promise<HttpResponseInit> {
   context.log(`Http function processed request for url "${request.url}"`);
-
+  await connect();
   const response = (await request.json()) as { order: Booking };
   // Update buyer
   await BookingModel.updateOne(
     { orderId: response.order.orderId },
-    { $set: { buyer: response.order.buyer } }
+    {
+      $set: {
+        buyer: response.order.buyer,
+        cancelledAt: response.order.cancelledAt,
+        cancelReason: response.order.cancelReason,
+      },
+    }
   );
 
   // Update each line item
