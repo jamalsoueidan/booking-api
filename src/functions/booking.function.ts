@@ -1,72 +1,17 @@
-import {
-  app,
-  HttpRequest,
-  HttpResponseInit,
-  InvocationContext,
-} from "@azure/functions";
-import { connect } from "../library/mongoose";
-import { BookingModel } from "./booking/booking.model";
-import { Booking } from "./booking/booking.types";
-
-export async function bookingNewPost(
-  request: HttpRequest,
-  context: InvocationContext
-): Promise<HttpResponseInit> {
-  context.log(`Http function processed request for url "${request.url}"`);
-  await connect();
-  const response = (await request.json()) as { order: Booking };
-  const booking = new BookingModel(response.order);
-  const order = await booking.save();
-  return { jsonBody: order };
-}
+import { app } from "@azure/functions";
+import { BookingControllerCreate } from "./booking/controllers/create";
+import { BookingControllerUpdate } from "./booking/controllers/update";
 
 app.http("bookingNewPost", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "booking/{orderId?}",
-  handler: bookingNewPost,
+  handler: BookingControllerCreate,
 });
-
-export async function bookingUpdate(
-  request: HttpRequest,
-  context: InvocationContext
-): Promise<HttpResponseInit> {
-  context.log(`Http function processed request for url "${request.url}"`);
-  await connect();
-  const response = (await request.json()) as { order: Booking };
-  // Update buyer
-  await BookingModel.updateOne(
-    { orderId: response.order.orderId },
-    {
-      $set: {
-        buyer: response.order.buyer,
-        cancelledAt: response.order.cancelledAt,
-        cancelReason: response.order.cancelReason,
-      },
-    }
-  );
-
-  // Update each line item
-  for (const lineItem of response.order.lineItems) {
-    await BookingModel.updateOne(
-      {
-        orderId: response.order.orderId,
-        "lineItems.lineItemId": lineItem.lineItemId,
-      },
-      { $set: { "lineItems.$.status": lineItem.status } }
-    );
-  }
-
-  const updatedBooking = await BookingModel.findOne({
-    orderId: response.order.orderId,
-  });
-
-  return { jsonBody: updatedBooking };
-}
 
 app.http("bookingUpdate", {
   methods: ["PUT"],
   authLevel: "anonymous",
   route: "booking/{orderId?}",
-  handler: bookingUpdate,
+  handler: BookingControllerUpdate,
 });

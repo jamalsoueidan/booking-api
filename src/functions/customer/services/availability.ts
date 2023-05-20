@@ -1,6 +1,11 @@
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
-import { generateAvailability } from "~/library/availability";
+import {
+  findStartAndEndDate,
+  generateAvailability,
+  removeBookedSlots,
+} from "~/library/availability";
 import { NotFoundError } from "~/library/handler";
+import { CustomerBookingServiceGetBooked } from "./booking";
 
 export type CustomerProductAvailabilityServiceProps = {
   customerId: Schedule["customerId"];
@@ -32,5 +37,13 @@ export const CustomerProductAvailabilityService = async ({
     productIds.includes(productId)
   );
 
-  return generateAvailability(schedule, startDate);
+  const availability = generateAvailability(schedule, startDate);
+  const date = findStartAndEndDate(availability);
+  const booked = await CustomerBookingServiceGetBooked({
+    customerId,
+    startDate: date.startDate,
+    endDate: date.endDate,
+  });
+
+  return removeBookedSlots(availability, booked);
 };

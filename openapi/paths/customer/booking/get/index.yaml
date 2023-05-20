@@ -1,0 +1,43 @@
+get:
+  parameters:
+    - name: customerId
+      in: path
+      description: customerId for the customer
+      required: true
+      schema:
+        type: string
+    - name: orderId
+      in: path
+      description: orderId for the order
+      required: true
+      schema:
+        type: string
+    - name: date
+      in: query
+      description: date for the lineItem (2014-12-12)
+      required: true
+      schema:
+        type: string
+  tags:
+    - Booking
+  operationId: customerBookingGet
+  summary: GET Get booking
+  description: This endpoint gets booking object
+  responses:
+    "200":
+      description: Response with payload
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
+
+  security: []

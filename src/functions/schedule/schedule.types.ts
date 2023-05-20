@@ -161,16 +161,16 @@ export const ScheduleZodSchema = z.object({
 export type Schedule = z.infer<typeof ScheduleZodSchema>;
 
 export type Availability = {
-  date: string;
+  date: Date;
   slots: {
-    from: string;
-    to: string;
+    from: Date;
+    to: Date;
     products: {
       customerId: number;
       productId: number;
       variantId: number;
-      from: string;
-      to: string;
+      from: Date;
+      to: Date;
       breakTime: number;
       duration: number;
     }[];

@@ -14,7 +14,10 @@ const LineItemSchema = new Schema(
       type: Number,
       index: true,
     },
-    variantId: Number,
+    variantId: {
+      type: Number,
+      index: true,
+    },
     title: String,
     priceSet: {
       amount: String,
