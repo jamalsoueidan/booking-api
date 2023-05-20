@@ -34,7 +34,7 @@ export const calculateMaxNoticeAndMinBookingPeriod = (
       }
 
       if (
-        bookingDuration >
+        bookingDuration <
         calculateUnitValue(acc.bookingPeriod.unit, acc.bookingPeriod.value)
       ) {
         acc.bookingPeriod = curr.bookingPeriod;

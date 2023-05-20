@@ -5,8 +5,8 @@ import {
   isBefore,
   isSameDay,
   isWithinInterval,
-  set,
 } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 import { enUS } from "date-fns/locale";
 import { Availability, Schedule } from "~/functions/schedule";
 import { calculateMaxNoticeAndMinBookingPeriod } from "~/library/availability";
@@ -48,11 +48,12 @@ export const generateAvailability = (
 
   let startDate = generateStartDate(start, noticePeriod);
   const endDate = generateEndDate(schedule, startDate, bookingPeriod);
-
   const availability: Availability[] = [];
 
   while (isBefore(startDate, endDate)) {
-    const dayOfWeek: string = format(startDate, "EEEE", { locale: enUS });
+    const dayOfWeek: string = format(utcToZonedTime(startDate, "UTC"), "EEEE", {
+      locale: enUS,
+    });
     const daySchedule = schedule.slots.find(
       (slot) => slot.day.toLowerCase() === dayOfWeek.toLowerCase()
     );
@@ -111,8 +112,8 @@ export const generateAvailability = (
               productId: product.productId,
               variantId: product.variantId,
               customerId: schedule.customerId,
-              from: productStartTime.toISOString(),
-              to: productEndTime.toISOString(),
+              from: productStartTime,
+              to: productEndTime,
               breakTime: product.breakTime,
               duration: product.duration,
             });
@@ -121,8 +122,8 @@ export const generateAvailability = (
           }
 
           daySlots.push({
-            from: slotStart.toISOString(),
-            to: add(slotStart, { minutes: totalProductTime }).toISOString(),
+            from: slotStart,
+            to: add(slotStart, { minutes: totalProductTime }),
             products: slotProducts,
           });
 
@@ -132,12 +133,7 @@ export const generateAvailability = (
 
       if (daySlots.length > 0) {
         availability.push({
-          date: set(startDate, {
-            hours: 12,
-            minutes: 0,
-            seconds: 0,
-            milliseconds: 0,
-          }).toISOString(),
+          date: startDate,
           slots: daySlots,
         });
       }

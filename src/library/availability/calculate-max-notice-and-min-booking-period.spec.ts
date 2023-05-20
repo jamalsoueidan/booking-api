@@ -38,6 +38,6 @@ describe("calculateMaxNoticeAndMinBookingPeriod", () => {
       calculateMaxNoticeAndMinBookingPeriod(products);
 
     expect(noticePeriod).toEqual({ unit: "days", value: 3 });
-    expect(bookingPeriod).toEqual({ unit: "weeks", value: 3 });
+    expect(bookingPeriod).toEqual({ unit: "weeks", value: 1 });
   });
 });

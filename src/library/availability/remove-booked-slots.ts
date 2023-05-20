@@ -1,21 +1,18 @@
-import { isAfter, isBefore, isEqual, parseISO } from "date-fns";
-import { Availability, ScheduleInterval } from "~/functions/schedule";
+import { isAfter, isBefore, isEqual } from "date-fns";
+import { Availability } from "~/functions/schedule";
+
+type DateInterval = { from: Date; to: Date };
 
 export const removeBookedSlots = (
   availability: Availability[],
-  bookedSlots: ScheduleInterval[]
+  bookedSlots: DateInterval[]
 ) => {
-  const isOverlap = (slot1: ScheduleInterval, slot2: ScheduleInterval) => {
-    const slot1From = parseISO(slot1.from);
-    const slot1To = parseISO(slot1.to);
-    const slot2From = parseISO(slot2.from);
-    const slot2To = parseISO(slot2.to);
-
+  const isOverlap = (slot1: DateInterval, slot2: DateInterval) => {
     return (
-      ((isAfter(slot1From, slot2From) || isEqual(slot1From, slot2From)) &&
-        isBefore(slot1From, slot2To)) ||
-      ((isAfter(slot2From, slot1From) || isEqual(slot2From, slot1From)) &&
-        isBefore(slot2From, slot1To))
+      ((isAfter(slot1.from, slot2.from) || isEqual(slot1.from, slot2.from)) &&
+        isBefore(slot1.from, slot2.to)) ||
+      ((isAfter(slot2.from, slot1.from) || isEqual(slot2.from, slot1.from)) &&
+        isBefore(slot2.from, slot1.to))
     );
   };
 
