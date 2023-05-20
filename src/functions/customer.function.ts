@@ -3,6 +3,8 @@ import { CustomerProductsControllerList } from "./customer/controllers/products/
 
 import { app } from "@azure/functions";
 import {
+  CustomerBookingControllerGet,
+  CustomerBookingControllerList,
   CustomerControllerGet,
   CustomerControllerIsBusiness,
   CustomerControllerList,
@@ -14,12 +16,39 @@ import {
   CustomerProductsControllerListIds,
 } from "./customer";
 
+/* Customer */
+
 app.http("customerUpsert", {
   methods: ["PUT"],
   authLevel: "anonymous",
   route: "customer/{customerId?}",
   handler: CustomerControllerUpsert,
 });
+
+app.http("customerIsBusiness", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/isBusiness",
+  handler: CustomerControllerIsBusiness,
+});
+
+app.http("customerGet", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customer/{username?}",
+  handler: CustomerControllerGet,
+});
+
+app.http("customersList", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customers",
+  handler: CustomerControllerList,
+});
+
+/* **************** */
+/* Customer/Product */
+/* **************** */
 
 app.http("customerProductsListIds", {
   methods: ["GET"],
@@ -63,23 +92,20 @@ app.http("customerProductDestroy", {
   handler: CustomerProductControllerDestroy,
 });
 
-app.http("customerIsBusiness", {
+/* ******* */
+/* Booking */
+/* ******* */
+
+app.http("customerBookingGet", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "customer/{customerId?}/isBusiness",
-  handler: CustomerControllerIsBusiness,
+  route: "customer/{customerId?}/booking/{orderId?}",
+  handler: CustomerBookingControllerGet,
 });
 
-app.http("customerGet", {
+app.http("customerBookingList", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "customer/{username?}",
-  handler: CustomerControllerGet,
-});
-
-app.http("customersList", {
-  methods: ["GET"],
-  authLevel: "anonymous",
-  route: "customers",
-  handler: CustomerControllerList,
+  route: "customers/{customerId?}/bookings",
+  handler: CustomerBookingControllerList,
 });
