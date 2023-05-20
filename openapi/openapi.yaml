@@ -84,6 +84,14 @@ components:
     CustomerProductGetResponse:
       $ref: paths/customer/product/get/response.yaml
 
+    # Booking
+    CustomerBooking:
+      $ref: paths/customer/booking/_types/booking.yaml
+    CustomerBookingGetResponse:
+      $ref: paths/customer/booking/get/response.yaml
+    CustomerBookingListResponse:
+      $ref: paths/customer/booking/list/response.yaml
+
     # Customer
     Customer:
       $ref: paths/customer/_types/customer.yaml
@@ -141,6 +149,12 @@ paths:
 
   /customer/{customerId}/product/{productId}:
     $ref: paths/customer/product/product.yaml
+
+  /customer/{customerId}/booking/{orderId}:
+    $ref: paths/customer/booking/get/index.yaml
+
+  /customer/{customerId}/bookings:
+    $ref: paths/customer/booking/list/index.yaml
 
   # schedule
   /customer/{customerId}/schedule:

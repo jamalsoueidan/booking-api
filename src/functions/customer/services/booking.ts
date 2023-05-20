@@ -33,7 +33,7 @@ export const CustomerBookingServiceList = ({
     ],
   };
 
-  return BookingModel.aggregate([
+  return BookingModel.aggregate<Booking>([
     { $unwind: "$lineItems" },
     {
       $match: {
@@ -44,7 +44,10 @@ export const CustomerBookingServiceList = ({
     // OR cancelled? status == or cancelledAt ???
     {
       $group: {
-        _id: { bookingId: "$_id", fromDay: { $dayOfYear: "$lineItems.from" } },
+        _id: {
+          bookingId: "$_id",
+          fromDay: { $dayOfYear: "$lineItems.from" },
+        },
         orderId: { $first: "$orderId" },
         buyer: { $first: "$buyer" },
         customer: { $first: "$customer" },
