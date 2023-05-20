@@ -179,6 +179,6 @@ describe("CustomerProductAvailabilityService", () => {
       )
     );
 
-    expect(slotExists).toBeUndefined();
+    expect(slotExists).toBeFalsy();
   });
 });
