@@ -6,9 +6,9 @@ export type BookingServiceUpsertBody = Booking;
 export const BookingServiceUpsert = async (
   booking: BookingServiceUpsertBody
 ) => {
-  const exist = BookingModel.findOne({
+  const exist = await BookingModel.findOne({
     orderId: booking.orderId,
-  });
+  }).lean();
 
   if (!exist) {
     const newBooking = new BookingModel(booking);
