@@ -106,6 +106,6 @@ app.http("customerBookingGet", {
 app.http("customerBookingList", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "customers/{customerId?}/bookings",
+  route: "customer/{customerId?}/bookings",
   handler: CustomerBookingControllerList,
 });

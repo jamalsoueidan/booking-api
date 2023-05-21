@@ -1,17 +1,9 @@
 import { app } from "@azure/functions";
-import { BookingControllerCreate } from "./booking/controllers/create";
-import { BookingControllerUpdate } from "./booking/controllers/update";
+import { BookingControllerUpsert } from "./booking/controllers/upsert";
 
-app.http("bookingNewPost", {
-  methods: ["POST"],
+app.http("bookingUpsert", {
+  methods: ["POST", "PUT"],
   authLevel: "anonymous",
   route: "booking/{orderId?}",
-  handler: BookingControllerCreate,
-});
-
-app.http("bookingUpdate", {
-  methods: ["PUT"],
-  authLevel: "anonymous",
-  route: "booking/{orderId?}",
-  handler: BookingControllerUpdate,
+  handler: BookingControllerUpsert,
 });
