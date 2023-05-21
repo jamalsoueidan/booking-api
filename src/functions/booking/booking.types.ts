@@ -18,7 +18,9 @@ const LineItemSchema = z.object({
   from: z.date(),
   to: z.date(),
   customerId: z.number(),
-  status: z.enum(["unfulfilled", "refunded", "fulfilled"]).optional(),
+  status: z
+    .enum(["unfulfilled", "cancelled", "refunded", "fulfilled"])
+    .optional(),
 });
 
 export type BookingLineItem = z.infer<typeof LineItemSchema>;

@@ -41,7 +41,7 @@ const LineItemSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["unfulfilled", "refunded", "fulfilled"],
+      enum: ["unfulfilled", "refunded", "cancelled", "fulfilled"],
       required: true,
       default: "unfulfilled",
     },

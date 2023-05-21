@@ -147,7 +147,7 @@ describe("CustomerBookingService", () => {
         to: set(addDays(new Date(), 4), {
           hours: 12,
         }),
-        status: "completed",
+        status: "fulfilled",
         customerId: 1,
       },
       {
