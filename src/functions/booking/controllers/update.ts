@@ -3,7 +3,7 @@ import {
   HttpResponseInit,
   InvocationContext,
 } from "@azure/functions";
-import { connect } from "~/library/mongoose";
+import { connect } from "../../../library/mongoose";
 import { BookingModel } from "../booking.model";
 import { Booking } from "../booking.types";
 
