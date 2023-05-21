@@ -16,5 +16,6 @@ export async function BookingControllerUpsert(
   );
   await connect();
   const response = (await request.json()) as { order: Booking };
-  return { jsonBody: BookingServiceUpsert(response.order) };
+  const jsonBody = await BookingServiceUpsert(response.order);
+  return { jsonBody };
 }
