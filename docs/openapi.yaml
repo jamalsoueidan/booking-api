@@ -425,9 +425,9 @@ components:
               status:
                 type: string
                 enum:
-                  - completed
+                  - fulfilled
                   - unfulfilled
-                  - cancelled
+                  - refunded
             required:
               - customerId
               - from
