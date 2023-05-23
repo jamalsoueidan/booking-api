@@ -1,10 +1,15 @@
+import { Availability } from "~/functions/schedule";
 import { removeBookedSlots } from "./remove-booked-slots";
 
 describe("removeBookedSlots", () => {
   it("should remove overlapping slots", () => {
-    const availability = [
+    const availability: Availability[] = [
       {
         date: new Date("2023-05-15T00:00:00.000Z"),
+        customer: {
+          fullname: "asd",
+          customerId: 1,
+        },
         slots: [
           {
             from: new Date("2023-05-15T08:00:00.000Z"),

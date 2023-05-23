@@ -1,5 +1,6 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { ScheduleModel, TimeUnit } from "~/functions/schedule";
+import { UserModel } from "~/functions/user";
 import {
   HttpSuccessResponse,
   createContext,
@@ -53,8 +54,9 @@ describe("CustomerProductControllerAvailability", () => {
     ],
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     context = createContext();
+    await UserModel.create({ customerId, fullname: "jamal soueidan" });
   });
 
   it("Should be able to get availability for product for customer", async () => {

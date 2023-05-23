@@ -4,6 +4,7 @@ import {
   NumberOrStringType,
   StringOrObjectIdType,
 } from "~/library/zod";
+import { User } from "../user";
 
 export enum TimeUnit {
   HOURS = "hours",
@@ -162,11 +163,11 @@ export type Schedule = z.infer<typeof ScheduleZodSchema>;
 
 export type Availability = {
   date: Date;
+  customer: Pick<User, "fullname" | "customerId">;
   slots: {
     from: Date;
     to: Date;
     products: {
-      customerId: number;
       productId: number;
       variantId: number;
       from: Date;
