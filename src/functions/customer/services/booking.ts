@@ -20,7 +20,7 @@ export const CustomerBookingServiceList = ({
   const $upcoming = {
     $and: [
       { "lineItems.from": { $gte: todayStart } },
-      { "lineItems.status": { $eq: "unfulfilled" } },
+      { "lineItems.status": { $in: ["unfulfilled", "onhold"] } },
       { cancelledAt: { $eq: null } },
     ],
   };
@@ -28,7 +28,7 @@ export const CustomerBookingServiceList = ({
   const $completed = {
     $or: [
       { "lineItems.from": { $lte: todayEnd } },
-      { "lineItems.status": { $ne: "unfulfilled" } },
+      { "lineItems.status": { $in: ["unfulfilled", "onhold"] } },
       { cancelledAt: { $exists: true, $ne: null } },
     ],
   };
