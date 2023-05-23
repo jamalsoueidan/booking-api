@@ -1,9 +1,12 @@
 import { enUS } from "date-fns/locale";
 import { TimeUnit } from "~/functions/schedule";
+import { UserModel } from "~/functions/user";
 import {
   GenerateAvailabilityProps,
   generateAvailability,
 } from "./generate-availability";
+
+require("~/library/jest/mongoose/mongodb.jest");
 
 describe("generateAvailability", () => {
   const schedule: GenerateAvailabilityProps["schedule"] = {
@@ -37,9 +40,13 @@ describe("generateAvailability", () => {
     ],
   };
 
-  it("should generate an array of objects each representing a day", () => {
+  beforeEach(async () => {
+    await UserModel.create({ customerId: 1, fullname: "jamal soueidan" });
+  });
+
+  it("should generate an array of objects each representing a day", async () => {
     const startDate = new Date().toISOString();
-    const availability = generateAvailability(schedule, startDate);
+    const availability = await generateAvailability({ schedule, startDate });
     expect(Array.isArray(availability)).toBe(true);
     availability.forEach((day) => {
       expect(day).toHaveProperty("date");
@@ -47,9 +54,9 @@ describe("generateAvailability", () => {
     });
   });
 
-  it("should not generate availability for the days not defined in the schedule", () => {
+  it("should not generate availability for the days not defined in the schedule", async () => {
     const startDate = new Date().toISOString();
-    const availability = generateAvailability(schedule, startDate);
+    const availability = await generateAvailability({ schedule, startDate });
     availability.forEach((day) => {
       const dayOfWeek = enUS.localize?.day(new Date(day.date).getDay()) || "";
       const daySchedule = schedule.slots.find(
@@ -59,9 +66,9 @@ describe("generateAvailability", () => {
     });
   });
 
-  it("should generate slots for each day based on the intervals defined in the schedule", () => {
+  it("should generate slots for each day based on the intervals defined in the schedule", async () => {
     const startDate = new Date().toISOString();
-    const availability = generateAvailability(schedule, startDate);
+    const availability = await generateAvailability({ schedule, startDate });
     availability.forEach((day) => {
       const dayOfWeek = enUS.localize?.day(new Date(day.date).getDay()) || "";
       const daySchedule = schedule.slots.find(

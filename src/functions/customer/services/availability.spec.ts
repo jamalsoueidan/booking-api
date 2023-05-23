@@ -1,6 +1,7 @@
 import { Booking, BookingModel } from "~/functions/booking";
 import { TimeUnit } from "~/functions/schedule";
 import { ScheduleModel } from "~/functions/schedule/schedule.model";
+import { UserModel } from "~/functions/user";
 import { CustomerProductAvailabilityService } from "./availability";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -102,6 +103,10 @@ describe("CustomerProductAvailabilityService", () => {
       },
     ],
   };
+
+  beforeEach(async () => {
+    await UserModel.create({ customerId: 1, fullname: "jamala" });
+  });
 
   it("should return available slots for the given date range and product", async () => {
     await ScheduleModel.create(schedule2);

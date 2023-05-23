@@ -37,7 +37,7 @@ export const CustomerProductAvailabilityService = async ({
     productIds.includes(productId)
   );
 
-  const availability = generateAvailability(schedule, startDate);
+  const availability = await generateAvailability({ schedule, startDate });
   const date = findStartAndEndDate(availability);
   const booked = await CustomerBookingServiceGetBooked({
     customerId,

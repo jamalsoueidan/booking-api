@@ -9,7 +9,9 @@ import {
 import { utcToZonedTime } from "date-fns-tz";
 import { enUS } from "date-fns/locale";
 import { Availability, Schedule } from "~/functions/schedule";
+import { UserModel } from "~/functions/user";
 import { calculateMaxNoticeAndMinBookingPeriod } from "~/library/availability";
+import { NotFoundError } from "../handler";
 import { generateEndDate, generateStartDate } from "./start-end-date";
 
 // Function to convert time string to Date object
@@ -29,14 +31,26 @@ function roundMinutes(date: Date) {
 
 export type GenerateAvailabilityProps = {
   schedule: Pick<Schedule, "slots" | "products" | "customerId">;
-  start: string;
+  startDate: string;
 };
 
 // Function to generate availability
-export const generateAvailability = (
-  schedule: GenerateAvailabilityProps["schedule"],
-  start: GenerateAvailabilityProps["start"]
-) => {
+export const generateAvailability = async ({
+  schedule,
+  startDate: start,
+}: GenerateAvailabilityProps) => {
+  const customer = await UserModel.findOne({ customerId: schedule.customerId })
+    .orFail(
+      new NotFoundError([
+        {
+          code: "custom",
+          message: "CUSTOMER_NOT_FOUND",
+          path: ["customerId"],
+        },
+      ])
+    )
+    .lean();
+
   // Sort products by total time
   const sortedProducts = [...schedule.products].sort(
     (a, b) => b.duration + b.breakTime - (a.duration + a.breakTime)
@@ -111,7 +125,6 @@ export const generateAvailability = (
             slotProducts.push({
               productId: product.productId,
               variantId: product.variantId,
-              customerId: schedule.customerId,
               from: productStartTime,
               to: productEndTime,
               breakTime: product.breakTime,
@@ -134,6 +147,10 @@ export const generateAvailability = (
       if (daySlots.length > 0) {
         availability.push({
           date: startDate,
+          customer: {
+            fullname: customer.fullname,
+            customerId: customer.customerId,
+          },
           slots: daySlots,
         });
       }
