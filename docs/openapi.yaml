@@ -540,6 +540,16 @@ components:
         date:
           type: string
           example: '2023-05-05T00:00:00.000Z'
+        customer:
+          type: object
+          properties:
+            customerId:
+              type: string
+            fullname:
+              type: string
+          required:
+            - customerId
+            - fullname
         slots:
           type: array
           items:
@@ -556,8 +566,6 @@ components:
                 items:
                   type: object
                   properties:
-                    customerId:
-                      type: number
                     productId:
                       type: number
                     variantId:
@@ -573,7 +581,6 @@ components:
                     duration:
                       type: number
                   required:
-                    - customerId
                     - productId
                     - variantId
                     - from
@@ -586,6 +593,7 @@ components:
               - products
       required:
         - date
+        - customer
         - slots
     CustomerIsBusinessResponse:
       type: object
