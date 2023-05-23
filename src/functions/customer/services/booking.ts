@@ -28,7 +28,7 @@ export const CustomerBookingServiceList = ({
   const $completed = {
     $or: [
       { "lineItems.from": { $lte: todayEnd } },
-      { "lineItems.status": { $in: ["unfulfilled", "onhold"] } },
+      { "lineItems.status": { $nin: ["unfulfilled", "onhold"] } },
       { cancelledAt: { $exists: true, $ne: null } },
     ],
   };
