@@ -19,7 +19,7 @@ const LineItemSchema = z.object({
   to: z.date(),
   customerId: z.number(),
   status: z
-    .enum(["unfulfilled", "cancelled", "refunded", "fulfilled"])
+    .enum(["unfulfilled", "onhold", "cancelled", "refunded", "fulfilled"])
     .optional(),
 });
 

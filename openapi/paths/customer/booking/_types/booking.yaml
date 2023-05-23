@@ -61,7 +61,7 @@ properties:
             - currency_code
         status:
           type: string
-          enum: [fulfilled, unfulfilled, cancelled, refunded] # Specify your other statuses here
+          enum: [fulfilled, onhold, unfulfilled, cancelled, refunded] # Specify your other statuses here
       required:
         - customerId
         - from
