@@ -20,12 +20,28 @@ describe("CustomerControllerGet", () => {
   it("Should be able to get user by username", async () => {
     const user = await createUser({ customerId: 123 }, { username: "test" });
     request = await createHttpRequest<CustomerControllerGetRequest>({
-      query: { username: user.username },
+      query: { identifier: user.username },
     });
 
     const res: HttpSuccessResponse<CustomerControllerGetResponse> =
       await CustomerControllerGet(request, context);
 
+    console.log(res.jsonBody);
+    expect(res.jsonBody?.success).toBeTruthy();
+    expect(res.jsonBody).toHaveProperty("payload");
+    expect(res.jsonBody?.payload?.fullname).toEqual(user.fullname);
+  });
+
+  it("Should be able to get user by customerId", async () => {
+    const user = await createUser({ customerId: 123 }, { username: "test" });
+    request = await createHttpRequest<CustomerControllerGetRequest>({
+      query: { identifier: 123 },
+    });
+
+    const res: HttpSuccessResponse<CustomerControllerGetResponse> =
+      await CustomerControllerGet(request, context);
+
+    console.log(res.jsonBody);
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
     expect(res.jsonBody?.payload?.fullname).toEqual(user.fullname);

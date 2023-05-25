@@ -2,7 +2,7 @@ get:
   parameters:
     - name: identifier
       in: path
-      description: must be username
+      description: can be either username or customerId
       required: true
       schema:
         type: string

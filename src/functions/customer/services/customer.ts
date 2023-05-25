@@ -39,10 +39,17 @@ export const CustomerServiceIsBusiness = async (
   return { exists: user ? true : false };
 };
 
-export type CustomerServiceGetPRops = Pick<User, "username">;
+export type CustomerServiceGetProps = Partial<
+  Pick<User, "username" | "customerId">
+>;
 
-export const CustomerServiceGet = async (filter: CustomerServiceGetPRops) => {
-  return await UserModel.findOne({ ...filter, active: true })
+export const CustomerServiceGet = async (filter: CustomerServiceGetProps) => {
+  const orConditions = [
+    { username: filter?.username || "" },
+    { customerId: filter?.customerId || 0 },
+  ];
+
+  return UserModel.findOne({ $or: orConditions, active: true })
     .lean()
     .orFail(
       new NotFoundError([

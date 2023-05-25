@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import {
+  CustomerServiceGet,
   CustomerServiceIsBusiness,
   CustomerServiceUpsert,
   CustomerServiceUpsertBody,
@@ -17,6 +18,7 @@ describe("CustomerService", () => {
       youtube: faker.internet.url(),
       twitter: faker.internet.url(),
     },
+    active: true,
     aboutMe: faker.lorem.paragraph(),
     avatar: faker.internet.avatar(),
     speaks: [faker.random.locale()],
@@ -29,6 +31,32 @@ describe("CustomerService", () => {
     );
 
     expect(newUser).toMatchObject(userData);
+  });
+
+  it("Should get the customer by customerId", async () => {
+    const newUser = await CustomerServiceUpsert(
+      { customerId: faker.datatype.number() },
+      userData
+    );
+
+    const user = await CustomerServiceGet({
+      customerId: newUser.customerId,
+    });
+
+    expect(user.customerId).toBe(newUser.customerId);
+  });
+
+  it("Should get the customer by username", async () => {
+    const newUser = await CustomerServiceUpsert(
+      { customerId: faker.datatype.number() },
+      userData
+    );
+
+    const user = await CustomerServiceGet({
+      username: newUser?.username,
+    });
+
+    expect(user.customerId).toBe(newUser.customerId);
   });
 
   it("Should check if customer exist", async () => {
