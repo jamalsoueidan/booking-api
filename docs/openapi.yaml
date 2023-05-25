@@ -488,6 +488,10 @@ components:
           pattern: '^[a-zA-Z0-9-_]+$'
         fullname:
           type: string
+        phone:
+          type: string
+        email:
+          type: string
         aboutMe:
           type: string
         shortDescription:
@@ -650,8 +654,6 @@ components:
         username:
           type: string
           pattern: '^[a-zA-Z0-9-_]+$'
-        fullname:
-          type: string
         aboutMe:
           type: string
         shortDescription:
@@ -665,9 +667,6 @@ components:
               type: string
             instagram:
               type: string
-        avatar:
-          type: string
-          format: uri
         speaks:
           type: array
           items:
@@ -675,7 +674,8 @@ components:
       required:
         - title
         - username
-        - fullname
+        - aboutMe
+        - shortDescription
     CustomerProductListIdsResponse:
       type: object
       properties:
