@@ -49,7 +49,7 @@ export const CustomerServiceGet = async (filter: CustomerServiceGetProps) => {
     { customerId: filter?.customerId || 0 },
   ];
 
-  return UserModel.findOne({ $or: orConditions, active: true })
+  return UserModel.findOne({ $or: orConditions })
     .lean()
     .orFail(
       new NotFoundError([
