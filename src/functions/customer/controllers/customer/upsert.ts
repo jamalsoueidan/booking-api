@@ -19,7 +19,7 @@ export type CustomerControllerUpsertQuery = z.infer<
 export const CustomerControllerUpsertSchema = UserZodSchema.omit({
   _id: true,
   customerId: true,
-});
+}).strict(); // to remove active if user tried to insert this.
 
 export type CustomerControllerUpsertBody = z.infer<
   typeof CustomerControllerUpsertSchema
