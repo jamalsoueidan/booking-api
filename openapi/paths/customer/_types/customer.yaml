@@ -9,6 +9,10 @@ properties:
     pattern: ^[a-zA-Z0-9-_]+$
   fullname:
     type: string
+  phone:
+    type: string
+  email:
+    type: string
   aboutMe:
     type: string
   shortDescription:
