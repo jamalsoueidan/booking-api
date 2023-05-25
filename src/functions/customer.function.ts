@@ -35,7 +35,7 @@ app.http("customerIsBusiness", {
 app.http("customerGet", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "customer/{username?}",
+  route: "customer/{identifier?}",
   handler: CustomerControllerGet,
 });
 

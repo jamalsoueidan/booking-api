@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { UserZodSchema } from "~/functions/user";
 import { _ } from "~/library/handler";
 import { CustomerServiceGet } from "../../services";
 
@@ -7,8 +6,8 @@ export type CustomerControllerGetRequest = {
   query: z.infer<typeof CustomerServiceGetSchema>;
 };
 
-export const CustomerServiceGetSchema = UserZodSchema.pick({
-  username: true,
+export const CustomerServiceGetSchema = z.object({
+  identifier: z.any(),
 });
 
 export type CustomerControllerGetResponse = Awaited<
@@ -18,6 +17,9 @@ export type CustomerControllerGetResponse = Awaited<
 export const CustomerControllerGet = _(
   async ({ query }: CustomerControllerGetRequest) => {
     const validateData = CustomerServiceGetSchema.parse(query);
-    return CustomerServiceGet(validateData);
+    return CustomerServiceGet({
+      username: validateData.identifier,
+      customerId: parseInt(validateData.identifier),
+    });
   }
 );
