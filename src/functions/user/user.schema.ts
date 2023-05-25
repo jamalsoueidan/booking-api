@@ -3,9 +3,7 @@ import { User } from "./user.types";
 
 export interface IUser extends Omit<User, "_id"> {}
 
-export interface IUserDocument extends IUser, Document {
-  active: boolean;
-}
+export interface IUserDocument extends IUser, Document {}
 
 export interface IUserModel extends Model<IUserDocument> {}
 
@@ -29,12 +27,19 @@ export const UserMongooseSchema = new mongoose.Schema<
       type: String,
       required: true,
     },
+    email: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
     socialUrls: {
       instagram: String,
       youtube: String,
       twitter: String,
     },
     aboutMe: String,
+    gender: String,
     shortDescription: String,
     active: { type: Boolean, default: false },
     avatar: { type: String },

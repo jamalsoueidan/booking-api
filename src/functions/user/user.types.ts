@@ -4,13 +4,14 @@ import { GidFormat } from "~/library/zod";
 export const UserZodSchema = z.object({
   _id: z.string(),
   customerId: GidFormat,
-  title: z.string(),
+  title: z.string().optional(),
   username: z
     .string()
-    .transform((input) => input.replace(/[^a-zA-Z0-9-_]/g, "-").toLowerCase()),
-  fullname: z.string(),
+    .transform((input) => input.replace(/[^a-zA-Z0-9-_]/g, "-").toLowerCase())
+    .optional(),
   aboutMe: z.string().optional(),
   shortDescription: z.string().optional(),
+  gender: z.string().optional(),
   socialUrls: z
     .object({
       youtube: z.string().optional(),
@@ -18,9 +19,12 @@ export const UserZodSchema = z.object({
       instagram: z.string().optional(),
     })
     .optional(),
-  //active: BooleanOrStringType,
   avatar: z.string().url({ message: "Invalid url" }).optional(),
   speaks: z.array(z.string()).optional(),
+  fullname: z.string().optional(),
+  active: z.boolean().optional(),
+  email: z.string().optional(),
+  phone: z.string().optional(),
 });
 
 export type User = z.infer<typeof UserZodSchema>;

@@ -56,9 +56,8 @@ describe("CustomerControllerCreateOrUpdate", () => {
     request = await createHttpRequest<CustomerControllerUpsertRequest>({
       query,
       body: {
-        ...body,
-        fullname: "jamalsoueidan",
-      },
+        phone: "00451313131",
+      } as any,
     });
 
     const res: HttpSuccessResponse<CustomerControllerUpsertResponse> =
@@ -66,6 +65,6 @@ describe("CustomerControllerCreateOrUpdate", () => {
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
-    expect(res.jsonBody?.payload.fullname).toEqual("jamalsoueidan");
+    expect(res.jsonBody?.payload.phone).toEqual("00451313131");
   });
 });
