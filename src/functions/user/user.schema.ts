@@ -43,7 +43,11 @@ export const UserMongooseSchema = new mongoose.Schema<
     shortDescription: String,
     active: { type: Boolean, default: false },
     images: {
-      profile: String,
+      profile: {
+        url: String,
+        width: Number,
+        height: Number,
+      },
     },
     speaks: {
       type: [String],

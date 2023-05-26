@@ -22,11 +22,6 @@ properties:
     type: array
     items:
       type: string
-  images:
-    type: object
-    properties:
-      profile:
-        type: string
 
 required:
   - title
