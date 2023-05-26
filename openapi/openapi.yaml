@@ -136,6 +136,9 @@ paths:
   /customer/{identifier}:
     $ref: "./paths/customer/customer.yaml"
 
+  /customer/{identifier}/update:
+    $ref: "./paths/customer/customer.yaml"
+
   /customer/{customerId}/isBusiness:
     $ref: "./paths/customer/is-business/index.yaml"
 

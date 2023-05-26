@@ -9,7 +9,7 @@ put:
   tags:
     - Customer
   operationId: customerUpsert
-  summary: PUT Create or Update user (restricted fields)
+  summary: PUT Create or Update user (all fields allowed)
   description: This endpoint creates new or updates user
   requestBody:
     required: true
