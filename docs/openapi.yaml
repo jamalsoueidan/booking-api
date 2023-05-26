@@ -485,7 +485,6 @@ components:
           type: string
         username:
           type: string
-          pattern: '^[a-zA-Z0-9-_]+$'
         fullname:
           type: string
         phone:
@@ -496,7 +495,7 @@ components:
           type: string
         shortDescription:
           type: string
-        socialUrls:
+        social:
           type: object
           properties:
             youtube:
@@ -505,22 +504,34 @@ components:
               type: string
             instagram:
               type: string
-        avatar:
-          type: string
-          format: uri
+        images:
+          type: object
+          properties:
+            profile:
+              type: object
+              properties:
+                url:
+                  type: string
+                width:
+                  type: number
+                height:
+                  type: number
         speaks:
           type: array
           items:
             type: string
+        active:
+          type: boolean
       required:
         - customerId
         - title
         - fullname
-        - avatar
+        - images
         - speaks
-        - socialUrls
+        - social
         - shortDescription
         - aboutMe
+        - active
     CustomerExists:
       type: object
       properties:
@@ -683,7 +694,14 @@ components:
           type: object
           properties:
             profile:
-              type: string
+              type: object
+              properties:
+                url:
+                  type: string
+                width:
+                  type: number
+                height:
+                  type: number
     CustomerUpsertResponse:
       type: object
       properties:
@@ -720,11 +738,6 @@ components:
           type: array
           items:
             type: string
-        images:
-          type: object
-          properties:
-            profile:
-              type: string
       required:
         - title
         - username
