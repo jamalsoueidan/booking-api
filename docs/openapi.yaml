@@ -808,7 +808,84 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
       security: []
   '/customer/{identifier}/update':
-    $ref: '#/paths/~1customer~1%7Bidentifier%7D'
+    put:
+      parameters:
+        - name: identifier
+          in: path
+          description: must be customerId
+          required: true
+          schema:
+            type: string
+      tags:
+        - Customer
+      operationId: customerUpdate
+      summary: PUT Create or Update user (all fields allowed)
+      description: This endpoint creates new or updates user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                username:
+                  type: string
+                  pattern: '^[a-zA-Z0-9-_]+$'
+                fullname:
+                  type: string
+                email:
+                  type: string
+                active:
+                  type: boolean
+                phone:
+                  type: string
+                aboutMe:
+                  type: string
+                shortDescription:
+                  type: string
+                social:
+                  type: object
+                  properties:
+                    youtube:
+                      type: string
+                    twitter:
+                      type: string
+                    instagram:
+                      type: string
+                speaks:
+                  type: array
+                  items:
+                    type: string
+                images:
+                  type: object
+                  properties:
+                    profile:
+                      type: string
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    $ref: '#/components/schemas/Customer'
+                required:
+                  - success
+                  - payload
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
   '/customer/{customerId}/isBusiness':
     get:
       parameters:
