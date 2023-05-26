@@ -658,7 +658,7 @@ components:
           type: string
         shortDescription:
           type: string
-        socialUrls:
+        social:
           type: object
           properties:
             youtube:
@@ -671,6 +671,11 @@ components:
           type: array
           items:
             type: string
+        images:
+          type: object
+          properties:
+            profile:
+              type: string
       required:
         - title
         - username
@@ -751,7 +756,7 @@ paths:
       tags:
         - Customer
       operationId: customerUpsert
-      summary: PUT Create or Update user
+      summary: PUT Create or Update user (restricted fields)
       description: This endpoint creates new or updates user
       requestBody:
         required: true
@@ -802,6 +807,8 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
+  '/customer/{identifier}/update':
+    $ref: '#/paths/~1customer~1%7Bidentifier%7D'
   '/customer/{customerId}/isBusiness':
     get:
       parameters:
