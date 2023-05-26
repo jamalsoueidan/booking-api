@@ -635,6 +635,55 @@ components:
       required:
         - success
         - payload
+    CustomerUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/Customer'
+      required:
+        - success
+        - payload
+    CustomerUpdateBody:
+      type: object
+      properties:
+        title:
+          type: string
+        username:
+          type: string
+          pattern: '^[a-zA-Z0-9-_]+$'
+        fullname:
+          type: string
+        email:
+          type: string
+        active:
+          type: boolean
+        phone:
+          type: string
+        aboutMe:
+          type: string
+        shortDescription:
+          type: string
+        social:
+          type: object
+          properties:
+            youtube:
+              type: string
+            twitter:
+              type: string
+            instagram:
+              type: string
+        speaks:
+          type: array
+          items:
+            type: string
+        images:
+          type: object
+          properties:
+            profile:
+              type: string
     CustomerUpsertResponse:
       type: object
       properties:
@@ -826,59 +875,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                username:
-                  type: string
-                  pattern: '^[a-zA-Z0-9-_]+$'
-                fullname:
-                  type: string
-                email:
-                  type: string
-                active:
-                  type: boolean
-                phone:
-                  type: string
-                aboutMe:
-                  type: string
-                shortDescription:
-                  type: string
-                social:
-                  type: object
-                  properties:
-                    youtube:
-                      type: string
-                    twitter:
-                      type: string
-                    instagram:
-                      type: string
-                speaks:
-                  type: array
-                  items:
-                    type: string
-                images:
-                  type: object
-                  properties:
-                    profile:
-                      type: string
+              $ref: '#/components/schemas/CustomerUpdateBody'
       responses:
         '200':
           description: Response
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  payload:
-                    $ref: '#/components/schemas/Customer'
-                required:
-                  - success
-                  - payload
+                $ref: '#/components/schemas/CustomerUpdateResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
