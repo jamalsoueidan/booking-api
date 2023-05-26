@@ -26,7 +26,6 @@ describe("CustomerControllerGet", () => {
     const res: HttpSuccessResponse<CustomerControllerGetResponse> =
       await CustomerControllerGet(request, context);
 
-    console.log(res.jsonBody);
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
     expect(res.jsonBody?.payload?.fullname).toEqual(user.fullname);
@@ -41,7 +40,6 @@ describe("CustomerControllerGet", () => {
     const res: HttpSuccessResponse<CustomerControllerGetResponse> =
       await CustomerControllerGet(request, context);
 
-    console.log(res.jsonBody);
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
     expect(res.jsonBody?.payload?.fullname).toEqual(user.fullname);

@@ -8,7 +8,7 @@ export const getUserObject = (props: Partial<User> = {}) => ({
   title: faker.name.jobTitle(),
   username: faker.internet.userName().toLowerCase(),
   fullname: faker.name.fullName(),
-  socialUrls: {
+  social: {
     instagram: faker.internet.url(),
     youtube: faker.internet.url(),
     twitter: faker.internet.url(),

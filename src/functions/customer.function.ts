@@ -8,6 +8,7 @@ import {
   CustomerControllerGet,
   CustomerControllerIsBusiness,
   CustomerControllerList,
+  CustomerControllerUpdate,
   CustomerControllerUpsert,
   CustomerProductControllerAvailability,
   CustomerProductControllerDestroy,
@@ -23,6 +24,13 @@ app.http("customerUpsert", {
   authLevel: "anonymous",
   route: "customer/{customerId?}",
   handler: CustomerControllerUpsert,
+});
+
+app.http("customerUpdate", {
+  methods: ["PUT"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/update",
+  handler: CustomerControllerUpdate,
 });
 
 app.http("customerIsBusiness", {

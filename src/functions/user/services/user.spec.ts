@@ -18,7 +18,7 @@ describe("UserService", () => {
       title: faker.name.jobTitle(),
       username,
       fullname: faker.name.fullName(),
-      socialUrls: {
+      social: {
         instagram: faker.internet.url(),
         youtube: faker.internet.url(),
         twitter: faker.internet.url(),

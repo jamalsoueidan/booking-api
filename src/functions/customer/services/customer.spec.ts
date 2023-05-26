@@ -13,14 +13,16 @@ describe("CustomerService", () => {
     title: faker.name.jobTitle(),
     username: faker.internet.userName(),
     fullname: faker.name.fullName(),
-    socialUrls: {
+    social: {
       instagram: faker.internet.url(),
       youtube: faker.internet.url(),
       twitter: faker.internet.url(),
     },
     active: true,
     aboutMe: faker.lorem.paragraph(),
-    avatar: faker.internet.avatar(),
+    images: {
+      profile: faker.internet.avatar(),
+    },
     speaks: [faker.random.locale()],
   };
 
