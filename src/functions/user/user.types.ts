@@ -12,7 +12,7 @@ export const UserZodSchema = z.object({
   aboutMe: z.string().optional(),
   shortDescription: z.string().optional(),
   gender: z.string().optional(),
-  socialUrls: z
+  social: z
     .object({
       youtube: z.string().optional(),
       twitter: z.string().optional(),
@@ -20,6 +20,11 @@ export const UserZodSchema = z.object({
     })
     .optional(),
   avatar: z.string().url({ message: "Invalid url" }).optional(),
+  images: z
+    .object({
+      profile: z.string().url({ message: "Invalid url" }).optional(),
+    })
+    .optional(),
   speaks: z.array(z.string()).optional(),
   fullname: z.string().optional(),
   active: z.boolean().optional(),

@@ -6,23 +6,23 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
-import { CustomerServiceUpsert } from "../../services";
 import {
-  CustomerControllerUpsert,
-  CustomerControllerUpsertBody,
-  CustomerControllerUpsertRequest,
-  CustomerControllerUpsertResponse,
-} from "./upsert";
+  CustomerControllerUpdate,
+  CustomerControllerUpdateBody,
+  CustomerControllerUpdateRequest,
+  CustomerControllerUpdateResponse,
+} from "./update";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("CustomerControllerUpsert", () => {
+describe("CustomerControllerUpdate", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
   const query = { customerId: faker.datatype.number() };
-  const body: CustomerControllerUpsertBody = {
+  const body: CustomerControllerUpdateBody = {
     title: faker.name.jobTitle(),
+    fullname: "test",
     username: faker.internet.userName(),
     aboutMe: faker.lorem.paragraph(),
     speaks: [faker.random.locale()],
@@ -36,43 +36,32 @@ describe("CustomerControllerUpsert", () => {
   });
 
   it("Should be able to create user", async () => {
-    await CustomerServiceUpsert(query, {
-      fullname: "asd",
-      username: "asd",
-    });
-
-    request = await createHttpRequest<CustomerControllerUpsertRequest>({
+    request = await createHttpRequest<CustomerControllerUpdateRequest>({
       query,
       body,
     });
 
-    const res: HttpSuccessResponse<CustomerControllerUpsertResponse> =
-      await CustomerControllerUpsert(request, context);
+    const res: HttpSuccessResponse<CustomerControllerUpdateResponse> =
+      await CustomerControllerUpdate(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
-    expect(res.jsonBody?.payload.title).toEqual(body.title);
+    expect(res.jsonBody?.payload.fullname).toEqual(body.fullname);
   });
 
   it("Should able to update user", async () => {
-    await CustomerServiceUpsert(query, {
-      fullname: "asd",
-      username: "asd",
-      ...body,
-    });
-
-    request = await createHttpRequest<CustomerControllerUpsertRequest>({
+    request = await createHttpRequest<CustomerControllerUpdateRequest>({
       query,
       body: {
-        title: "test",
+        phone: "004531317428",
       } as any,
     });
 
-    const res: HttpSuccessResponse<CustomerControllerUpsertResponse> =
-      await CustomerControllerUpsert(request, context);
+    const res: HttpSuccessResponse<CustomerControllerUpdateResponse> =
+      await CustomerControllerUpdate(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
-    expect(res.jsonBody?.payload.title).toEqual("test");
+    expect(res.jsonBody?.payload.phone).toEqual("004531317428");
   });
 });

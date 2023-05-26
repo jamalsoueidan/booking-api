@@ -15,6 +15,7 @@ export const UserMongooseSchema = new mongoose.Schema<
     customerId: {
       type: Number,
       unique: true,
+      required: true,
       index: true,
     },
     title: String,
@@ -25,7 +26,6 @@ export const UserMongooseSchema = new mongoose.Schema<
     },
     fullname: {
       type: String,
-      required: true,
     },
     email: {
       type: String,
@@ -33,7 +33,7 @@ export const UserMongooseSchema = new mongoose.Schema<
     phone: {
       type: String,
     },
-    socialUrls: {
+    social: {
       instagram: String,
       youtube: String,
       twitter: String,
@@ -42,7 +42,9 @@ export const UserMongooseSchema = new mongoose.Schema<
     gender: String,
     shortDescription: String,
     active: { type: Boolean, default: false },
-    avatar: { type: String },
+    images: {
+      profile: String,
+    },
     speaks: {
       type: [String],
       default: [],
