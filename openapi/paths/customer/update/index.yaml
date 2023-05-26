@@ -8,7 +8,7 @@ put:
         type: string
   tags:
     - Customer
-  operationId: customerUpsert
+  operationId: customerUpdate
   summary: PUT Create or Update user (all fields allowed)
   description: This endpoint creates new or updates user
   requestBody:
