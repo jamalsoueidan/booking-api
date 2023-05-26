@@ -22,7 +22,13 @@ export const UserZodSchema = z.object({
   avatar: z.string().url({ message: "Invalid url" }).optional(),
   images: z
     .object({
-      profile: z.string().url({ message: "Invalid url" }).optional(),
+      profile: z
+        .object({
+          url: z.string().url({ message: "Invalid url" }).optional(),
+          width: z.number().optional(),
+          height: z.number().optional(),
+        })
+        .optional(),
     })
     .optional(),
   speaks: z.array(z.string()).optional(),

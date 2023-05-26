@@ -21,7 +21,9 @@ describe("CustomerService", () => {
     active: true,
     aboutMe: faker.lorem.paragraph(),
     images: {
-      profile: faker.internet.avatar(),
+      profile: {
+        url: faker.internet.avatar(),
+      },
     },
     speaks: [faker.random.locale()],
   };

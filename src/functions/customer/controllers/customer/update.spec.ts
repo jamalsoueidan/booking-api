@@ -27,7 +27,9 @@ describe("CustomerControllerUpdate", () => {
     aboutMe: faker.lorem.paragraph(),
     speaks: [faker.random.locale()],
     images: {
-      profile: faker.internet.avatar(),
+      profile: {
+        url: faker.internet.avatar(),
+      },
     },
   };
 
