@@ -21,7 +21,7 @@ describe("CustomerControllerUpdate", () => {
 
   const query = { customerId: faker.datatype.number() };
   const body: CustomerControllerUpdateBody = {
-    title: faker.name.jobTitle(),
+    yearsExperience: 1,
     fullname: "test",
     username: faker.internet.userName(),
     aboutMe: faker.lorem.paragraph(),

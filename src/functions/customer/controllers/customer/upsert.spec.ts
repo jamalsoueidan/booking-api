@@ -22,7 +22,7 @@ describe("CustomerControllerUpsert", () => {
 
   const query = { customerId: faker.datatype.number() };
   const body: CustomerControllerUpsertBody = {
-    title: faker.name.jobTitle(),
+    yearsExperience: 1,
     username: faker.internet.userName(),
     aboutMe: faker.lorem.paragraph(),
     speaks: [faker.random.locale()],
@@ -53,7 +53,7 @@ describe("CustomerControllerUpsert", () => {
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
-    expect(res.jsonBody?.payload.title).toEqual(body.title);
+    expect(res.jsonBody?.payload.fullname).toEqual("asd");
   });
 
   it("Should able to update user", async () => {
@@ -66,15 +66,16 @@ describe("CustomerControllerUpsert", () => {
     request = await createHttpRequest<CustomerControllerUpsertRequest>({
       query,
       body: {
-        title: "test",
+        fullname: "test",
       } as any,
     });
 
     const res: HttpSuccessResponse<CustomerControllerUpsertResponse> =
       await CustomerControllerUpsert(request, context);
 
+    console.log();
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
-    expect(res.jsonBody?.payload.title).toEqual("test");
+    expect(res.jsonBody?.payload.fullname).toEqual("test");
   });
 });
