@@ -1,39 +1,67 @@
 type: object
 properties:
-  customerId:
-    type: number
-  title:
-    type: string
-  username:
-    type: string
-    pattern: ^[a-zA-Z0-9-_]+$
-  fullname:
-    type: string
-  aboutMe:
-    type: string
-  shortDescription:
-    type: string
-  socialUrls:
-    type: object
-    properties:
-      youtube:
+  type: object
+  properties:
+    customerId:
+      type: number
+    yearsExperience:
+      type: string
+      format: number
+    professions:
+      type: array
+      items:
+        $ref: "../_types/professions.yaml"
+    specialties:
+      type: array
+      items:
         type: string
-      twitter:
+    username:
+      type: string
+    aboutMe:
+      type: string
+    shortDescription:
+      type: string
+    gender:
+      type: string
+    social:
+      type: object
+      properties:
+        youtube:
+          type: string
+        twitter:
+          type: string
+        instagram:
+          type: string
+    images:
+      type: object
+      properties:
+        profile:
+          type: object
+          properties:
+            url:
+              type: string
+              format: uri
+            width:
+              type: integer
+            height:
+              type: integer
+    speaks:
+      type: array
+      items:
         type: string
-      instagram:
-        type: string
-  active:
-    type: boolean
-  avatar:
-    type: string
-    format: uri
-  speaks:
-    type: array
-    items:
+    fullname:
+      type: string
+    active:
+      type: boolean
+    email:
+      type: string
+      format: email
+    phone:
       type: string
 required:
   - customerId
-  - title
+  - yearsExperience
+  - professions
   - fullname
   - avatar
   - active

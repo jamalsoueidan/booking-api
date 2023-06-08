@@ -18,7 +18,13 @@ export const UserMongooseSchema = new mongoose.Schema<
       required: true,
       index: true,
     },
-    title: String,
+    professions: {
+      type: [String],
+    },
+    specialties: {
+      type: [String],
+    },
+    yearsExperience: Number,
     username: {
       type: String,
       unqiue: true,

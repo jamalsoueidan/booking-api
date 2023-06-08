@@ -71,13 +71,6 @@ export const ScheduleServiceUpdate = async (
 type ScheduleServiceListProps = Pick<Schedule, "customerId">;
 
 export const ScheduleServiceList = async (filter: ScheduleServiceListProps) => {
-  const count = await ScheduleModel.count(filter).lean();
-  if (count === 0) {
-    await ScheduleServiceCreate({
-      name: "DEFAULT",
-      customerId: filter.customerId,
-    });
-  }
   return ScheduleModel.find(filter).sort("created_at").lean();
 };
 

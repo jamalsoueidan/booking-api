@@ -122,6 +122,8 @@ components:
     CustomerProductAvailabilityResponse:
       $ref: paths/customer/product/availability/response.yaml
 
+    CustomerProffesion:
+      $ref: paths/user/_types/professions.yaml
     # User
     #UserGetResponse:
     #  $ref: paths/user/get/response.yaml

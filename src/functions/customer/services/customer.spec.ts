@@ -10,7 +10,6 @@ require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerService", () => {
   const userData: CustomerServiceUpsertBody = {
-    title: faker.name.jobTitle(),
     username: faker.internet.userName(),
     fullname: faker.name.fullName(),
     social: {

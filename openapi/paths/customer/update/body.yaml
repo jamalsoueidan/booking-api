@@ -1,21 +1,25 @@
 type: object
 properties:
-  title:
+  customerId:
+    type: number
+  yearsExperience:
     type: string
+    format: number
+  professions:
+    type: array
+    items:
+      $ref: "../../user/_types/professions.yaml"
+  specialties:
+    type: array
+    items:
+      type: string
   username:
-    type: string
-    pattern: ^[a-zA-Z0-9-_]+$
-  fullname:
-    type: string
-  email:
-    type: string
-  active:
-    type: boolean
-  phone:
     type: string
   aboutMe:
     type: string
   shortDescription:
+    type: string
+  gender:
     type: string
   social:
     type: object
@@ -26,10 +30,6 @@ properties:
         type: string
       instagram:
         type: string
-  speaks:
-    type: array
-    items:
-      type: string
   images:
     type: object
     properties:
@@ -38,7 +38,21 @@ properties:
         properties:
           url:
             type: string
+            format: uri
           width:
-            type: number
+            type: integer
           height:
-            type: number
+            type: integer
+  speaks:
+    type: array
+    items:
+      type: string
+  fullname:
+    type: string
+  active:
+    type: boolean
+  email:
+    type: string
+    format: email
+  phone:
+    type: string

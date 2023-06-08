@@ -4,6 +4,7 @@ import {
   CustomerServiceUpsertBody,
 } from "~/functions/customer/services/customer";
 import { createUser } from "~/library/jest/helpers";
+import { Professions } from "../user.types";
 import { UserServiceGet, UserServiceList } from "./user";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -15,7 +16,8 @@ describe("UserService", () => {
     const username = faker.internet.userName();
     // Create a user first
     const userData: CustomerServiceUpsertBody = {
-      title: faker.name.jobTitle(),
+      yearsExperience: 1,
+      professions: [Professions.MAKEUP_ARTIST],
       username,
       fullname: faker.name.fullName(),
       social: {
@@ -25,7 +27,6 @@ describe("UserService", () => {
       },
       shortDescription: faker.lorem.paragraph(),
       aboutMe: faker.lorem.paragraph(),
-      avatar: faker.internet.avatar(),
       speaks: [faker.random.locale()],
     };
 

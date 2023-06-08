@@ -1,10 +1,22 @@
 import { z } from "zod";
-import { GidFormat } from "~/library/zod";
+import { GidFormat, NumberOrStringType } from "~/library/zod";
+
+export enum Professions {
+  MAKEUP_ARTIST = "makeup_artist",
+  HAIR_STYLIST = "hair_stylist",
+  NAIL = "nail_technician",
+  LASH = "lash_technician",
+  BROW = "brow_technician",
+  MASSAGE = "massage_therapist",
+  ESTHETICIAN = "esthetician",
+}
 
 export const UserZodSchema = z.object({
   _id: z.string(),
   customerId: GidFormat,
-  title: z.string().optional(),
+  yearsExperience: NumberOrStringType.optional(),
+  professions: z.array(z.nativeEnum(Professions)).optional(),
+  specialties: z.array(z.string()).optional(),
   username: z
     .string()
     .transform((input) => input.replace(/[^a-zA-Z0-9-_]/g, "-").toLowerCase())
@@ -19,7 +31,6 @@ export const UserZodSchema = z.object({
       instagram: z.string().optional(),
     })
     .optional(),
-  avatar: z.string().url({ message: "Invalid url" }).optional(),
   images: z
     .object({
       profile: z
