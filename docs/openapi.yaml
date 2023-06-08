@@ -660,22 +660,26 @@ components:
     CustomerUpdateBody:
       type: object
       properties:
-        title:
+        customerId:
+          type: number
+        yearsExperience:
           type: string
+          format: number
+        professions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerProffesion'
+        specialties:
+          type: array
+          items:
+            type: string
         username:
-          type: string
-          pattern: '^[a-zA-Z0-9-_]+$'
-        fullname:
-          type: string
-        email:
-          type: string
-        active:
-          type: boolean
-        phone:
           type: string
         aboutMe:
           type: string
         shortDescription:
+          type: string
+        gender:
           type: string
         social:
           type: object
@@ -686,10 +690,6 @@ components:
               type: string
             instagram:
               type: string
-        speaks:
-          type: array
-          items:
-            type: string
         images:
           type: object
           properties:
@@ -698,10 +698,24 @@ components:
               properties:
                 url:
                   type: string
+                  format: uri
                 width:
-                  type: number
+                  type: integer
                 height:
-                  type: number
+                  type: integer
+        speaks:
+          type: array
+          items:
+            type: string
+        fullname:
+          type: string
+        active:
+          type: boolean
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
     CustomerUpsertResponse:
       type: object
       properties:
@@ -716,8 +730,10 @@ components:
     CustomerUpsertBody:
       type: object
       properties:
-        title:
-          type: string
+        professions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerProffesion'
         username:
           type: string
           pattern: '^[a-zA-Z0-9-_]+$'
@@ -739,7 +755,7 @@ components:
           items:
             type: string
       required:
-        - title
+        - professions
         - username
         - aboutMe
         - shortDescription
@@ -782,6 +798,16 @@ components:
       required:
         - success
         - payload
+    CustomerProffesion:
+      type: string
+      enum:
+        - makeup_artist
+        - hair_stylist
+        - nail_technician
+        - lash_technician
+        - brow_technician
+        - massage_therapist
+        - esthetician
 paths:
   /customers:
     get:
