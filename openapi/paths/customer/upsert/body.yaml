@@ -1,7 +1,9 @@
 type: object
 properties:
-  title:
-    type: string
+  professions:
+    type: array
+    items:
+      $ref: "../../user/_types/professions.yaml"
   username:
     type: string
     pattern: ^[a-zA-Z0-9-_]+$
@@ -24,7 +26,7 @@ properties:
       type: string
 
 required:
-  - title
+  - professions
   - username
   - aboutMe
   - shortDescription

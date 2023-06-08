@@ -1,0 +1,9 @@
+type: string
+enum:
+  - makeup_artist
+  - hair_stylist
+  - nail_technician
+  - lash_technician
+  - brow_technician
+  - massage_therapist
+  - esthetician
