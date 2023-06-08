@@ -1,60 +1,58 @@
 type: object
 properties:
-  type: object
-  properties:
-    customerId:
-      type: number
-    yearsExperience:
+  customerId:
+    type: number
+  yearsExperience:
+    type: string
+    format: number
+  professions:
+    type: array
+    items:
+      $ref: "../../user/_types/professions.yaml"
+  specialties:
+    type: array
+    items:
       type: string
-      format: number
-    professions:
-      type: array
-      items:
-        $ref: "../_types/professions.yaml"
-    specialties:
-      type: array
-      items:
+  username:
+    type: string
+  aboutMe:
+    type: string
+  shortDescription:
+    type: string
+  gender:
+    type: string
+  social:
+    type: object
+    properties:
+      youtube:
         type: string
-    username:
-      type: string
-    aboutMe:
-      type: string
-    shortDescription:
-      type: string
-    gender:
-      type: string
-    social:
-      type: object
-      properties:
-        youtube:
-          type: string
-        twitter:
-          type: string
-        instagram:
-          type: string
-    images:
-      type: object
-      properties:
-        profile:
-          type: object
-          properties:
-            url:
-              type: string
-              format: uri
-            width:
-              type: integer
-            height:
-              type: integer
-    speaks:
-      type: array
-      items:
+      twitter:
         type: string
-    fullname:
+      instagram:
+        type: string
+  images:
+    type: object
+    properties:
+      profile:
+        type: object
+        properties:
+          url:
+            type: string
+            format: uri
+          width:
+            type: integer
+          height:
+            type: integer
+  speaks:
+    type: array
+    items:
       type: string
-    active:
-      type: boolean
-    email:
-      type: string
-      format: email
-    phone:
-      type: string
+  fullname:
+    type: string
+  active:
+    type: boolean
+  email:
+    type: string
+    format: email
+  phone:
+    type: string
