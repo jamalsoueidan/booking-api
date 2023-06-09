@@ -95,8 +95,6 @@ components:
     # Customer
     Customer:
       $ref: paths/customer/_types/customer.yaml
-    CustomerExists:
-      $ref: paths/customer/_types/customer-exists.yaml
     CustomerProductList:
       $ref: paths/customer/_types/product.yaml
     CustomerProductAvailability:

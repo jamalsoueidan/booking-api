@@ -66,4 +66,20 @@ describe("CustomerControllerUpdate", () => {
     expect(res.jsonBody).toHaveProperty("payload");
     expect(res.jsonBody?.payload.phone).toEqual("004531317428");
   });
+
+  it("Should create user and not enable isBusiness", async () => {
+    request = await createHttpRequest<CustomerControllerUpdateRequest>({
+      query,
+      body: {
+        phone: "004531317428",
+      } as any,
+    });
+
+    const res: HttpSuccessResponse<CustomerControllerUpdateResponse> =
+      await CustomerControllerUpdate(request, context);
+
+    expect(res.jsonBody?.success).toBeTruthy();
+    expect(res.jsonBody).toHaveProperty("payload");
+    expect(res.jsonBody?.payload.isBusiness).toEqual(false);
+  });
 });

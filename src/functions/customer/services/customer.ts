@@ -36,7 +36,7 @@ export const CustomerServiceIsBusiness = async (
   filter: CustomerServiceIsBusiness
 ) => {
   const user = await UserModel.findOne(filter).lean();
-  return { exists: user ? true : false };
+  return { isBusiness: user ? user.isBusiness : false };
 };
 
 export type CustomerServiceGetProps = Partial<
