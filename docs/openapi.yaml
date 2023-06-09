@@ -666,7 +666,7 @@ components:
         professions:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerProffesion'
+            $ref: '#/components/schemas/CustomerProfession'
         specialties:
           type: array
           items:
@@ -731,7 +731,7 @@ components:
         professions:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerProffesion'
+            $ref: '#/components/schemas/CustomerProfession'
         username:
           type: string
           pattern: '^[a-zA-Z0-9-_]+$'
@@ -796,7 +796,7 @@ components:
       required:
         - success
         - payload
-    CustomerProffesion:
+    CustomerProfession:
       type: string
       enum:
         - makeup_artist
@@ -806,6 +806,7 @@ components:
         - brow_technician
         - massage_therapist
         - esthetician
+        - ''
 paths:
   /customers:
     get:
