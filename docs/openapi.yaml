@@ -532,11 +532,6 @@ components:
         - shortDescription
         - aboutMe
         - active
-    CustomerExists:
-      type: object
-      properties:
-        exists:
-          type: boolean
     CustomerProductList:
       type: object
       allOf:
@@ -618,7 +613,10 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerExists'
+          type: object
+          properties:
+            isBusiness:
+              type: boolean
       required:
         - success
         - payload
