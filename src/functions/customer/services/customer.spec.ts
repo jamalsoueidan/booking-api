@@ -25,6 +25,7 @@ describe("CustomerService", () => {
       },
     },
     speaks: [faker.random.locale()],
+    isBusiness: true,
   };
 
   it("Should create a user", async () => {

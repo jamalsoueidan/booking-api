@@ -66,7 +66,7 @@ describe("CustomerControllerUpsert", () => {
     request = await createHttpRequest<CustomerControllerUpsertRequest>({
       query,
       body: {
-        fullname: "test",
+        username: "test",
       } as any,
     });
 
@@ -76,6 +76,29 @@ describe("CustomerControllerUpsert", () => {
     console.log();
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
-    expect(res.jsonBody?.payload.fullname).toEqual("test");
+    expect(res.jsonBody?.payload.username).toEqual("test");
+  });
+
+  it("Should create user and enable isBusiness", async () => {
+    await CustomerServiceUpsert(query, {
+      fullname: "asd",
+      username: "asd",
+      ...body,
+    });
+
+    request = await createHttpRequest<CustomerControllerUpsertRequest>({
+      query,
+      body: {
+        username: "test",
+      } as any,
+    });
+
+    const res: HttpSuccessResponse<CustomerControllerUpsertResponse> =
+      await CustomerControllerUpsert(request, context);
+
+    console.log();
+    expect(res.jsonBody?.success).toBeTruthy();
+    expect(res.jsonBody).toHaveProperty("payload");
+    expect(res.jsonBody?.payload.isBusiness).toEqual(true);
   });
 });
