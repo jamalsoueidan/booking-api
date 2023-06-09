@@ -21,6 +21,10 @@ export const UserMongooseSchema = new mongoose.Schema<
     professions: {
       type: [String],
     },
+    isBusiness: {
+      type: Boolean,
+      default: false,
+    },
     specialties: {
       type: [String],
     },

@@ -4,7 +4,11 @@ properties:
     type: boolean
     example: true
   payload:
-    $ref: "../_types/customer-exists.yaml"
+    type: object
+    properties:
+      isBusiness:
+        type: boolean
+
 required:
   - success
   - payload

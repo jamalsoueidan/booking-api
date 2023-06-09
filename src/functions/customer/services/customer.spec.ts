@@ -71,7 +71,7 @@ describe("CustomerService", () => {
     const user = await CustomerServiceIsBusiness({
       customerId: newUser.customerId,
     });
-    expect(user.exists).toEqual(true);
+    expect(user.isBusiness).toEqual(true);
   });
 
   it("Should update a user by customerId", async () => {
