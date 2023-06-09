@@ -13,6 +13,7 @@ export enum Professions {
   BROW = "brow_technician",
   MASSAGE = "massage_therapist",
   ESTHETICIAN = "esthetician",
+  empty = "", //because form data (dont delete)
 }
 
 export const UserZodSchema = z.object({
@@ -20,7 +21,14 @@ export const UserZodSchema = z.object({
   customerId: GidFormat,
   isBusiness: BooleanOrStringType,
   yearsExperience: NumberOrStringType.optional(),
-  professions: z.array(z.nativeEnum(Professions)).optional(),
+  professions: z
+    .array(z.nativeEnum(Professions))
+    .transform((professions) => {
+      return professions
+        ? professions.filter((profession) => profession !== "")
+        : [];
+    })
+    .optional(),
   specialties: z.array(z.string()).optional(),
   username: z
     .string()
