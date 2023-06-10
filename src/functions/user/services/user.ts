@@ -52,7 +52,6 @@ export const UserServiceList = async ({
   }
 
   const users = await UserModel.find(query)
-    .select("customerId createdAt")
     .sort({ createdAt: sortParam })
     .limit(limit || 10);
 
