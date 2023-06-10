@@ -8,10 +8,16 @@ export type UserControllerListRequest = {
   query: z.infer<typeof UserControllerListSchema>;
 };
 
+enum SortOrder {
+  ASC = "asc",
+  DESC = "desc",
+}
+
 export const UserControllerListSchema = z.object({
   nextCursor: z.string().optional(),
   limit: NumberOrStringType.optional(),
   profession: z.string().optional(),
+  sortOrder: z.nativeEnum(SortOrder).optional(),
 });
 
 export type UserControllerListResponse = Awaited<
