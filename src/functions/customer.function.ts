@@ -7,7 +7,6 @@ import {
   CustomerBookingControllerList,
   CustomerControllerGet,
   CustomerControllerIsBusiness,
-  CustomerControllerList,
   CustomerControllerUpdate,
   CustomerControllerUpsert,
   CustomerProductControllerAvailability,
@@ -45,13 +44,6 @@ app.http("customerGet", {
   authLevel: "anonymous",
   route: "customer/{identifier?}",
   handler: CustomerControllerGet,
-});
-
-app.http("customersList", {
-  methods: ["GET"],
-  authLevel: "anonymous",
-  route: "customers",
-  handler: CustomerControllerList,
 });
 
 /* **************** */

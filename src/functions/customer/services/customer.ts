@@ -39,17 +39,10 @@ export const CustomerServiceIsBusiness = async (
   return { isBusiness: user ? user.isBusiness : false };
 };
 
-export type CustomerServiceGetProps = Partial<
-  Pick<User, "username" | "customerId">
->;
+export type CustomerServiceGetProps = Pick<User, "customerId">;
 
 export const CustomerServiceGet = async (filter: CustomerServiceGetProps) => {
-  const orConditions = [
-    { username: filter?.username || "" },
-    { customerId: filter?.customerId || 0 },
-  ];
-
-  return UserModel.findOne({ $or: orConditions })
+  return UserModel.findOne(filter)
     .lean()
     .orFail(
       new NotFoundError([
@@ -60,11 +53,4 @@ export const CustomerServiceGet = async (filter: CustomerServiceGetProps) => {
         },
       ])
     );
-};
-
-export const CustomerServiceList = () => {
-  return UserModel.find({ active: true })
-    .sort({ createdAt: 1 })
-    .limit(10)
-    .lean();
 };

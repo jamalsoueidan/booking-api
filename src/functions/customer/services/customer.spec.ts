@@ -50,19 +50,6 @@ describe("CustomerService", () => {
     expect(user.customerId).toBe(newUser.customerId);
   });
 
-  it("Should get the customer by username", async () => {
-    const newUser = await CustomerServiceUpsert(
-      { customerId: faker.datatype.number() },
-      userData
-    );
-
-    const user = await CustomerServiceGet({
-      username: newUser?.username,
-    });
-
-    expect(user.customerId).toBe(newUser.customerId);
-  });
-
   it("Should check if customer exist", async () => {
     const newUser = await CustomerServiceUpsert(
       { customerId: faker.datatype.number() },
