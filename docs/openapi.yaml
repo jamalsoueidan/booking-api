@@ -666,7 +666,7 @@ components:
         professions:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerProfession'
+            $ref: '#/components/schemas/UserProfession'
         specialties:
           type: array
           items:
@@ -731,7 +731,7 @@ components:
         professions:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerProfession'
+            $ref: '#/components/schemas/UserProfession'
         username:
           type: string
           pattern: '^[a-zA-Z0-9-_]+$'
@@ -796,7 +796,7 @@ components:
       required:
         - success
         - payload
-    CustomerProfession:
+    UserProfession:
       type: string
       enum:
         - makeup_artist
@@ -806,7 +806,182 @@ components:
         - brow_technician
         - massage_therapist
         - esthetician
+    User:
+      type: object
+      properties:
+        customerId:
+          type: number
+        yearsExperience:
+          type: string
+          format: number
+        professions:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfession'
+        specialties:
+          type: array
+          items:
+            type: string
+        username:
+          type: string
+        aboutMe:
+          type: string
+        shortDescription:
+          type: string
+        gender:
+          type: string
+        social:
+          type: object
+          properties:
+            youtube:
+              type: string
+            twitter:
+              type: string
+            instagram:
+              type: string
+        images:
+          type: object
+          properties:
+            profile:
+              type: object
+              properties:
+                url:
+                  type: string
+                  format: uri
+                width:
+                  type: integer
+                height:
+                  type: integer
+        speaks:
+          type: array
+          items:
+            type: string
+        fullname:
+          type: string
+        active:
+          type: boolean
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+      required:
+        - customerId
+        - yearsExperience
+        - professions
+        - fullname
+        - avatar
+        - active
+        - speaks
+        - socialUrls
+        - shortDescription
+        - aboutMe
+    UserGetResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/User'
+      required:
+        - success
+        - payload
+    UsersListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: object
+          properties:
+            nextCursor:
+              type: string
+            results:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+          required:
+            - results
+      required:
+        - success
+        - payload
 paths:
+  '/user/{username}':
+    parameters:
+      - name: username
+        in: path
+        description: username
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - User
+      operationId: userGet
+      summary: GET Get user
+      description: This endpoint gets user object
+      responses:
+        '200':
+          description: Response with payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  /users:
+    parameters:
+      - name: nextCursor
+        in: query
+        description: nextCursor
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: limit items (default 10)
+        schema:
+          type: string
+      - name: profession
+        in: query
+        description: profession like makeup_artist
+        schema:
+          type: string
+      - name: sortOrder
+        in: query
+        description: asc or desc
+        schema:
+          type: string
+    get:
+      tags:
+        - User
+      operationId: usersList
+      summary: GET Get all users
+      description: This endpoint get all users
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersListResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
   /customers:
     get:
       tags:
@@ -830,12 +1005,11 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-  '/customer/{identifier}':
+  '/customer/{customerId}':
     put:
       parameters:
-        - name: identifier
+        - name: customerId
           in: path
-          description: must be customerId
           required: true
           schema:
             type: string
@@ -866,9 +1040,8 @@ paths:
       security: []
     get:
       parameters:
-        - name: identifier
+        - name: customerId
           in: path
-          description: can be either username or customerId
           required: true
           schema:
             type: string
@@ -893,10 +1066,10 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-  '/customer/{identifier}/update':
+  '/customer/{customerId}/update':
     put:
       parameters:
-        - name: identifier
+        - name: customerId
           in: path
           description: must be customerId
           required: true
