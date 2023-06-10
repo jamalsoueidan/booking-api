@@ -476,62 +476,6 @@ components:
       required:
         - success
         - payload
-    Customer:
-      type: object
-      properties:
-        customerId:
-          type: number
-        title:
-          type: string
-        username:
-          type: string
-        fullname:
-          type: string
-        phone:
-          type: string
-        email:
-          type: string
-        aboutMe:
-          type: string
-        shortDescription:
-          type: string
-        social:
-          type: object
-          properties:
-            youtube:
-              type: string
-            twitter:
-              type: string
-            instagram:
-              type: string
-        images:
-          type: object
-          properties:
-            profile:
-              type: object
-              properties:
-                url:
-                  type: string
-                width:
-                  type: number
-                height:
-                  type: number
-        speaks:
-          type: array
-          items:
-            type: string
-        active:
-          type: boolean
-      required:
-        - customerId
-        - title
-        - fullname
-        - images
-        - speaks
-        - social
-        - shortDescription
-        - aboutMe
-        - active
     CustomerProductList:
       type: object
       allOf:
@@ -620,19 +564,6 @@ components:
       required:
         - success
         - payload
-    CustomersListResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
-      required:
-        - success
-        - payload
     CustomerGetResponse:
       type: object
       properties:
@@ -640,7 +571,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/Customer'
+          $ref: '#/components/schemas/User'
       required:
         - success
         - payload
@@ -651,7 +582,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/Customer'
+          $ref: '#/components/schemas/User'
       required:
         - success
         - payload
@@ -721,7 +652,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/Customer'
+          $ref: '#/components/schemas/User'
       required:
         - success
         - payload
@@ -973,29 +904,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UsersListResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security: []
-  /customers:
-    get:
-      tags:
-        - Customer
-      operationId: customersList
-      summary: GET Get all customers
-      description: This endpoint get all customers
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomersListResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':

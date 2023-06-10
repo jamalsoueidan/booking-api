@@ -91,16 +91,12 @@ components:
       $ref: paths/customer/booking/list/response.yaml
 
     # Customer
-    Customer:
-      $ref: paths/customer/_types/customer.yaml
     CustomerProductList:
       $ref: paths/customer/_types/product.yaml
     CustomerProductAvailability:
       $ref: paths/customer/_types/availability.yaml
     CustomerIsBusinessResponse:
       $ref: paths/customer/is-business/response.yaml
-    CustomersListResponse:
-      $ref: paths/customer/list/response.yaml
     CustomerGetResponse:
       $ref: paths/customer/get/response.yaml
     CustomerUpdateResponse:
@@ -136,9 +132,6 @@ paths:
     $ref: "./paths/user/list/index.yaml"
 
   # Customer
-  /customers:
-    $ref: "paths/customer/list/index.yaml"
-
   /customer/{customerId}:
     $ref: "./paths/customer/customer.yaml"
 
@@ -150,6 +143,7 @@ paths:
 
   /customer/{customerId}/products:
     $ref: "./paths/customer/products/list/index.yaml"
+
   /customer/{customerId}/products/ids:
     $ref: "./paths/customer/products/list-ids/index.yaml"
 
