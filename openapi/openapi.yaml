@@ -123,10 +123,15 @@ components:
       $ref: paths/user/get/response.yaml
     UsersListResponse:
       $ref: paths/user/list/response.yaml
+    UsersProfessionsResponse:
+      $ref: paths/user/professions/response.yaml
 paths:
   # User
   /user/{username}:
     $ref: "./paths/user/user.yaml"
+
+  /users/professions:
+    $ref: "./paths/user/professions/index.yaml"
 
   /users:
     $ref: "./paths/user/list/index.yaml"

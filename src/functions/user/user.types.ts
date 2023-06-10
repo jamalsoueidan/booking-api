@@ -5,6 +5,9 @@ import {
   NumberOrStringType,
 } from "~/library/zod";
 
+// IMPORTANT
+// ----
+// Adding any new must be translated in ProfessionMultiSelectField in frontend.
 export enum Professions {
   MAKEUP_ARTIST = "makeup_artist",
   HAIR_STYLIST = "hair_stylist",
@@ -13,7 +16,7 @@ export enum Professions {
   BROW = "brow_technician",
   MASSAGE = "massage_therapist",
   ESTHETICIAN = "esthetician",
-  empty = "", //because form data (dont delete)
+  EMPTY = "", //because form data (dont delete)
 }
 
 export const UserZodSchema = z.object({

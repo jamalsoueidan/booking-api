@@ -73,7 +73,6 @@ describe("CustomerControllerUpsert", () => {
     const res: HttpSuccessResponse<CustomerControllerUpsertResponse> =
       await CustomerControllerUpsert(request, context);
 
-    console.log();
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
     expect(res.jsonBody?.payload.username).toEqual("test");
@@ -96,7 +95,6 @@ describe("CustomerControllerUpsert", () => {
     const res: HttpSuccessResponse<CustomerControllerUpsertResponse> =
       await CustomerControllerUpsert(request, context);
 
-    console.log();
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
     expect(res.jsonBody?.payload.isBusiness).toEqual(true);

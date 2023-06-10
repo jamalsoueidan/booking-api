@@ -61,3 +61,22 @@ export const UserServiceList = async ({
       users.length > 0 ? users[users.length - 1].createdAt : undefined,
   };
 };
+
+export const UserServiceProfessions = async () => {
+  const professionCount = await UserModel.aggregate([
+    { $unwind: "$professions" },
+    {
+      $group: {
+        _id: "$professions",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  const professionCountFormatted: Record<string, number> = {};
+  for (const profession of professionCount) {
+    professionCountFormatted[profession._id] = profession.count;
+  }
+
+  return professionCountFormatted;
+};
