@@ -127,20 +127,20 @@ components:
     #  $ref: paths/user/get/response.yaml
 paths:
   # User
-  #/user/{username}:
-  #  $ref: "./paths/user/user.yaml"
+  /user/{username}:
+    $ref: "./paths/user/user.yaml"
 
-  #/users:
-  #  $ref: "./paths/user/list/index.yaml"
+  /users:
+    $ref: "./paths/user/list/index.yaml"
 
   # Customer
   /customers:
     $ref: "paths/customer/list/index.yaml"
 
-  /customer/{identifier}:
+  /customer/{customerId}:
     $ref: "./paths/customer/customer.yaml"
 
-  /customer/{identifier}/update:
+  /customer/{customerId}/update:
     $ref: "./paths/customer/update/index.yaml"
 
   /customer/{customerId}/isBusiness:

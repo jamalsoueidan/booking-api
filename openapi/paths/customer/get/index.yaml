@@ -1,8 +1,7 @@
 get:
   parameters:
-    - name: identifier
+    - name: customerId
       in: path
-      description: can be either username or customerId
       required: true
       schema:
         type: string
