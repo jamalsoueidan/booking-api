@@ -1,6 +1,6 @@
 put:
   parameters:
-    - name: identifier
+    - name: customerId
       in: path
       description: must be customerId
       required: true

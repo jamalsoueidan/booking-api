@@ -18,15 +18,36 @@ describe("UserControllerList", () => {
   let request: HttpRequest;
 
   it("Should be able to get all users", async () => {
-    await createUser({ customerId: 123 }, { username: "test" });
-    await createUser({ customerId: 321 }, { username: "asd" });
-    request = await createHttpRequest<UserControllerListRequest>({});
+    for (let customerId = 0; customerId < 25; customerId++) {
+      await createUser({ customerId }, { active: true, isBusiness: true });
+    }
 
-    const res: HttpSuccessResponse<UserControllerListResponse> =
+    let request = await createHttpRequest<UserControllerListRequest>({
+      query: { limit: 10 },
+    });
+    let res: HttpSuccessResponse<UserControllerListResponse> =
       await UserControllerList(request, context);
 
-    expect(res.jsonBody?.success).toBeTruthy();
-    expect(res.jsonBody).toHaveProperty("payload");
-    expect(res.jsonBody?.payload).toHaveLength(2);
+    expect(res.jsonBody?.payload.results.length).toBe(10);
+
+    request = await createHttpRequest<UserControllerListRequest>({
+      query: {
+        nextCursor: res.jsonBody?.payload.nextCursor?.toJSON(),
+        limit: 10,
+      },
+    });
+    res = await UserControllerList(request, context);
+
+    expect(res.jsonBody?.payload.results.length).toBe(10);
+
+    request = await createHttpRequest<UserControllerListRequest>({
+      query: {
+        nextCursor: res.jsonBody?.payload.nextCursor?.toJSON(),
+        limit: 10,
+      },
+    });
+    res = await UserControllerList(request, context);
+
+    expect(res.jsonBody?.payload.results.length).toBe(5);
   });
 });

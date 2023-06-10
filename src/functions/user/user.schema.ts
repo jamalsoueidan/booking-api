@@ -1,7 +1,10 @@
 import mongoose, { Document, Model } from "mongoose";
 import { User } from "./user.types";
 
-export interface IUser extends Omit<User, "_id"> {}
+export interface IUser extends Omit<User, "_id"> {
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export interface IUserDocument extends IUser, Document {}
 

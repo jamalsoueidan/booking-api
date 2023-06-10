@@ -18,7 +18,10 @@ describe("UserControllerGet", () => {
   let request: HttpRequest;
 
   it("Should be able to get user by username", async () => {
-    const user = await createUser({ customerId: 123 }, { username: "test" });
+    const user = await createUser(
+      { customerId: 123 },
+      { username: "test", isBusiness: true, active: true }
+    );
     request = await createHttpRequest<UserControllerGetRequest>({
       query: { username: user.username },
     });
