@@ -24,7 +24,6 @@ async function MetaProfessions(
     brow_technician: "Bryn tekniker",
     massage_therapist: "Massage terapeut",
     esthetician: "Kosmetolog",
-    "": "",
   };
 
   const list = professions.map((profession) => ({
