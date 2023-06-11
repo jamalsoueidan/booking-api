@@ -1538,9 +1538,19 @@ paths:
                     type: boolean
                     example: true
                   payload:
-                    type: object
-                    additionalProperties:
-                      type: number
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                          example: Makeupartist
+                        value:
+                          type: string
+                          example: makeup_artist
+                      required:
+                        - label
+                        - value
                 required:
                   - success
                   - payload
@@ -1572,9 +1582,9 @@ paths:
                     type: boolean
                     example: true
                   payload:
-                    type: object
-                    additionalProperties:
-                      type: number
+                    type: array
+                    items:
+                      $ref: '#/paths/~1meta~1professions/get/responses/200/content/application~1json/schema/properties/payload/items'
                 required:
                   - success
                   - payload
