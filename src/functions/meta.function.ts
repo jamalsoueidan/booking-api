@@ -17,12 +17,12 @@ async function MetaProfessions(
   const professions = Object.values(Professions);
 
   const translate = {
-    makeup_artist: "Makeupartist",
+    makeup_artist: "Makeup artist",
     hair_stylist: "Frisør",
-    nail_technician: "Negletekniker",
-    lash_technician: "Vippetekniker",
+    nail_technician: "Negle tekniker",
+    lash_technician: "Vippe tekniker",
     brow_technician: "Bryn tekniker",
-    massage_therapist: "Massageterapeut",
+    massage_therapist: "Massage terapeut",
     esthetician: "Kosmetolog",
     "": "",
   };
