@@ -33,6 +33,8 @@ components:
       $ref: paths/schedule/_types/destroy.yaml
     Day:
       $ref: paths/schedule/_types/day.yaml
+    MetaItem:
+      $ref: paths/meta/_types/item.yaml
     Interval:
       $ref: paths/schedule/_types/interval.yaml
     Slot:
