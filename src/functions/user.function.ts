@@ -1,7 +1,11 @@
 import "module-alias/register";
 
 import { app } from "@azure/functions";
-import { UserControllerGet, UserControllerList } from "./user/controllers/user";
+import {
+  UserControllerGet,
+  UserControllerList,
+  UserControllerProfessions,
+} from "./user/controllers/user";
 
 app.http("userGet", {
   methods: ["GET"],
@@ -15,4 +19,11 @@ app.http("usersList", {
   authLevel: "anonymous",
   route: "users",
   handler: UserControllerList,
+});
+
+app.http("usersProfessions", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "users/professions",
+  handler: UserControllerProfessions,
 });

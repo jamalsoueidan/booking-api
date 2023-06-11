@@ -1,0 +1,11 @@
+type: object
+properties:
+  label:
+    type: string
+    example: "Makeupartist"
+  value:
+    type: string
+    example: "makeup_artist"
+required:
+  - label
+  - value

@@ -5,7 +5,11 @@ import {
 } from "~/functions/customer/services/customer";
 import { createUser } from "~/library/jest/helpers";
 import { Professions } from "../user.types";
-import { UserServiceGet, UserServiceList } from "./user";
+import {
+  UserServiceGet,
+  UserServiceList,
+  UserServiceProfessions,
+} from "./user";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -69,5 +73,31 @@ describe("UserService", () => {
     thirdPage.results.forEach((user) => {
       expect(secondPageUserIds.has(user._id.toString())).toBe(false);
     });
+  });
+
+  it("Should get group and count professions by all users", async () => {
+    const professions = Object.values(Professions);
+
+    const professionCount = faker.datatype.number({
+      min: 1,
+      max: professions.length,
+    });
+
+    for (let customerId = 0; customerId < 25; customerId++) {
+      const pickedProfessions = faker.helpers.arrayElements(
+        professions,
+        professionCount
+      );
+
+      await createUser(
+        { customerId },
+        { active: true, isBusiness: true, professions: pickedProfessions }
+      );
+    }
+
+    const result = await UserServiceProfessions();
+    for (const key in result) {
+      expect(typeof result[key]).toBe("number");
+    }
   });
 });

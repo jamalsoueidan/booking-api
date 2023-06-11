@@ -115,18 +115,21 @@ components:
       $ref: paths/customer/product/availability/response.yaml
 
     # User
-    UserProfession:
-      $ref: paths/user/_types/professions.yaml
     User:
       $ref: paths/user/_types/user.yaml
     UserGetResponse:
       $ref: paths/user/get/response.yaml
     UsersListResponse:
       $ref: paths/user/list/response.yaml
+    UsersProfessionsResponse:
+      $ref: paths/user/professions/response.yaml
 paths:
   # User
   /user/{username}:
     $ref: "./paths/user/user.yaml"
+
+  /users/professions:
+    $ref: "./paths/user/professions/index.yaml"
 
   /users:
     $ref: "./paths/user/list/index.yaml"
@@ -169,3 +172,9 @@ paths:
 
   /customer/{customerId}/schedule/{scheduleId}/slots:
     $ref: paths/schedule/slots/update/index.yaml
+
+  # meta
+  /meta/professions:
+    $ref: "./paths/meta/professions/index.yaml"
+  /meta/specialties:
+    $ref: "./paths/meta/specialties/index.yaml"

@@ -8,7 +8,7 @@ properties:
   professions:
     type: array
     items:
-      $ref: "../../user/_types/professions.yaml"
+      type: string
   specialties:
     type: array
     items:
