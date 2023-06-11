@@ -114,6 +114,18 @@ components:
       required:
         - day
         - intervals
+    MetaItem:
+      type: object
+      properties:
+        label:
+          type: string
+          example: Makeupartist
+        value:
+          type: string
+          example: makeup_artist
+      required:
+        - label
+        - value
     Product:
       type: object
       properties:
@@ -1540,17 +1552,7 @@ paths:
                   payload:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        label:
-                          type: string
-                          example: Makeupartist
-                        value:
-                          type: string
-                          example: makeup_artist
-                      required:
-                        - label
-                        - value
+                      $ref: '#/components/schemas/MetaItem'
                 required:
                   - success
                   - payload
@@ -1584,7 +1586,7 @@ paths:
                   payload:
                     type: array
                     items:
-                      $ref: '#/paths/~1meta~1professions/get/responses/200/content/application~1json/schema/properties/payload/items'
+                      $ref: '#/components/schemas/MetaItem'
                 required:
                   - success
                   - payload
