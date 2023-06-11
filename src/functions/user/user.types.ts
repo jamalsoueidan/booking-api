@@ -5,9 +5,6 @@ import {
   NumberOrStringType,
 } from "~/library/zod";
 
-// IMPORTANT
-// ----
-// Adding any new must be translated in ProfessionMultiSelectField in frontend.
 export enum Professions {
   MAKEUP_ARTIST = "makeup_artist",
   HAIR_STYLIST = "hair_stylist",
@@ -16,7 +13,37 @@ export enum Professions {
   BROW = "brow_technician",
   MASSAGE = "massage_therapist",
   ESTHETICIAN = "esthetician",
-  EMPTY = "", //because form data (dont delete)
+}
+
+export enum Specialties {
+  BRIDAL_MAKEUP = "bridal_makeup",
+  SFX_MAKEUP = "sfx_makeup",
+  EDITORIAL_MAKEUP = "editorial_makeup",
+  CELEBRITY_MAKEUP = "celebrity_makeup",
+  AIRBRUSH_MAKEUP = "airbrush_makeup",
+  STAGE_MAKEUP = "stage_makeup",
+  ETHEREAL_MAKEUP = "ethereal_makeup",
+  VINTAGE_STYLES = "vintage_styles",
+  HAIR_COLORING = "hair_coloring",
+  HAIR_EXTENSIONS = "hair_extensions",
+  KERATIN_TREATMENTS = "keratin_treatments",
+  BALAYAGE_SPECIALIST = "balayage_specialist",
+  NAIL_ART = "nail_art",
+  GEL_NAILS = "gel_nails",
+  ACRYLIC_NAILS = "acrylic_nails",
+  MANICURE_PEDICURE = "manicure_pedicure",
+  EYELASH_EXTENSIONS = "eyelash_extensions",
+  EYEBROW_SHAPING = "eyebrow_shaping",
+  FACIAL_TREATMENTS = "facial_treatments",
+  BODY_TREATMENTS = "body_treatments",
+  WAXING_HAIR_REMOVAL = "waxing_hair_removal",
+  MASSAGE = "massage",
+  SKIN_CARE = "skin_care",
+  PERMANENT_MAKEUP = "permanent_makeup",
+  MICROBLADING = "microblading",
+  COSMETIC_TEETH_WHITENING = "cosmetic_teeth_whitening",
+  TATTOO_REMOVAL = "tattoo_removal",
+  SCAR_TREATMENT = "scar_treatment",
 }
 
 export const UserZodSchema = z.object({
@@ -24,14 +51,7 @@ export const UserZodSchema = z.object({
   customerId: GidFormat,
   isBusiness: BooleanOrStringType,
   yearsExperience: NumberOrStringType.optional(),
-  professions: z
-    .array(z.nativeEnum(Professions))
-    .transform((professions) => {
-      return professions
-        ? professions.filter((profession) => profession !== "")
-        : [];
-    })
-    .optional(),
+  professions: z.array(z.nativeEnum(Professions)).optional(),
   specialties: z.array(z.string()).optional(),
   username: z
     .string()

@@ -1,0 +1,23 @@
+get:
+  tags:
+    - Meta
+  operationId: metaProfessions
+  summary: GET Get all professions
+  description: This endpoint get all professions
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../responses/not-found.yaml"
+
+  security: []

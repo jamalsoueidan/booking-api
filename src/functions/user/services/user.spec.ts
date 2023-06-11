@@ -76,9 +76,7 @@ describe("UserService", () => {
   });
 
   it("Should get group and count professions by all users", async () => {
-    const professions = Object.values(Professions).filter(
-      (profession) => profession !== Professions.EMPTY
-    );
+    const professions = Object.values(Professions);
 
     const professionCount = faker.datatype.number({
       min: 1,
