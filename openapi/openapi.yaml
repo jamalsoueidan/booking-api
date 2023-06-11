@@ -37,6 +37,8 @@ components:
       $ref: paths/schedule/_types/interval.yaml
     Slot:
       $ref: paths/schedule/_types/slot.yaml
+    MetaItem:
+      $ref: paths/meta/_types/item.yaml
     Product:
       $ref: paths/schedule/_types/product.yaml
     ProductBookingPeriod:
