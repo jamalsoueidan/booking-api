@@ -51,8 +51,14 @@ export const UserZodSchema = z.object({
   customerId: GidFormat,
   isBusiness: BooleanOrStringType,
   yearsExperience: NumberOrStringType.optional(),
-  professions: z.array(z.nativeEnum(Professions)).optional(),
-  specialties: z.array(z.string()).optional(),
+  professions: z
+    .array(z.nativeEnum(Professions))
+    .transform((array) => [...new Set(array)])
+    .optional(),
+  specialties: z
+    .array(z.string())
+    .transform((array) => [...new Set(array)])
+    .optional(),
   username: z
     .string()
     .transform((input) => input.replace(/[^a-zA-Z0-9-_]/g, "-").toLowerCase())
