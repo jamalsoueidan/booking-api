@@ -90,8 +90,8 @@ describe("CustomerControllerUpsert", () => {
     request = await createHttpRequest<CustomerControllerUpsertRequest>({
       query,
       body: {
-        professions: [Professions.HAIR_STYLIST, "test"],
-        specialties: ["", "fade"],
+        professions: [Professions.HAIR_STYLIST],
+        specialties: ["fade"],
       },
     });
 
