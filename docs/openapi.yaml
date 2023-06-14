@@ -607,13 +607,17 @@ components:
           type: string
           format: number
         professions:
-          type: array
-          items:
-            type: string
+          oneOf:
+            - type: array
+              items:
+                type: string
+            - type: string
         specialties:
-          type: array
-          items:
-            type: string
+          oneOf:
+            - type: array
+              items:
+                type: string
+            - type: string
         username:
           type: string
         aboutMe:
@@ -645,9 +649,11 @@ components:
                 height:
                   type: integer
         speaks:
-          type: array
-          items:
-            type: string
+          oneOf:
+            - type: array
+              items:
+                type: string
+            - type: string
         fullname:
           type: string
         active:
@@ -672,13 +678,17 @@ components:
       type: object
       properties:
         professions:
-          type: array
-          items:
-            type: string
+          oneOf:
+            - type: array
+              items:
+                type: string
+            - type: string
         specialties:
-          type: array
-          items:
-            type: string
+          oneOf:
+            - type: array
+              items:
+                type: string
+            - type: string
         username:
           type: string
           pattern: '^[a-zA-Z0-9-_]+$'
@@ -696,9 +706,11 @@ components:
             instagram:
               type: string
         speaks:
-          type: array
-          items:
-            type: string
+          oneOf:
+            - type: array
+              items:
+                type: string
+            - type: string
       required:
         - professions
         - username
