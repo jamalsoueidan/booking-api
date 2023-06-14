@@ -6,13 +6,17 @@ properties:
     type: string
     format: number
   professions:
-    type: array
-    items:
-      type: string
+    oneOf:
+      - type: array
+        items:
+          type: string
+      - type: string
   specialties:
-    type: array
-    items:
-      type: string
+    oneOf:
+      - type: array
+        items:
+          type: string
+      - type: string
   username:
     type: string
   aboutMe:
@@ -44,9 +48,11 @@ properties:
           height:
             type: integer
   speaks:
-    type: array
-    items:
-      type: string
+    oneOf:
+      - type: array
+        items:
+          type: string
+      - type: string
   fullname:
     type: string
   active:

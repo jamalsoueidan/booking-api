@@ -1,13 +1,17 @@
 type: object
 properties:
   professions:
-    type: array
-    items:
-      type: string
+    oneOf:
+      - type: array
+        items:
+          type: string
+      - type: string
   specialties:
-    type: array
-    items:
-      type: string
+    oneOf:
+      - type: array
+        items:
+          type: string
+      - type: string
   username:
     type: string
     pattern: ^[a-zA-Z0-9-_]+$
@@ -25,9 +29,11 @@ properties:
       instagram:
         type: string
   speaks:
-    type: array
-    items:
-      type: string
+    oneOf:
+      - type: array
+        items:
+          type: string
+      - type: string
 
 required:
   - professions
