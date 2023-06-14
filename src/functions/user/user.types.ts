@@ -52,11 +52,15 @@ export const UserZodSchema = z.object({
   isBusiness: BooleanOrStringType,
   yearsExperience: NumberOrStringType.optional(),
   professions: z
-    .array(z.nativeEnum(Professions))
+    .array(z.string())
+    .transform((array) =>
+      array.filter((value: any) => Object.values(Professions).includes(value))
+    )
     .transform((array) => [...new Set(array)])
     .optional(),
   specialties: z
     .array(z.string())
+    .transform((array) => array.filter((value) => value.trim() !== ""))
     .transform((array) => [...new Set(array)])
     .optional(),
   username: z

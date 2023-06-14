@@ -6,6 +6,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
+import { Professions } from "~/functions/user";
 import { CustomerServiceUpsert } from "../../services";
 import {
   CustomerControllerUpsert,
@@ -76,9 +77,10 @@ describe("CustomerControllerUpsert", () => {
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
     expect(res.jsonBody?.payload.username).toEqual("test");
+    expect(res.jsonBody?.payload.isBusiness).toEqual(true);
   });
 
-  it("Should create user and enable isBusiness", async () => {
+  it("Should update user professions and speciellity", async () => {
     await CustomerServiceUpsert(query, {
       fullname: "asd",
       username: "asd",
@@ -88,8 +90,9 @@ describe("CustomerControllerUpsert", () => {
     request = await createHttpRequest<CustomerControllerUpsertRequest>({
       query,
       body: {
-        username: "test",
-      } as any,
+        professions: [Professions.HAIR_STYLIST, "test"],
+        specialties: ["", "fade"],
+      },
     });
 
     const res: HttpSuccessResponse<CustomerControllerUpsertResponse> =
@@ -97,6 +100,9 @@ describe("CustomerControllerUpsert", () => {
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
-    expect(res.jsonBody?.payload.isBusiness).toEqual(true);
+    expect(res.jsonBody?.payload.professions).toEqual([
+      Professions.HAIR_STYLIST,
+    ]);
+    expect(res.jsonBody?.payload.specialties).toEqual(["fade"]);
   });
 });
