@@ -36,6 +36,7 @@ export const LocationMongooseSchema = new mongoose.Schema<
     fullAddress: {
       type: String,
       required: true,
+      default: LocationTypes.CLIENT,
     },
     geoLocation: {
       type: {

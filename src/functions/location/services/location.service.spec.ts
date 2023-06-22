@@ -1,8 +1,10 @@
 import axios from "axios";
+import { LocationTypes } from "../location.types";
 import {
   DataVaskAdresserResponse,
   ForsyningResponse,
   GoogleDirectionResponse,
+  LocationServiceCreate,
   LocationServiceGetCoordinates,
   LocationServiceGetTravelTime,
   LocationServiceValidateAddress,
@@ -12,22 +14,88 @@ require("~/library/jest/mongoose/mongodb.jest");
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe("LocationService", () => {
-  it("LocationServiceGetCoordinates should respond with coordinates", async () => {
-    const data: ForsyningResponse = [
-      {
-        id: "",
-        adressebetegnelse: "Sigridsvej 45, 1. th, 8220 Brabrand",
-        adgangsadresse: {
-          adgangspunkt: {
-            koordinater: [10.12961271, 56.15563438],
+const validateData: DataVaskAdresserResponse = {
+  kategori: "string",
+  resultater: ["1"],
+};
+
+const getCoordinatesData: ForsyningResponse = [
+  {
+    id: "",
+    adressebetegnelse: "Sigridsvej 45, 1. th, 8220 Brabrand",
+    adgangsadresse: {
+      adgangspunkt: {
+        koordinater: [10.12961271, 56.15563438],
+      },
+    },
+  },
+];
+
+const travelTimeData: GoogleDirectionResponse = {
+  routes: [
+    {
+      legs: [
+        {
+          distance: {
+            text: "0.4 km",
+            value: 367,
+          },
+          duration: {
+            text: "1 min",
+            value: 67,
           },
         },
-      },
-    ];
+      ],
+    },
+  ],
+  status: "ok",
+};
 
+describe("LocationService", () => {
+  it("create should be able to create new location type commercial (fullAddress and coordinations)", async () => {
+    mockedAxios.get
+      .mockResolvedValueOnce({
+        data: validateData,
+      })
+      .mockResolvedValueOnce({
+        data: getCoordinatesData,
+      });
+
+    const response = await LocationServiceCreate({
+      fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
+      locationType: LocationTypes.COMMERICAL,
+      customerId: 1,
+    });
+
+    expect(response).toEqual(
+      expect.objectContaining({
+        locationType: "commercial",
+        customerId: 1,
+        fullAddress: "Sigridsvej 45, 1. th, 8220 Brabrand",
+        geoLocation: { coordinates: [10.12961271, 56.15563438], type: "Point" },
+      })
+    );
+  });
+
+  it("create should be able to create new location type client", async () => {
+    const response = await LocationServiceCreate({
+      fullAddress: LocationTypes.CLIENT,
+      locationType: LocationTypes.CLIENT,
+      customerId: 1,
+    });
+
+    expect(response).toEqual(
+      expect.objectContaining({
+        locationType: LocationTypes.CLIENT,
+        customerId: 1,
+        fullAddress: LocationTypes.CLIENT,
+      })
+    );
+  });
+
+  it("LocationServiceGetCoordinates should respond with coordinates", async () => {
     mockedAxios.get.mockResolvedValueOnce({
-      data,
+      data: getCoordinatesData,
     });
 
     const response = await LocationServiceGetCoordinates({
@@ -42,28 +110,8 @@ describe("LocationService", () => {
   });
 
   it("LocationServiceGetTravelTime should respond with duration and distance", async () => {
-    const data: GoogleDirectionResponse = {
-      routes: [
-        {
-          legs: [
-            {
-              distance: {
-                text: "0.4 km",
-                value: 367,
-              },
-              duration: {
-                text: "1 min",
-                value: 67,
-              },
-            },
-          ],
-        },
-      ],
-      status: "ok",
-    };
-
     mockedAxios.get.mockResolvedValueOnce({
-      data,
+      data: travelTimeData,
     });
 
     const response = await LocationServiceGetTravelTime({
@@ -78,13 +126,8 @@ describe("LocationService", () => {
   });
 
   it("LocationServiceValidateAddress should respond with validate(true) when ad", async () => {
-    const data: DataVaskAdresserResponse = {
-      kategori: "string",
-      resultater: ["1"],
-    };
-
     mockedAxios.get.mockResolvedValueOnce({
-      data,
+      data: validateData,
     });
 
     const response = await LocationServiceValidateAddress({

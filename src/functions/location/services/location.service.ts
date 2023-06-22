@@ -1,15 +1,22 @@
 import axios from "axios";
 import { BadError, NotFoundError } from "~/library/handler";
 import { LocationModel } from "../location.model";
-import { Location } from "../location.types";
+import { Location, LocationTypes } from "../location.types";
 
 export const LocationServiceCreate = async (body: Omit<Location, "_id">) => {
   const location = new LocationModel(body);
-  const { valid } = await LocationServiceValidateAddress(location);
-  if (valid) {
-    const result = await LocationServiceGetCoordinates(location);
-    location.geoLocation.coordinates = [result.longitude, result.latitude];
-    location.fullAddress = result.fullAddress;
+  if (body.locationType !== LocationTypes.CLIENT) {
+    const { valid } = await LocationServiceValidateAddress(location);
+    if (valid) {
+      const result = await LocationServiceGetCoordinates(location);
+      location.geoLocation.type = "Point";
+      location.geoLocation.coordinates = [result.longitude, result.latitude];
+      location.fullAddress = result.fullAddress;
+      return location.save();
+    }
+  } else {
+    location.geoLocation.type = "Point";
+    location.geoLocation.coordinates = [0, 0];
     return location.save();
   }
 };
