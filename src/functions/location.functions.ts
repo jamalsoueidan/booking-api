@@ -1,7 +1,9 @@
 import { app } from "@azure/functions";
 import {
+  LocationControllerCreate,
   LocationControllerGetCoordinates,
   LocationControllerGetTravelTime,
+  LocationControllerUpdate,
   LocationControllerValidateAddress,
 } from "./location/controllers";
 
@@ -26,7 +28,7 @@ app.http("locationGetTravelTime", {
   handler: LocationControllerGetTravelTime,
 });
 
-/*app.http("customerLocationCreate", {
+app.http("customerLocationCreate", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/location",
@@ -36,6 +38,6 @@ app.http("locationGetTravelTime", {
 app.http("customerLocationEdit", {
   methods: ["PUT"],
   authLevel: "anonymous",
-  route: "customer/{customerId?}/location/(_id?}",
+  route: "customer/{customerId?}/location/(locationId?}",
   handler: LocationControllerUpdate,
-});*/
+});
