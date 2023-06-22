@@ -28,6 +28,11 @@ export const LocationMongooseSchema = new mongoose.Schema<
       ],
       required: true,
     },
+    customerId: {
+      type: Number,
+      required: true,
+      index: true,
+    },
     fullAddress: {
       type: String,
       required: true,

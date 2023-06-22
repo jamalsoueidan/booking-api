@@ -25,3 +25,17 @@ app.http("locationGetTravelTime", {
   route: "location/get-travel-time",
   handler: LocationControllerGetTravelTime,
 });
+
+/*app.http("customerLocationCreate", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/location",
+  handler: LocationControllerCreate,
+});
+
+app.http("customerLocationEdit", {
+  methods: ["PUT"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/location/(_id?}",
+  handler: LocationControllerUpdate,
+});*/

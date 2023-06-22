@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
 import { LocationZodSchema } from "../location.types";
-import { LocationServiceValidateAddress } from "../services";
+import { LocationServiceValidateAddress } from "../services/location.service";
 
 export type LocationControllerValidateAddressRequest = {
   query: z.infer<typeof LocationServiceValidateAddressSchema>;
