@@ -8,6 +8,7 @@ export type LocationControllerValidateAddressRequest = {
 };
 
 export const LocationServiceValidateAddressSchema = LocationZodSchema.pick({
+  name: true,
   fullAddress: true,
 });
 
