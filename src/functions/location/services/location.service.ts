@@ -12,24 +12,28 @@ export const LocationServiceCreate = async (body: Omit<Location, "_id">) => {
       location.geoLocation.type = "Point";
       location.geoLocation.coordinates = [result.longitude, result.latitude];
       location.fullAddress = result.fullAddress;
-      return location.save();
     }
   } else {
+    location.fullAddress = LocationTypes.CLIENT;
     location.geoLocation.type = "Point";
     location.geoLocation.coordinates = [0, 0];
-    return location.save();
   }
+  return location.save();
 };
 
 type LocationUpdateProps = {
+  customerId: Location["customerId"];
   locationId: Location["_id"];
 };
 
 export const LocationServiceUpdate = async (
   filter: LocationUpdateProps,
-  body: Omit<Location, "_id">
+  body: Omit<Location, "_id" | "customerId">
 ) => {
-  return LocationModel.findOneAndUpdate(filter, body).orFail(
+  const location = await LocationModel.findOne({
+    _id: filter.locationId,
+    customerId: filter.customerId,
+  }).orFail(
     new NotFoundError([
       {
         code: "custom",
@@ -38,6 +42,26 @@ export const LocationServiceUpdate = async (
       },
     ])
   );
+
+  if (body.locationType !== LocationTypes.CLIENT) {
+    const { valid } = await LocationServiceValidateAddress(body);
+    if (valid) {
+      const result = await LocationServiceGetCoordinates(body);
+      location.set({
+        fullAddress: result.fullAddress,
+        geoLocation: {
+          type: "Point",
+          coordinates: [result.longitude, result.latitude],
+        },
+      });
+    }
+  } else {
+    location.set({
+      fullAddress: LocationTypes.CLIENT,
+    });
+  }
+
+  return location.save();
 };
 
 type LocationServiceGetCoordinates = Pick<Location, "fullAddress">;

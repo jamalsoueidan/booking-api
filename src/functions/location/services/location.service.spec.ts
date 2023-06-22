@@ -7,6 +7,7 @@ import {
   LocationServiceCreate,
   LocationServiceGetCoordinates,
   LocationServiceGetTravelTime,
+  LocationServiceUpdate,
   LocationServiceValidateAddress,
 } from "./location.service";
 require("~/library/jest/mongoose/mongodb.jest");
@@ -89,6 +90,84 @@ describe("LocationService", () => {
         locationType: LocationTypes.CLIENT,
         customerId: 1,
         fullAddress: LocationTypes.CLIENT,
+      })
+    );
+  });
+
+  it("update should be able to update location type commercial and (fullAddress and coordinations)", async () => {
+    const getCoordinatesUpdateData = [
+      {
+        id: "",
+        adressebetegnelse: "Dortesvej 21, 1. th, 8220 Brabrand",
+        adgangsadresse: {
+          adgangspunkt: {
+            koordinater: [11.12961271, 57.15563438],
+          },
+        },
+      },
+    ];
+
+    mockedAxios.get
+      .mockResolvedValueOnce({
+        data: validateData,
+      })
+      .mockResolvedValueOnce({
+        data: getCoordinatesData,
+      })
+      .mockResolvedValueOnce({
+        data: validateData,
+      })
+      .mockResolvedValueOnce({
+        data: getCoordinatesUpdateData,
+      });
+
+    const response = await LocationServiceCreate({
+      fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
+      locationType: LocationTypes.COMMERICAL,
+      customerId: 1,
+    });
+
+    const update = await LocationServiceUpdate(
+      { locationId: response._id, customerId: response.customerId },
+      {
+        fullAddress: "Dortesvej 21 1, 8220 Brabrand",
+        locationType: LocationTypes.RESIDENTIAL,
+      }
+    );
+
+    expect(update).toEqual(
+      expect.objectContaining({
+        locationType: "commercial",
+        customerId: 1,
+        fullAddress: getCoordinatesUpdateData[0].adressebetegnelse,
+        geoLocation: {
+          coordinates:
+            getCoordinatesUpdateData[0].adgangsadresse.adgangspunkt.koordinater,
+          type: "Point",
+        },
+      })
+    );
+  });
+
+  it("update should be able to update location type client", async () => {
+    const response = await LocationServiceCreate({
+      fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
+      locationType: LocationTypes.CLIENT,
+      customerId: 1,
+    });
+
+    const update = await LocationServiceUpdate(
+      { locationId: response._id, customerId: response.customerId },
+      {
+        fullAddress: "Dortesvej 21 1, 8220 Brabrand",
+        locationType: LocationTypes.CLIENT,
+      }
+    );
+
+    expect(update).toEqual(
+      expect.objectContaining({
+        locationType: "client",
+        customerId: 1,
       })
     );
   });
