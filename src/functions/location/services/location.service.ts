@@ -6,13 +6,10 @@ import { Location, LocationTypes } from "../location.types";
 export const LocationServiceCreate = async (body: Omit<Location, "_id">) => {
   const location = new LocationModel(body);
   if (body.locationType !== LocationTypes.CLIENT) {
-    const { valid } = await LocationServiceValidateAddress(location);
-    if (valid) {
-      const result = await LocationServiceGetCoordinates(location);
-      location.geoLocation.type = "Point";
-      location.geoLocation.coordinates = [result.longitude, result.latitude];
-      location.fullAddress = result.fullAddress;
-    }
+    const result = await LocationServiceValidateAddress(location);
+    location.geoLocation.type = "Point";
+    location.geoLocation.coordinates = [result.longitude, result.latitude];
+    location.fullAddress = result.fullAddress;
   } else {
     location.fullAddress = LocationTypes.CLIENT;
     location.geoLocation.type = "Point";
@@ -44,17 +41,14 @@ export const LocationServiceUpdate = async (
   );
 
   if (body.locationType !== LocationTypes.CLIENT) {
-    const { valid } = await LocationServiceValidateAddress(body);
-    if (valid) {
-      const result = await LocationServiceGetCoordinates(body);
-      location.set({
-        fullAddress: result.fullAddress,
-        geoLocation: {
-          type: "Point",
-          coordinates: [result.longitude, result.latitude],
-        },
-      });
-    }
+    const result = await LocationServiceValidateAddress(body);
+    location.set({
+      fullAddress: result.fullAddress,
+      geoLocation: {
+        type: "Point",
+        coordinates: [result.longitude, result.latitude],
+      },
+    });
   } else {
     location.set({
       fullAddress: LocationTypes.CLIENT,
@@ -79,14 +73,16 @@ export type ForsyningResponse = Array<{
 export const LocationServiceGetCoordinates = async (
   params: LocationServiceGetCoordinates
 ) => {
-  const url = "https://api.dataforsyningen.dk/adresser";
-  const response = await axios.get<ForsyningResponse>(url, {
-    params: {
-      q: params.fullAddress,
-      format: "json",
-      token: process.env["DataforsyningenToken"] || "",
-    },
-  });
+  const response = await axios.get<ForsyningResponse>(
+    "https://api.dataforsyningen.dk/adresser",
+    {
+      params: {
+        q: params.fullAddress,
+        format: "json",
+        token: process.env["DataforsyningenToken"] || "",
+      },
+    }
+  );
 
   if (Array.isArray(response.data) && response.data.length > 0) {
     const firstAddress = response.data[0];
@@ -113,6 +109,32 @@ export const LocationServiceGetCoordinates = async (
       path: ["fullAddress"],
     },
   ]);
+};
+
+type LocationServiceValidateAddressProps = Pick<
+  Location,
+  "fullAddress" | "name"
+>;
+
+export const LocationServiceValidateAddress = async (
+  params: LocationServiceValidateAddressProps
+) => {
+  const response = await LocationServiceGetCoordinates(params);
+  const location = await LocationModel.findOne({
+    $or: [{ name: params.name }, { fullAddress: response.fullAddress }],
+  });
+
+  if (location) {
+    throw new BadError([
+      {
+        code: "custom",
+        message: "LOCATION_ALREADY_EXIST",
+        path: ["name", "fullAddress"],
+      },
+    ]);
+  }
+
+  return response;
 };
 
 type LocationServiceGetTravelTimeProps = {
@@ -167,39 +189,6 @@ export const LocationServiceGetTravelTime = async (
       code: "custom",
       message: "FULL_ADDRESS_INVALID",
       path: ["origin", "destination"],
-    },
-  ]);
-};
-
-export type DataVaskAdresserResponse = {
-  kategori: string;
-  resultater: Array<any>;
-};
-
-type LocationServiceValidateAddressProps = Pick<Location, "fullAddress">;
-
-export const LocationServiceValidateAddress = async (
-  props: LocationServiceValidateAddressProps
-) => {
-  const response = await axios.get<DataVaskAdresserResponse>(
-    "https://api.dataforsyningen.dk/datavask/adresser",
-    {
-      params: {
-        betegnelse: props.fullAddress,
-        token: process.env["DataforsyningenToken"] || "",
-      },
-    }
-  );
-
-  if (response.data.resultater.length === 1) {
-    return { valid: true };
-  }
-
-  throw new BadError([
-    {
-      code: "custom",
-      message: "LOCATION_NOT_VALIDATE",
-      path: ["locationId"],
     },
   ]);
 };

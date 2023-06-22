@@ -9,6 +9,7 @@ export enum LocationTypes {
 
 export const LocationZodSchema = z.object({
   _id: z.string(),
+  name: z.string(),
   fullAddress: z.string(),
   locationType: z.nativeEnum(LocationTypes),
   customerId: GidFormat,

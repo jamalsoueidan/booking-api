@@ -13,9 +13,10 @@ export const LocationServiceCreateSchema = LocationZodSchema.pick({
 });
 
 export const LocationServiceCreateBodySchema = LocationZodSchema.pick({
+  name: true,
   fullAddress: true,
   locationType: true,
-});
+}).strict();
 
 export type LocationControllerCreateResponse = Awaited<
   ReturnType<typeof LocationServiceCreate>

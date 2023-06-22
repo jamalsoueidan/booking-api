@@ -1,7 +1,7 @@
 import axios from "axios";
+import { BadError } from "~/library/handler";
 import { LocationTypes } from "../location.types";
 import {
-  DataVaskAdresserResponse,
   ForsyningResponse,
   GoogleDirectionResponse,
   LocationServiceCreate,
@@ -14,11 +14,6 @@ require("~/library/jest/mongoose/mongodb.jest");
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
-
-const validateData: DataVaskAdresserResponse = {
-  kategori: "string",
-  resultater: ["1"],
-};
 
 const getCoordinatesData: ForsyningResponse = [
   {
@@ -54,15 +49,12 @@ const travelTimeData: GoogleDirectionResponse = {
 
 describe("LocationService", () => {
   it("create should be able to create new location type commercial (fullAddress and coordinations)", async () => {
-    mockedAxios.get
-      .mockResolvedValueOnce({
-        data: validateData,
-      })
-      .mockResolvedValueOnce({
-        data: getCoordinatesData,
-      });
+    mockedAxios.get.mockResolvedValueOnce({
+      data: getCoordinatesData,
+    });
 
     const response = await LocationServiceCreate({
+      name: "Falafel",
       fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
       locationType: LocationTypes.COMMERICAL,
       customerId: 1,
@@ -80,6 +72,7 @@ describe("LocationService", () => {
 
   it("create should be able to create new location type client", async () => {
     const response = await LocationServiceCreate({
+      name: "Falafel",
       fullAddress: LocationTypes.CLIENT,
       locationType: LocationTypes.CLIENT,
       customerId: 1,
@@ -109,19 +102,14 @@ describe("LocationService", () => {
 
     mockedAxios.get
       .mockResolvedValueOnce({
-        data: validateData,
-      })
-      .mockResolvedValueOnce({
         data: getCoordinatesData,
-      })
-      .mockResolvedValueOnce({
-        data: validateData,
       })
       .mockResolvedValueOnce({
         data: getCoordinatesUpdateData,
       });
 
     const response = await LocationServiceCreate({
+      name: "Falafel 1",
       fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
       locationType: LocationTypes.COMMERICAL,
       customerId: 1,
@@ -131,6 +119,7 @@ describe("LocationService", () => {
       { locationId: response._id, customerId: response.customerId },
       {
         fullAddress: "Dortesvej 21 1, 8220 Brabrand",
+        name: "Falafel 2",
         locationType: LocationTypes.RESIDENTIAL,
       }
     );
@@ -151,6 +140,7 @@ describe("LocationService", () => {
 
   it("update should be able to update location type client", async () => {
     const response = await LocationServiceCreate({
+      name: "Falafel 1",
       fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
       locationType: LocationTypes.CLIENT,
       customerId: 1,
@@ -159,6 +149,7 @@ describe("LocationService", () => {
     const update = await LocationServiceUpdate(
       { locationId: response._id, customerId: response.customerId },
       {
+        name: "Falafel 2",
         fullAddress: "Dortesvej 21 1, 8220 Brabrand",
         locationType: LocationTypes.CLIENT,
       }
@@ -204,17 +195,40 @@ describe("LocationService", () => {
     });
   });
 
-  it("LocationServiceValidateAddress should respond with validate(true) when ad", async () => {
+  it("LocationServiceValidateAddress should respond with data", async () => {
     mockedAxios.get.mockResolvedValueOnce({
-      data: validateData,
+      data: getCoordinatesData,
     });
 
     const response = await LocationServiceValidateAddress({
+      name: "BySisters",
       fullAddress: "Sigridsvej 45 1th, 8220 brabrand",
     });
 
-    expect(response).toEqual({
-      valid: true,
+    expect(response).toBeDefined();
+  });
+
+  it("LocationServiceValidateAddress should throw error when name or fullAddress already exist", async () => {
+    mockedAxios.get.mockResolvedValueOnce({
+      data: getCoordinatesData,
     });
+
+    await LocationServiceCreate({
+      name: "Falafel 1",
+      fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
+      locationType: LocationTypes.COMMERICAL,
+      customerId: 1,
+    });
+
+    mockedAxios.get.mockResolvedValueOnce({
+      data: getCoordinatesData,
+    });
+
+    await expect(
+      LocationServiceValidateAddress({
+        name: "BySisters",
+        fullAddress: "Sigridsvej 45 1, 8220 brabrand",
+      })
+    ).rejects.toThrow(BadError);
   });
 });

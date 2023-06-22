@@ -14,9 +14,10 @@ export const LocationServiceUpdateSchema = z.object({
 });
 
 export const LocationServiceUpdateBodySchema = LocationZodSchema.pick({
+  name: true,
   fullAddress: true,
   locationType: true,
-});
+}).strict();
 
 export type LocationControllerUpdateResponse = Awaited<
   ReturnType<typeof LocationServiceUpdate>
