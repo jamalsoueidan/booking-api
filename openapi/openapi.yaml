@@ -125,6 +125,29 @@ components:
       $ref: paths/user/list/response.yaml
     UsersProfessionsResponse:
       $ref: paths/user/professions/response.yaml
+
+    # Location
+    Location:
+      $ref: paths/location/_types/location.yaml
+    LocationCoordinates:
+      $ref: paths/location/_types/coordinates.yaml
+    LocationTravelTime:
+      $ref: paths/location/_types/travel-time.yaml
+    LocationCreateBody:
+      $ref: paths/location/create/body.yaml
+    LocationCreateResponse:
+      $ref: paths/location/create/response.yaml
+    LocationUpdateBody:
+      $ref: paths/location/update/body.yaml
+    LocationUpdateResponse:
+      $ref: paths/location/update/response.yaml
+    LocationGetCoordinatesResponse:
+      $ref: paths/location/get-coordinates/response.yaml
+    LocationGetTravelTimeResponse:
+      $ref: paths/location/get-travel-time/response.yaml
+    LocationValidateAddressResponse:
+      $ref: paths/location/validate-address/response.yaml
+
 paths:
   # User
   /user/{username}:
@@ -180,3 +203,15 @@ paths:
     $ref: "./paths/meta/professions/index.yaml"
   /meta/specialties:
     $ref: "./paths/meta/specialties/index.yaml"
+
+  # locations
+  /location/get-coordinates:
+    $ref: "./paths/location/get-coordinates/index.yaml"
+  /location/validate-address:
+    $ref: "./paths/location/validate-address/index.yaml"
+  /location/get-travel-time:
+    $ref: "./paths/location/get-travel-time/index.yaml"
+  /location/{locationId}:
+    $ref: "./paths/location/update/index.yaml"
+  /locations:
+    $ref: "./paths/location/create/index.yaml"

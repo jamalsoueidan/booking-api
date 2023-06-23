@@ -1,0 +1,25 @@
+type: object
+properties:
+  duration:
+    type: object
+    properties:
+      text:
+        type: string
+      value:
+        type: integer
+    required:
+      - text
+      - value
+  distance:
+    type: object
+    properties:
+      text:
+        type: string
+      value:
+        type: integer
+    required:
+      - text
+      - value
+required:
+  - duration
+  - distance

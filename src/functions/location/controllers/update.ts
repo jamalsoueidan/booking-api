@@ -10,13 +10,11 @@ export type LocationControllerUpdateRequest = {
 
 export const LocationServiceUpdateSchema = z.object({
   locationId: LocationZodSchema.shape._id,
-  customerId: LocationZodSchema.shape.customerId,
 });
 
 export const LocationServiceUpdateBodySchema = LocationZodSchema.pick({
   name: true,
   fullAddress: true,
-  locationType: true,
 }).strict();
 
 export type LocationControllerUpdateResponse = Awaited<

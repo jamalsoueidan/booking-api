@@ -89,6 +89,14 @@ export const UserZodSchema = z.object({
         .optional(),
     })
     .optional(),
+  locations: z
+    .array(
+      z.object({
+        _id: z.string().optional(),
+        isDefault: z.boolean().optional(),
+      })
+    )
+    .optional(),
   speaks: z.array(z.string()).optional(),
   fullname: z.string().optional(),
   active: z.boolean().optional(),

@@ -1,0 +1,12 @@
+type: object
+properties:
+  longitude:
+    type: number
+  latitude:
+    type: number
+  fullAddress:
+    type: string
+required:
+  - longitude
+  - latitude
+  - fullAddress

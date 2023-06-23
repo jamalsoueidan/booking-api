@@ -19,17 +19,15 @@ export const LocationServiceCreate = async (body: Omit<Location, "_id">) => {
 };
 
 type LocationUpdateProps = {
-  customerId: Location["customerId"];
   locationId: Location["_id"];
 };
 
 export const LocationServiceUpdate = async (
   filter: LocationUpdateProps,
-  body: Omit<Location, "_id" | "customerId">
+  body: Omit<Location, "_id" | "customerId" | "locationType">
 ) => {
   const location = await LocationModel.findOne({
     _id: filter.locationId,
-    customerId: filter.customerId,
   }).orFail(
     new NotFoundError([
       {
@@ -40,7 +38,7 @@ export const LocationServiceUpdate = async (
     ])
   );
 
-  if (body.locationType !== LocationTypes.CLIENT) {
+  if (location.locationType !== LocationTypes.CLIENT) {
     const result = await LocationServiceValidateAddress(body);
     location.set({
       fullAddress: result.fullAddress,

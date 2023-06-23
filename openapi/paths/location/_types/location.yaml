@@ -1,0 +1,25 @@
+type: object
+properties:
+  _id:
+    type: string
+    description: The unique identifier for the location.
+  name:
+    type: string
+    description: The name of the location.
+  fullAddress:
+    type: string
+    description: The full address of the location.
+  locationType:
+    type: string
+    enum: [residential, commercial, client]
+    description: The type of location.
+  customerId:
+    type: string
+    format: gid
+    description: The unique identifier of the customer associated with the location.
+required:
+  - _id
+  - name
+  - fullAddress
+  - locationType
+  - customerId

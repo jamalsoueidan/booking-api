@@ -1,0 +1,34 @@
+put:
+  parameters:
+    - name: locationId
+      in: path
+      required: true
+      schema:
+        type: string
+  tags:
+    - Location
+  operationId: locationUpdate
+  summary: PUT Update location
+  description: This endpoint update existing location
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./body.yaml"
+
+  responses:
+    "200":
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+
+  security: []

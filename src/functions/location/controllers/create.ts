@@ -4,18 +4,14 @@ import { LocationZodSchema } from "../location.types";
 import { LocationServiceCreate } from "../services/location.service";
 
 export type LocationControllerCreateRequest = {
-  query: z.infer<typeof LocationServiceCreateSchema>;
   body: z.infer<typeof LocationServiceCreateBodySchema>;
 };
-
-export const LocationServiceCreateSchema = LocationZodSchema.pick({
-  customerId: true,
-});
 
 export const LocationServiceCreateBodySchema = LocationZodSchema.pick({
   name: true,
   fullAddress: true,
   locationType: true,
+  customerId: true,
 }).strict();
 
 export type LocationControllerCreateResponse = Awaited<
@@ -23,9 +19,8 @@ export type LocationControllerCreateResponse = Awaited<
 >;
 
 export const LocationControllerCreate = _(
-  ({ query, body }: LocationControllerCreateRequest) => {
-    const validateData = LocationServiceCreateSchema.parse(query);
+  ({ body }: LocationControllerCreateRequest) => {
     const validateBody = LocationServiceCreateBodySchema.parse(body);
-    return LocationServiceCreate({ ...validateData, ...validateBody });
+    return LocationServiceCreate(validateBody);
   }
 );

@@ -28,16 +28,16 @@ app.http("locationGetTravelTime", {
   handler: LocationControllerGetTravelTime,
 });
 
-app.http("customerLocationCreate", {
-  methods: ["POST"],
-  authLevel: "anonymous",
-  route: "customer/{customerId?}/location",
-  handler: LocationControllerCreate,
-});
-
-app.http("customerLocationEdit", {
+app.http("locationEdit", {
   methods: ["PUT"],
   authLevel: "anonymous",
-  route: "customer/{customerId?}/location/(locationId?}",
+  route: "location/{locationId?}",
   handler: LocationControllerUpdate,
+});
+
+app.http("locationCreate", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "locations",
+  handler: LocationControllerCreate,
 });
