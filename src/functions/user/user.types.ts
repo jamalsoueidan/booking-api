@@ -105,3 +105,10 @@ export const UserZodSchema = z.object({
 });
 
 export type User = z.infer<typeof UserZodSchema>;
+
+type ArrayElement<ArrayType extends readonly unknown[]> =
+  ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
+
+export type UserLocations = ArrayElement<
+  NonNullable<z.infer<typeof UserZodSchema.shape.locations>>
+>;

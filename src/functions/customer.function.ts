@@ -11,6 +11,7 @@ import {
   CustomerControllerUpsert,
   CustomerLocationControllerAdd,
   CustomerLocationControllerCreate,
+  CustomerLocationControllerGetAll,
   CustomerLocationControllerRemove,
   CustomerLocationControllerSetDefault,
   CustomerLocationControllerUpdate,
@@ -119,11 +120,11 @@ app.http("customerBookingList", {
 /* Location */
 /* ******* */
 
-app.http("customerLocationEdit", {
-  methods: ["PUT"],
+app.http("customerLocationList", {
+  methods: ["GET"],
   authLevel: "anonymous",
-  route: "customer/{customerId}/location/{locationId?}",
-  handler: CustomerLocationControllerUpdate,
+  route: "customer/{customerId}/locations",
+  handler: CustomerLocationControllerGetAll,
 });
 
 app.http("customerLocationCreate", {
@@ -131,6 +132,13 @@ app.http("customerLocationCreate", {
   authLevel: "anonymous",
   route: "customer/{customerId}/locations",
   handler: CustomerLocationControllerCreate,
+});
+
+app.http("customerLocationEdit", {
+  methods: ["PUT"],
+  authLevel: "anonymous",
+  route: "customer/{customerId}/location/{locationId?}",
+  handler: CustomerLocationControllerUpdate,
 });
 
 app.http("customerLocationAdd", {
@@ -141,14 +149,14 @@ app.http("customerLocationAdd", {
 });
 
 app.http("customerLocationRemove", {
-  methods: ["POST"],
+  methods: ["DELETE"],
   authLevel: "anonymous",
   route: "customer/{customerId}/location/{locationId}",
   handler: CustomerLocationControllerRemove,
 });
 
 app.http("customerLocationSetDefault", {
-  methods: ["POST"],
+  methods: ["PUT"],
   authLevel: "anonymous",
   route: "customer/{customerId}/location/{locationId}/setDefault",
   handler: CustomerLocationControllerSetDefault,

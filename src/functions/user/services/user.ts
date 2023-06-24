@@ -1,8 +1,9 @@
 import { FilterQuery } from "mongoose";
+import { Location } from "~/functions/location";
 import { NotFoundError } from "~/library/handler";
 import { UserModel } from "../user.model";
 import { IUserDocument } from "../user.schema";
-import { User } from "../user.types";
+import { User, UserLocations } from "../user.types";
 
 export type UserServiceGetProps = Pick<User, "username">;
 
@@ -135,6 +136,52 @@ export const UserServiceLocationsRemove = async (location: {
     (l) => l.location.toString() !== location._id.toString()
   );
   return user.save();
+};
+
+export const UserServiceGetLocations = async ({
+  customerId,
+}: {
+  customerId: number;
+}) => {
+  const pipeline = [
+    { $match: { customerId } },
+    { $unwind: "$locations" },
+    {
+      $lookup: {
+        from: "Location",
+        localField: "locations.location",
+        foreignField: "_id",
+        as: "locations.location",
+      },
+    },
+    { $unwind: "$locations.location" },
+    {
+      $addFields: {
+        "locations.location.isDefault": "$locations.isDefault",
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        locations: { $push: "$locations.location" },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        locations: 1,
+      },
+    },
+  ];
+
+  const locations = await UserModel.aggregate<{
+    locations: Array<Omit<UserLocations, "location"> & Location>;
+  }>(pipeline).exec();
+  if (locations.length > 0) {
+    return locations[0].locations;
+  }
+
+  return [];
 };
 
 const UserServiceFindCustomerOrFail = ({

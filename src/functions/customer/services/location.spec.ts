@@ -6,6 +6,8 @@ import { createUser } from "~/library/jest/helpers";
 import { CustomerServiceGet, CustomerServiceUpsertBody } from "./customer";
 import {
   CustomerLocationServiceCreate,
+  CustomerLocationServiceGetAll,
+  CustomerLocationServiceGetOne,
   CustomerLocationServiceRemove,
   CustomerLocationServiceSetDefault,
 } from "./location";
@@ -56,13 +58,57 @@ describe("CustomerLocationService", () => {
     customerId,
   };
 
+  it("Should be able to get one location for user", async () => {
+    let user = await createUser({ customerId }, userData);
+
+    jest
+      .spyOn(LocationService, "LocationServiceCreate")
+      .mockImplementationOnce(() => LocationModel.create(location1))
+      .mockImplementationOnce(() => LocationModel.create(location2));
+
+    await CustomerLocationServiceCreate(location1);
+    const location2doc = await CustomerLocationServiceCreate(location2);
+
+    user = await CustomerServiceGet({ customerId });
+
+    const location = await CustomerLocationServiceGetOne({
+      locationId: location2doc._id,
+      customerId: user.customerId,
+    });
+
+    expect(location).toBeDefined();
+    expect(location?.name).toEqual(location2.name);
+    expect(location?.isDefault).toBeFalsy();
+  });
+
+  it("Should be able to get all locations for user", async () => {
+    let user = await createUser({ customerId }, userData);
+
+    jest
+      .spyOn(LocationService, "LocationServiceCreate")
+      .mockImplementationOnce(() => LocationModel.create(location1))
+      .mockImplementationOnce(() => LocationModel.create(location2));
+
+    await CustomerLocationServiceCreate(location1);
+    await CustomerLocationServiceCreate(location2);
+
+    user = await CustomerServiceGet({ customerId });
+
+    const locations = await CustomerLocationServiceGetAll({
+      customerId: user.customerId,
+    });
+
+    const location = locations.find((l) => l.isDefault);
+
+    expect(location).toBeDefined();
+    expect(locations).toHaveLength(2);
+  });
+
   it("Should be able create location and add to user", async () => {
     let user = await createUser({ customerId }, userData);
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementation(async () => {
-        return LocationModel.create(location1);
-      });
+      .mockImplementation(() => LocationModel.create(location1));
 
     const response = await CustomerLocationServiceCreate(location1);
 
@@ -80,12 +126,8 @@ describe("CustomerLocationService", () => {
     let user = await createUser({ customerId }, userData);
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(async () => {
-        return LocationModel.create(location1);
-      })
-      .mockImplementationOnce(async () => {
-        return LocationModel.create(location2);
-      });
+      .mockImplementationOnce(() => LocationModel.create(location1))
+      .mockImplementationOnce(() => LocationModel.create(location2));
 
     await CustomerLocationServiceCreate(location1);
     const response = await CustomerLocationServiceCreate(location2);
@@ -105,12 +147,8 @@ describe("CustomerLocationService", () => {
 
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(async () => {
-        return LocationModel.create(location1);
-      })
-      .mockImplementationOnce(async () => {
-        return LocationModel.create(location2);
-      });
+      .mockImplementationOnce(() => LocationModel.create(location1))
+      .mockImplementationOnce(() => LocationModel.create(location2));
 
     const location1doc = await CustomerLocationServiceCreate(location1);
     const location2doc = await CustomerLocationServiceCreate(location2);
@@ -134,12 +172,8 @@ describe("CustomerLocationService", () => {
 
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(async () => {
-        return LocationModel.create(location1);
-      })
-      .mockImplementationOnce(async () => {
-        return LocationModel.create(location2);
-      });
+      .mockImplementationOnce(() => LocationModel.create(location1))
+      .mockImplementationOnce(() => LocationModel.create(location2));
 
     const location1doc = await CustomerLocationServiceCreate(location1);
     const location2doc = await CustomerLocationServiceCreate(location2);
