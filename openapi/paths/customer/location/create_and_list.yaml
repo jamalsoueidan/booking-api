@@ -1,11 +1,3 @@
-parameters:
-  - name: customerId
-    in: path
-    description: customerId
-    schema:
-      oneOf:
-        - type: string
-        - type: number
 post:
   $ref: "./create/index.yaml#/post"
 get:

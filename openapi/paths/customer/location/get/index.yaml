@@ -1,7 +1,18 @@
 get:
+  parameters:
+    - name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: locationId
+      in: path
+      required: true
+      schema:
+        type: string
   tags:
     - Location
-  operationId: customerLocationGetOne
+  operationId: customerLocationGet
   summary: GET Get one location from user
   description: This endpoint get one location for user
   responses:

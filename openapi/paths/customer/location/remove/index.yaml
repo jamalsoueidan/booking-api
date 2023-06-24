@@ -1,4 +1,15 @@
 delete:
+  parameters:
+    - name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: locationId
+      in: path
+      required: true
+      schema:
+        type: string
   tags:
     - Location
   operationId: customerLocationRemove

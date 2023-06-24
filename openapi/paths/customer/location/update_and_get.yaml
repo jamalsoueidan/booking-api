@@ -1,18 +1,3 @@
-parameters:
-  - name: customerId
-    in: path
-    required: true
-    schema:
-      oneOf:
-        - type: string
-        - type: number
-  - name: locationId
-    in: path
-    required: true
-    schema:
-      oneOf:
-        - type: string
-        - type: number
 put:
   $ref: "./update/index.yaml#/put"
 get:
