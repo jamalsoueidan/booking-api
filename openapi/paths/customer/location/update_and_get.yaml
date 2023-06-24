@@ -3,12 +3,16 @@ parameters:
     in: path
     required: true
     schema:
-      type: string
+      oneOf:
+        - type: string
+        - type: number
   - name: locationId
     in: path
     required: true
     schema:
-      type: string
+      oneOf:
+        - type: string
+        - type: number
 put:
   $ref: "./update/index.yaml#/put"
 get:
