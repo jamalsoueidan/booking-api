@@ -80,3 +80,77 @@ export const UserServiceProfessions = async () => {
 
   return professionCountFormatted;
 };
+
+export const UserServiceLocationsAdd = async (location: {
+  _id: string;
+  customerId: number;
+}) => {
+  const user = await UserServiceFindCustomerOrFail(location);
+  const isDefault = user.locations?.length === 0;
+  user.locations?.push({ location: location._id, isDefault });
+  return user.save();
+};
+
+export const UserServiceLocationsSetDefault = async (location: {
+  _id: string;
+  customerId: number;
+}) => {
+  const user = await UserServiceFindCustomerOrFail(location);
+
+  const locationOldDefault = user.locations?.find((l) => l.isDefault);
+  if (locationOldDefault && locationOldDefault.isDefault) {
+    locationOldDefault.isDefault = false;
+  }
+
+  const locationToSetDefault = user.locations?.find(
+    (l) => l.location.toString() === location._id.toString()
+  );
+
+  if (locationToSetDefault && !locationToSetDefault.isDefault) {
+    locationToSetDefault.isDefault = true;
+  }
+
+  return user.save();
+};
+
+export const UserServiceLocationsRemove = async (location: {
+  _id: string;
+  customerId: number;
+}) => {
+  const user = await UserServiceFindCustomerOrFail(location);
+  // Get the location that will be removed
+  const locationToRemove = user.locations?.find(
+    (l) => l.location.toString() === location._id.toString()
+  );
+
+  if (locationToRemove && locationToRemove.isDefault) {
+    // If the location is the default one, change isDefault flag on first non-default location
+    const firstNonDefault = user.locations?.find(
+      (l) => l.location.toString() !== location._id.toString() && !l.isDefault
+    );
+    if (firstNonDefault) firstNonDefault.isDefault = true;
+  }
+
+  user.locations = user.locations?.filter(
+    (l) => l.location.toString() !== location._id.toString()
+  );
+  return user.save();
+};
+
+const UserServiceFindCustomerOrFail = ({
+  customerId,
+}: {
+  customerId: number;
+}) => {
+  return UserModel.findOne({
+    customerId,
+  }).orFail(
+    new NotFoundError([
+      {
+        path: ["customerId"],
+        message: "NOT_FOUND",
+        code: "custom",
+      },
+    ])
+  );
+};

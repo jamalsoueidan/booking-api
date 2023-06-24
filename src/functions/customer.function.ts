@@ -9,6 +9,8 @@ import {
   CustomerControllerIsBusiness,
   CustomerControllerUpdate,
   CustomerControllerUpsert,
+  CustomerLocationControllerCreate,
+  CustomerLocationControllerUpdate,
   CustomerProductControllerAvailability,
   CustomerProductControllerDestroy,
   CustomerProductControllerGet,
@@ -108,4 +110,22 @@ app.http("customerBookingList", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/bookings",
   handler: CustomerBookingControllerList,
+});
+
+/* ******* */
+/* Location */
+/* ******* */
+
+app.http("locationEdit", {
+  methods: ["PUT"],
+  authLevel: "anonymous",
+  route: "customer/{customerId}/location/{locationId?}",
+  handler: CustomerLocationControllerUpdate,
+});
+
+app.http("locationCreate", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "customer/{customerId}/locations",
+  handler: CustomerLocationControllerCreate,
 });

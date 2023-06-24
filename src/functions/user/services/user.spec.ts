@@ -29,6 +29,7 @@ describe("UserService", () => {
       speaks: [faker.random.locale()],
       active: true,
       isBusiness: true,
+      locations: [],
     };
 
     await CustomerServiceUpsert(filter, userData);

@@ -66,16 +66,19 @@ export const UserMongooseSchema = new mongoose.Schema<
       type: [String],
       default: [],
     },
-    locations: [
-      {
-        location: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Location",
-          required: true,
+    locations: {
+      type: [
+        {
+          location: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Location",
+            required: true,
+          },
+          isDefault: { type: Boolean, default: false },
         },
-        isDefault: { type: Boolean, default: false },
-      },
-    ],
+      ],
+      default: [],
+    },
   },
   { timestamps: true }
 );

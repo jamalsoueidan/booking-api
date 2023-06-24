@@ -92,8 +92,8 @@ export const UserZodSchema = z.object({
   locations: z
     .array(
       z.object({
-        _id: z.string().optional(),
-        isDefault: z.boolean().optional(),
+        location: z.string(),
+        isDefault: BooleanOrStringType,
       })
     )
     .optional(),
