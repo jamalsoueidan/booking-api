@@ -116,7 +116,7 @@ describe("LocationService", () => {
     });
 
     const update = await LocationServiceUpdate(
-      { locationId: response._id },
+      { locationId: response._id, customerId: 1 },
       {
         fullAddress: "Dortesvej 21 1, 8220 Brabrand",
         name: "Falafel 2",
@@ -146,7 +146,7 @@ describe("LocationService", () => {
     });
 
     const update = await LocationServiceUpdate(
-      { locationId: response._id },
+      { locationId: response._id, customerId: 1 },
       {
         name: "Falafel 2",
         fullAddress: "Dortesvej 21 1, 8220 Brabrand",

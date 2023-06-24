@@ -3,7 +3,11 @@ import { BadError, NotFoundError } from "~/library/handler";
 import { LocationModel } from "../location.model";
 import { Location, LocationTypes } from "../location.types";
 
-export const LocationServiceCreate = async (body: Omit<Location, "_id">) => {
+export type LocationServiceCreateProps = Omit<Location, "_id">;
+
+export const LocationServiceCreate = async (
+  body: LocationServiceCreateProps
+) => {
   const location = new LocationModel(body);
   if (body.locationType !== LocationTypes.CLIENT) {
     const result = await LocationServiceValidateAddress(location);
@@ -15,19 +19,27 @@ export const LocationServiceCreate = async (body: Omit<Location, "_id">) => {
     location.geoLocation.type = "Point";
     location.geoLocation.coordinates = [0, 0];
   }
+
   return location.save();
 };
 
-type LocationUpdateProps = {
+export type LocationUpdateFilterProps = {
   locationId: Location["_id"];
+  customerId: Location["customerId"];
 };
 
+export type LocationUpdateBody = Omit<
+  Location,
+  "_id" | "customerId" | "locationType"
+>;
+
 export const LocationServiceUpdate = async (
-  filter: LocationUpdateProps,
-  body: Omit<Location, "_id" | "customerId" | "locationType">
+  filter: LocationUpdateFilterProps,
+  body: LocationUpdateBody
 ) => {
   const location = await LocationModel.findOne({
     _id: filter.locationId,
+    customerId: filter.customerId,
   }).orFail(
     new NotFoundError([
       {
