@@ -1,15 +1,15 @@
-put:
+post:
   parameters:
-    - name: locationId
+    - name: customerId
       in: path
       required: true
       schema:
         type: string
   tags:
     - Location
-  operationId: locationUpdate
-  summary: PUT Update location
-  description: This endpoint update existing location
+  operationId: customerLocationCreate
+  summary: POST Create location
+  description: This endpoint creates new location
   requestBody:
     required: true
     content:
@@ -25,10 +25,10 @@ put:
           schema:
             $ref: "./response.yaml"
     "400":
-      $ref: "../../../responses/bad.yaml"
+      $ref: "../../../../responses/bad.yaml"
     "401":
-      $ref: "../../../responses/unauthorized.yaml"
+      $ref: "../../../../responses/unauthorized.yaml"
     "403":
-      $ref: "../../../responses/forbidden.yaml"
+      $ref: "../../../../responses/forbidden.yaml"
 
   security: []

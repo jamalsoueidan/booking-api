@@ -5,9 +5,9 @@ import * as LocationService from "~/functions/location/services/location.service
 import { createUser } from "~/library/jest/helpers";
 import { CustomerServiceGet, CustomerServiceUpsertBody } from "./customer";
 import {
-  CustomerLocationCreate,
-  CustomerLocationRemove,
-  CustomerLocationSetDefault,
+  CustomerLocationServiceCreate,
+  CustomerLocationServiceRemove,
+  CustomerLocationServiceSetDefault,
 } from "./location";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -56,7 +56,7 @@ describe("CustomerLocationService", () => {
     customerId,
   };
 
-  it("Should create location and add to user", async () => {
+  it("Should be able create location and add to user", async () => {
     let user = await createUser({ customerId }, userData);
     jest
       .spyOn(LocationService, "LocationServiceCreate")
@@ -64,7 +64,7 @@ describe("CustomerLocationService", () => {
         return LocationModel.create(location1);
       });
 
-    const response = await CustomerLocationCreate(location1);
+    const response = await CustomerLocationServiceCreate(location1);
 
     user = await CustomerServiceGet({ customerId });
     const firstLocation = user.locations?.find(
@@ -76,7 +76,7 @@ describe("CustomerLocationService", () => {
     expect(user.locations).toHaveLength(1);
   });
 
-  it("Should create additional location and add to user", async () => {
+  it("Should be able create additional location and add to user", async () => {
     let user = await createUser({ customerId }, userData);
     jest
       .spyOn(LocationService, "LocationServiceCreate")
@@ -87,8 +87,8 @@ describe("CustomerLocationService", () => {
         return LocationModel.create(location2);
       });
 
-    await CustomerLocationCreate(location1);
-    const response = await CustomerLocationCreate(location2);
+    await CustomerLocationServiceCreate(location1);
+    const response = await CustomerLocationServiceCreate(location2);
 
     user = await CustomerServiceGet({ customerId });
     const secondLocation = user.locations?.find(
@@ -100,7 +100,7 @@ describe("CustomerLocationService", () => {
     expect(user.locations).toHaveLength(2);
   });
 
-  it("Should move default to another one when default is removed", async () => {
+  it("Should be able move default to another one when default is removed", async () => {
     let user = await createUser({ customerId }, userData);
 
     jest
@@ -112,10 +112,10 @@ describe("CustomerLocationService", () => {
         return LocationModel.create(location2);
       });
 
-    const location1doc = await CustomerLocationCreate(location1);
-    const location2doc = await CustomerLocationCreate(location2);
+    const location1doc = await CustomerLocationServiceCreate(location1);
+    const location2doc = await CustomerLocationServiceCreate(location2);
 
-    await CustomerLocationRemove({
+    await CustomerLocationServiceRemove({
       locationId: location1doc._id,
       customerId: location1doc.customerId,
     });
@@ -141,10 +141,10 @@ describe("CustomerLocationService", () => {
         return LocationModel.create(location2);
       });
 
-    const location1doc = await CustomerLocationCreate(location1);
-    const location2doc = await CustomerLocationCreate(location2);
+    const location1doc = await CustomerLocationServiceCreate(location1);
+    const location2doc = await CustomerLocationServiceCreate(location2);
 
-    await CustomerLocationSetDefault({
+    await CustomerLocationServiceSetDefault({
       locationId: location2doc._id,
       customerId: location2doc.customerId,
     });

@@ -12,7 +12,7 @@ import {
   UserServiceLocationsSetDefault,
 } from "~/functions/user";
 
-export const CustomerLocationCreate = async (
+export const CustomerLocationServiceCreate = async (
   body: LocationServiceCreateProps
 ) => {
   const location = await LocationServiceCreate(body);
@@ -20,20 +20,20 @@ export const CustomerLocationCreate = async (
   return location;
 };
 
-export const CustomerLocationUpdate = (
+export const CustomerLocationServiceUpdate = (
   filter: LocationUpdateFilterProps,
   body: LocationUpdateBody
 ) => {
   return LocationServiceUpdate(filter, body);
 };
 
-export type CustomerLocationCustomerProps = {
+export type CustomerLocationServiceProps = {
   locationId: Location["_id"];
   customerId: Location["customerId"];
 };
 
-export const CustomerLocationSetDefault = (
-  location: CustomerLocationCustomerProps
+export const CustomerLocationServiceSetDefault = (
+  location: CustomerLocationServiceProps
 ) => {
   return UserServiceLocationsSetDefault({
     _id: location.locationId,
@@ -41,8 +41,8 @@ export const CustomerLocationSetDefault = (
   });
 };
 
-export const CustomerLocationAdd = (
-  location: CustomerLocationCustomerProps
+export const CustomerLocationServiceAdd = (
+  location: CustomerLocationServiceProps
 ) => {
   return UserServiceLocationsAdd({
     _id: location.locationId,
@@ -50,8 +50,8 @@ export const CustomerLocationAdd = (
   });
 };
 
-export const CustomerLocationRemove = (
-  location: CustomerLocationCustomerProps
+export const CustomerLocationServiceRemove = (
+  location: CustomerLocationServiceProps
 ) => {
   return UserServiceLocationsRemove({
     _id: location.locationId,

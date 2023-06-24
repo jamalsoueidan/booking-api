@@ -128,19 +128,25 @@ components:
 
     # Location
     Location:
-      $ref: paths/location/_types/location.yaml
+      $ref: paths/customer/location/_types/location.yaml
     LocationCoordinates:
       $ref: paths/location/_types/coordinates.yaml
     LocationTravelTime:
       $ref: paths/location/_types/travel-time.yaml
-    LocationCreateBody:
-      $ref: paths/location/create/body.yaml
-    LocationCreateResponse:
-      $ref: paths/location/create/response.yaml
-    LocationUpdateBody:
-      $ref: paths/location/update/body.yaml
-    LocationUpdateResponse:
-      $ref: paths/location/update/response.yaml
+    CustomerLocationCreateBody:
+      $ref: paths/customer/location/create/body.yaml
+    CustomerLocationCreateResponse:
+      $ref: paths/customer/location/create/response.yaml
+    CustomerLocationUpdateBody:
+      $ref: paths/customer/location/update/body.yaml
+    CustomerLocationUpdateResponse:
+      $ref: paths/customer/location/update/response.yaml
+    CustomerLocationAddResponse:
+      $ref: paths/customer/location/add/response.yaml
+    CustomerLocationRemoveResponse:
+      $ref: paths/customer/location/remove/response.yaml
+    CustomerLocationSetDefaultResponse:
+      $ref: paths/customer/location/set-default/response.yaml
     LocationGetCoordinatesResponse:
       $ref: paths/location/get-coordinates/response.yaml
     LocationGetTravelTimeResponse:
@@ -205,13 +211,14 @@ paths:
     $ref: "./paths/meta/specialties/index.yaml"
 
   # locations
+  /customer/{customerId}/location/{locationId}:
+    $ref: "./paths/customer/location/update/index.yaml"
+  /customer/{customerId}/locations:
+    $ref: "./paths/customer/location/create/index.yaml"
+
   /location/get-coordinates:
     $ref: "./paths/location/get-coordinates/index.yaml"
   /location/validate-address:
     $ref: "./paths/location/validate-address/index.yaml"
   /location/get-travel-time:
     $ref: "./paths/location/get-travel-time/index.yaml"
-  /location/{locationId}:
-    $ref: "./paths/location/update/index.yaml"
-  /locations:
-    $ref: "./paths/location/create/index.yaml"

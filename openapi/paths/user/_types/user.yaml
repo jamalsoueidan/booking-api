@@ -43,6 +43,10 @@ properties:
             type: integer
           height:
             type: integer
+  locations:
+    type: array
+    items:
+      $ref: ../../customer/location/_types/location.yaml
   speaks:
     type: array
     items:
@@ -63,6 +67,7 @@ required:
   - fullname
   - avatar
   - active
+  - locations
   - speaks
   - socialUrls
   - shortDescription
