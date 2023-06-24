@@ -24,6 +24,7 @@ describe("CustomerService", () => {
         url: faker.internet.avatar(),
       },
     },
+    locations: [],
     speaks: [faker.random.locale()],
     isBusiness: true,
   };

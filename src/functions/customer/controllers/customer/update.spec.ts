@@ -31,6 +31,7 @@ describe("CustomerControllerUpdate", () => {
         url: faker.internet.avatar(),
       },
     },
+    locations: [],
   };
 
   beforeEach(() => {
