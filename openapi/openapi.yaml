@@ -119,6 +119,8 @@ components:
     # User
     User:
       $ref: paths/user/_types/user.yaml
+    UserLocation:
+      $ref: paths/user/_types/user_location.yaml
     UserGetResponse:
       $ref: paths/user/get/response.yaml
     UsersListResponse:
@@ -137,6 +139,10 @@ components:
       $ref: paths/customer/location/create/body.yaml
     CustomerLocationCreateResponse:
       $ref: paths/customer/location/create/response.yaml
+    CustomerLocationListResponse:
+      $ref: paths/customer/location/list/response.yaml
+    CustomerLocationGetResponse:
+      $ref: paths/customer/location/get/response.yaml
     CustomerLocationUpdateBody:
       $ref: paths/customer/location/update/body.yaml
     CustomerLocationUpdateResponse:
@@ -211,10 +217,10 @@ paths:
     $ref: "./paths/meta/specialties/index.yaml"
 
   # locations
-  /customer/{customerId}/location/{locationId}:
-    $ref: "./paths/customer/location/update/index.yaml"
-  /customer/{customerId}/locations:
-    $ref: "./paths/customer/location/create/index.yaml"
+  /customer/{customerId}/location/{locationId}: #update, get, remove, add
+    $ref: "./paths/customer/location/update_and_get.yaml"
+  /customer/{customerId}/locations: # create, list
+    $ref: "./paths/customer/location/create_and_list.yaml"
 
   /location/get-coordinates:
     $ref: "./paths/location/get-coordinates/index.yaml"

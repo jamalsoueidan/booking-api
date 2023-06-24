@@ -1,0 +1,23 @@
+type: object
+properties:
+  _id:
+    type: string
+  name:
+    type: string
+  fullAddress:
+    type: string
+  locationType:
+    type: string
+    enum: [residential, commercial, client]
+  customerId:
+    type: string
+    format: gid
+  isDefault:
+    type: boolean
+required:
+  - _id
+  - name
+  - fullAddress
+  - locationType
+  - customerId
+  - isDefault

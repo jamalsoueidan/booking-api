@@ -1,10 +1,4 @@
 post:
-  parameters:
-    - name: customerId
-      in: path
-      required: true
-      schema:
-        type: string
   tags:
     - Location
   operationId: customerLocationCreate

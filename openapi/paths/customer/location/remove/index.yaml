@@ -1,15 +1,4 @@
-post:
-  parameters:
-    - name: customerId
-      in: path
-      required: true
-      schema:
-        type: string
-    - name: locationId
-      in: path
-      required: true
-      schema:
-        type: string
+delete:
   tags:
     - Location
   operationId: customerLocationRemove

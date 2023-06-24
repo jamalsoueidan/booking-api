@@ -1,13 +1,12 @@
-post:
+get:
   tags:
     - Location
-  operationId: customerLocationAdd
-  summary: POST Add location to user
-  description: This endpoint add new location
-
+  operationId: customerLocationList
+  summary: GET Get all locations for user
+  description: This endpoint get all locations for user
   responses:
     "200":
-      description: Response
+      description: "Response"
       content:
         application/json:
           schema:
@@ -18,5 +17,7 @@ post:
       $ref: "../../../../responses/unauthorized.yaml"
     "403":
       $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
 
   security: []

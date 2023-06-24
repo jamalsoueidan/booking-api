@@ -12,6 +12,7 @@ import {
   CustomerLocationControllerAdd,
   CustomerLocationControllerCreate,
   CustomerLocationControllerGetAll,
+  CustomerLocationControllerGetOne,
   CustomerLocationControllerRemove,
   CustomerLocationControllerSetDefault,
   CustomerLocationControllerUpdate,
@@ -134,7 +135,7 @@ app.http("customerLocationCreate", {
   handler: CustomerLocationControllerCreate,
 });
 
-app.http("customerLocationEdit", {
+app.http("customerLocationUpdate", {
   methods: ["PUT"],
   authLevel: "anonymous",
   route: "customer/{customerId}/location/{locationId?}",
@@ -153,6 +154,13 @@ app.http("customerLocationRemove", {
   authLevel: "anonymous",
   route: "customer/{customerId}/location/{locationId}",
   handler: CustomerLocationControllerRemove,
+});
+
+app.http("customerLocationGet", {
+  methods: ["DELETE"],
+  authLevel: "anonymous",
+  route: "customer/{customerId}/location/{locationId}",
+  handler: CustomerLocationControllerGetOne,
 });
 
 app.http("customerLocationSetDefault", {
