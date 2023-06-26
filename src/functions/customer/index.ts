@@ -1,5 +1,6 @@
 export * from "./controllers/booking";
 export * from "./controllers/customer";
+export * from "./controllers/location";
 export * from "./controllers/product";
 export * from "./controllers/products";
 export * from "./services/customer";

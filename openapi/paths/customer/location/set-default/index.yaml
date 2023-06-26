@@ -1,0 +1,33 @@
+put:
+  parameters:
+    - name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: locationId
+      in: path
+      required: true
+      schema:
+        type: string
+  tags:
+    - Location
+  operationId: customerLocationSetDefault
+  summary: POST Set new default location for user
+  description: This endpoint set new default location for user
+
+  responses:
+    "200":
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+
+  security: []

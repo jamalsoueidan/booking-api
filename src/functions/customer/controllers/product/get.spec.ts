@@ -32,6 +32,7 @@ describe("CustomerProductControllerGet", () => {
       value: 1,
       unit: TimeUnit.WEEKS,
     },
+    locations: [],
   };
 
   beforeEach(async () => {
@@ -52,7 +53,9 @@ describe("CustomerProductControllerGet", () => {
       { ...product, scheduleId: newSchedule._id }
     );
 
-    expect(newProduct?.scheduleId).toStrictEqual(newSchedule._id);
+    expect(newProduct?.scheduleId.toString()).toEqual(
+      newSchedule._id.toString()
+    );
 
     request = await createHttpRequest<CustomerProductControllerGetRequest>({
       query: {

@@ -1,0 +1,10 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  payload:
+    $ref: ../../../user/_types/user.yaml
+required:
+  - success
+  - payload

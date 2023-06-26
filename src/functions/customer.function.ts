@@ -9,6 +9,13 @@ import {
   CustomerControllerIsBusiness,
   CustomerControllerUpdate,
   CustomerControllerUpsert,
+  CustomerLocationControllerAdd,
+  CustomerLocationControllerCreate,
+  CustomerLocationControllerGetAll,
+  CustomerLocationControllerGetOne,
+  CustomerLocationControllerRemove,
+  CustomerLocationControllerSetDefault,
+  CustomerLocationControllerUpdate,
   CustomerProductControllerAvailability,
   CustomerProductControllerDestroy,
   CustomerProductControllerGet,
@@ -108,4 +115,57 @@ app.http("customerBookingList", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/bookings",
   handler: CustomerBookingControllerList,
+});
+
+/* ******* */
+/* Location */
+/* ******* */
+
+app.http("customerLocationList", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customer/{customerId}/locations",
+  handler: CustomerLocationControllerGetAll,
+});
+
+app.http("customerLocationCreate", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "customer/{customerId}/locations",
+  handler: CustomerLocationControllerCreate,
+});
+
+app.http("customerLocationUpdate", {
+  methods: ["PUT"],
+  authLevel: "anonymous",
+  route: "customer/{customerId}/location/{locationId?}",
+  handler: CustomerLocationControllerUpdate,
+});
+
+app.http("customerLocationAdd", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "customer/{customerId}/location/{locationId}",
+  handler: CustomerLocationControllerAdd,
+});
+
+app.http("customerLocationRemove", {
+  methods: ["DELETE"],
+  authLevel: "anonymous",
+  route: "customer/{customerId}/location/{locationId}",
+  handler: CustomerLocationControllerRemove,
+});
+
+app.http("customerLocationGet", {
+  methods: ["DELETE"],
+  authLevel: "anonymous",
+  route: "customer/{customerId}/location/{locationId}",
+  handler: CustomerLocationControllerGetOne,
+});
+
+app.http("customerLocationSetDefault", {
+  methods: ["PUT"],
+  authLevel: "anonymous",
+  route: "customer/{customerId}/location/{locationId}/setDefault",
+  handler: CustomerLocationControllerSetDefault,
 });

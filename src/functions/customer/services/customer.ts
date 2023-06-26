@@ -42,15 +42,13 @@ export const CustomerServiceIsBusiness = async (
 export type CustomerServiceGetProps = Pick<User, "customerId">;
 
 export const CustomerServiceGet = async (filter: CustomerServiceGetProps) => {
-  return UserModel.findOne(filter)
-    .lean()
-    .orFail(
-      new NotFoundError([
-        {
-          path: ["customerId"],
-          message: "NOT_FOUND",
-          code: "custom",
-        },
-      ])
-    );
+  return UserModel.findOne(filter).orFail(
+    new NotFoundError([
+      {
+        path: ["customerId"],
+        message: "NOT_FOUND",
+        code: "custom",
+      },
+    ])
+  );
 };

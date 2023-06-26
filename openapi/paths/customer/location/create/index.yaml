@@ -1,0 +1,36 @@
+post:
+  parameters:
+    - name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+  tags:
+    - Location
+  operationId: customerLocationCreate
+  summary: POST Create location
+  description: This endpoint creates new location
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          oneOf:
+            - $ref: "./body_origin.yaml"
+            - $ref: "./body_destination.yaml"
+
+  responses:
+    "200":
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+
+  security: []

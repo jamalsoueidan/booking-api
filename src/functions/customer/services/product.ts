@@ -85,36 +85,32 @@ export const CustomerProductServiceUpsert = async (
   filter: CustomerProductServiceUpsert,
   product: CustomerProductServiceUpsertBody
 ) => {
-  try {
-    await CustomerProductServiceDestroy(filter);
-    const schedule = await ScheduleModel.findOneAndUpdate(
-      {
-        _id: product.scheduleId,
-        customerId: filter.customerId,
-      },
-      { $push: { products: { productId: filter.productId, ...product } } },
-      { new: true, upsert: true }
+  await CustomerProductServiceDestroy(filter);
+  const schedule = await ScheduleModel.findOneAndUpdate(
+    {
+      _id: product.scheduleId,
+      customerId: filter.customerId,
+    },
+    { $push: { products: { productId: filter.productId, ...product } } },
+    { new: true, upsert: true }
+  )
+    .orFail(
+      new NotFoundError([
+        {
+          code: "custom",
+          message: "PRODUCT_NOT_FOUND",
+          path: ["productId"],
+        },
+      ])
     )
-      .orFail(
-        new NotFoundError([
-          {
-            code: "custom",
-            message: "PRODUCT_NOT_FOUND",
-            path: ["productId"],
-          },
-        ])
-      )
-      .lean();
+    .lean();
 
-    return {
-      ...product,
-      productId: filter.productId,
-      scheduleId: schedule._id,
-      scheduleName: schedule.name,
-    };
-  } catch (error) {
-    console.error("Error adding product:", error);
-  }
+  return {
+    ...product,
+    productId: filter.productId,
+    scheduleId: schedule._id,
+    scheduleName: schedule.name,
+  };
 };
 
 export type CustomerProductServiceGetFilter = {

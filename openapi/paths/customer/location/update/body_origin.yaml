@@ -1,0 +1,9 @@
+type: object
+properties:
+  name:
+    type: string
+  fullAddress:
+    type: string
+required:
+  - name
+  - fullAddress

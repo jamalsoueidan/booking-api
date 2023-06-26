@@ -1,0 +1,29 @@
+get:
+  parameters:
+    - name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+  tags:
+    - Location
+  operationId: customerLocationList
+  summary: GET Get all locations for user
+  description: This endpoint get all locations for user
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
+
+  security: []

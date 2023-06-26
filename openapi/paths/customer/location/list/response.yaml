@@ -1,0 +1,15 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  payload:
+    type: array
+    items:
+      oneOf:
+        - $ref: ../../../user/_types/user_location_destination.yaml
+        - $ref: ../../../user/_types/user_location_origin.yaml
+
+required:
+  - success
+  - payload

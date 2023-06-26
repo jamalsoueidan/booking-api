@@ -119,12 +119,53 @@ components:
     # User
     User:
       $ref: paths/user/_types/user.yaml
+    UserLocationDestination:
+      $ref: paths/user/_types/user_location_destination.yaml
+    UserLocationOrigin:
+      $ref: paths/user/_types/user_location_origin.yaml
     UserGetResponse:
       $ref: paths/user/get/response.yaml
     UsersListResponse:
       $ref: paths/user/list/response.yaml
     UsersProfessionsResponse:
       $ref: paths/user/professions/response.yaml
+
+    # Location
+    Location:
+      $ref: paths/customer/location/_types/location.yaml
+    LocationCoordinates:
+      $ref: paths/location/_types/coordinates.yaml
+    LocationTravelTime:
+      $ref: paths/location/_types/travel-time.yaml
+    CustomerLocationCreateOriginBody:
+      $ref: paths/customer/location/create/body_origin.yaml
+    CustomerLocationCreateDestinationBody:
+      $ref: paths/customer/location/create/body_destination.yaml
+    CustomerLocationCreateResponse:
+      $ref: paths/customer/location/create/response.yaml
+    CustomerLocationListResponse:
+      $ref: paths/customer/location/list/response.yaml
+    CustomerLocationGetResponse:
+      $ref: paths/customer/location/get/response.yaml
+    CustomerLocationUpdateDestinationBody:
+      $ref: paths/customer/location/update/body_destination.yaml
+    CustomerLocationUpdateOriginBody:
+      $ref: paths/customer/location/update/body_origin.yaml
+    CustomerLocationUpdateResponse:
+      $ref: paths/customer/location/update/response.yaml
+    CustomerLocationAddResponse:
+      $ref: paths/customer/location/add/response.yaml
+    CustomerLocationRemoveResponse:
+      $ref: paths/customer/location/remove/response.yaml
+    CustomerLocationSetDefaultResponse:
+      $ref: paths/customer/location/set-default/response.yaml
+    LocationGetCoordinatesResponse:
+      $ref: paths/location/get-coordinates/response.yaml
+    LocationGetTravelTimeResponse:
+      $ref: paths/location/get-travel-time/response.yaml
+    LocationValidateAddressResponse:
+      $ref: paths/location/validate-address/response.yaml
+
 paths:
   # User
   /user/{username}:
@@ -180,3 +221,16 @@ paths:
     $ref: "./paths/meta/professions/index.yaml"
   /meta/specialties:
     $ref: "./paths/meta/specialties/index.yaml"
+
+  # locations
+  /customer/{customerId}/location/{locationId}: #update, get, remove, add
+    $ref: "./paths/customer/location/update_and_get.yaml"
+  /customer/{customerId}/locations: # create, list
+    $ref: "./paths/customer/location/create_and_list.yaml"
+
+  /location/get-coordinates:
+    $ref: "./paths/location/get-coordinates/index.yaml"
+  /location/validate-address:
+    $ref: "./paths/location/validate-address/index.yaml"
+  /location/get-travel-time:
+    $ref: "./paths/location/get-travel-time/index.yaml"

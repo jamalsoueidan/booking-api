@@ -32,6 +32,7 @@ describe("CustomerControllerUpsert", () => {
         url: faker.internet.avatar(),
       },
     },
+    locations: [],
   };
 
   beforeEach(() => {

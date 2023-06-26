@@ -1,6 +1,6 @@
-import { enUS } from "date-fns/locale";
-import { TimeUnit } from "~/functions/schedule";
-import { UserModel } from "~/functions/user";
+import { format, utcToZonedTime } from "date-fns-tz";
+import { TimeUnit } from "~/functions/schedule/schedule.types";
+import { UserModel } from "~/functions/user/user.model";
 import {
   GenerateAvailabilityProps,
   generateAvailability,
@@ -36,12 +36,16 @@ describe("generateAvailability", () => {
           value: 4,
           unit: TimeUnit.WEEKS,
         },
+        locations: [],
       },
     ],
   };
 
   beforeEach(async () => {
-    await UserModel.create({ customerId: 1, fullname: "jamal soueidan" });
+    const user = await UserModel.create({
+      customerId: 1,
+      fullname: "jamal soueidan",
+    });
   });
 
   it("should generate an array of objects each representing a day", async () => {
@@ -58,7 +62,10 @@ describe("generateAvailability", () => {
     const startDate = new Date().toISOString();
     const availability = await generateAvailability({ schedule, startDate });
     availability.forEach((day) => {
-      const dayOfWeek = enUS.localize?.day(new Date(day.date).getDay()) || "";
+      const dayOfWeek = format(
+        utcToZonedTime(new Date(day.date), "Etc/UTC"),
+        "iiii"
+      );
       const daySchedule = schedule.slots.find(
         (slot) => slot.day.toLowerCase() === dayOfWeek.toLowerCase()
       );
@@ -70,7 +77,10 @@ describe("generateAvailability", () => {
     const startDate = new Date().toISOString();
     const availability = await generateAvailability({ schedule, startDate });
     availability.forEach((day) => {
-      const dayOfWeek = enUS.localize?.day(new Date(day.date).getDay()) || "";
+      const dayOfWeek = format(
+        utcToZonedTime(new Date(day.date), "Etc/UTC"),
+        "iiii"
+      );
       const daySchedule = schedule.slots.find(
         (slot) => slot.day.toLowerCase() === dayOfWeek.toLowerCase()
       );

@@ -1,0 +1,33 @@
+delete:
+  parameters:
+    - name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: locationId
+      in: path
+      required: true
+      schema:
+        type: string
+  tags:
+    - Location
+  operationId: customerLocationRemove
+  summary: POST Remove location from user
+  description: This endpoint remove location but does not delete location from db
+
+  responses:
+    "200":
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+
+  security: []

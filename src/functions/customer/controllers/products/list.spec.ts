@@ -37,6 +37,7 @@ describe("UserProductsControllerList", () => {
         value: 1,
         unit: TimeUnit.WEEKS,
       },
+      locations: [],
     };
 
     const newSchedule = await ScheduleServiceCreate({ name: "ab", customerId });

@@ -1,0 +1,29 @@
+get:
+  parameters:
+    - name: fullAddress
+      in: query
+      schema:
+        type: string
+  tags:
+    - Location
+  operationId: locationGetCoordinates
+  summary: GET location get coordinates
+  description: This endpoint get coordinates object
+  responses:
+    "200":
+      description: Response with payload
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+
+    "400":
+      $ref: "../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../responses/not-found.yaml"
+
+  security: []
