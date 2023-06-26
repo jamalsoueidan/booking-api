@@ -1,6 +1,11 @@
 import { faker } from "@faker-js/faker";
-import { LocationModel, LocationTypes } from "~/functions/location";
-import { ILocation } from "~/functions/location/location.schema";
+import {
+  LocationDestination,
+  LocationDestinationModel,
+  LocationOriginModel,
+  LocationTypes,
+} from "~/functions/location";
+import { ILocationOrigin } from "~/functions/location/schemas";
 import * as LocationService from "~/functions/location/services/location.service";
 import { createUser } from "~/library/jest/helpers";
 import { CustomerServiceGet, CustomerServiceUpsertBody } from "./customer";
@@ -36,10 +41,10 @@ describe("CustomerLocationService", () => {
     isBusiness: true,
   };
 
-  const location1: Omit<ILocation, "updatedAt" | "createdAt"> = {
+  const location1: Omit<ILocationOrigin, "_id" | "updatedAt" | "createdAt"> = {
     name: "Falafel 1",
     fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
-    locationType: LocationTypes.COMMERICAL,
+    locationType: LocationTypes.ORIGIN,
     geoLocation: {
       coordinates: [2, 3],
       type: "Point",
@@ -47,14 +52,22 @@ describe("CustomerLocationService", () => {
     customerId,
   };
 
-  const location2: Omit<ILocation, "updatedAt" | "createdAt"> = {
+  const location2: Omit<ILocationOrigin, "_id" | "updatedAt" | "createdAt"> = {
     name: "Falafel 2",
     fullAddress: "Dortesvej 45 1, 8220 Brabrand",
-    locationType: LocationTypes.COMMERICAL,
+    locationType: LocationTypes.ORIGIN,
     geoLocation: {
       coordinates: [4, 5],
       type: "Point",
     },
+    customerId,
+  };
+
+  const location3: Omit<LocationDestination, "_id"> = {
+    distanceHourlyRate: 1,
+    fixedRatePerKm: 10,
+    minDistanceForFree: 10,
+    locationType: LocationTypes.DESTINATION,
     customerId,
   };
 
@@ -63,21 +76,20 @@ describe("CustomerLocationService", () => {
 
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(() => LocationModel.create(location1))
-      .mockImplementationOnce(() => LocationModel.create(location2));
+      .mockImplementationOnce(() => LocationOriginModel.create(location1))
+      .mockImplementationOnce(() => LocationDestinationModel.create(location3));
 
     await CustomerLocationServiceCreate(location1);
-    const location2doc = await CustomerLocationServiceCreate(location2);
+    const location3doc = await CustomerLocationServiceCreate(location3);
 
     user = await CustomerServiceGet({ customerId });
-
-    const location = await CustomerLocationServiceGetOne({
-      locationId: location2doc._id,
+    const location = await CustomerLocationServiceGetOne<LocationDestination>({
+      locationId: location3doc._id,
       customerId: user.customerId,
     });
 
     expect(location).toBeDefined();
-    expect(location?.name).toEqual(location2.name);
+    expect(location?.distanceHourlyRate).toEqual(location3.distanceHourlyRate);
     expect(location?.isDefault).toBeFalsy();
   });
 
@@ -86,11 +98,11 @@ describe("CustomerLocationService", () => {
 
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(() => LocationModel.create(location1))
-      .mockImplementationOnce(() => LocationModel.create(location2));
+      .mockImplementationOnce(() => LocationOriginModel.create(location1))
+      .mockImplementationOnce(() => LocationDestinationModel.create(location3));
 
     await CustomerLocationServiceCreate(location1);
-    await CustomerLocationServiceCreate(location2);
+    await CustomerLocationServiceCreate(location3);
 
     user = await CustomerServiceGet({ customerId });
 
@@ -108,7 +120,7 @@ describe("CustomerLocationService", () => {
     let user = await createUser({ customerId }, userData);
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementation(() => LocationModel.create(location1));
+      .mockImplementation(() => LocationOriginModel.create(location1));
 
     const response = await CustomerLocationServiceCreate(location1);
 
@@ -126,8 +138,8 @@ describe("CustomerLocationService", () => {
     let user = await createUser({ customerId }, userData);
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(() => LocationModel.create(location1))
-      .mockImplementationOnce(() => LocationModel.create(location2));
+      .mockImplementationOnce(() => LocationOriginModel.create(location1))
+      .mockImplementationOnce(() => LocationOriginModel.create(location2));
 
     await CustomerLocationServiceCreate(location1);
     const response = await CustomerLocationServiceCreate(location2);
@@ -147,8 +159,8 @@ describe("CustomerLocationService", () => {
 
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(() => LocationModel.create(location1))
-      .mockImplementationOnce(() => LocationModel.create(location2));
+      .mockImplementationOnce(() => LocationOriginModel.create(location1))
+      .mockImplementationOnce(() => LocationOriginModel.create(location2));
 
     const location1doc = await CustomerLocationServiceCreate(location1);
     const location2doc = await CustomerLocationServiceCreate(location2);
@@ -172,8 +184,8 @@ describe("CustomerLocationService", () => {
 
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(() => LocationModel.create(location1))
-      .mockImplementationOnce(() => LocationModel.create(location2));
+      .mockImplementationOnce(() => LocationOriginModel.create(location1))
+      .mockImplementationOnce(() => LocationOriginModel.create(location2));
 
     const location1doc = await CustomerLocationServiceCreate(location1);
     const location2doc = await CustomerLocationServiceCreate(location2);

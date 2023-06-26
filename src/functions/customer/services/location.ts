@@ -61,18 +61,18 @@ export const CustomerLocationServiceRemove = (
   });
 };
 
-export const CustomerLocationServiceGetAll = (
+export const CustomerLocationServiceGetAll = <T>(
   props: Pick<CustomerLocationServiceProps, "customerId">
 ) => {
-  return UserServiceGetLocations(props);
+  return UserServiceGetLocations<T>(props);
 };
 
-export const CustomerLocationServiceGetOne = async (
+export const CustomerLocationServiceGetOne = async <T>(
   props: CustomerLocationServiceProps
 ) => {
-  const locations = await UserServiceGetLocations(props);
+  const locations = await UserServiceGetLocations<T>(props);
   const location = locations.find(
-    (l) => l._id.toString() === props.locationId.toString()
+    (l) => l.location.toString() === props.locationId.toString()
   );
   if (!location) {
     new NotFoundError([
