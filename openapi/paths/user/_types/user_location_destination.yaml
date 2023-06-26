@@ -2,22 +2,25 @@ type: object
 properties:
   _id:
     type: string
-  name:
-    type: string
-  fullAddress:
-    type: string
   locationType:
     type: string
-    enum: [residential, commercial, client]
+    enum: [origin, destination]
   customerId:
     type: string
     format: gid
+  minDistanceForFree:
+    type: number
+  distanceHourlyRate:
+    type: number
+  fixedRatePerKm:
+    type: number
   isDefault:
     type: boolean
 required:
   - _id
-  - name
-  - fullAddress
   - locationType
   - customerId
+  - minDistanceForFree
+  - distanceHourlyRate
+  - fixedRatePerKm
   - isDefault

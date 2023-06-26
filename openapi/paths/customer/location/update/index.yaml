@@ -20,7 +20,9 @@ put:
     content:
       application/json:
         schema:
-          $ref: "./body.yaml"
+          oneOf:
+            - $ref: "./body_destination.yaml"
+            - $ref: "./body_origin.yaml"
 
   responses:
     "200":

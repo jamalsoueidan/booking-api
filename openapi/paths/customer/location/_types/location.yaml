@@ -11,7 +11,7 @@ properties:
     description: The full address of the location.
   locationType:
     type: string
-    enum: [residential, commercial, client]
+    enum: [origin, destination]
     description: The type of location.
   customerId:
     type: string

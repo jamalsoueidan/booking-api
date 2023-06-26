@@ -2,10 +2,8 @@ type: object
 properties:
   name:
     type: string
-    description: The name of the location.
   fullAddress:
     type: string
-    description: The full address of the location.
 required:
   - name
   - fullAddress

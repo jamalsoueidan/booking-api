@@ -119,8 +119,10 @@ components:
     # User
     User:
       $ref: paths/user/_types/user.yaml
-    UserLocation:
-      $ref: paths/user/_types/user_location.yaml
+    UserLocationDestination:
+      $ref: paths/user/_types/user_location_destination.yaml
+    UserLocationOrigin:
+      $ref: paths/user/_types/user_location_origin.yaml
     UserGetResponse:
       $ref: paths/user/get/response.yaml
     UsersListResponse:
@@ -135,16 +137,20 @@ components:
       $ref: paths/location/_types/coordinates.yaml
     LocationTravelTime:
       $ref: paths/location/_types/travel-time.yaml
-    CustomerLocationCreateBody:
-      $ref: paths/customer/location/create/body.yaml
+    CustomerLocationCreateOriginBody:
+      $ref: paths/customer/location/create/body_origin.yaml
+    CustomerLocationCreateDestinationBody:
+      $ref: paths/customer/location/create/body_destination.yaml
     CustomerLocationCreateResponse:
       $ref: paths/customer/location/create/response.yaml
     CustomerLocationListResponse:
       $ref: paths/customer/location/list/response.yaml
     CustomerLocationGetResponse:
       $ref: paths/customer/location/get/response.yaml
-    CustomerLocationUpdateBody:
-      $ref: paths/customer/location/update/body.yaml
+    CustomerLocationUpdateDestinationBody:
+      $ref: paths/customer/location/update/body_destination.yaml
+    CustomerLocationUpdateOriginBody:
+      $ref: paths/customer/location/update/body_origin.yaml
     CustomerLocationUpdateResponse:
       $ref: paths/customer/location/update/response.yaml
     CustomerLocationAddResponse:
