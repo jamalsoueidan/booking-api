@@ -1,12 +1,28 @@
-import mongoose from "mongoose";
+import { Model, model } from "mongoose";
+import { LocationTypes } from "./location.types";
 import {
+  ILocationDestinationDocument,
   ILocationDocument,
-  ILocationModel,
+  ILocationOriginDocument,
+  LocationDestinationMongooseSchema,
   LocationMongooseSchema,
-} from "./location.schema";
+  LocationOriginMongooseSchema,
+} from "./schemas";
 
-export const LocationModel = mongoose.model<ILocationDocument, ILocationModel>(
+export const LocationModel = model<ILocationDocument, Model<ILocationDocument>>(
   "location",
   LocationMongooseSchema,
   "Location"
 );
+
+export const LocationOriginModel =
+  LocationModel.discriminator<ILocationOriginDocument>(
+    LocationTypes.ORIGIN,
+    LocationOriginMongooseSchema
+  );
+
+export const LocationDestinationModel =
+  LocationModel.discriminator<ILocationDestinationDocument>(
+    LocationTypes.DESTINATION,
+    LocationDestinationMongooseSchema
+  );

@@ -1,15 +1,17 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
-import { LocationZodSchema } from "../location.types";
+import { LocationOriginZodSchema } from "../location.types";
 import { LocationServiceGetCoordinates } from "../services/location.service";
 
 export type LocationControllerGetCoordinatesRequest = {
   query: z.infer<typeof LocationServiceGetCoordinatesSchema>;
 };
 
-export const LocationServiceGetCoordinatesSchema = LocationZodSchema.pick({
-  fullAddress: true,
-});
+export const LocationServiceGetCoordinatesSchema = LocationOriginZodSchema.pick(
+  {
+    fullAddress: true,
+  }
+);
 
 export type LocationControllerGetCoordinatesResponse = Awaited<
   ReturnType<typeof LocationServiceGetCoordinates>

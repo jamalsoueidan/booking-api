@@ -1,6 +1,10 @@
 import axios from "axios";
 import { BadError } from "~/library/handler";
-import { LocationTypes } from "../location.types";
+import {
+  LocationDestination,
+  LocationOrigin,
+  LocationTypes,
+} from "../location.types";
 import {
   ForsyningResponse,
   GoogleDirectionResponse,
@@ -47,18 +51,28 @@ const travelTimeData: GoogleDirectionResponse = {
   status: "ok",
 };
 
+const originData: Omit<LocationOrigin, "_id"> = {
+  name: "Falafel",
+  fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
+  locationType: LocationTypes.ORIGIN,
+  customerId: 1,
+};
+
+const destinationData: Omit<LocationDestination, "_id"> = {
+  distanceHourlyRate: 1,
+  fixedRatePerKm: 10,
+  minDistanceForFree: 10,
+  locationType: LocationTypes.DESTINATION,
+  customerId: 1,
+};
+
 describe("LocationService", () => {
-  it("create should be able to create new location type commercial (fullAddress and coordinations)", async () => {
+  it("create should be able to create origin", async () => {
     mockedAxios.get.mockResolvedValueOnce({
       data: getCoordinatesData,
     });
 
-    const response = await LocationServiceCreate({
-      name: "Falafel",
-      fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
-      locationType: LocationTypes.COMMERICAL,
-      customerId: 1,
-    });
+    const response = await LocationServiceCreate(originData);
 
     expect(response).toEqual(
       expect.objectContaining({
@@ -70,24 +84,21 @@ describe("LocationService", () => {
     );
   });
 
-  it("create should be able to create new location type client", async () => {
-    const response = await LocationServiceCreate({
-      name: "Falafel",
-      fullAddress: LocationTypes.CLIENT,
-      locationType: LocationTypes.CLIENT,
-      customerId: 1,
-    });
+  it("create should be able to create destination", async () => {
+    const response = await LocationServiceCreate(destinationData);
 
     expect(response).toEqual(
       expect.objectContaining({
-        locationType: LocationTypes.CLIENT,
+        locationType: LocationTypes.DESTINATION,
         customerId: 1,
-        fullAddress: LocationTypes.CLIENT,
+        distanceHourlyRate: 1,
+        fixedRatePerKm: 10,
+        minDistanceForFree: 10,
       })
     );
   });
 
-  it("update should be able to update location type commercial and (fullAddress and coordinations)", async () => {
+  it("update should be able to update origin", async () => {
     const getCoordinatesUpdateData = [
       {
         id: "",
@@ -108,12 +119,7 @@ describe("LocationService", () => {
         data: getCoordinatesUpdateData,
       });
 
-    const response = await LocationServiceCreate({
-      name: "Falafel 1",
-      fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
-      locationType: LocationTypes.COMMERICAL,
-      customerId: 1,
-    });
+    const response = await LocationServiceCreate(originData);
 
     const update = await LocationServiceUpdate(
       { locationId: response._id, customerId: 1 },
@@ -125,7 +131,7 @@ describe("LocationService", () => {
 
     expect(update).toEqual(
       expect.objectContaining({
-        locationType: "commercial",
+        locationType: LocationTypes.ORIGIN,
         customerId: 1,
         fullAddress: getCoordinatesUpdateData[0].adressebetegnelse,
         geoLocation: {
@@ -137,26 +143,25 @@ describe("LocationService", () => {
     );
   });
 
-  it("update should be able to update location type client", async () => {
-    const response = await LocationServiceCreate({
-      name: "Falafel 1",
-      fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
-      locationType: LocationTypes.CLIENT,
-      customerId: 1,
-    });
+  it("update should be able to update destination", async () => {
+    const response = await LocationServiceCreate(destinationData);
 
     const update = await LocationServiceUpdate(
       { locationId: response._id, customerId: 1 },
       {
-        name: "Falafel 2",
-        fullAddress: "Dortesvej 21 1, 8220 Brabrand",
+        distanceHourlyRate: 5,
+        fixedRatePerKm: 5,
+        minDistanceForFree: 5,
       }
     );
 
     expect(update).toEqual(
       expect.objectContaining({
-        locationType: "client",
+        locationType: LocationTypes.DESTINATION,
         customerId: 1,
+        distanceHourlyRate: 5,
+        fixedRatePerKm: 5,
+        minDistanceForFree: 5,
       })
     );
   });
@@ -211,22 +216,14 @@ describe("LocationService", () => {
       data: getCoordinatesData,
     });
 
-    await LocationServiceCreate({
-      name: "Falafel 1",
-      fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
-      locationType: LocationTypes.COMMERICAL,
-      customerId: 1,
-    });
+    await LocationServiceCreate(originData);
 
     mockedAxios.get.mockResolvedValueOnce({
       data: getCoordinatesData,
     });
 
-    await expect(
-      LocationServiceValidateAddress({
-        name: "BySisters",
-        fullAddress: "Sigridsvej 45 1, 8220 brabrand",
-      })
-    ).rejects.toThrow(BadError);
+    await expect(LocationServiceValidateAddress(originData)).rejects.toThrow(
+      BadError
+    );
   });
 });

@@ -1,23 +1,40 @@
 import axios from "axios";
 import { BadError, NotFoundError } from "~/library/handler";
-import { LocationModel } from "../location.model";
-import { Location, LocationTypes } from "../location.types";
+import {
+  LocationDestinationModel,
+  LocationModel,
+  LocationOriginModel,
+} from "../location.model";
+import {
+  Location,
+  LocationDestination,
+  LocationOrigin,
+  LocationTypes,
+} from "../location.types";
 
-export type LocationServiceCreateProps = Omit<Location, "_id">;
+export type LocationServiceCreateProps = Omit<
+  LocationOrigin | LocationDestination,
+  "_id"
+>;
 
 export const LocationServiceCreate = async (
   body: LocationServiceCreateProps
 ) => {
-  const location = new LocationModel(body);
-  if (body.locationType !== LocationTypes.CLIENT) {
-    const result = await LocationServiceValidateAddress(location);
-    location.geoLocation.type = "Point";
-    location.geoLocation.coordinates = [result.longitude, result.latitude];
-    location.fullAddress = result.fullAddress;
-  } else {
-    location.fullAddress = LocationTypes.CLIENT;
-    location.geoLocation.type = "Point";
-    location.geoLocation.coordinates = [0, 0];
+  let location;
+  let result;
+
+  switch (body.locationType) {
+    case LocationTypes.DESTINATION:
+      location = new LocationDestinationModel(body);
+      break;
+
+    case LocationTypes.ORIGIN:
+      location = new LocationOriginModel(body);
+      result = await LocationServiceValidateAddress(location);
+      location.geoLocation.type = "Point";
+      location.geoLocation.coordinates = [result.longitude, result.latitude];
+      location.fullAddress = result.fullAddress;
+      break;
   }
 
   return location.save();
@@ -29,7 +46,7 @@ export type LocationUpdateFilterProps = {
 };
 
 export type LocationUpdateBody = Omit<
-  Location,
+  LocationOrigin | LocationDestination,
   "_id" | "customerId" | "locationType"
 >;
 
@@ -50,8 +67,8 @@ export const LocationServiceUpdate = async (
     ])
   );
 
-  if (location.locationType !== LocationTypes.CLIENT) {
-    const result = await LocationServiceValidateAddress(body);
+  if (location.locationType !== LocationTypes.DESTINATION) {
+    const result = await LocationServiceValidateAddress(body as LocationOrigin);
     location.set({
       fullAddress: result.fullAddress,
       geoLocation: {
@@ -60,15 +77,13 @@ export const LocationServiceUpdate = async (
       },
     });
   } else {
-    location.set({
-      fullAddress: LocationTypes.CLIENT,
-    });
+    location.set(body);
   }
 
   return location.save();
 };
 
-type LocationServiceGetCoordinates = Pick<Location, "fullAddress">;
+type LocationServiceGetCoordinates = Pick<LocationOrigin, "fullAddress">;
 
 export type ForsyningResponse = Array<{
   id: string;
@@ -122,7 +137,7 @@ export const LocationServiceGetCoordinates = async (
 };
 
 type LocationServiceValidateAddressProps = Pick<
-  Location,
+  LocationOrigin,
   "fullAddress" | "name"
 >;
 
