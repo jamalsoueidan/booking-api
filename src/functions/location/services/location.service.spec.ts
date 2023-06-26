@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BadError } from "~/library/handler";
+import { omitObjectIdProps } from "~/library/jest/helpers";
 import {
   LocationDestination,
   LocationOrigin,
@@ -14,9 +15,10 @@ import {
   LocationServiceUpdate,
   LocationServiceValidateAddress,
 } from "./location.service";
-require("~/library/jest/mongoose/mongodb.jest");
 
+require("~/library/jest/mongoose/mongodb.jest");
 jest.mock("axios");
+
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 const getCoordinatesData: ForsyningResponse = [
@@ -74,9 +76,9 @@ describe("LocationService", () => {
 
     const response = await LocationServiceCreate(originData);
 
-    expect(response).toEqual(
+    expect(omitObjectIdProps(response.toObject())).toEqual(
       expect.objectContaining({
-        locationType: "commercial",
+        locationType: LocationTypes.ORIGIN,
         customerId: 1,
         fullAddress: "Sigridsvej 45, 1. th, 8220 Brabrand",
         geoLocation: { coordinates: [10.12961271, 56.15563438], type: "Point" },
