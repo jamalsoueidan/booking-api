@@ -1,15 +1,12 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import {
-  ScheduleProduct,
-  ScheduleServiceCreate,
-  TimeUnit,
-} from "~/functions/schedule";
+import { CustomerProductServiceUpsert } from "~/functions/customer/services/product";
+import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
+import { ScheduleServiceCreate } from "~/functions/schedule/services";
 import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
-import { CustomerProductServiceUpsert } from "../../services";
 import {
   CustomerProductsControllerListIds,
   CustomerProductsControllerListIdsRequest,
@@ -36,6 +33,7 @@ describe("CustomerProductsServiceListIds", () => {
         value: 1,
         unit: TimeUnit.WEEKS,
       },
+      locations: [],
     };
 
     const newSchedule = await ScheduleServiceCreate({ name: "ab", customerId });

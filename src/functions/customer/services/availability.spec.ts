@@ -1,5 +1,5 @@
 import { Booking, BookingModel } from "~/functions/booking";
-import { TimeUnit } from "~/functions/schedule";
+import { Schedule, TimeUnit } from "~/functions/schedule";
 import { ScheduleModel } from "~/functions/schedule/schedule.model";
 import { UserModel } from "~/functions/user";
 import { CustomerProductAvailabilityService } from "./availability";
@@ -7,7 +7,7 @@ import { CustomerProductAvailabilityService } from "./availability";
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerProductAvailabilityService", () => {
-  const schedule1 = {
+  const schedule1: Omit<Schedule, "_id"> = {
     name: "another",
     customerId: 1,
     slots: [
@@ -24,6 +24,7 @@ describe("CustomerProductAvailabilityService", () => {
     products: [
       {
         productId: 12,
+        variantId: 1,
         duration: 45,
         breakTime: 15,
         noticePeriod: {
@@ -34,6 +35,7 @@ describe("CustomerProductAvailabilityService", () => {
           value: 4,
           unit: TimeUnit.WEEKS,
         },
+        locations: [],
       },
     ],
   };

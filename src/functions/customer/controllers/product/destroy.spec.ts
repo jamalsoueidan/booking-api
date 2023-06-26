@@ -6,6 +6,7 @@ import {
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
+import { omitObjectIdProps } from "~/library/jest/helpers";
 import { CustomerProductServiceUpsert } from "../../services";
 import {
   CustomerProductControllerDestroy,
@@ -31,6 +32,7 @@ describe("CustomerProductControllerDestroy", () => {
       value: 1,
       unit: TimeUnit.WEEKS,
     },
+    locations: [],
   };
 
   beforeEach(async () => {
@@ -51,11 +53,13 @@ describe("CustomerProductControllerDestroy", () => {
       { ...product, scheduleId: newSchedule._id }
     );
 
-    expect(newProduct).toMatchObject({
-      ...product,
-      scheduleId: newSchedule._id,
-      scheduleName: newSchedule.name,
-    });
+    expect(omitObjectIdProps(newProduct)).toMatchObject(
+      omitObjectIdProps({
+        ...product,
+        scheduleId: newSchedule._id,
+        scheduleName: newSchedule.name,
+      })
+    );
 
     request = await createHttpRequest<CustomerProductControllerDestroyRequest>({
       query: {

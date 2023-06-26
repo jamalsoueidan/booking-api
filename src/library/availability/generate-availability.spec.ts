@@ -1,6 +1,6 @@
-import { format } from "date-fns";
-import { TimeUnit } from "~/functions/schedule";
-import { UserModel } from "~/functions/user";
+import { format, utcToZonedTime } from "date-fns-tz";
+import { TimeUnit } from "~/functions/schedule/schedule.types";
+import { UserModel } from "~/functions/user/user.model";
 import {
   GenerateAvailabilityProps,
   generateAvailability,
@@ -62,7 +62,10 @@ describe("generateAvailability", () => {
     const startDate = new Date().toISOString();
     const availability = await generateAvailability({ schedule, startDate });
     availability.forEach((day) => {
-      const dayOfWeek = format(new Date(day.date), "EEEE");
+      const dayOfWeek = format(
+        utcToZonedTime(new Date(day.date), "Etc/UTC"),
+        "iiii"
+      );
       const daySchedule = schedule.slots.find(
         (slot) => slot.day.toLowerCase() === dayOfWeek.toLowerCase()
       );
@@ -74,7 +77,10 @@ describe("generateAvailability", () => {
     const startDate = new Date().toISOString();
     const availability = await generateAvailability({ schedule, startDate });
     availability.forEach((day) => {
-      const dayOfWeek = format(new Date(day.date), "EEEE");
+      const dayOfWeek = format(
+        utcToZonedTime(new Date(day.date), "Etc/UTC"),
+        "iiii"
+      );
       const daySchedule = schedule.slots.find(
         (slot) => slot.day.toLowerCase() === dayOfWeek.toLowerCase()
       );

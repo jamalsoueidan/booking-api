@@ -1,5 +1,5 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { ScheduleModel, TimeUnit } from "~/functions/schedule";
+import { Schedule, ScheduleModel, TimeUnit } from "~/functions/schedule";
 import { UserModel } from "~/functions/user";
 import {
   HttpSuccessResponse,
@@ -19,7 +19,7 @@ describe("CustomerProductControllerAvailability", () => {
   let request: HttpRequest;
   const productId = 99;
   const customerId = 1;
-  const scheduleData = {
+  const scheduleData: Omit<Schedule, "_id"> = {
     name: "Test Schedule",
     customerId,
     slots: [
@@ -40,6 +40,7 @@ describe("CustomerProductControllerAvailability", () => {
     products: [
       {
         productId,
+        variantId: 1,
         duration: 30,
         breakTime: 0,
         noticePeriod: {
@@ -50,6 +51,7 @@ describe("CustomerProductControllerAvailability", () => {
           unit: TimeUnit.WEEKS,
           value: 1,
         },
+        locations: [],
       },
     ],
   };

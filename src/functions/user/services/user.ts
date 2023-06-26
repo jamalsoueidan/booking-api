@@ -1,5 +1,4 @@
 import { FilterQuery } from "mongoose";
-import { Location } from "~/functions/location";
 import { NotFoundError } from "~/library/handler";
 import { UserModel } from "../user.model";
 import { IUserDocument } from "../user.schema";
@@ -138,7 +137,7 @@ export const UserServiceLocationsRemove = async (location: {
   return user.save();
 };
 
-export const UserServiceGetLocations = async ({
+export const UserServiceGetLocations = async <T>({
   customerId,
 }: {
   customerId: number;
@@ -158,6 +157,7 @@ export const UserServiceGetLocations = async ({
     {
       $addFields: {
         "locations.location.isDefault": "$locations.isDefault",
+        "locations.location.location": "$locations.location._id",
       },
     },
     {
@@ -175,7 +175,7 @@ export const UserServiceGetLocations = async ({
   ];
 
   const locations = await UserModel.aggregate<{
-    locations: Array<Omit<UserLocations, "location"> & Location>;
+    locations: Array<UserLocations & T>;
   }>(pipeline).exec();
   if (locations.length > 0) {
     return locations[0].locations;

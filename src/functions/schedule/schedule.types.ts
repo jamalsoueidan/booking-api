@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LocationTypes } from "~/functions/location";
 import {
   GidFormat,
   NumberOrStringType,
@@ -41,6 +42,13 @@ const NoticePeriodZodSchema = z.object({
   ]),
 });
 
+const LocationZodSchema = z.array(
+  z.object({
+    location: z.string(),
+    locationType: z.nativeEnum(LocationTypes),
+  })
+);
+
 export type ScheduleProductNoticePeriod = z.infer<typeof NoticePeriodZodSchema>;
 
 export const ScheduleProductZodSchema = z.object({
@@ -51,6 +59,7 @@ export const ScheduleProductZodSchema = z.object({
   breakTime: NumberOrStringType,
   noticePeriod: NoticePeriodZodSchema,
   bookingPeriod: BookingPeriodZodSchema,
+  locations: LocationZodSchema,
 });
 
 export type ScheduleProduct = z.infer<typeof ScheduleProductZodSchema>;
