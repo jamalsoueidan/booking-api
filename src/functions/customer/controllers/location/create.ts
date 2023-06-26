@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { LocationZodSchema } from "~/functions/location/location.types";
+import {
+  LocationDestinationZodSchema,
+  LocationOriginZodSchema,
+  LocationZodSchema,
+} from "~/functions/location/location.types";
 import { LocationServiceCreate } from "~/functions/location/services";
 import { _ } from "~/library/handler";
 
@@ -12,11 +16,9 @@ export const LocationServiceCreateQuerySchema = z.object({
   customerId: LocationZodSchema.shape.customerId,
 });
 
-export const LocationServiceCreateBodySchema = LocationZodSchema.pick({
-  name: true,
-  fullAddress: true,
-  locationType: true,
-}).strict();
+export const LocationServiceCreateBodySchema = LocationOriginZodSchema.merge(
+  LocationDestinationZodSchema
+).strict();
 
 export type CustomerLocationControllerCreateResponse = Awaited<
   ReturnType<typeof LocationServiceCreate>
