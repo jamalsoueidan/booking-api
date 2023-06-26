@@ -36,6 +36,7 @@ describe("generateAvailability", () => {
           value: 4,
           unit: TimeUnit.WEEKS,
         },
+        locations: [],
       },
     ],
   };
