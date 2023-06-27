@@ -1053,16 +1053,12 @@ components:
             - origin
             - destination
           default: destination
-        customerId:
-          type: string
-          format: gid
         name:
           type: string
         fullAddress:
           type: string
       required:
         - locationType
-        - customerId
         - name
         - fullAddress
     CustomerLocationCreateOriginResponse:
@@ -1085,9 +1081,6 @@ components:
             - origin
             - destination
           default: origin
-        customerId:
-          type: string
-          format: gid
         minDistanceForFree:
           oneOf:
             - type: number
@@ -1102,7 +1095,6 @@ components:
             - type: string
       required:
         - locationType
-        - customerId
         - minDistanceForFree
         - distanceHourlyRate
         - fixedRatePerKm
