@@ -4,17 +4,17 @@ info:
   title: Booking Shopify Api
   license:
     name: MIT
-    url: "http://"
+    url: 'http://'
   contact:
     name: jamal Soueidan
     email: jamal@soueidan.com
-    url: "https://github.com/jamalsoueidan"
+    url: 'https://github.com/jamalsoueidan'
   x-tagGroups:
     - name: all api endpoints
       tags:
         - Schedule
 servers:
-  - url: "https://booking-shopify-api.azurewebsites.net/api"
+  - url: 'https://booking-shopify-api.azurewebsites.net/api'
 components:
   responses:
     BadResponse:
@@ -22,25 +22,25 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Errors"
+            $ref: '#/components/schemas/Errors'
     ForbiddenResponse:
       description: Forbidden
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Errors"
+            $ref: '#/components/schemas/Errors'
     NotFoundResponse:
       description: Not found
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Errors"
+            $ref: '#/components/schemas/Errors'
     UnauthorizedResponse:
       description: Unauthorized
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Errors"
+            $ref: '#/components/schemas/Errors'
   schemas:
     Errors:
       type: object
@@ -106,11 +106,11 @@ components:
       type: object
       properties:
         day:
-          $ref: "#/components/schemas/Day"
+          $ref: '#/components/schemas/Day'
         intervals:
           type: array
           items:
-            $ref: "#/components/schemas/Interval"
+            $ref: '#/components/schemas/Interval'
       required:
         - day
         - intervals
@@ -144,9 +144,9 @@ components:
             - type: string
             - type: number
         noticePeriod:
-          $ref: "#/components/schemas/ProductNoticePeriod"
+          $ref: '#/components/schemas/ProductNoticePeriod'
         bookingPeriod:
-          $ref: "#/components/schemas/ProductBookingPeriod"
+          $ref: '#/components/schemas/ProductBookingPeriod'
       required:
         - variantId
         - productId
@@ -162,7 +162,7 @@ components:
             - type: string
             - type: number
         unit:
-          $ref: "#/components/schemas/ProductBookingUnit"
+          $ref: '#/components/schemas/ProductBookingUnit'
           default: months
       required:
         - value
@@ -180,7 +180,7 @@ components:
             - type: string
             - type: number
         unit:
-          $ref: "#/components/schemas/ProductNoticeUnit"
+          $ref: '#/components/schemas/ProductNoticeUnit'
           default: hours
       required:
         - value
@@ -203,11 +203,11 @@ components:
         slots:
           type: array
           items:
-            $ref: "#/components/schemas/Slot"
+            $ref: '#/components/schemas/Slot'
         products:
           type: array
           items:
-            $ref: "#/components/schemas/Product"
+            $ref: '#/components/schemas/Product'
       required:
         - _id
         - name
@@ -228,7 +228,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/Schedule"
+          $ref: '#/components/schemas/Schedule'
       required:
         - success
         - payload
@@ -239,7 +239,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/Destroy"
+          $ref: '#/components/schemas/Destroy'
       required:
         - success
         - payload
@@ -252,7 +252,7 @@ components:
         payload:
           type: array
           items:
-            $ref: "#/components/schemas/Schedule"
+            $ref: '#/components/schemas/Schedule'
       required:
         - success
         - payload
@@ -263,7 +263,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/Schedule"
+          $ref: '#/components/schemas/Schedule'
       required:
         - success
         - payload
@@ -274,7 +274,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/Schedule"
+          $ref: '#/components/schemas/Schedule'
       required:
         - success
         - payload
@@ -292,14 +292,14 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/Schedule"
+          $ref: '#/components/schemas/Schedule'
       required:
         - success
         - payload
     ScheduleSlotsUpdateBody:
       type: array
       items:
-        $ref: "#/components/schemas/Slot"
+        $ref: '#/components/schemas/Slot'
     CustomerProductUpsertResponse:
       type: object
       properties:
@@ -307,7 +307,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/CustomerProductList"
+          $ref: '#/components/schemas/CustomerProductList'
       required:
         - success
         - payload
@@ -329,9 +329,9 @@ components:
             - type: string
             - type: number
         noticePeriod:
-          $ref: "#/components/schemas/ProductNoticePeriod"
+          $ref: '#/components/schemas/ProductNoticePeriod'
         bookingPeriod:
-          $ref: "#/components/schemas/ProductBookingPeriod"
+          $ref: '#/components/schemas/ProductBookingPeriod'
       required:
         - scheduleId
         - variantId
@@ -368,7 +368,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/CustomerProductList"
+          $ref: '#/components/schemas/CustomerProductList'
       required:
         - success
         - payload
@@ -471,7 +471,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/CustomerBooking"
+          $ref: '#/components/schemas/CustomerBooking'
       required:
         - success
         - payload
@@ -484,14 +484,14 @@ components:
         payload:
           type: array
           items:
-            $ref: "#/components/schemas/CustomerBooking"
+            $ref: '#/components/schemas/CustomerBooking'
       required:
         - success
         - payload
     CustomerProductList:
       type: object
       allOf:
-        - $ref: "#/components/schemas/Product"
+        - $ref: '#/components/schemas/Product'
         - type: object
           properties:
             scheduleId:
@@ -506,7 +506,7 @@ components:
       properties:
         date:
           type: string
-          example: "2023-05-05T00:00:00.000Z"
+          example: '2023-05-05T00:00:00.000Z'
         customer:
           type: object
           properties:
@@ -524,10 +524,10 @@ components:
             properties:
               from:
                 type: string
-                example: "2023-05-05T00:00:00.000Z"
+                example: '2023-05-05T00:00:00.000Z'
               to:
                 type: string
-                example: "2023-05-05T00:00:00.000Z"
+                example: '2023-05-05T00:00:00.000Z'
               products:
                 type: array
                 items:
@@ -539,10 +539,10 @@ components:
                       type: number
                     from:
                       type: string
-                      example: "2023-05-05T00:00:00.000Z"
+                      example: '2023-05-05T00:00:00.000Z'
                     to:
                       type: string
-                      example: "2023-05-05T00:00:00.000Z"
+                      example: '2023-05-05T00:00:00.000Z'
                     breakTime:
                       type: number
                     duration:
@@ -583,7 +583,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/User"
+          $ref: '#/components/schemas/User'
       required:
         - success
         - payload
@@ -594,7 +594,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/User"
+          $ref: '#/components/schemas/User'
       required:
         - success
         - payload
@@ -670,7 +670,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/User"
+          $ref: '#/components/schemas/User'
       required:
         - success
         - payload
@@ -691,7 +691,7 @@ components:
             - type: string
         username:
           type: string
-          pattern: "^[a-zA-Z0-9-_]+$"
+          pattern: '^[a-zA-Z0-9-_]+$'
         aboutMe:
           type: string
         shortDescription:
@@ -738,7 +738,7 @@ components:
         payload:
           type: array
           items:
-            $ref: "#/components/schemas/CustomerProductList"
+            $ref: '#/components/schemas/CustomerProductList'
       required:
         - success
         - payload
@@ -751,7 +751,7 @@ components:
         payload:
           type: array
           items:
-            $ref: "#/components/schemas/CustomerProductAvailability"
+            $ref: '#/components/schemas/CustomerProductAvailability'
       required:
         - success
         - payload
@@ -903,7 +903,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/User"
+          $ref: '#/components/schemas/User'
       required:
         - success
         - payload
@@ -921,7 +921,7 @@ components:
             results:
               type: array
               items:
-                $ref: "#/components/schemas/User"
+                $ref: '#/components/schemas/User'
           required:
             - results
       required:
@@ -940,34 +940,71 @@ components:
       required:
         - success
         - payload
-    Location:
+    LocationOrigin:
       type: object
       properties:
         _id:
           type: string
-          description: The unique identifier for the location.
-        name:
-          type: string
-          description: The name of the location.
-        fullAddress:
-          type: string
-          description: The full address of the location.
         locationType:
           type: string
           enum:
             - origin
             - destination
-          description: The type of location.
         customerId:
           type: string
           format: gid
-          description: The unique identifier of the customer associated with the location.
+        name:
+          type: string
+        fullAddress:
+          type: string
+        geoLocation:
+          type: object
+          required:
+            - type
+            - coordinates
+          properties:
+            type:
+              type: string
+              enum:
+                - Point
+            coordinates:
+              type: array
+              items:
+                type: number
       required:
         - _id
-        - name
-        - fullAddress
         - locationType
         - customerId
+        - name
+        - fullAddress
+        - geoLocation
+        - isDefault
+    LocationDestination:
+      type: object
+      properties:
+        _id:
+          type: string
+        locationType:
+          type: string
+          enum:
+            - origin
+            - destination
+        customerId:
+          type: string
+          format: gid
+        minDistanceForFree:
+          type: number
+        distanceHourlyRate:
+          type: number
+        fixedRatePerKm:
+          type: number
+      required:
+        - _id
+        - locationType
+        - customerId
+        - minDistanceForFree
+        - distanceHourlyRate
+        - fixedRatePerKm
     LocationCoordinates:
       type: object
       properties:
@@ -1015,6 +1052,7 @@ components:
           enum:
             - origin
             - destination
+          default: origin
         customerId:
           type: string
           format: gid
@@ -1036,6 +1074,17 @@ components:
         - minDistanceForFree
         - distanceHourlyRate
         - fixedRatePerKm
+    CustomerLocationCreateOriginResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/LocationOrigin'
+      required:
+        - success
+        - payload
     CustomerLocationCreateDestinationBody:
       type: object
       properties:
@@ -1044,6 +1093,7 @@ components:
           enum:
             - origin
             - destination
+          default: destination
         customerId:
           type: string
           format: gid
@@ -1056,14 +1106,14 @@ components:
         - customerId
         - name
         - fullAddress
-    CustomerLocationCreateResponse:
+    CustomerLocationCreateDestinationResponse:
       type: object
       properties:
         success:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/Location"
+          $ref: '#/components/schemas/LocationDestination'
       required:
         - success
         - payload
@@ -1077,8 +1127,8 @@ components:
           type: array
           items:
             oneOf:
-              - $ref: "#/components/schemas/UserLocationDestination"
-              - $ref: "#/components/schemas/UserLocationOrigin"
+              - $ref: '#/components/schemas/UserLocationDestination'
+              - $ref: '#/components/schemas/UserLocationOrigin'
       required:
         - success
         - payload
@@ -1090,8 +1140,8 @@ components:
           example: true
         payload:
           oneOf:
-            - $ref: "#/components/schemas/UserLocationDestination"
-            - $ref: "#/components/schemas/UserLocationOrigin"
+            - $ref: '#/components/schemas/UserLocationDestination'
+            - $ref: '#/components/schemas/UserLocationOrigin'
       required:
         - success
         - payload
@@ -1114,6 +1164,17 @@ components:
         - minDistanceForFree
         - distanceHourlyRate
         - fixedRatePerKm
+    CustomerLocationUpdateDestinationResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/LocationDestination'
+      required:
+        - success
+        - payload
     CustomerLocationUpdateOriginBody:
       type: object
       properties:
@@ -1124,14 +1185,14 @@ components:
       required:
         - name
         - fullAddress
-    CustomerLocationUpdateResponse:
+    CustomerLocationUpdateOriginResponse:
       type: object
       properties:
         success:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/Location"
+          $ref: '#/components/schemas/LocationOrigin'
       required:
         - success
         - payload
@@ -1142,7 +1203,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/User"
+          $ref: '#/components/schemas/User'
       required:
         - success
         - payload
@@ -1153,7 +1214,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/User"
+          $ref: '#/components/schemas/User'
       required:
         - success
         - payload
@@ -1164,7 +1225,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/User"
+          $ref: '#/components/schemas/User'
       required:
         - success
         - payload
@@ -1175,7 +1236,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/LocationCoordinates"
+          $ref: '#/components/schemas/LocationCoordinates'
       required:
         - success
         - payload
@@ -1186,7 +1247,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/LocationTravelTime"
+          $ref: '#/components/schemas/LocationTravelTime'
       required:
         - success
         - payload
@@ -1197,12 +1258,12 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: "#/components/schemas/LocationCoordinates"
+          $ref: '#/components/schemas/LocationCoordinates'
       required:
         - success
         - payload
 paths:
-  "/user/{username}":
+  '/user/{username}':
     parameters:
       - name: username
         in: path
@@ -1217,20 +1278,20 @@ paths:
       summary: GET Get user
       description: This endpoint gets user object
       responses:
-        "200":
+        '200':
           description: Response with payload
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserGetResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+                $ref: '#/components/schemas/UserGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
   /users/professions:
     get:
@@ -1240,20 +1301,20 @@ paths:
       summary: GET Get all users professions with total count
       description: This endpoint get all users
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UsersProfessionsResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+                $ref: '#/components/schemas/UsersProfessionsResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
   /users:
     parameters:
@@ -1284,22 +1345,22 @@ paths:
       summary: GET Get all users
       description: This endpoint get all users
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UsersListResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+                $ref: '#/components/schemas/UsersListResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
-  "/customer/{customerId}":
+  '/customer/{customerId}':
     put:
       parameters:
         - name: customerId
@@ -1317,20 +1378,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CustomerUpsertBody"
+              $ref: '#/components/schemas/CustomerUpsertBody'
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerUpsertResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
+                $ref: '#/components/schemas/CustomerUpsertResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security: []
     get:
       parameters:
@@ -1345,22 +1406,22 @@ paths:
       summary: GET Get customer
       description: This endpoint gets customer object
       responses:
-        "200":
+        '200':
           description: Response with payload
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerGetResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+                $ref: '#/components/schemas/CustomerGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
-  "/customer/{customerId}/update":
+  '/customer/{customerId}/update':
     put:
       parameters:
         - name: customerId
@@ -1379,22 +1440,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CustomerUpdateBody"
+              $ref: '#/components/schemas/CustomerUpdateBody'
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerUpdateResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
+                $ref: '#/components/schemas/CustomerUpdateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security: []
-  "/customer/{customerId}/isBusiness":
+  '/customer/{customerId}/isBusiness':
     get:
       parameters:
         - name: customerId
@@ -1409,22 +1470,22 @@ paths:
       summary: GET Get customer is business
       description: This endpoint return if customer is business or not
       responses:
-        "200":
+        '200':
           description: Response with payload
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerIsBusinessResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+                $ref: '#/components/schemas/CustomerIsBusinessResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
-  "/customer/{customerId}/products":
+  '/customer/{customerId}/products':
     parameters:
       - name: customerId
         in: path
@@ -1439,20 +1500,20 @@ paths:
       summary: GET Get products for customer
       description: This endpoint get products for customer
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerProductListResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
+                $ref: '#/components/schemas/CustomerProductListResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security: []
-  "/customer/{customerId}/products/ids":
+  '/customer/{customerId}/products/ids':
     parameters:
       - name: customerId
         in: path
@@ -1467,20 +1528,20 @@ paths:
       summary: GET Get product ids for customer
       description: This endpoint get product ids for customer
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerProductListIdsResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
+                $ref: '#/components/schemas/CustomerProductListIdsResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security: []
-  "/customer/{customerId}/product/availability":
+  '/customer/{customerId}/product/availability':
     parameters:
       - name: customerId
         in: path
@@ -1507,20 +1568,20 @@ paths:
       summary: GET Get all availabilty for customer product
       description: This endpoint get all availability for product for customerId
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerProductAvailabilityResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
+                $ref: '#/components/schemas/CustomerProductAvailabilityResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security: []
-  "/customer/{customerId}/product/{productId}":
+  '/customer/{customerId}/product/{productId}':
     parameters:
       - name: customerId
         in: path
@@ -1541,20 +1602,20 @@ paths:
       summary: GET Get product that exist in one of the schedules for customer
       description: This endpoint get product for customer
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerProductGetResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+                $ref: '#/components/schemas/CustomerProductGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
     put:
       tags:
@@ -1567,22 +1628,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CustomerProductUpsertBody"
+              $ref: '#/components/schemas/CustomerProductUpsertBody'
       responses:
-        "200":
+        '200':
           description: Response with schedule product payload
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerProductUpsertResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+                $ref: '#/components/schemas/CustomerProductUpsertResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
     delete:
       tags:
@@ -1591,22 +1652,22 @@ paths:
       summary: DEL destroy product
       description: This endpoint remove product from schedule for customer
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerProductDestroyResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+                $ref: '#/components/schemas/CustomerProductDestroyResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
-  "/customer/{customerId}/booking/{orderId}":
+  '/customer/{customerId}/booking/{orderId}':
     get:
       parameters:
         - name: customerId
@@ -1633,22 +1694,22 @@ paths:
       summary: GET Get booking
       description: This endpoint gets booking object
       responses:
-        "200":
+        '200':
           description: Response with payload
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerBookingGetResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+                $ref: '#/components/schemas/CustomerBookingGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
-  "/customer/{customerId}/bookings":
+  '/customer/{customerId}/bookings':
     get:
       parameters:
         - name: customerId
@@ -1672,22 +1733,22 @@ paths:
       summary: GET Get all bookings for customer
       description: This endpoint get all bookings
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerBookingListResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+                $ref: '#/components/schemas/CustomerBookingListResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
-  "/customer/{customerId}/schedule":
+  '/customer/{customerId}/schedule':
     parameters:
       - name: customerId
         in: path
@@ -1706,24 +1767,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ScheduleCreateBody"
+              $ref: '#/components/schemas/ScheduleCreateBody'
       responses:
-        "200":
+        '200':
           description: Response with schedule payload
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ScheduleCreateResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+                $ref: '#/components/schemas/ScheduleCreateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
-  "/customer/{customerId}/schedules":
+  '/customer/{customerId}/schedules':
     parameters:
       - name: customerId
         in: path
@@ -1738,20 +1799,20 @@ paths:
       summary: GET Get all schedule for customer
       description: This endpoint get all schedule for customer
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ScheduleListResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
+                $ref: '#/components/schemas/ScheduleListResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security: []
-  "/customer/{customerId}/schedule/{scheduleId}":
+  '/customer/{customerId}/schedule/{scheduleId}':
     parameters:
       - name: customerId
         in: path
@@ -1772,18 +1833,18 @@ paths:
       summary: GET Get schedule for customer
       description: This endpoint get schedule for customer
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ScheduleGetResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
+                $ref: '#/components/schemas/ScheduleGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security: []
     put:
       tags:
@@ -1796,22 +1857,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ScheduleUpdateBody"
+              $ref: '#/components/schemas/ScheduleUpdateBody'
       responses:
-        "200":
+        '200':
           description: Response with schedule payload
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ScheduleUpdateResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+                $ref: '#/components/schemas/ScheduleUpdateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
     delete:
       tags:
@@ -1820,20 +1881,20 @@ paths:
       summary: DEL destroy schedule
       description: This endpoint destroy schedule for customer
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ScheduleDestroyResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
+                $ref: '#/components/schemas/ScheduleDestroyResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security: []
-  "/customer/{customerId}/schedule/{scheduleId}/slots":
+  '/customer/{customerId}/schedule/{scheduleId}/slots':
     parameters:
       - name: customerId
         in: path
@@ -1858,22 +1919,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ScheduleSlotsUpdateBody"
+              $ref: '#/components/schemas/ScheduleSlotsUpdateBody'
       responses:
-        "200":
+        '200':
           description: Response with schedule payload
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ScheduleSlotsUpdateResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+                $ref: '#/components/schemas/ScheduleSlotsUpdateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
   /meta/professions:
     get:
@@ -1883,7 +1944,7 @@ paths:
       summary: GET Get all professions
       description: This endpoint get all professions
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
@@ -1896,18 +1957,18 @@ paths:
                   payload:
                     type: array
                     items:
-                      $ref: "#/components/schemas/MetaItem"
+                      $ref: '#/components/schemas/MetaItem'
                 required:
                   - success
                   - payload
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
   /meta/specialties:
     get:
@@ -1917,7 +1978,7 @@ paths:
       summary: GET Get all specialties
       description: This endpoint get all specialties
       responses:
-        "200":
+        '200':
           description: Response
           content:
             application/json:
@@ -1930,155 +1991,20 @@ paths:
                   payload:
                     type: array
                     items:
-                      $ref: "#/components/schemas/MetaItem"
+                      $ref: '#/components/schemas/MetaItem'
                 required:
                   - success
                   - payload
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
-  "/customer/{customerId}/location/{locationId}":
-    put:
-      parameters:
-        - name: customerId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: locationId
-          in: path
-          required: true
-          schema:
-            type: string
-      tags:
-        - Location
-      operationId: customerLocationUpdate
-      summary: PUT Update location
-      description: This endpoint update existing location
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              oneOf:
-                - $ref: "#/components/schemas/CustomerLocationUpdateDestinationBody"
-                - $ref: "#/components/schemas/CustomerLocationUpdateOriginBody"
-      responses:
-        "200":
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CustomerLocationUpdateResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-      security: []
-    get:
-      parameters:
-        - name: customerId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: locationId
-          in: path
-          required: true
-          schema:
-            type: string
-      tags:
-        - Location
-      operationId: customerLocationGet
-      summary: GET Get one location from user
-      description: This endpoint get one location for user
-      responses:
-        "200":
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CustomerLocationGetResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
-      security: []
-    delete:
-      parameters:
-        - name: customerId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: locationId
-          in: path
-          required: true
-          schema:
-            type: string
-      tags:
-        - Location
-      operationId: customerLocationRemove
-      summary: POST Remove location from user
-      description: This endpoint remove location but does not delete location from db
-      responses:
-        "200":
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CustomerLocationRemoveResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-      security: []
-    post:
-      parameters:
-        - name: customerId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: locationId
-          in: path
-          required: true
-          schema:
-            type: string
-      tags:
-        - Location
-      operationId: customerLocationAdd
-      summary: POST Add location to user
-      description: This endpoint add new location
-      responses:
-        "200":
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CustomerLocationAddResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-      security: []
-  "/customer/{customerId}/locations":
+  '/customer/{customerId}/locations/destination':
     post:
       parameters:
         - name: customerId
@@ -2088,184 +2014,22 @@ paths:
             type: string
       tags:
         - Location
-      operationId: customerLocationCreate
-      summary: POST Create location
-      description: This endpoint creates new location
+      operationId: customerLocationCreateDestination
+      summary: POST Create location destination
+      description: This endpoint creates new location destination
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: "#/components/schemas/CustomerLocationCreateOriginBody"
-                - $ref: "#/components/schemas/CustomerLocationCreateDestinationBody"
-      responses:
-        "200":
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CustomerLocationCreateResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-      security: []
-    get:
-      parameters:
-        - name: customerId
-          in: path
-          required: true
-          schema:
-            type: string
-      tags:
-        - Location
-      operationId: customerLocationList
-      summary: GET Get all locations for user
-      description: This endpoint get all locations for user
-      responses:
-        "200":
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CustomerLocationListResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
-      security: []
-  /location/get-coordinates:
-    get:
-      parameters:
-        - name: fullAddress
-          in: query
-          schema:
-            type: string
-      tags:
-        - Location
-      operationId: locationGetCoordinates
-      summary: GET location get coordinates
-      description: This endpoint get coordinates object
-      responses:
-        "200":
-          description: Response with payload
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LocationGetCoordinatesResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
-      security: []
-  /location/validate-address:
-    get:
-      parameters:
-        - name: name
-          in: query
-          schema:
-            type: string
-        - name: fullAddress
-          in: query
-          schema:
-            type: string
-      tags:
-        - Location
-      operationId: locationValidateAddress
-      summary: GET location validate address
-      description: This endpoint validate address
-      responses:
-        "200":
-          description: Response with payload
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LocationValidateAddressResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
-      security: []
-  /location/get-travel-time:
-    get:
-      parameters:
-        - name: origin
-          in: query
-          schema:
-            type: string
-        - name: destination
-          in: query
-          schema:
-            type: string
-      tags:
-        - Location
-      operationId: locationGetTravelTime
-      summary: GET location travel time
-      description: This endpoint gets traval time object
-      responses:
-        "200":
-          description: Response with payload
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LocationGetTravelTimeResponse"
-        "400":
-          $ref: "#/components/responses/BadResponse"
-        "401":
-          $ref: "#/components/responses/UnauthorizedResponse"
-        "403":
-          $ref: "#/components/responses/ForbiddenResponse"
-        "404":
-          $ref: "#/components/responses/NotFoundResponse"
-      security: []
-  '/customer/{customerId}/location/{locationId}':
-    put:
-      parameters:
-        - name: customerId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: locationId
-          in: path
-          required: true
-          schema:
-            type: string
-      tags:
-        - Location
-      operationId: customerLocationUpdate
-      summary: PUT Update location
-      description: This endpoint update existing location
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              oneOf:
-                - $ref: '#/components/schemas/CustomerLocationUpdateDestinationBody'
-                - $ref: '#/components/schemas/CustomerLocationUpdateOriginBody'
+              $ref: '#/components/schemas/CustomerLocationCreateDestinationBody'
       responses:
         '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerLocationUpdateResponse'
+                $ref: '#/components/schemas/CustomerLocationCreateDestinationResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -2273,6 +2037,148 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
       security: []
+  '/customer/{customerId}/location/{locationId}/destination':
+    put:
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: locationId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - Location
+      operationId: customerLocationUpdateDestination
+      summary: PUT Update location destination
+      description: This endpoint update existing location destination
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerLocationUpdateDestinationBody'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerLocationUpdateDestinationResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
+  '/customer/{customerId}/locations/origin':
+    post:
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - Location
+      operationId: customerLocationCreateOrigin
+      summary: POST Create location origin
+      description: This endpoint creates new location origin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerLocationCreateOriginBody'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerLocationCreateOriginResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
+  '/customer/{customerId}/location/{locationId}/origin':
+    put:
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: locationId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - Location
+      operationId: customerLocationUpdateOrigin
+      summary: PUT Update location origin
+      description: This endpoint update existing location origin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerLocationUpdateOriginBody'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerLocationUpdateOriginResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
+  '/customer/{customerId}/location/{locationId}/setDefault':
+    put:
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: locationId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - Location
+      operationId: customerLocationSetDefault
+      summary: POST Set new default location for user
+      description: This endpoint set new default location for user
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerLocationSetDefaultResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
+  '/customer/{customerId}/location/{locationId}':
     get:
       parameters:
         - name: customerId
@@ -2369,40 +2275,6 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
       security: []
   '/customer/{customerId}/locations':
-    post:
-      parameters:
-        - name: customerId
-          in: path
-          required: true
-          schema:
-            type: string
-      tags:
-        - Location
-      operationId: customerLocationCreate
-      summary: POST Create location
-      description: This endpoint creates new location
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              oneOf:
-                - $ref: '#/components/schemas/CustomerLocationCreateOriginBody'
-                - $ref: '#/components/schemas/CustomerLocationCreateDestinationBody'
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomerLocationCreateResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security: []
     get:
       parameters:
         - name: customerId
