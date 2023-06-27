@@ -1052,6 +1052,38 @@ components:
           enum:
             - origin
             - destination
+          default: destination
+        customerId:
+          type: string
+          format: gid
+        name:
+          type: string
+        fullAddress:
+          type: string
+      required:
+        - locationType
+        - customerId
+        - name
+        - fullAddress
+    CustomerLocationCreateOriginResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/LocationOrigin'
+      required:
+        - success
+        - payload
+    CustomerLocationCreateDestinationBody:
+      type: object
+      properties:
+        locationType:
+          type: string
+          enum:
+            - origin
+            - destination
           default: origin
         customerId:
           type: string
@@ -1074,38 +1106,6 @@ components:
         - minDistanceForFree
         - distanceHourlyRate
         - fixedRatePerKm
-    CustomerLocationCreateOriginResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/LocationOrigin'
-      required:
-        - success
-        - payload
-    CustomerLocationCreateDestinationBody:
-      type: object
-      properties:
-        locationType:
-          type: string
-          enum:
-            - origin
-            - destination
-          default: destination
-        customerId:
-          type: string
-          format: gid
-        name:
-          type: string
-        fullAddress:
-          type: string
-      required:
-        - locationType
-        - customerId
-        - name
-        - fullAddress
     CustomerLocationCreateDestinationResponse:
       type: object
       properties:
