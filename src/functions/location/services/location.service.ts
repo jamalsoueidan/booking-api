@@ -29,8 +29,8 @@ export const LocationServiceCreate = async (
       break;
 
     case LocationTypes.ORIGIN:
+      result = await LocationServiceValidateAddress(body as LocationOrigin);
       location = new LocationOriginModel(body);
-      result = await LocationServiceValidateAddress(location);
       location.geoLocation.type = "Point";
       location.geoLocation.coordinates = [result.longitude, result.latitude];
       location.fullAddress = result.fullAddress;
@@ -149,7 +149,7 @@ export const LocationServiceValidateAddress = async (
   params: LocationServiceValidateAddressProps
 ) => {
   const response = await LocationServiceGetCoordinates(params);
-  const location = await LocationModel.findOne({
+  const location = await LocationOriginModel.findOne({
     $or: [{ name: params.name }, { fullAddress: response.fullAddress }],
   });
 
