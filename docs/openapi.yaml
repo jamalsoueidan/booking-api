@@ -1047,18 +1047,11 @@ components:
     CustomerLocationCreateOriginBody:
       type: object
       properties:
-        locationType:
-          type: string
-          enum:
-            - origin
-            - destination
-          default: destination
         name:
           type: string
         fullAddress:
           type: string
       required:
-        - locationType
         - name
         - fullAddress
     CustomerLocationCreateOriginResponse:
@@ -1080,7 +1073,6 @@ components:
           enum:
             - origin
             - destination
-          default: origin
         minDistanceForFree:
           oneOf:
             - type: number
