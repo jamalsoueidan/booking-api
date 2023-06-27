@@ -3,7 +3,6 @@ properties:
   locationType:
     type: string
     enum: [origin, destination]
-    default: origin
   minDistanceForFree:
     oneOf:
       - type: number

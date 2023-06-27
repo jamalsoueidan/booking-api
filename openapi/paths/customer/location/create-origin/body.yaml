@@ -1,14 +1,9 @@
 type: object
 properties:
-  locationType:
-    type: string
-    enum: [origin, destination]
-    default: destination
   name:
     type: string
   fullAddress:
     type: string
 required:
-  - locationType
   - name
   - fullAddress
