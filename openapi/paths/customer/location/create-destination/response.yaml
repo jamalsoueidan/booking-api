@@ -4,7 +4,7 @@ properties:
     type: boolean
     example: true
   payload:
-    $ref: "../_types/location.yaml"
+    $ref: "../_types/location-destination.yaml"
 required:
   - success
   - payload

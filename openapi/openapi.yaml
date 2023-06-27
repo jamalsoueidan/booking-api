@@ -131,8 +131,10 @@ components:
       $ref: paths/user/professions/response.yaml
 
     # Location
-    Location:
-      $ref: paths/customer/location/_types/location.yaml
+    LocationOrigin:
+      $ref: paths/customer/location/_types/location-origin.yaml
+    LocationDestination:
+      $ref: paths/customer/location/_types/location-destination.yaml
     LocationCoordinates:
       $ref: paths/location/_types/coordinates.yaml
     LocationTravelTime:
