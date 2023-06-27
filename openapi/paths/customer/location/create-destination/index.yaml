@@ -7,17 +7,15 @@ post:
         type: string
   tags:
     - Location
-  operationId: customerLocationCreate
-  summary: POST Create location
-  description: This endpoint creates new location
+  operationId: customerLocationCreateDestination
+  summary: POST Create location destination
+  description: This endpoint creates new location destination
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          oneOf:
-            - $ref: "./body_origin.yaml"
-            - $ref: "./body_destination.yaml"
+          $ref: "./body.yaml"
 
   responses:
     "200":

@@ -1,4 +1,0 @@
-$ref: ../_types/location.yaml
-extraProperty:
-  type: string
-  example: "Additional Information"

@@ -1,0 +1,4 @@
+post:
+  $ref: "./create-origin/index.yaml#/post"
+put:
+  $ref: "./update-origin/index.yaml#/put"

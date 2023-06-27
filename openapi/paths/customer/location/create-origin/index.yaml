@@ -1,28 +1,21 @@
-put:
+post:
   parameters:
     - name: customerId
       in: path
       required: true
       schema:
         type: string
-    - name: locationId
-      in: path
-      required: true
-      schema:
-        type: string
   tags:
     - Location
-  operationId: customerLocationUpdate
-  summary: PUT Update location
-  description: This endpoint update existing location
+  operationId: customerLocationCreateOrigin
+  summary: POST Create location origin
+  description: This endpoint creates new location origin
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          oneOf:
-            - $ref: "./body_destination.yaml"
-            - $ref: "./body_origin.yaml"
+          $ref: "./body.yaml"
 
   responses:
     "200":
