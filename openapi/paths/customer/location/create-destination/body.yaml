@@ -4,9 +4,6 @@ properties:
     type: string
     enum: [origin, destination]
     default: origin
-  customerId:
-    type: string
-    format: gid
   minDistanceForFree:
     oneOf:
       - type: number
@@ -21,7 +18,6 @@ properties:
       - type: string
 required:
   - locationType
-  - customerId
   - minDistanceForFree
   - distanceHourlyRate
   - fixedRatePerKm

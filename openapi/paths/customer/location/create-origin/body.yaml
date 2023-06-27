@@ -4,15 +4,11 @@ properties:
     type: string
     enum: [origin, destination]
     default: destination
-  customerId:
-    type: string
-    format: gid
   name:
     type: string
   fullAddress:
     type: string
 required:
   - locationType
-  - customerId
   - name
   - fullAddress
