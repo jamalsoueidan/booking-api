@@ -868,6 +868,11 @@ components:
         customerId:
           type: string
           format: gid
+        destinationType:
+          type: string
+          enum:
+            - home
+            - commercial
         name:
           type: string
         fullAddress:
@@ -892,6 +897,7 @@ components:
         - _id
         - locationType
         - customerId
+        - destinationType
         - name
         - fullAddress
         - geoLocation
@@ -953,6 +959,11 @@ components:
         customerId:
           type: string
           format: gid
+        destinationType:
+          type: string
+          enum:
+            - home
+            - commercial
         name:
           type: string
         fullAddress:
@@ -974,6 +985,7 @@ components:
       required:
         - _id
         - locationType
+        - destinationType
         - customerId
         - name
         - fullAddress
@@ -1051,9 +1063,15 @@ components:
           type: string
         fullAddress:
           type: string
+        destinationType:
+          type: string
+          enum:
+            - home
+            - commercial
       required:
         - name
         - fullAddress
+        - destinationType
     CustomerLocationCreateOriginResponse:
       type: object
       properties:
@@ -1160,9 +1178,15 @@ components:
           type: string
         fullAddress:
           type: string
+        destinationType:
+          type: string
+          enum:
+            - home
+            - commercial
       required:
         - name
         - fullAddress
+        - destinationType
     CustomerLocationUpdateOriginResponse:
       type: object
       properties:
