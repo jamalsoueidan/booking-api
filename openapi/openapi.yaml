@@ -131,28 +131,34 @@ components:
       $ref: paths/user/professions/response.yaml
 
     # Location
-    Location:
-      $ref: paths/customer/location/_types/location.yaml
+    LocationOrigin:
+      $ref: paths/customer/location/_types/location-origin.yaml
+    LocationDestination:
+      $ref: paths/customer/location/_types/location-destination.yaml
     LocationCoordinates:
       $ref: paths/location/_types/coordinates.yaml
     LocationTravelTime:
       $ref: paths/location/_types/travel-time.yaml
     CustomerLocationCreateOriginBody:
-      $ref: paths/customer/location/create/body_origin.yaml
+      $ref: paths/customer/location/create-origin/body.yaml
+    CustomerLocationCreateOriginResponse:
+      $ref: paths/customer/location/create-origin/response.yaml
     CustomerLocationCreateDestinationBody:
-      $ref: paths/customer/location/create/body_destination.yaml
-    CustomerLocationCreateResponse:
-      $ref: paths/customer/location/create/response.yaml
+      $ref: paths/customer/location/create-destination/body.yaml
+    CustomerLocationCreateDestinationResponse:
+      $ref: paths/customer/location/create-destination/response.yaml
     CustomerLocationListResponse:
       $ref: paths/customer/location/list/response.yaml
     CustomerLocationGetResponse:
       $ref: paths/customer/location/get/response.yaml
     CustomerLocationUpdateDestinationBody:
-      $ref: paths/customer/location/update/body_destination.yaml
+      $ref: paths/customer/location/update-destination/body.yaml
+    CustomerLocationUpdateDestinationResponse:
+      $ref: paths/customer/location/update-destination/response.yaml
     CustomerLocationUpdateOriginBody:
-      $ref: paths/customer/location/update/body_origin.yaml
-    CustomerLocationUpdateResponse:
-      $ref: paths/customer/location/update/response.yaml
+      $ref: paths/customer/location/update-origin/body.yaml
+    CustomerLocationUpdateOriginResponse:
+      $ref: paths/customer/location/update-origin/response.yaml
     CustomerLocationAddResponse:
       $ref: paths/customer/location/add/response.yaml
     CustomerLocationRemoveResponse:
@@ -223,10 +229,24 @@ paths:
     $ref: "./paths/meta/specialties/index.yaml"
 
   # locations
-  /customer/{customerId}/location/{locationId}: #update, get, remove, add
+  /customer/{customerId}/locations/destination:
+    $ref: "./paths/customer/location/create-destination/index.yaml"
+  /customer/{customerId}/location/{locationId}/destination:
+    $ref: "./paths/customer/location/update-destination/index.yaml"
+
+  /customer/{customerId}/locations/origin:
+    $ref: "./paths/customer/location/create-origin/index.yaml"
+  /customer/{customerId}/location/{locationId}/origin:
+    $ref: "./paths/customer/location/update-origin/index.yaml"
+
+  /customer/{customerId}/location/{locationId}/setDefault:
+    $ref: "./paths/customer/location/set-default/index.yaml"
+
+  /customer/{customerId}/location/{locationId}: #remove, add
     $ref: "./paths/customer/location/update_and_get.yaml"
-  /customer/{customerId}/locations: # create, list
-    $ref: "./paths/customer/location/create_and_list.yaml"
+
+  /customer/{customerId}/locations: # list
+    $ref: "./paths/customer/location/list/index.yaml"
 
   /location/get-coordinates:
     $ref: "./paths/location/get-coordinates/index.yaml"

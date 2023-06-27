@@ -3,6 +3,7 @@ properties:
   locationType:
     type: string
     enum: [origin, destination]
+    default: destination
   customerId:
     type: string
     format: gid

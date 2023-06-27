@@ -1,0 +1,35 @@
+type: object
+properties:
+  _id:
+    type: string
+  locationType:
+    type: string
+    enum: [origin, destination]
+  customerId:
+    type: string
+    format: gid
+  name:
+    type: string
+  fullAddress:
+    type: string
+  geoLocation:
+    type: object
+    required:
+      - type
+      - coordinates
+    properties:
+      type:
+        type: string
+        enum: ["Point"]
+      coordinates:
+        type: array
+        items:
+          type: number
+required:
+  - _id
+  - locationType
+  - customerId
+  - name
+  - fullAddress
+  - geoLocation
+  - isDefault
