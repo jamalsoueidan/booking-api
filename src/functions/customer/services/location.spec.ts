@@ -6,7 +6,10 @@ import {
   LocationOriginModel,
   LocationTypes,
 } from "~/functions/location";
-import { ILocationOrigin } from "~/functions/location/schemas";
+import {
+  ILocationDestination,
+  ILocationOrigin,
+} from "~/functions/location/schemas";
 import * as LocationService from "~/functions/location/services/location.service";
 import { createUser } from "~/library/jest/helpers";
 import { CustomerServiceGet, CustomerServiceUpsertBody } from "./customer";
@@ -22,25 +25,6 @@ require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerLocationService", () => {
   const customerId = faker.datatype.number();
-  const userData: CustomerServiceUpsertBody = {
-    username: faker.internet.userName(),
-    fullname: faker.name.fullName(),
-    social: {
-      instagram: faker.internet.url(),
-      youtube: faker.internet.url(),
-      twitter: faker.internet.url(),
-    },
-    active: true,
-    aboutMe: faker.lorem.paragraph(),
-    images: {
-      profile: {
-        url: faker.internet.avatar(),
-      },
-    },
-    locations: [],
-    speaks: [faker.random.locale()],
-    isBusiness: true,
-  };
 
   const location1: Omit<ILocationOrigin, "_id" | "updatedAt" | "createdAt"> = {
     name: "Falafel 1",
@@ -66,7 +50,11 @@ describe("CustomerLocationService", () => {
     customerId,
   };
 
-  const location3: Omit<LocationDestination, "_id"> = {
+  const location3: Omit<
+    ILocationDestination,
+    "_id" | "updatedAt" | "createdAt"
+  > = {
+    name: "test",
     distanceHourlyRate: 1,
     fixedRatePerKm: 10,
     minDistanceForFree: 10,
@@ -74,9 +62,31 @@ describe("CustomerLocationService", () => {
     customerId,
   };
 
-  it("Should be able to get one location for user", async () => {
-    let user = await createUser({ customerId }, userData);
+  beforeEach(() => {
+    const userData: CustomerServiceUpsertBody = {
+      username: faker.internet.userName(),
+      fullname: faker.name.fullName(),
+      social: {
+        instagram: faker.internet.url(),
+        youtube: faker.internet.url(),
+        twitter: faker.internet.url(),
+      },
+      active: true,
+      aboutMe: faker.lorem.paragraph(),
+      images: {
+        profile: {
+          url: faker.internet.avatar(),
+        },
+      },
+      locations: [],
+      speaks: [faker.random.locale()],
+      isBusiness: true,
+    };
 
+    return createUser({ customerId }, userData);
+  });
+
+  it("Should be able to get one location for user", async () => {
     jest
       .spyOn(LocationService, "LocationServiceCreate")
       .mockImplementationOnce(() => LocationOriginModel.create(location1))
@@ -85,9 +95,9 @@ describe("CustomerLocationService", () => {
     await CustomerLocationServiceCreate(location1);
     const location3doc = await CustomerLocationServiceCreate(location3);
 
-    user = await CustomerServiceGet({ customerId });
+    const user = await CustomerServiceGet({ customerId });
     const location = await CustomerLocationServiceGetOne<LocationDestination>({
-      locationId: location3doc._id,
+      locationId: location3doc._id.toString(),
       customerId: user.customerId,
     });
 
@@ -97,8 +107,6 @@ describe("CustomerLocationService", () => {
   });
 
   it("Should be able to get all locations for user", async () => {
-    let user = await createUser({ customerId }, userData);
-
     jest
       .spyOn(LocationService, "LocationServiceCreate")
       .mockImplementationOnce(() => LocationOriginModel.create(location1))
@@ -107,7 +115,7 @@ describe("CustomerLocationService", () => {
     await CustomerLocationServiceCreate(location1);
     await CustomerLocationServiceCreate(location3);
 
-    user = await CustomerServiceGet({ customerId });
+    const user = await CustomerServiceGet({ customerId });
 
     const locations = await CustomerLocationServiceGetAll({
       customerId: user.customerId,
@@ -120,14 +128,13 @@ describe("CustomerLocationService", () => {
   });
 
   it("Should be able create location and add to user", async () => {
-    let user = await createUser({ customerId }, userData);
     jest
       .spyOn(LocationService, "LocationServiceCreate")
       .mockImplementation(() => LocationOriginModel.create(location1));
 
     const response = await CustomerLocationServiceCreate(location1);
 
-    user = await CustomerServiceGet({ customerId });
+    const user = await CustomerServiceGet({ customerId });
     const firstLocation = user.locations?.find(
       (loc) => loc.location.toString() === response._id.toString()
     );
@@ -138,7 +145,6 @@ describe("CustomerLocationService", () => {
   });
 
   it("Should be able create additional location and add to user", async () => {
-    let user = await createUser({ customerId }, userData);
     jest
       .spyOn(LocationService, "LocationServiceCreate")
       .mockImplementationOnce(() => LocationOriginModel.create(location1))
@@ -147,7 +153,7 @@ describe("CustomerLocationService", () => {
     await CustomerLocationServiceCreate(location1);
     const response = await CustomerLocationServiceCreate(location2);
 
-    user = await CustomerServiceGet({ customerId });
+    const user = await CustomerServiceGet({ customerId });
     const secondLocation = user.locations?.find(
       (loc) => loc.location.toString() === response._id.toString()
     );
@@ -158,8 +164,6 @@ describe("CustomerLocationService", () => {
   });
 
   it("Should be able move default to another one when default is removed", async () => {
-    let user = await createUser({ customerId }, userData);
-
     jest
       .spyOn(LocationService, "LocationServiceCreate")
       .mockImplementationOnce(() => LocationOriginModel.create(location1))
@@ -169,11 +173,11 @@ describe("CustomerLocationService", () => {
     const location2doc = await CustomerLocationServiceCreate(location2);
 
     await CustomerLocationServiceRemove({
-      locationId: location1doc._id,
+      locationId: location1doc._id.toString(),
       customerId: location1doc.customerId,
     });
 
-    user = await CustomerServiceGet({ customerId });
+    const user = await CustomerServiceGet({ customerId });
     const secondLocation = user.locations?.find(
       (loc) => loc.location.toString() === location2doc._id.toString()
     );
@@ -183,8 +187,6 @@ describe("CustomerLocationService", () => {
   });
 
   it("Should be able to set new default location", async () => {
-    let user = await createUser({ customerId }, userData);
-
     jest
       .spyOn(LocationService, "LocationServiceCreate")
       .mockImplementationOnce(() => LocationOriginModel.create(location1))
@@ -194,11 +196,11 @@ describe("CustomerLocationService", () => {
     const location2doc = await CustomerLocationServiceCreate(location2);
 
     await CustomerLocationServiceSetDefault({
-      locationId: location2doc._id,
+      locationId: location2doc._id.toString(),
       customerId: location2doc.customerId,
     });
 
-    user = await CustomerServiceGet({ customerId });
+    const user = await CustomerServiceGet({ customerId });
     const secondLocation = user.locations?.find(
       (loc) => loc.location.toString() === location2doc._id.toString()
     );

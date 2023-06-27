@@ -1,12 +1,10 @@
+import { faker } from "@faker-js/faker";
 import axios from "axios";
+import { CustomerServiceUpsertBody } from "~/functions/customer";
 import { BadError } from "~/library/handler";
-import { omitObjectIdProps } from "~/library/jest/helpers";
-import {
-  LocationDestination,
-  LocationDestinationTypes,
-  LocationOrigin,
-  LocationTypes,
-} from "../location.types";
+import { createUser, omitObjectIdProps } from "~/library/jest/helpers";
+import { LocationDestinationTypes, LocationTypes } from "../location.types";
+import { ILocationDestination, ILocationOrigin } from "../schemas";
 import {
   ForsyningResponse,
   GoogleDirectionResponse,
@@ -22,6 +20,7 @@ jest.mock("axios");
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
+const customerId = 1;
 const getCoordinatesData: ForsyningResponse = [
   {
     id: "",
@@ -54,23 +53,54 @@ const travelTimeData: GoogleDirectionResponse = {
   status: "ok",
 };
 
-const originData: Omit<LocationOrigin, "_id"> = {
+const originData: Omit<
+  ILocationOrigin,
+  "_id" | "createdAt" | "updatedAt" | "geoLocation"
+> = {
   name: "Falafel",
   fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
-  locationType: LocationTypes.ORIGIN,
   destinationType: LocationDestinationTypes.COMMERCIAL,
-  customerId: 1,
+  locationType: LocationTypes.ORIGIN,
+  customerId,
 };
 
-const destinationData: Omit<LocationDestination, "_id"> = {
+const destinationData: Omit<
+  ILocationDestination,
+  "_id" | "createdAt" | "updatedAt"
+> = {
+  name: "remote",
   distanceHourlyRate: 1,
   fixedRatePerKm: 10,
   minDistanceForFree: 10,
   locationType: LocationTypes.DESTINATION,
-  customerId: 1,
+  customerId,
 };
 
 describe("LocationService", () => {
+  beforeEach(() => {
+    const userData: CustomerServiceUpsertBody = {
+      username: faker.internet.userName(),
+      fullname: faker.name.fullName(),
+      social: {
+        instagram: faker.internet.url(),
+        youtube: faker.internet.url(),
+        twitter: faker.internet.url(),
+      },
+      active: true,
+      aboutMe: faker.lorem.paragraph(),
+      images: {
+        profile: {
+          url: faker.internet.avatar(),
+        },
+      },
+      locations: [],
+      speaks: [faker.random.locale()],
+      isBusiness: true,
+    };
+
+    return createUser({ customerId }, userData);
+  });
+
   it("create should be able to create origin", async () => {
     mockedAxios.get.mockResolvedValueOnce({
       data: getCoordinatesData,
@@ -126,10 +156,11 @@ describe("LocationService", () => {
     const response = await LocationServiceCreate(originData);
 
     const update = await LocationServiceUpdate(
-      { locationId: response._id, customerId: 1 },
+      { locationId: response._id.toString(), customerId: 1 },
       {
         fullAddress: "Dortesvej 21 1, 8220 Brabrand",
         name: "Falafel 2",
+        destinationType: LocationDestinationTypes.COMMERCIAL,
       }
     );
 
@@ -151,8 +182,9 @@ describe("LocationService", () => {
     const response = await LocationServiceCreate(destinationData);
 
     const update = await LocationServiceUpdate(
-      { locationId: response._id, customerId: 1 },
+      { locationId: response._id.toString(), customerId: 1 },
       {
+        name: "test",
         distanceHourlyRate: 5,
         fixedRatePerKm: 5,
         minDistanceForFree: 5,
@@ -220,7 +252,11 @@ describe("LocationService", () => {
       data: getCoordinatesData,
     });
 
-    await LocationServiceCreate(originData);
+    await LocationServiceCreate({
+      ...originData,
+      locationType: LocationTypes.ORIGIN,
+      customerId: 1,
+    });
 
     mockedAxios.get.mockResolvedValueOnce({
       data: getCoordinatesData,

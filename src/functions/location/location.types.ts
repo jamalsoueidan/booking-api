@@ -24,14 +24,13 @@ export const LocationOriginZodSchema = z.object({
   destinationType: z.nativeEnum(LocationDestinationTypes),
 });
 
-export type LocationOrigin = z.infer<typeof LocationZodSchema> &
-  z.infer<typeof LocationOriginZodSchema>;
+export type LocationOrigin = z.infer<typeof LocationOriginZodSchema>;
 
 export const LocationDestinationZodSchema = z.object({
+  name: z.string(),
   minDistanceForFree: NumberOrStringType,
   distanceHourlyRate: NumberOrStringType,
   fixedRatePerKm: NumberOrStringType,
 });
 
-export type LocationDestination = z.infer<typeof LocationZodSchema> &
-  z.infer<typeof LocationDestinationZodSchema>;
+export type LocationDestination = z.infer<typeof LocationDestinationZodSchema>;

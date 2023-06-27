@@ -13,10 +13,9 @@ import {
   LocationTypes,
 } from "../location.types";
 
-export type LocationServiceCreateProps = Omit<
-  LocationOrigin | LocationDestination,
-  "_id"
->;
+type LocationUnion = LocationOrigin | LocationDestination;
+
+export type LocationServiceCreateProps = LocationUnion & Omit<Location, "_id">;
 
 export const LocationServiceCreate = async (
   body: LocationServiceCreateProps
@@ -38,8 +37,13 @@ export const LocationServiceCreate = async (
       break;
   }
 
+  console.log("b", location);
+
   const newLocationDoc = await location.save();
-  await UserServiceLocationsAdd(newLocationDoc);
+  await UserServiceLocationsAdd({
+    _id: newLocationDoc._id.toString(),
+    customerId: newLocationDoc.customerId,
+  });
   return newLocationDoc;
 };
 
@@ -48,10 +52,7 @@ export type LocationUpdateFilterProps = {
   customerId: Location["customerId"];
 };
 
-export type LocationUpdateBody = Omit<
-  LocationOrigin | LocationDestination,
-  "_id" | "customerId" | "locationType"
->;
+export type LocationUpdateBody = LocationOrigin | LocationDestination;
 
 export const LocationServiceUpdate = async (
   filter: LocationUpdateFilterProps,

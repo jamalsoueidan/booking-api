@@ -8,6 +8,8 @@ properties:
   customerId:
     type: string
     format: gid
+  name:
+    type: string
   minDistanceForFree:
     type: number
   distanceHourlyRate:
@@ -18,6 +20,7 @@ required:
   - _id
   - locationType
   - customerId
+  - name
   - minDistanceForFree
   - distanceHourlyRate
   - fixedRatePerKm

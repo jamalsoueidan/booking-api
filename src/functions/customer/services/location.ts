@@ -18,7 +18,10 @@ export const CustomerLocationServiceCreate = async (
   body: LocationServiceCreateProps
 ) => {
   const location = await LocationServiceCreate(body);
-  await UserServiceLocationsAdd(location);
+  await UserServiceLocationsAdd({
+    _id: location._id.toString(),
+    customerId: location.customerId,
+  });
   return location;
 };
 

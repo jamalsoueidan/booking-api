@@ -12,6 +12,10 @@ export const LocationDestinationMongooseSchema = new mongoose.Schema<
   Model<ILocationDestinationDocument>
 >(
   {
+    name: {
+      type: String,
+      required: true,
+    },
     minDistanceForFree: Number,
     distanceHourlyRate: Number,
     fixedRatePerKm: Number,

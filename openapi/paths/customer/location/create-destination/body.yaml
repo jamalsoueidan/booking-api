@@ -1,5 +1,7 @@
 type: object
 properties:
+  name:
+    type: string
   minDistanceForFree:
     oneOf:
       - type: number
@@ -13,6 +15,7 @@ properties:
       - type: number
       - type: string
 required:
+  - name
   - minDistanceForFree
   - distanceHourlyRate
   - fixedRatePerKm
