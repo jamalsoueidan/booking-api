@@ -839,6 +839,8 @@ components:
         customerId:
           type: string
           format: gid
+        name:
+          type: string
         minDistanceForFree:
           type: number
         distanceHourlyRate:
@@ -851,6 +853,7 @@ components:
         - _id
         - locationType
         - customerId
+        - name
         - minDistanceForFree
         - distanceHourlyRate
         - fixedRatePerKm
@@ -1004,6 +1007,8 @@ components:
         customerId:
           type: string
           format: gid
+        name:
+          type: string
         minDistanceForFree:
           type: number
         distanceHourlyRate:
@@ -1014,6 +1019,7 @@ components:
         - _id
         - locationType
         - customerId
+        - name
         - minDistanceForFree
         - distanceHourlyRate
         - fixedRatePerKm
@@ -1086,6 +1092,8 @@ components:
     CustomerLocationCreateDestinationBody:
       type: object
       properties:
+        name:
+          type: string
         minDistanceForFree:
           oneOf:
             - type: number
@@ -1099,6 +1107,7 @@ components:
             - type: number
             - type: string
       required:
+        - name
         - minDistanceForFree
         - distanceHourlyRate
         - fixedRatePerKm
@@ -1144,6 +1153,8 @@ components:
     CustomerLocationUpdateDestinationBody:
       type: object
       properties:
+        name:
+          type: string
         minDistanceForFree:
           oneOf:
             - type: number
@@ -1157,6 +1168,7 @@ components:
             - type: number
             - type: string
       required:
+        - name
         - minDistanceForFree
         - distanceHourlyRate
         - fixedRatePerKm
