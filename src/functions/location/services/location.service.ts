@@ -1,4 +1,5 @@
 import axios from "axios";
+import { UserServiceLocationsAdd } from "~/functions/user";
 import { BadError, NotFoundError } from "~/library/handler";
 import {
   LocationDestinationModel,
@@ -37,7 +38,9 @@ export const LocationServiceCreate = async (
       break;
   }
 
-  return location.save();
+  const newLocationDoc = await location.save();
+  await UserServiceLocationsAdd(newLocationDoc);
+  return newLocationDoc;
 };
 
 export type LocationUpdateFilterProps = {
