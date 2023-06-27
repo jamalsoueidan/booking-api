@@ -1068,11 +1068,6 @@ components:
     CustomerLocationCreateDestinationBody:
       type: object
       properties:
-        locationType:
-          type: string
-          enum:
-            - origin
-            - destination
         minDistanceForFree:
           oneOf:
             - type: number
@@ -1086,7 +1081,6 @@ components:
             - type: number
             - type: string
       required:
-        - locationType
         - minDistanceForFree
         - distanceHourlyRate
         - fixedRatePerKm
