@@ -3,25 +3,16 @@ properties:
   locationType:
     type: string
     enum: [origin, destination]
-    default: origin
+    default: destination
   customerId:
     type: string
     format: gid
-  minDistanceForFree:
-    oneOf:
-      - type: number
-      - type: string
-  distanceHourlyRate:
-    oneOf:
-      - type: number
-      - type: string
-  fixedRatePerKm:
-    oneOf:
-      - type: number
-      - type: string
+  name:
+    type: string
+  fullAddress:
+    type: string
 required:
   - locationType
   - customerId
-  - minDistanceForFree
-  - distanceHourlyRate
-  - fixedRatePerKm
+  - name
+  - fullAddress

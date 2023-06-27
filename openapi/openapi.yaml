@@ -242,8 +242,8 @@ paths:
   /customer/{customerId}/location/{locationId}/setDefault:
     $ref: "./paths/customer/location/set-default/index.yaml"
 
-  /customer/{customerId}/location/{locationId}: #remove, add
-    $ref: "./paths/customer/location/update_and_get.yaml"
+  /customer/{customerId}/location/{locationId}:
+    $ref: "./paths/customer/location/add-remove-get.yaml"
 
   /customer/{customerId}/locations: # list
     $ref: "./paths/customer/location/list/index.yaml"
