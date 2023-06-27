@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   LocationOriginZodSchema,
+  LocationTypes,
   LocationZodSchema,
 } from "~/functions/location/location.types";
 import { LocationServiceCreate } from "~/functions/location/services";
@@ -26,6 +27,10 @@ export const CustomerLocationControllerCreateOrigin = _(
   ({ query, body }: CustomerLocationControllerCreateOriginRequest) => {
     const validateData = LocationServiceCreateOriginQuerySchema.parse(query);
     const validateBody = LocationServiceCreateOriginBodySchema.parse(body);
-    return LocationServiceCreate({ ...validateData, ...validateBody });
+    return LocationServiceCreate({
+      ...validateData,
+      ...validateBody,
+      locationType: LocationTypes.ORIGIN,
+    });
   }
 );

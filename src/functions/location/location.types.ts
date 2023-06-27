@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { GidFormat } from "~/library/zod";
+import { GidFormat, NumberOrStringType } from "~/library/zod";
 
 export enum LocationTypes {
   ORIGIN = "origin",
@@ -18,18 +18,20 @@ export const LocationZodSchema = z.object({
 
 export type Location = z.infer<typeof LocationZodSchema>;
 
-export const LocationOriginZodSchema = LocationZodSchema.extend({
+export const LocationOriginZodSchema = z.object({
   name: z.string(),
   fullAddress: z.string(),
   destinationType: z.nativeEnum(LocationDestinationTypes),
 });
 
-export type LocationOrigin = z.infer<typeof LocationOriginZodSchema>;
+export type LocationOrigin = z.infer<typeof LocationZodSchema> &
+  z.infer<typeof LocationOriginZodSchema>;
 
-export const LocationDestinationZodSchema = LocationZodSchema.extend({
-  minDistanceForFree: z.number(),
-  distanceHourlyRate: z.number(),
-  fixedRatePerKm: z.number(),
+export const LocationDestinationZodSchema = z.object({
+  minDistanceForFree: NumberOrStringType,
+  distanceHourlyRate: NumberOrStringType,
+  fixedRatePerKm: NumberOrStringType,
 });
 
-export type LocationDestination = z.infer<typeof LocationDestinationZodSchema>;
+export type LocationDestination = z.infer<typeof LocationZodSchema> &
+  z.infer<typeof LocationDestinationZodSchema>;
