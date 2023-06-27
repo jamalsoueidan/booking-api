@@ -34,6 +34,7 @@ export const LocationServiceCreate = async (
       location.geoLocation.type = "Point";
       location.geoLocation.coordinates = [result.longitude, result.latitude];
       location.fullAddress = result.fullAddress;
+      location.handle = createSlug(body.name);
       break;
   }
 
@@ -79,6 +80,7 @@ export const LocationServiceUpdate = async (
         type: "Point",
         coordinates: [result.longitude, result.latitude],
       },
+      handle: createSlug(body.name),
     });
   } else {
     location.set(body);
@@ -221,3 +223,10 @@ export const LocationServiceGetTravelTime = async (
     },
   ]);
 };
+
+function createSlug(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/[^\w ]+/g, "")
+    .replace(/ +/g, "-");
+}

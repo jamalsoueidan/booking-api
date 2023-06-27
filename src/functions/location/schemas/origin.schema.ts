@@ -7,6 +7,7 @@ export interface ILocationOrigin extends ILocation, LocationOrigin {
     type: "Point";
     coordinates: Array<Number>;
   };
+  handle: string;
 }
 export interface ILocationOriginDocument extends ILocationOrigin, Document {}
 
@@ -42,6 +43,10 @@ export const LocationOriginMongooseSchema = new mongoose.Schema<
       ],
       default: LocationDestinationTypes.COMMERCIAL,
       required: true,
+    },
+    handle: {
+      type: String,
+      unique: true,
     },
   },
   {
