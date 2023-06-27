@@ -130,28 +130,28 @@ app.http("customerLocationList", {
   handler: CustomerLocationControllerGetAll,
 });
 
-app.http("customerLocationCreate", {
+app.http("customerLocationCreateDestination", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "customer/{customerId}/locations/destination",
   handler: CustomerLocationControllerCreateDestination,
 });
 
-app.http("customerLocationUpdate", {
+app.http("customerLocationUpdateDestination", {
   methods: ["PUT"],
   authLevel: "anonymous",
   route: "customer/{customerId}/location/{locationId?}/destination",
   handler: CustomerLocationControllerUpdateDestination,
 });
 
-app.http("customerLocationCreate", {
+app.http("customerLocationCreateOrigin", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "customer/{customerId}/locations/origin",
   handler: CustomerLocationControllerCreateOrigin,
 });
 
-app.http("customerLocationUpdate", {
+app.http("customerLocationUpdateOrigin", {
   methods: ["PUT"],
   authLevel: "anonymous",
   route: "customer/{customerId}/location/{locationId?}/origin",

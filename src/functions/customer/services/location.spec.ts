@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import {
   LocationDestination,
   LocationDestinationModel,
+  LocationDestinationTypes,
   LocationOriginModel,
   LocationTypes,
 } from "~/functions/location";
@@ -49,6 +50,7 @@ describe("CustomerLocationService", () => {
       coordinates: [2, 3],
       type: "Point",
     },
+    destinationType: LocationDestinationTypes.COMMERCIAL,
     customerId,
   };
 
@@ -60,6 +62,7 @@ describe("CustomerLocationService", () => {
       coordinates: [4, 5],
       type: "Point",
     },
+    destinationType: LocationDestinationTypes.COMMERCIAL,
     customerId,
   };
 
