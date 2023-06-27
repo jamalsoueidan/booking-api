@@ -1,5 +1,5 @@
 import mongoose, { Model } from "mongoose";
-import { LocationOrigin } from "../location.types";
+import { LocationDestinationTypes, LocationOrigin } from "../location.types";
 import { ILocation } from "./location.schema";
 
 export interface ILocationOrigin extends ILocation, LocationOrigin {
@@ -32,6 +32,15 @@ export const LocationOriginMongooseSchema = new mongoose.Schema<
     },
     fullAddress: {
       type: String,
+      required: true,
+    },
+    destinationType: {
+      type: String,
+      enum: [
+        LocationDestinationTypes.HOME,
+        LocationDestinationTypes.COMMERCIAL,
+      ],
+      default: LocationDestinationTypes.COMMERCIAL,
       required: true,
     },
   },

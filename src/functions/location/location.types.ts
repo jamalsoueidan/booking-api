@@ -6,6 +6,10 @@ export enum LocationTypes {
   DESTINATION = "destination",
 }
 
+export enum LocationDestinationTypes {
+  HOME = "home",
+  COMMERCIAL = "commercial",
+}
 export const LocationZodSchema = z.object({
   _id: z.string(),
   locationType: z.nativeEnum(LocationTypes),
@@ -17,10 +21,7 @@ export type Location = z.infer<typeof LocationZodSchema>;
 export const LocationOriginZodSchema = LocationZodSchema.extend({
   name: z.string(),
   fullAddress: z.string(),
-  /*geoLocation: z.object({
-    type: z.enum(["Point"]),
-    coordinates: z.array(z.number()),
-  })*/
+  destinationType: z.nativeEnum(LocationDestinationTypes),
 });
 
 export type LocationOrigin = z.infer<typeof LocationOriginZodSchema>;

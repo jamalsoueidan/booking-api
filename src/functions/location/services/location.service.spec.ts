@@ -3,6 +3,7 @@ import { BadError } from "~/library/handler";
 import { omitObjectIdProps } from "~/library/jest/helpers";
 import {
   LocationDestination,
+  LocationDestinationTypes,
   LocationOrigin,
   LocationTypes,
 } from "../location.types";
@@ -57,6 +58,7 @@ const originData: Omit<LocationOrigin, "_id"> = {
   name: "Falafel",
   fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
   locationType: LocationTypes.ORIGIN,
+  destinationType: LocationDestinationTypes.COMMERCIAL,
   customerId: 1,
 };
 

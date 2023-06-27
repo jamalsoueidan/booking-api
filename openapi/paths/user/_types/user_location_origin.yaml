@@ -8,6 +8,9 @@ properties:
   customerId:
     type: string
     format: gid
+  destinationType:
+    type: string
+    enum: [home, commercial]
   name:
     type: string
   fullAddress:
@@ -31,6 +34,7 @@ required:
   - _id
   - locationType
   - customerId
+  - destinationType
   - name
   - fullAddress
   - geoLocation
