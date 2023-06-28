@@ -139,6 +139,8 @@ components:
       $ref: paths/location/_types/coordinates.yaml
     LocationTravelTime:
       $ref: paths/location/_types/travel-time.yaml
+    LocationGetAllLocationOrigin:
+      $ref: paths/location/get-all-origins/location-origin.yaml
     LocationGetAllRepsonse:
       $ref: paths/location/get-all-origins/response.yaml
     CustomerLocationCreateOriginBody:
