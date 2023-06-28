@@ -62,6 +62,7 @@ const originData: Omit<
   destinationType: LocationDestinationTypes.COMMERCIAL,
   locationType: LocationTypes.ORIGIN,
   customerId,
+  handle: "a",
 };
 
 const destinationData: Omit<
