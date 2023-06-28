@@ -993,7 +993,6 @@ components:
         - name
         - fullAddress
         - geoLocation
-        - isDefault
     LocationDestination:
       type: object
       properties:
@@ -1062,6 +1061,74 @@ components:
       required:
         - duration
         - distance
+    LocationGetAllLocationOrigin:
+      type: object
+      properties:
+        _id:
+          type: string
+        locationType:
+          type: string
+          enum:
+            - origin
+            - destination
+        customerId:
+          type: string
+          format: gid
+        destinationType:
+          type: string
+          enum:
+            - home
+            - commercial
+        name:
+          type: string
+        fullAddress:
+          type: string
+        geoLocation:
+          type: object
+          required:
+            - type
+            - coordinates
+          properties:
+            type:
+              type: string
+              enum:
+                - Point
+            coordinates:
+              type: array
+              items:
+                type: number
+        customer:
+          type: object
+          required:
+            - fullname
+            - username
+          properties:
+            fullname:
+              type: string
+            username:
+              type: string
+      required:
+        - _id
+        - locationType
+        - destinationType
+        - customerId
+        - name
+        - fullAddress
+        - geoLocation
+        - customer
+    LocationGetAllRepsonse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocationGetAllLocationOrigin'
+      required:
+        - success
+        - payload
     CustomerLocationCreateOriginBody:
       type: object
       properties:
@@ -2400,6 +2467,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationGetTravelTimeResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  /location/get-all-origins:
+    get:
+      tags:
+        - Location
+      operationId: locationGetAllOrigins
+      summary: GET Get all origin locations
+      description: This endpoint get all origin locations
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationGetAllRepsonse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
