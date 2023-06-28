@@ -1061,7 +1061,7 @@ components:
       required:
         - duration
         - distance
-    LocationGetAllLocationOrigin:
+    CustomerLocationGetAllLocationOrigin:
       type: object
       properties:
         _id:
@@ -1097,16 +1097,6 @@ components:
               type: array
               items:
                 type: number
-        customer:
-          type: object
-          required:
-            - fullname
-            - username
-          properties:
-            fullname:
-              type: string
-            username:
-              type: string
       required:
         - _id
         - locationType
@@ -1115,8 +1105,7 @@ components:
         - name
         - fullAddress
         - geoLocation
-        - customer
-    LocationGetAllRepsonse:
+    CustomerLocationGetAllRepsonse:
       type: object
       properties:
         success:
@@ -1125,7 +1114,7 @@ components:
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/LocationGetAllLocationOrigin'
+            $ref: '#/components/schemas/CustomerLocationGetAllLocationOrigin'
       required:
         - success
         - payload
@@ -2085,6 +2074,35 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
+  '/customer/{customerId}/locations/get-all-origins':
+    get:
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - Location
+      operationId: customerLocationGetAllOrigins
+      summary: GET Get all origin locations
+      description: This endpoint get all origin locations
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerLocationGetAllRepsonse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
   '/customer/{customerId}/locations/destination':
     post:
       parameters:
@@ -2394,7 +2412,7 @@ paths:
       tags:
         - Location
       operationId: locationGetCoordinates
-      summary: GET location get coordinates
+      summary: GET location coordinates
       description: This endpoint get coordinates object
       responses:
         '200':
@@ -2467,29 +2485,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationGetTravelTimeResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security: []
-  /location/get-all-origins:
-    get:
-      tags:
-        - Location
-      operationId: locationGetAllOrigins
-      summary: GET Get all origin locations
-      description: This endpoint get all origin locations
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LocationGetAllRepsonse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
