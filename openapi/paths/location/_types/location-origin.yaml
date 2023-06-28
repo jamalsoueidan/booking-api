@@ -28,6 +28,16 @@ properties:
         type: array
         items:
           type: number
+  customer:
+    type: object
+    required:
+      - fullname
+      - username
+    properties:
+      fullname:
+        type: string
+      username:
+        type: string
 required:
   - _id
   - locationType
@@ -36,3 +46,4 @@ required:
   - name
   - fullAddress
   - geoLocation
+  - customer

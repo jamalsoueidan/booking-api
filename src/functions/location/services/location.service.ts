@@ -12,6 +12,7 @@ import {
   LocationOrigin,
   LocationTypes,
 } from "../location.types";
+import { ILocationOrigin } from "../schemas";
 
 type LocationUnion = LocationOrigin | LocationDestination;
 
@@ -37,8 +38,6 @@ export const LocationServiceCreate = async (
       location.handle = createSlug(body.name);
       break;
   }
-
-  console.log("b", location);
 
   const newLocationDoc = await location.save();
   await UserServiceLocationsAdd({
@@ -87,6 +86,42 @@ export const LocationServiceUpdate = async (
   }
 
   return location.save();
+};
+
+export const LocationServiceGetAllOrigins = async () => {
+  const pipeline = [
+    {
+      $lookup: {
+        from: "User",
+        let: { customer_id: "$customerId" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ["$customerId", "$$customer_id"],
+              },
+            },
+          },
+          {
+            $project: { _id: 1, fullname: 1, username: 1 },
+          },
+        ],
+        as: "customer",
+      },
+    },
+    {
+      $unwind: {
+        path: "$customer",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+  ];
+
+  return LocationOriginModel.aggregate<
+    ILocationOrigin & {
+      customer: { _id: string; fullname: string; username: string };
+    }
+  >(pipeline).exec();
 };
 
 type LocationServiceGetCoordinates = Pick<LocationOrigin, "fullAddress">;

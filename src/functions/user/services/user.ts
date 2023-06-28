@@ -114,25 +114,26 @@ export const UserServiceLocationsSetDefault = async (location: {
 };
 
 export const UserServiceLocationsRemove = async (location: {
-  _id: string;
+  locationId: string;
   customerId: number;
 }) => {
   const user = await UserServiceFindCustomerOrFail(location);
   // Get the location that will be removed
   const locationToRemove = user.locations?.find(
-    (l) => l.location.toString() === location._id.toString()
+    (l) => l.location.toString() === location.locationId.toString()
   );
 
   if (locationToRemove && locationToRemove.isDefault) {
     // If the location is the default one, change isDefault flag on first non-default location
     const firstNonDefault = user.locations?.find(
-      (l) => l.location.toString() !== location._id.toString() && !l.isDefault
+      (l) =>
+        l.location.toString() !== location.locationId.toString() && !l.isDefault
     );
     if (firstNonDefault) firstNonDefault.isDefault = true;
   }
 
   user.locations = user.locations?.filter(
-    (l) => l.location.toString() !== location._id.toString()
+    (l) => l.location.toString() !== location.locationId.toString()
   );
   return user.save();
 };
