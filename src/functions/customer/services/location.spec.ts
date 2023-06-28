@@ -36,6 +36,7 @@ describe("CustomerLocationService", () => {
     },
     destinationType: LocationDestinationTypes.COMMERCIAL,
     customerId,
+    handle: "b",
   };
 
   const location2: Omit<ILocationOrigin, "_id" | "updatedAt" | "createdAt"> = {
@@ -48,6 +49,7 @@ describe("CustomerLocationService", () => {
     },
     destinationType: LocationDestinationTypes.COMMERCIAL,
     customerId,
+    handle: "a",
   };
 
   const location3: Omit<
