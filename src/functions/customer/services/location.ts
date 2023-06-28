@@ -13,6 +13,7 @@ import {
   UserServiceLocationsSetDefault,
 } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
+import { CustomerProductServiceRemoveLocationFromAll } from "./product";
 
 export const CustomerLocationServiceCreate = async (
   body: LocationServiceCreateProps
@@ -55,13 +56,11 @@ export const CustomerLocationServiceAdd = (
   });
 };
 
-export const CustomerLocationServiceRemove = (
+export const CustomerLocationServiceRemove = async (
   location: CustomerLocationServiceProps
 ) => {
-  return UserServiceLocationsRemove({
-    _id: location.locationId,
-    customerId: location.customerId,
-  });
+  await CustomerProductServiceRemoveLocationFromAll(location);
+  return UserServiceLocationsRemove(location);
 };
 
 export const CustomerLocationServiceGetAll = <T>(
