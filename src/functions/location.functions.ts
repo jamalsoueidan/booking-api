@@ -1,6 +1,5 @@
 import { app } from "@azure/functions";
 import {
-  LocationControllerGetAllOrigins,
   LocationControllerGetCoordinates,
   LocationControllerGetTravelTime,
   LocationControllerValidateAddress,
@@ -25,11 +24,4 @@ app.http("locationGetTravelTime", {
   authLevel: "anonymous",
   route: "location/get-travel-time",
   handler: LocationControllerGetTravelTime,
-});
-
-app.http("locationGetAll", {
-  methods: ["GET"],
-  authLevel: "anonymous",
-  route: "location/get-all-origins",
-  handler: LocationControllerGetAllOrigins,
 });

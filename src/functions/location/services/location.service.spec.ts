@@ -9,7 +9,6 @@ import {
   ForsyningResponse,
   GoogleDirectionResponse,
   LocationServiceCreate,
-  LocationServiceGetAllOrigins,
   LocationServiceGetCoordinates,
   LocationServiceGetTravelTime,
   LocationServiceUpdate,
@@ -113,32 +112,6 @@ describe("LocationService", () => {
     };
 
     return createUser({ customerId }, userData);
-  });
-  it("should be able to get all origin", async () => {
-    mockedAxios.get
-      .mockResolvedValueOnce({
-        data: getCoordinatesData,
-      })
-      .mockResolvedValueOnce({
-        data: [
-          {
-            id: "",
-            adressebetegnelse: "Sigridsvej 45, 2. th, 8220 Brabrand",
-            adgangsadresse: {
-              adgangspunkt: {
-                koordinater: [10.12961271, 56.15563438],
-              },
-            },
-          },
-        ],
-      });
-
-    await LocationServiceCreate(originData);
-    await LocationServiceCreate(originData2);
-    await LocationServiceCreate(destinationData);
-
-    const response = await LocationServiceGetAllOrigins();
-    expect(response).toHaveLength(2);
   });
 
   it("create should be able to create origin", async () => {

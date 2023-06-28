@@ -16,6 +16,7 @@ import { CustomerServiceGet, CustomerServiceUpsertBody } from "./customer";
 import {
   CustomerLocationServiceCreate,
   CustomerLocationServiceGetAll,
+  CustomerLocationServiceGetAllOrigins,
   CustomerLocationServiceGetOne,
   CustomerLocationServiceRemove,
   CustomerLocationServiceSetDefault,
@@ -64,27 +65,27 @@ describe("CustomerLocationService", () => {
     customerId,
   };
 
-  beforeEach(() => {
-    const userData: CustomerServiceUpsertBody = {
-      username: faker.internet.userName(),
-      fullname: faker.name.fullName(),
-      social: {
-        instagram: faker.internet.url(),
-        youtube: faker.internet.url(),
-        twitter: faker.internet.url(),
+  const userData: CustomerServiceUpsertBody = {
+    username: faker.internet.userName(),
+    fullname: faker.name.fullName(),
+    social: {
+      instagram: faker.internet.url(),
+      youtube: faker.internet.url(),
+      twitter: faker.internet.url(),
+    },
+    active: true,
+    aboutMe: faker.lorem.paragraph(),
+    images: {
+      profile: {
+        url: faker.internet.avatar(),
       },
-      active: true,
-      aboutMe: faker.lorem.paragraph(),
-      images: {
-        profile: {
-          url: faker.internet.avatar(),
-        },
-      },
-      locations: [],
-      speaks: [faker.random.locale()],
-      isBusiness: true,
-    };
+    },
+    locations: [],
+    speaks: [faker.random.locale()],
+    isBusiness: true,
+  };
 
+  beforeEach(() => {
     return createUser({ customerId }, userData);
   });
 
@@ -209,5 +210,22 @@ describe("CustomerLocationService", () => {
 
     expect(secondLocation?.isDefault).toBeTruthy();
     expect(user.locations).toHaveLength(2);
+  });
+
+  it("should be able to get all origins", async () => {
+    createUser({ customerId: 2 }, userData);
+    jest
+      .spyOn(LocationService, "LocationServiceCreate")
+      .mockImplementationOnce(() => LocationOriginModel.create(location1))
+      .mockImplementationOnce(() =>
+        LocationOriginModel.create({ ...location2, customerId: 2 })
+      );
+
+    await CustomerLocationServiceCreate(location1);
+    await CustomerLocationServiceCreate({ ...location2, customerId: 2 });
+
+    const response = await CustomerLocationServiceGetAllOrigins(location1);
+    console.log(response);
+    expect(response).toHaveLength(1);
   });
 });

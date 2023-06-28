@@ -7,7 +7,7 @@ get:
   tags:
     - Location
   operationId: locationGetCoordinates
-  summary: GET location get coordinates
+  summary: GET location coordinates
   description: This endpoint get coordinates object
   responses:
     "200":

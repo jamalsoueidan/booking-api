@@ -24,6 +24,7 @@ import {
   CustomerProductControllerUpsert,
   CustomerProductsControllerListIds,
 } from "./customer";
+import { CustomerLocationControllerGetAllOrigins } from "./customer/controllers/location/get-all-origins";
 
 /* Customer */
 
@@ -122,6 +123,13 @@ app.http("customerBookingList", {
 /* ******* */
 /* Location */
 /* ******* */
+
+app.http("customerLocationGetAllOrigins", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customer/{customerId}/locations/get-all-origins",
+  handler: CustomerLocationControllerGetAllOrigins,
+});
 
 app.http("customerLocationList", {
   methods: ["GET"],
