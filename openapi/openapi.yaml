@@ -233,7 +233,7 @@ paths:
     $ref: "./paths/meta/specialties/index.yaml"
 
   # locations
-  /customer/{customerId}/location/get-all-origins:
+  /customer/{customerId}/locations/get-all-origins:
     $ref: "./paths/customer/location/get-all-origins/index.yaml"
 
   /customer/{customerId}/locations/destination:
