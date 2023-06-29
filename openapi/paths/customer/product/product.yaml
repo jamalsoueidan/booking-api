@@ -1,13 +1,11 @@
 parameters:
   - name: customerId
     in: path
-    description: The ID of the customerId
     required: true
     schema:
       type: string
   - name: productId
     in: path
-    description: The ID of the productId
     required: true
     schema:
       type: string

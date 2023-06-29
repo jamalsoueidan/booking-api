@@ -49,6 +49,8 @@ components:
       $ref: paths/schedule/_types/product-notice-period.yaml
     ProductNoticeUnit:
       $ref: paths/schedule/_types/product-notice-unit.yaml
+    ProductLocations:
+      $ref: paths/schedule/_types/product-locations.yaml
     Schedule:
       $ref: paths/schedule/_types/schedule.yaml
 

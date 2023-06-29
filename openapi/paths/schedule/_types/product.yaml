@@ -18,6 +18,8 @@ properties:
     $ref: "./product-notice-period.yaml"
   bookingPeriod:
     $ref: "./product-booking-period.yaml"
+  locations:
+    $ref: "./product-locations.yaml"
 required:
   - variantId
   - productId
@@ -25,3 +27,4 @@ required:
   - breakTime
   - noticePeriod
   - bookingPeriod
+  - locations

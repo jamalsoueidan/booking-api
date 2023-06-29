@@ -1,0 +1,12 @@
+type: array
+items:
+  type: object
+  properties:
+    location:
+      type: string
+    locationType:
+      type: string
+      enum: [origin, destination]
+  required:
+    - location
+    - locationType
