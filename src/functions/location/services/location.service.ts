@@ -71,7 +71,10 @@ export const LocationServiceUpdate = async (
   );
 
   if (location.locationType !== LocationTypes.DESTINATION) {
-    const result = await LocationServiceValidateAddress(body as LocationOrigin);
+    const result = await LocationServiceValidateAddress(
+      body as LocationOrigin,
+      filter.locationId
+    );
     location.set({
       fullAddress: result.fullAddress,
       geoLocation: {
@@ -146,12 +149,19 @@ type LocationServiceValidateAddressProps = Pick<
 >;
 
 export const LocationServiceValidateAddress = async (
-  params: LocationServiceValidateAddressProps
+  params: LocationServiceValidateAddressProps,
+  excludeLocationId?: string
 ) => {
   const response = await LocationServiceGetCoordinates(params);
-  const location = await LocationOriginModel.findOne({
+  const query: Record<string, any> = {
     $or: [{ name: params.name }, { fullAddress: response.fullAddress }],
-  });
+  };
+
+  if (excludeLocationId) {
+    query["_id"] = { $ne: excludeLocationId };
+  }
+
+  const location = await LocationOriginModel.findOne(query);
 
   if (location) {
     throw new BadError([
