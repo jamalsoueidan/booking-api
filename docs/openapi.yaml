@@ -147,6 +147,8 @@ components:
           $ref: '#/components/schemas/ProductNoticePeriod'
         bookingPeriod:
           $ref: '#/components/schemas/ProductBookingPeriod'
+        locations:
+          $ref: '#/components/schemas/ProductLocations'
       required:
         - variantId
         - productId
@@ -154,6 +156,7 @@ components:
         - breakTime
         - noticePeriod
         - bookingPeriod
+        - locations
     ProductBookingPeriod:
       type: object
       properties:
@@ -191,6 +194,21 @@ components:
         - hours
         - days
         - weeks
+    ProductLocations:
+      type: array
+      items:
+        type: object
+        properties:
+          location:
+            type: string
+          locationType:
+            type: string
+            enum:
+              - origin
+              - destination
+        required:
+          - location
+          - locationType
     Schedule:
       type: object
       properties:
@@ -332,6 +350,8 @@ components:
           $ref: '#/components/schemas/ProductNoticePeriod'
         bookingPeriod:
           $ref: '#/components/schemas/ProductBookingPeriod'
+        locations:
+          $ref: '#/components/schemas/ProductLocations'
       required:
         - scheduleId
         - variantId
@@ -339,6 +359,7 @@ components:
         - breakTime
         - noticePeriod
         - bookingPeriod
+        - locations
     CustomerProductDestroyResponse:
       type: object
       properties:
@@ -1655,13 +1676,11 @@ paths:
     parameters:
       - name: customerId
         in: path
-        description: The ID of the customerId
         required: true
         schema:
           type: string
       - name: productId
         in: path
-        description: The ID of the productId
         required: true
         schema:
           type: string
