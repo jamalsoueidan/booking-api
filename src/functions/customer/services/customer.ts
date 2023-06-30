@@ -1,4 +1,9 @@
-import { User, UserModel } from "~/functions/user";
+import { ScheduleModel } from "~/functions/schedule";
+import {
+  User,
+  UserModel,
+  UserServiceFindCustomerOrFail,
+} from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
 
 export type CustomerServiceUpsert = Pick<User, "customerId">;
@@ -51,4 +56,29 @@ export const CustomerServiceGet = async (filter: CustomerServiceGetProps) => {
       },
     ])
   );
+};
+
+export const CustomerServiceStatus = async ({
+  customerId,
+}: {
+  customerId: number;
+}) => {
+  const user = await UserServiceFindCustomerOrFail({ customerId });
+  const schedule = await ScheduleModel.count({ customerId });
+  const services = await ScheduleModel.count({
+    customerId,
+    "products.0": { $exists: true },
+  });
+
+  const aboutMe = user.aboutMe !== undefined;
+  const shortDescription = user.shortDescription !== undefined;
+  const professions = !!user.professions && user.professions.length > 0;
+
+  return {
+    profile: aboutMe && shortDescription && professions,
+    locations: user.locations && user.locations?.length > 0,
+    schedules: schedule > 0,
+    services: services > 0,
+    profileImage: user.images?.profile?.url !== undefined,
+  };
 };

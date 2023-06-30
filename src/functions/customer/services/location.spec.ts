@@ -225,7 +225,6 @@ describe("CustomerLocationService", () => {
     await CustomerLocationServiceCreate({ ...location2, customerId: 2 });
 
     const response = await CustomerLocationServiceGetAllOrigins(location1);
-    console.log(response);
     expect(response).toHaveLength(1);
   });
 });

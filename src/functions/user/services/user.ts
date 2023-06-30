@@ -185,7 +185,7 @@ export const UserServiceGetLocations = async <T>({
   return [];
 };
 
-const UserServiceFindCustomerOrFail = ({
+export const UserServiceFindCustomerOrFail = ({
   customerId,
 }: {
   customerId: number;

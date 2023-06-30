@@ -1,0 +1,18 @@
+type: object
+properties:
+  profile:
+    type: boolean
+  locations:
+    type: boolean
+  schedules:
+    type: boolean
+  services:
+    type: boolean
+  profileImage:
+    type: boolean
+required:
+  - profile
+  - locations
+  - schedules
+  - services
+  - profileImage

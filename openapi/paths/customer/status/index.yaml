@@ -1,0 +1,30 @@
+get:
+  parameters:
+    - name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+  tags:
+    - Customer
+  operationId: customerStatus
+  summary: GET Get customer status
+  description: This endpoint gets customer status
+  responses:
+    "200":
+      description: Response with payload
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+
+    "400":
+      $ref: "../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../responses/not-found.yaml"
+
+  security: []
