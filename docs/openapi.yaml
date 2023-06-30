@@ -597,6 +597,36 @@ components:
       required:
         - success
         - payload
+    CustomerStatus:
+      type: object
+      properties:
+        profile:
+          type: boolean
+        locations:
+          type: boolean
+        schedules:
+          type: boolean
+        services:
+          type: boolean
+        profileImage:
+          type: boolean
+      required:
+        - profile
+        - locations
+        - schedules
+        - services
+        - profileImage
+    CustomerStatusResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/CustomerStatus'
+      required:
+        - success
+        - payload
     CustomerGetResponse:
       type: object
       properties:
@@ -1503,6 +1533,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CustomerGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  '/customer/{customerId}/status':
+    get:
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - Customer
+      operationId: customerStatus
+      summary: GET Get customer status
+      description: This endpoint gets customer status
+      responses:
+        '200':
+          description: Response with payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerStatusResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
