@@ -37,6 +37,7 @@ properties:
 
 required:
   - professions
+  - specialties
   - username
   - aboutMe
   - shortDescription

@@ -55,11 +55,12 @@ export const UserZodSchema = z.object({
     .array(z.nativeEnum(Professions))
     .or(z.nativeEnum(Professions))
     .transform((value) => (Array.isArray(value) ? value : [value]))
+    .transform((array) => array.filter((value) => value.trim() !== ""))
     .transform((array) => [...new Set(array)])
     .optional(),
   specialties: z
-    .array(z.string().nonempty())
-    .or(z.string().nonempty())
+    .array(z.string())
+    .or(z.string())
     .transform((value) => (Array.isArray(value) ? value : [value]))
     .transform((array) => array.filter((value) => value.trim() !== ""))
     .transform((array) => [...new Set(array)])
