@@ -764,6 +764,7 @@ components:
             - type: string
       required:
         - professions
+        - specialties
         - username
         - aboutMe
         - shortDescription
