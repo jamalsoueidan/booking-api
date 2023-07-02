@@ -2,7 +2,8 @@ import { NotFoundError } from "~/library/handler";
 import { ScheduleModel } from "../schedule.model";
 import { Schedule } from "../schedule.types";
 
-type ScheduleServiceCreateBody = Pick<Schedule, "name" | "customerId">;
+type ScheduleServiceCreateBody = Pick<Schedule, "name" | "customerId"> &
+  Pick<Partial<Schedule>, "products">;
 
 export const ScheduleServiceCreate = async (
   props: ScheduleServiceCreateBody
@@ -68,10 +69,18 @@ export const ScheduleServiceUpdate = async (
   return updatedSchedule;
 };
 
-type ScheduleServiceListProps = Pick<Schedule, "customerId">;
+type ScheduleServiceListProps = Pick<Schedule, "customerId"> & {
+  productsExist?: boolean | string;
+};
 
 export const ScheduleServiceList = async (filter: ScheduleServiceListProps) => {
-  return ScheduleModel.find(filter).sort("created_at").lean();
+  const { productsExist, ...restFilters } = filter;
+  const productFilter = productsExist
+    ? { products: { $exists: true, $ne: [] } }
+    : {};
+  return ScheduleModel.find({ ...restFilters, ...productFilter })
+    .sort("created_at")
+    .lean();
 };
 
 type ScheduleServiceGetProps = {
