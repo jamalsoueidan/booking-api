@@ -1944,7 +1944,6 @@ paths:
       - name: productsExist
         in: query
         description: Indicate if you want to only include schedule that have products
-        required: true
         schema:
           type: boolean
     get:
