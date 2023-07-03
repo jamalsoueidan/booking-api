@@ -1,16 +1,16 @@
 import { Schedule, ScheduleModel, ScheduleSlot } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
 
-export type ScheduleSlotServiceUpdateFilter = {
+export type CustomerScheduleSlotServiceUpdateFilter = {
   scheduleId: Schedule["_id"];
   customerId: Schedule["customerId"];
 };
 
-export type ScheduleSlotServiceUpdateBody = ScheduleSlot[];
+export type CustomerScheduleSlotServiceUpdateBody = ScheduleSlot[];
 
-export const ScheduleSlotServiceUpdate = async (
-  filter: ScheduleSlotServiceUpdateFilter,
-  updatedSlot: ScheduleSlotServiceUpdateBody
+export const CustomerScheduleSlotServiceUpdate = async (
+  filter: CustomerScheduleSlotServiceUpdateFilter,
+  updatedSlot: CustomerScheduleSlotServiceUpdateBody
 ) => {
   try {
     const schedule = await ScheduleModel.findOne({

@@ -27,13 +27,13 @@ import {
 } from "./customer";
 import { CustomerLocationControllerGetAllOrigins } from "./customer/controllers/location/get-all-origins";
 import {
-  ScheduleControllerCreate,
-  ScheduleControllerDestroy,
-  ScheduleControllerGet,
-  ScheduleControllerList,
-  ScheduleControllerUpdate,
+  CustomerScheduleControllerCreate,
+  CustomerScheduleControllerDestroy,
+  CustomerScheduleControllerGet,
+  CustomerScheduleControllerList,
+  CustomerScheduleControllerUpdate,
 } from "./customer/controllers/schedule";
-import { ScheduleSlotControllerUpdate } from "./customer/controllers/slot";
+import { CustomerScheduleSlotControllerUpdate } from "./customer/controllers/slot";
 
 /* Customer */
 
@@ -214,44 +214,44 @@ app.http("customerLocationSetDefault", {
 /* Schedule
 /* ******** */
 
-app.http("scheduleDestroy", {
+app.http("customerScheduleDestroy", {
   methods: ["DELETE"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/schedule/{scheduleId?}",
-  handler: ScheduleControllerDestroy,
+  handler: CustomerScheduleControllerDestroy,
 });
 
-app.http("scheduleCreate", {
+app.http("customerScheduleCreate", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/schedule",
-  handler: ScheduleControllerCreate,
+  handler: CustomerScheduleControllerCreate,
 });
 
-app.http("scheduleUpdate", {
+app.http("customerScheduleUpdate", {
   methods: ["PUT"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/schedule/{scheduleId?}",
-  handler: ScheduleControllerUpdate,
+  handler: CustomerScheduleControllerUpdate,
 });
 
-app.http("scheduleGet", {
+app.http("customerScheduleGet", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/schedule/{scheduleId?}",
-  handler: ScheduleControllerGet,
+  handler: CustomerScheduleControllerGet,
 });
 
-app.http("scheduleList", {
+app.http("customerScheduleList", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/schedules",
-  handler: ScheduleControllerList,
+  handler: CustomerScheduleControllerList,
 });
 
-app.http("scheduleSlotUpdate", {
+app.http("customerScheduleSlotUpdate", {
   methods: ["PUT"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/schedule/{scheduleId?}/slots",
-  handler: ScheduleSlotControllerUpdate,
+  handler: CustomerScheduleSlotControllerUpdate,
 });

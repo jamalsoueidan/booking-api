@@ -1,5 +1,5 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { ScheduleServiceCreate } from "~/functions/customer/services";
+import { CustomerScheduleServiceCreate } from "~/functions/customer/services";
 import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
 import {
   HttpSuccessResponse,
@@ -40,7 +40,7 @@ describe("CustomerProductControllerDestroy", () => {
   });
 
   it("should be able to destroy schedule", async () => {
-    const newSchedule = await ScheduleServiceCreate({
+    const newSchedule = await CustomerScheduleServiceCreate({
       name: "asd",
       customerId: 123,
     });

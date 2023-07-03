@@ -1,30 +1,31 @@
 import { z } from "zod";
-import { ScheduleServiceUpdate } from "~/functions/customer/services";
+import { CustomerScheduleServiceUpdate } from "~/functions/customer/services";
 import { ScheduleZodSchema } from "~/functions/schedule/schedule.types";
 import { _ } from "~/library/handler";
 
-export type ScheduleControllerUpdateRequest = {
-  query: z.infer<typeof ScheduleControllerUpdateQuerySchema>;
-  body: z.infer<typeof ScheduleControllerUpdateBodySchema>;
+export type CustomerScheduleControllerUpdateRequest = {
+  query: z.infer<typeof CustomerScheduleControllerUpdateQuerySchema>;
+  body: z.infer<typeof CustomerScheduleControllerUpdateBodySchema>;
 };
 
-const ScheduleControllerUpdateQuerySchema = z.object({
+const CustomerScheduleControllerUpdateQuerySchema = z.object({
   scheduleId: ScheduleZodSchema.shape._id,
   customerId: ScheduleZodSchema.shape.customerId,
 });
 
-const ScheduleControllerUpdateBodySchema = ScheduleZodSchema.pick({
+const CustomerScheduleControllerUpdateBodySchema = ScheduleZodSchema.pick({
   name: true,
 });
 
-export type ScheduleControllerUpdateResponse = Awaited<
-  ReturnType<typeof ScheduleServiceUpdate>
+export type CustomerScheduleControllerUpdateResponse = Awaited<
+  ReturnType<typeof CustomerScheduleServiceUpdate>
 >;
 
-export const ScheduleControllerUpdate = _(
-  ({ query, body }: ScheduleControllerUpdateRequest) => {
-    const validateQuery = ScheduleControllerUpdateQuerySchema.parse(query);
-    const validateBody = ScheduleControllerUpdateBodySchema.parse(body);
-    return ScheduleServiceUpdate(validateQuery, validateBody);
+export const CustomerScheduleControllerUpdate = _(
+  ({ query, body }: CustomerScheduleControllerUpdateRequest) => {
+    const validateQuery =
+      CustomerScheduleControllerUpdateQuerySchema.parse(query);
+    const validateBody = CustomerScheduleControllerUpdateBodySchema.parse(body);
+    return CustomerScheduleServiceUpdate(validateQuery, validateBody);
   }
 );

@@ -1,29 +1,32 @@
 import { z } from "zod";
-import { ScheduleSlotServiceUpdate } from "~/functions/customer/services";
+import { CustomerScheduleSlotServiceUpdate } from "~/functions/customer/services";
 import { ScheduleZodSchema } from "~/functions/schedule";
 
 import { _ } from "~/library/handler";
 
-export type ScheduleSlotControllerUpdateRequest = {
-  query: z.infer<typeof ScheduleSlotControllerUpdateQuerySchema>;
-  body: z.infer<typeof ScheduleSlotControllerUpdateBodySchema>;
+export type CustomerScheduleSlotControllerUpdateRequest = {
+  query: z.infer<typeof CustomerScheduleSlotControllerUpdateQuerySchema>;
+  body: z.infer<typeof CustomerScheduleSlotControllerUpdateBodySchema>;
 };
 
-const ScheduleSlotControllerUpdateQuerySchema = z.object({
+const CustomerScheduleSlotControllerUpdateQuerySchema = z.object({
   scheduleId: ScheduleZodSchema.shape._id,
   customerId: ScheduleZodSchema.shape.customerId,
 });
 
-const ScheduleSlotControllerUpdateBodySchema = ScheduleZodSchema.shape.slots;
+const CustomerScheduleSlotControllerUpdateBodySchema =
+  ScheduleZodSchema.shape.slots;
 
-export type ScheduleSlotControllerUpdateResponse = Awaited<
-  ReturnType<typeof ScheduleSlotServiceUpdate>
+export type CustomerScheduleSlotControllerUpdateResponse = Awaited<
+  ReturnType<typeof CustomerScheduleSlotServiceUpdate>
 >;
 
-export const ScheduleSlotControllerUpdate = _(
-  ({ query, body }: ScheduleSlotControllerUpdateRequest) => {
-    const validateQuery = ScheduleSlotControllerUpdateQuerySchema.parse(query);
-    const validateBody = ScheduleSlotControllerUpdateBodySchema.parse(body);
-    return ScheduleSlotServiceUpdate(validateQuery, validateBody);
+export const CustomerScheduleSlotControllerUpdate = _(
+  ({ query, body }: CustomerScheduleSlotControllerUpdateRequest) => {
+    const validateQuery =
+      CustomerScheduleSlotControllerUpdateQuerySchema.parse(query);
+    const validateBody =
+      CustomerScheduleSlotControllerUpdateBodySchema.parse(body);
+    return CustomerScheduleSlotServiceUpdate(validateQuery, validateBody);
   }
 );

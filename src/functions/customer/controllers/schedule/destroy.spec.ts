@@ -1,19 +1,19 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { ScheduleServiceCreate } from "~/functions/customer/services";
+import { CustomerScheduleServiceCreate } from "~/functions/customer/services";
 import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
 import {
-  ScheduleControllerDestroy,
-  ScheduleControllerDestroyRequest,
-  ScheduleControllerDestroyResponse,
+  CustomerScheduleControllerDestroy,
+  CustomerScheduleControllerDestroyRequest,
+  CustomerScheduleControllerDestroyResponse,
 } from "./destroy";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("ScheduleControllerDestroy", () => {
+describe("CustomerScheduleControllerDestroy", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
@@ -22,20 +22,22 @@ describe("ScheduleControllerDestroy", () => {
   });
 
   it("should be able to destroy schedule", async () => {
-    const newSchedule = await ScheduleServiceCreate({
+    const newSchedule = await CustomerScheduleServiceCreate({
       name: "asd",
       customerId: 123,
     });
 
-    request = await createHttpRequest<ScheduleControllerDestroyRequest>({
-      query: {
-        customerId: newSchedule.customerId,
-        scheduleId: newSchedule._id,
-      },
-    });
+    request = await createHttpRequest<CustomerScheduleControllerDestroyRequest>(
+      {
+        query: {
+          customerId: newSchedule.customerId,
+          scheduleId: newSchedule._id,
+        },
+      }
+    );
 
-    const res: HttpSuccessResponse<ScheduleControllerDestroyResponse> =
-      await ScheduleControllerDestroy(request, context);
+    const res: HttpSuccessResponse<CustomerScheduleControllerDestroyResponse> =
+      await CustomerScheduleControllerDestroy(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody?.payload.deletedCount).toBe(1);

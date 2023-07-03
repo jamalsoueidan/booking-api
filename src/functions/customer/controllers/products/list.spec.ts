@@ -1,5 +1,5 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { ScheduleServiceCreate } from "~/functions/customer/services";
+import { CustomerScheduleServiceCreate } from "~/functions/customer/services";
 import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
 
 import {
@@ -37,7 +37,10 @@ describe("UserProductsControllerList", () => {
       locations: [],
     };
 
-    const newSchedule = await ScheduleServiceCreate({ name: "ab", customerId });
+    const newSchedule = await CustomerScheduleServiceCreate({
+      name: "ab",
+      customerId,
+    });
 
     await CustomerProductServiceUpsert(
       {
@@ -47,7 +50,7 @@ describe("UserProductsControllerList", () => {
       { ...newProduct, scheduleId: newSchedule._id }
     );
 
-    const newSchedule2 = await ScheduleServiceCreate({
+    const newSchedule2 = await CustomerScheduleServiceCreate({
       name: "tdd",
       customerId,
     });

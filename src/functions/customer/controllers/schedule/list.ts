@@ -1,26 +1,27 @@
 import { z } from "zod";
-import { ScheduleServiceList } from "~/functions/customer/services";
+import { CustomerScheduleServiceList } from "~/functions/customer/services";
 import { ScheduleZodSchema } from "~/functions/schedule/schedule.types";
 import { _ } from "~/library/handler";
 import { BooleanOrStringType } from "~/library/zod";
 
-export type ScheduleControllerListRequest = {
-  query: z.infer<typeof ScheduleControllerListQuerySchema>;
+export type CustomerScheduleControllerListRequest = {
+  query: z.infer<typeof CustomerScheduleControllerListQuerySchema>;
 };
 
-const ScheduleControllerListQuerySchema = ScheduleZodSchema.pick({
+const CustomerScheduleControllerListQuerySchema = ScheduleZodSchema.pick({
   customerId: true,
 }).extend({
   productsExist: BooleanOrStringType,
 });
 
-export type ScheduleControllerListResponse = Awaited<
-  ReturnType<typeof ScheduleServiceList>
+export type CustomerScheduleControllerListResponse = Awaited<
+  ReturnType<typeof CustomerScheduleServiceList>
 >;
 
-export const ScheduleControllerList = _(
-  ({ query }: ScheduleControllerListRequest) => {
-    const validateQuery = ScheduleControllerListQuerySchema.parse(query);
-    return ScheduleServiceList(validateQuery);
+export const CustomerScheduleControllerList = _(
+  ({ query }: CustomerScheduleControllerListRequest) => {
+    const validateQuery =
+      CustomerScheduleControllerListQuerySchema.parse(query);
+    return CustomerScheduleServiceList(validateQuery);
   }
 );

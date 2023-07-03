@@ -1,24 +1,24 @@
 import { z } from "zod";
-import { ScheduleServiceGet } from "~/functions/customer/services";
+import { CustomerScheduleServiceGet } from "~/functions/customer/services";
 import { ScheduleZodSchema } from "~/functions/schedule";
 import { _ } from "~/library/handler";
 
-export type ScheduleControllerGetRequest = {
-  query: z.infer<typeof ScheduleControllerGetQuerySchema>;
+export type CustomerScheduleControllerGetRequest = {
+  query: z.infer<typeof CustomerScheduleControllerGetSchema>;
 };
 
-const ScheduleControllerGetQuerySchema = z.object({
+const CustomerScheduleControllerGetSchema = z.object({
   scheduleId: ScheduleZodSchema.shape._id,
   customerId: ScheduleZodSchema.shape.customerId,
 });
 
-export type ScheduleControllerGetResponse = Awaited<
-  ReturnType<typeof ScheduleServiceGet>
+export type CustomerScheduleControllerGetResponse = Awaited<
+  ReturnType<typeof CustomerScheduleServiceGet>
 >;
 
-export const ScheduleControllerGet = _(
-  ({ query }: ScheduleControllerGetRequest) => {
-    const validateQuery = ScheduleControllerGetQuerySchema.parse(query);
-    return ScheduleServiceGet(validateQuery);
+export const CustomerScheduleControllerGet = _(
+  ({ query }: CustomerScheduleControllerGetRequest) => {
+    const validateQuery = CustomerScheduleControllerGetSchema.parse(query);
+    return CustomerScheduleServiceGet(validateQuery);
   }
 );

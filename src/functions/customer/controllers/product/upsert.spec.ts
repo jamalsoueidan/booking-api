@@ -1,6 +1,6 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 
-import { ScheduleServiceCreate } from "~/functions/customer/services";
+import { CustomerScheduleServiceCreate } from "~/functions/customer/services";
 import {
   HttpSuccessResponse,
   createContext,
@@ -42,7 +42,7 @@ describe("ScheduleProductControllerUpdate", () => {
   });
 
   it("should be able to update slots schedule", async () => {
-    const newSchedule = await ScheduleServiceCreate({
+    const newSchedule = await CustomerScheduleServiceCreate({
       name: "asd",
       customerId,
     });

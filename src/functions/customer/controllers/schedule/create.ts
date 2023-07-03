@@ -1,29 +1,30 @@
 import { z } from "zod";
-import { ScheduleServiceCreate } from "~/functions/customer/services";
+import { CustomerScheduleServiceCreate } from "~/functions/customer/services";
 import { ScheduleZodSchema } from "~/functions/schedule";
 import { _ } from "~/library/handler";
 
-export type ScheduleControllerCreateRequest = {
-  query: z.infer<typeof ScheduleControllerCreateQuerySchema>;
-  body: z.infer<typeof ScheduleControllerCreateBodySchema>;
+export type CustomerScheduleControllerCreateRequest = {
+  query: z.infer<typeof CustomerScheduleControllerCreateQuerySchema>;
+  body: z.infer<typeof CustomerScheduleControllerCreateBodySchema>;
 };
 
-const ScheduleControllerCreateQuerySchema = ScheduleZodSchema.pick({
+const CustomerScheduleControllerCreateQuerySchema = ScheduleZodSchema.pick({
   customerId: true,
 });
 
-const ScheduleControllerCreateBodySchema = ScheduleZodSchema.pick({
+const CustomerScheduleControllerCreateBodySchema = ScheduleZodSchema.pick({
   name: true,
 });
 
-export type ScheduleControllerCreateResponse = Awaited<
-  ReturnType<typeof ScheduleServiceCreate>
+export type CustomerScheduleControllerCreateResponse = Awaited<
+  ReturnType<typeof CustomerScheduleServiceCreate>
 >;
 
-export const ScheduleControllerCreate = _(
-  ({ query, body }: ScheduleControllerCreateRequest) => {
-    const validateQuery = ScheduleControllerCreateQuerySchema.parse(query);
-    const validateBody = ScheduleControllerCreateBodySchema.parse(body);
-    return ScheduleServiceCreate({ ...validateQuery, ...validateBody });
+export const CustomerScheduleControllerCreate = _(
+  ({ query, body }: CustomerScheduleControllerCreateRequest) => {
+    const validateQuery =
+      CustomerScheduleControllerCreateQuerySchema.parse(query);
+    const validateBody = CustomerScheduleControllerCreateBodySchema.parse(body);
+    return CustomerScheduleServiceCreate({ ...validateQuery, ...validateBody });
   }
 );
