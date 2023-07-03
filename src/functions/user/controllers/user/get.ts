@@ -14,8 +14,9 @@ export const UserServiceGetSchema = UserZodSchema.pick({
 });
 
 export type UserControllerGetResponse = Awaited<
-  ReturnType<typeof UserServiceGet & typeof UserScheduleServiceLocationsList>
->;
+  ReturnType<typeof UserServiceGet>
+> &
+  Awaited<ReturnType<typeof UserScheduleServiceLocationsList>>;
 
 export const UserControllerGet = _(
   async ({ query }: UserControllerGetRequest) => {
