@@ -1255,31 +1255,35 @@ components:
         phone:
           type: string
         schedules:
-          type: object
-          properties:
-            _id:
-              type: string
-            name:
-              type: string
-            customerId:
-              type: number
-            slots:
-              type: array
-              items:
-                $ref: '#/components/schemas/CustomerScheduleSlot'
-            locations:
-              type: array
-              items:
-                oneOf:
-                  - $ref: '#/components/schemas/LocationOrigin'
-                  - $ref: '#/components/schemas/LocationDestination'
-          required:
-            - _id
-            - name
-            - customerId
-            - slots
-            - locations
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              name:
+                type: string
+              customerId:
+                type: number
+              slots:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerScheduleSlot'
+              locations:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: '#/components/schemas/LocationOrigin'
+                    - $ref: '#/components/schemas/LocationDestination'
+            required:
+              - _id
+              - name
+              - customerId
+              - slots
+              - locations
       required:
+        - username
+        - email
         - customerId
         - yearsExperience
         - professions
