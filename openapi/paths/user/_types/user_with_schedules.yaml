@@ -57,32 +57,35 @@ properties:
   phone:
     type: string
   schedules:
-    type: object
-    properties:
-      _id:
-        type: string
-      name:
-        type: string
-      customerId:
-        type: number
-      slots:
-        type: array
-        items:
-          $ref: ../../customer/schedule/_types/slot.yaml
-      locations:
-        type: array
-        items:
-          oneOf:
-            - $ref: ../../customer/location/_types/location-origin.yaml
-            - $ref: ../../customer/location/_types/location-destination.yaml
-    required:
-      - _id
-      - name
-      - customerId
-      - slots
-      - locations
-
+    type: array
+    items:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        customerId:
+          type: number
+        slots:
+          type: array
+          items:
+            $ref: ../../customer/schedule/_types/slot.yaml
+        locations:
+          type: array
+          items:
+            oneOf:
+              - $ref: ../../customer/location/_types/location-origin.yaml
+              - $ref: ../../customer/location/_types/location-destination.yaml
+      required:
+        - _id
+        - name
+        - customerId
+        - slots
+        - locations
 required:
+  - username
+  - email
   - customerId
   - yearsExperience
   - professions
