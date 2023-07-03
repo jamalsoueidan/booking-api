@@ -32,25 +32,34 @@ components:
     MetaItem:
       $ref: paths/meta/_types/item.yaml
 
-    # Schedule
-    CustomerScheduleProduct:
+    # Product
+    CustomerProduct:
       $ref: paths/customer/schedule/_types/product.yaml
-    CustomerScheduleProductBookingPeriod:
+    CustomerProductBookingPeriod:
       $ref: paths/customer/schedule/_types/product-booking-period.yaml
-    CustomerScheduleProductBookingUnit:
+    CustomerProductBookingUnit:
       $ref: paths/customer/schedule/_types/product-booking-unit.yaml
-    CustomerScheduleProductNoticePeriod:
+    CustomerProductNoticePeriod:
       $ref: paths/customer/schedule/_types/product-notice-period.yaml
-    CustomerScheduleProductNoticeUnit:
+    CustomerProductNoticeUnit:
       $ref: paths/customer/schedule/_types/product-notice-unit.yaml
-    CustomerScheduleProductLocations:
+    CustomerProductLocations:
       $ref: paths/customer/schedule/_types/product-locations.yaml
+    CustomerProductUpsertResponse:
+      $ref: paths/customer/product/upsert/response.yaml
+    CustomerProductUpsertBody:
+      $ref: paths/customer/product/upsert/body.yaml
+    CustomerProductDestroyResponse:
+      $ref: paths/customer/product/destroy/response.yaml
+    CustomerProductGetResponse:
+      $ref: paths/customer/product/get/response.yaml
 
+    # Schedule
     CustomerScheduleDestroy:
       $ref: paths/customer/schedule/_types/destroy.yaml
-    CustomerScheduleDay:
+    CustomerScheduleSlotDay:
       $ref: paths/customer/schedule/_types/day.yaml
-    CustomerScheduleInterval:
+    CustomerScheduleSlotInterval:
       $ref: paths/customer/schedule/_types/interval.yaml
     CustomerScheduleSlot:
       $ref: paths/customer/schedule/_types/slot.yaml
@@ -77,16 +86,6 @@ components:
       $ref: paths/customer/schedule/slots/update/response.yaml
     CustomerScheduleSlotsUpdateBody:
       $ref: paths/customer/schedule/slots/update/body.yaml
-
-    # Product
-    CustomerProductUpsertResponse:
-      $ref: paths/customer/product/upsert/response.yaml
-    CustomerProductUpsertBody:
-      $ref: paths/customer/product/upsert/body.yaml
-    CustomerProductDestroyResponse:
-      $ref: paths/customer/product/destroy/response.yaml
-    CustomerProductGetResponse:
-      $ref: paths/customer/product/get/response.yaml
 
     # Booking
     CustomerBooking:
@@ -124,31 +123,6 @@ components:
     CustomerProductAvailabilityResponse:
       $ref: paths/customer/product/availability/response.yaml
 
-    # User
-    User:
-      $ref: paths/user/_types/user.yaml
-    UserLocationDestination:
-      $ref: paths/user/_types/user_location_destination.yaml
-    UserLocationOrigin:
-      $ref: paths/user/_types/user_location_origin.yaml
-    UserSchedules:
-      $ref: paths/user/_types/user_with_schedules.yaml
-    UserGetResponse:
-      $ref: paths/user/get/response.yaml
-    UsersListResponse:
-      $ref: paths/user/list/response.yaml
-    UsersProfessionsResponse:
-      $ref: paths/user/professions/response.yaml
-
-    # Location
-    LocationOrigin:
-      $ref: paths/customer/location/_types/location-origin.yaml
-    LocationDestination:
-      $ref: paths/customer/location/_types/location-destination.yaml
-    LocationCoordinates:
-      $ref: paths/location/_types/coordinates.yaml
-    LocationTravelTime:
-      $ref: paths/location/_types/travel-time.yaml
     CustomerLocationGetAllLocationOrigin:
       $ref: paths/customer/location/get-all-origins/location-origin.yaml
     CustomerLocationGetAllRepsonse:
@@ -179,6 +153,32 @@ components:
       $ref: paths/customer/location/remove/response.yaml
     CustomerLocationSetDefaultResponse:
       $ref: paths/customer/location/set-default/response.yaml
+
+    # User
+    User:
+      $ref: paths/user/_types/user.yaml
+    UserLocationDestination:
+      $ref: paths/user/_types/user_location_destination.yaml
+    UserLocationOrigin:
+      $ref: paths/user/_types/user_location_origin.yaml
+    UserSchedules:
+      $ref: paths/user/_types/user_with_schedules.yaml
+    UserGetResponse:
+      $ref: paths/user/get/response.yaml
+    UsersListResponse:
+      $ref: paths/user/list/response.yaml
+    UsersProfessionsResponse:
+      $ref: paths/user/professions/response.yaml
+
+    # Location
+    LocationOrigin:
+      $ref: paths/customer/location/_types/location-origin.yaml
+    LocationDestination:
+      $ref: paths/customer/location/_types/location-destination.yaml
+    LocationCoordinates:
+      $ref: paths/location/_types/coordinates.yaml
+    LocationTravelTime:
+      $ref: paths/location/_types/travel-time.yaml
     LocationGetCoordinatesResponse:
       $ref: paths/location/get-coordinates/response.yaml
     LocationGetTravelTimeResponse:
@@ -190,6 +190,8 @@ paths:
   # User
   /user/{username}:
     $ref: "./paths/user/user.yaml"
+  /user/{username}/schedule/{scheduleId}/location/{locationId}:
+    $ref: "./paths/user/schedule/get/index.yaml"
 
   /users/professions:
     $ref: "./paths/user/professions/index.yaml"
