@@ -1,6 +1,6 @@
 type: object
 allOf:
-  - $ref: ../../schedule/_types/product.yaml
+  - $ref: ../schedule/_types/product.yaml
   - type: object
     properties:
       scheduleId:

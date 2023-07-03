@@ -12,10 +12,12 @@ get:
           schema:
             $ref: "./response.yaml"
     "400":
-      $ref: "../../../responses/bad.yaml"
+      $ref: "../../../../responses/bad.yaml"
     "401":
-      $ref: "../../../responses/unauthorized.yaml"
+      $ref: "../../../../responses/unauthorized.yaml"
     "403":
-      $ref: "../../../responses/forbidden.yaml"
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
 
   security: []

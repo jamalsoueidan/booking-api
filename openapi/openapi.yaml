@@ -29,52 +29,54 @@ components:
   schemas:
     Errors:
       $ref: "./schemas/errors.yaml"
-    Destroy:
-      $ref: paths/schedule/_types/destroy.yaml
-    Day:
-      $ref: paths/schedule/_types/day.yaml
-    Interval:
-      $ref: paths/schedule/_types/interval.yaml
-    Slot:
-      $ref: paths/schedule/_types/slot.yaml
     MetaItem:
       $ref: paths/meta/_types/item.yaml
-    Product:
-      $ref: paths/schedule/_types/product.yaml
-    ProductBookingPeriod:
-      $ref: paths/schedule/_types/product-booking-period.yaml
-    ProductBookingUnit:
-      $ref: paths/schedule/_types/product-booking-unit.yaml
-    ProductNoticePeriod:
-      $ref: paths/schedule/_types/product-notice-period.yaml
-    ProductNoticeUnit:
-      $ref: paths/schedule/_types/product-notice-unit.yaml
-    ProductLocations:
-      $ref: paths/schedule/_types/product-locations.yaml
-    Schedule:
-      $ref: paths/schedule/_types/schedule.yaml
 
     # Schedule
-    ScheduleCreateBody:
-      $ref: paths/schedule/create/body.yaml
-    ScheduleCreateResponse:
-      $ref: paths/schedule/create/response.yaml
-    ScheduleDestroyResponse:
-      $ref: paths/schedule/destroy/response.yaml
-    ScheduleListResponse:
-      $ref: paths/schedule/list/response.yaml
-    ScheduleGetResponse:
-      $ref: paths/schedule/get/response.yaml
-    ScheduleUpdateResponse:
-      $ref: paths/schedule/update/response.yaml
-    ScheduleUpdateBody:
-      $ref: paths/schedule/update/body.yaml
+    CustomerScheduleProduct:
+      $ref: paths/customer/schedule/_types/product.yaml
+    CustomerScheduleProductBookingPeriod:
+      $ref: paths/customer/schedule/_types/product-booking-period.yaml
+    CustomerScheduleProductBookingUnit:
+      $ref: paths/customer/schedule/_types/product-booking-unit.yaml
+    CustomerScheduleProductNoticePeriod:
+      $ref: paths/customer/schedule/_types/product-notice-period.yaml
+    CustomerScheduleProductNoticeUnit:
+      $ref: paths/customer/schedule/_types/product-notice-unit.yaml
+    CustomerScheduleProductLocations:
+      $ref: paths/customer/schedule/_types/product-locations.yaml
+
+    CustomerScheduleDestroy:
+      $ref: paths/customer/schedule/_types/destroy.yaml
+    CustomerScheduleDay:
+      $ref: paths/customer/schedule/_types/day.yaml
+    CustomerScheduleInterval:
+      $ref: paths/customer/schedule/_types/interval.yaml
+    CustomerScheduleSlot:
+      $ref: paths/customer/schedule/_types/slot.yaml
+
+    CustomerSchedule:
+      $ref: paths/customer/schedule/_types/schedule.yaml
+    CustomerScheduleCreateBody:
+      $ref: paths/customer/schedule/create/body.yaml
+    CustomerScheduleCreateResponse:
+      $ref: paths/customer/schedule/create/response.yaml
+    CustomerScheduleDestroyResponse:
+      $ref: paths/customer/schedule/destroy/response.yaml
+    CustomerScheduleListResponse:
+      $ref: paths/customer/schedule/list/response.yaml
+    CustomerScheduleGetResponse:
+      $ref: paths/customer/schedule/get/response.yaml
+    CustomerScheduleUpdateResponse:
+      $ref: paths/customer/schedule/update/response.yaml
+    CustomerScheduleUpdateBody:
+      $ref: paths/customer/schedule/update/body.yaml
 
     # Slots
-    ScheduleSlotsUpdateResponse:
-      $ref: paths/schedule/slots/update/response.yaml
-    ScheduleSlotsUpdateBody:
-      $ref: paths/schedule/slots/update/body.yaml
+    CustomerScheduleSlotsUpdateResponse:
+      $ref: paths/customer/schedule/slots/update/response.yaml
+    CustomerScheduleSlotsUpdateBody:
+      $ref: paths/customer/schedule/slots/update/body.yaml
 
     # Product
     CustomerProductUpsertResponse:
@@ -129,6 +131,8 @@ components:
       $ref: paths/user/_types/user_location_destination.yaml
     UserLocationOrigin:
       $ref: paths/user/_types/user_location_origin.yaml
+    UserSchedules:
+      $ref: paths/user/_types/user_with_schedules.yaml
     UserGetResponse:
       $ref: paths/user/get/response.yaml
     UsersListResponse:
@@ -217,14 +221,14 @@ paths:
 
   # schedule
   /customer/{customerId}/schedule:
-    $ref: "./paths/schedule/create/index.yaml"
+    $ref: "./paths/customer/schedule/create/index.yaml"
   /customer/{customerId}/schedules:
-    $ref: "./paths/schedule/list/index.yaml"
+    $ref: "./paths/customer/schedule/list/index.yaml"
   /customer/{customerId}/schedule/{scheduleId}:
-    $ref: "./paths/schedule/schedule.yaml"
+    $ref: "./paths/customer/schedule/schedule.yaml"
 
   /customer/{customerId}/schedule/{scheduleId}/slots:
-    $ref: "paths/schedule/slots/update/index.yaml"
+    $ref: "paths/customer/schedule/slots/update/index.yaml"
 
   # meta
   /meta/professions:
