@@ -22,7 +22,9 @@ export const UserControllerGet = _(
   async ({ query }: UserControllerGetRequest) => {
     const validateData = UserServiceGetSchema.parse(query);
     const user = await UserServiceGet(validateData);
-    const schedules = await UserScheduleServiceLocationsList(validateData);
+    const schedules = await UserScheduleServiceLocationsList({
+      customerId: user.customerId,
+    });
     return {
       ...user,
       schedules,

@@ -4,7 +4,7 @@ import { Schedule, ScheduleModel } from "~/functions/schedule";
 import { User, UserServiceGet } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
 
-export type UserScheduleServiceLocationsListProps = Pick<User, "username">;
+export type UserScheduleServiceLocationsListProps = Pick<User, "customerId">;
 
 export type UserScheduleServiceLocationsListReponse = Omit<
   Schedule,
@@ -14,10 +14,8 @@ export type UserScheduleServiceLocationsListReponse = Omit<
 };
 
 export const UserScheduleServiceLocationsList = async ({
-  username,
+  customerId,
 }: UserScheduleServiceLocationsListProps) => {
-  const { customerId } = await UserServiceGet({ username });
-
   const pipeline: PipelineStage[] = [
     { $match: { customerId, products: { $exists: true, $ne: [] } } },
     { $unwind: "$products" },

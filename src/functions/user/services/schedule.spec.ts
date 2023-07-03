@@ -84,7 +84,7 @@ describe("UserScheduleService", () => {
     });
 
     const schedules = await UserScheduleServiceLocationsList({
-      username,
+      customerId,
     });
 
     expect(schedules).toHaveLength(2);
@@ -133,7 +133,7 @@ describe("UserScheduleService", () => {
     });
 
     const schedules = await UserScheduleServiceLocationsList({
-      username,
+      customerId,
     });
 
     expect(schedules).toHaveLength(0);
