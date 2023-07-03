@@ -1,6 +1,7 @@
 import "module-alias/register";
 
 import { app } from "@azure/functions";
+import { UserScheduleControllerGet } from "./user/controllers/schedule";
 import {
   UserControllerGet,
   UserControllerList,
@@ -26,4 +27,18 @@ app.http("usersProfessions", {
   authLevel: "anonymous",
   route: "users/professions",
   handler: UserControllerProfessions,
+});
+
+app.http("usersProfessions", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "users/professions",
+  handler: UserControllerProfessions,
+});
+
+app.http("userScheduleGet", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "user/{username?}/schedule/{scheduleId?}/location/{locationId?}",
+  handler: UserScheduleControllerGet,
 });

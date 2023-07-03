@@ -15,11 +15,11 @@ properties:
       - type: string
       - type: number
   noticePeriod:
-    $ref: ../../../schedule/_types/product-notice-period.yaml
+    $ref: ../../schedule/_types/product-notice-period.yaml
   bookingPeriod:
-    $ref: ../../../schedule/_types/product-booking-period.yaml
+    $ref: ../../schedule/_types/product-booking-period.yaml
   locations:
-    $ref: ../../../schedule/_types/product-locations.yaml
+    $ref: ../../schedule/_types/product-locations.yaml
 
 required:
   - scheduleId

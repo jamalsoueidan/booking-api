@@ -2,7 +2,6 @@ import { z } from "zod";
 import { CustomerScheduleServiceList } from "~/functions/customer/services";
 import { ScheduleZodSchema } from "~/functions/schedule/schedule.types";
 import { _ } from "~/library/handler";
-import { BooleanOrStringType } from "~/library/zod";
 
 export type CustomerScheduleControllerListRequest = {
   query: z.infer<typeof CustomerScheduleControllerListQuerySchema>;
@@ -10,8 +9,6 @@ export type CustomerScheduleControllerListRequest = {
 
 const CustomerScheduleControllerListQuerySchema = ScheduleZodSchema.pick({
   customerId: true,
-}).extend({
-  productsExist: BooleanOrStringType,
 });
 
 export type CustomerScheduleControllerListResponse = Awaited<

@@ -73,7 +73,7 @@ export const LocationServiceUpdate = async (
   if (location.locationType !== LocationTypes.DESTINATION) {
     const result = await LocationServiceValidateAddress(
       body as LocationOrigin,
-      filter.locationId
+      filter.locationId.toString()
     );
     location.set({
       fullAddress: result.fullAddress,

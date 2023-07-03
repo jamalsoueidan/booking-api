@@ -68,20 +68,12 @@ export const CustomerScheduleServiceUpdate = async (
   return updatedSchedule;
 };
 
-type CustomerScheduleServiceListProps = Pick<Schedule, "customerId"> & {
-  productsExist?: boolean | string;
-};
+type CustomerScheduleServiceListProps = Pick<Schedule, "customerId">;
 
 export const CustomerScheduleServiceList = async (
   filter: CustomerScheduleServiceListProps
 ) => {
-  const { productsExist, ...restFilters } = filter;
-  const productFilter = productsExist
-    ? { products: { $exists: true, $ne: [] } }
-    : {};
-  return ScheduleModel.find({ ...restFilters, ...productFilter })
-    .sort("created_at")
-    .lean();
+  return ScheduleModel.find(filter).sort("created_at").lean();
 };
 
 type CustomerScheduleServiceGetProps = {

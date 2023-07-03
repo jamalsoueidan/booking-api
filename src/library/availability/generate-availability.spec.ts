@@ -1,6 +1,6 @@
 import { format, utcToZonedTime } from "date-fns-tz";
-import { TimeUnit } from "~/functions/schedule/schedule.types";
 import { UserModel } from "~/functions/user/user.model";
+import { getProductObject } from "../jest/helpers/product";
 import {
   GenerateAvailabilityProps,
   generateAvailability,
@@ -9,6 +9,7 @@ import {
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("generateAvailability", () => {
+  const customerId = 1;
   const schedule: GenerateAvailabilityProps["schedule"] = {
     customerId: 1,
     slots: [
@@ -22,28 +23,12 @@ describe("generateAvailability", () => {
         ],
       },
     ],
-    products: [
-      {
-        productId: 8022088646930,
-        variantId: 46727191036231,
-        duration: 10,
-        breakTime: 5,
-        noticePeriod: {
-          value: 1,
-          unit: TimeUnit.HOURS,
-        },
-        bookingPeriod: {
-          value: 4,
-          unit: TimeUnit.WEEKS,
-        },
-        locations: [],
-      },
-    ],
+    products: [getProductObject()],
   };
 
   beforeEach(async () => {
     const user = await UserModel.create({
-      customerId: 1,
+      customerId,
       fullname: "jamal soueidan",
     });
   });

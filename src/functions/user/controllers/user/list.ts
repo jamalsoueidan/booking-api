@@ -24,7 +24,9 @@ export type UserControllerListResponse = Awaited<
   ReturnType<typeof UserServiceList>
 >;
 
-export const UserControllerList = _(({ query }: UserControllerListRequest) => {
-  const validateData = UserControllerListSchema.parse(query);
-  return UserServiceList(validateData);
-});
+export const UserControllerList = _(
+  async ({ query }: UserControllerListRequest) => {
+    const validateData = UserControllerListSchema.parse(query);
+    return await UserServiceList(validateData);
+  }
+);

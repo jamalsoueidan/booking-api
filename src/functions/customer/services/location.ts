@@ -60,7 +60,10 @@ export const CustomerLocationServiceAdd = (
 export const CustomerLocationServiceRemove = async (
   location: CustomerLocationServiceProps
 ) => {
-  await CustomerProductServiceRemoveLocationFromAll(location);
+  await CustomerProductServiceRemoveLocationFromAll({
+    locationId: location.locationId.toString(),
+    customerId: location.customerId,
+  });
   return UserServiceLocationsRemove(location);
 };
 

@@ -5,18 +5,12 @@ parameters:
     required: true
     schema:
       type: string
-  - name: scheduleId
-    in: path
-    description: The ID of the scheduleId
-    required: true
-    schema:
-      type: string
-put:
+post:
   tags:
-    - Slot
-  operationId: customerScheduleSlotUpdate
-  summary: PUT Update schedule slot
-  description: This endpoint update schedule slot
+    - Schedule
+  operationId: customerScheduleCreate
+  summary: POST Create schedule
+  description: This endpoint create new schedule
   requestBody:
     required: true
     content:
