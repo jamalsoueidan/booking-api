@@ -1,7 +1,7 @@
-import { ScheduleModel } from "../schedule.model";
+import { ScheduleModel } from "~/functions/schedule";
 import {
-  ScheduleSlotServiceUpdate,
-  ScheduleSlotServiceUpdateBody,
+  CustomerScheduleSlotServiceUpdate,
+  CustomerScheduleSlotServiceUpdateBody,
 } from "./slots";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -17,11 +17,11 @@ async function createTestSchedule(customerId: number) {
   return schedule.save();
 }
 
-describe("ScheduleSlotService", () => {
+describe("CustomerScheduleSlotService", () => {
   it("should update a slots", async () => {
     const schedule = await createTestSchedule(2);
 
-    const newSlot: ScheduleSlotServiceUpdateBody = [
+    const newSlot: CustomerScheduleSlotServiceUpdateBody = [
       {
         day: "tuesday",
         intervals: [
@@ -33,7 +33,7 @@ describe("ScheduleSlotService", () => {
       },
     ];
 
-    const newSchedule = await ScheduleSlotServiceUpdate(
+    const newSchedule = await CustomerScheduleSlotServiceUpdate(
       {
         scheduleId: schedule._id,
         customerId: schedule.customerId,
@@ -44,7 +44,7 @@ describe("ScheduleSlotService", () => {
     expect(newSchedule?.slots.length).toBe(1);
     expect(newSchedule?.slots[0].day).toEqual(newSlot[0].day);
 
-    const updatedSlot: ScheduleSlotServiceUpdateBody = [
+    const updatedSlot: CustomerScheduleSlotServiceUpdateBody = [
       ...newSlot,
       {
         day: "wednesday",
@@ -57,7 +57,7 @@ describe("ScheduleSlotService", () => {
       },
     ];
 
-    const updatedSchedule = await ScheduleSlotServiceUpdate(
+    const updatedSchedule = await CustomerScheduleSlotServiceUpdate(
       {
         scheduleId: schedule._id,
         customerId: schedule.customerId,
@@ -78,7 +78,7 @@ describe("ScheduleSlotService", () => {
   it("should only allow the 7 valid days", async () => {
     const schedule = await createTestSchedule(3);
 
-    const invalidSlot: ScheduleSlotServiceUpdateBody = [
+    const invalidSlot: CustomerScheduleSlotServiceUpdateBody = [
       {
         day: "invalidDay",
         intervals: [
@@ -91,7 +91,7 @@ describe("ScheduleSlotService", () => {
     ];
 
     await expect(
-      ScheduleSlotServiceUpdate(
+      CustomerScheduleSlotServiceUpdate(
         {
           scheduleId: schedule._id,
           customerId: schedule.customerId,
@@ -104,7 +104,7 @@ describe("ScheduleSlotService", () => {
   it("should not allow duplicate days", async () => {
     const schedule = await createTestSchedule(4);
 
-    const duplicateDaySlot: ScheduleSlotServiceUpdateBody = [
+    const duplicateDaySlot: CustomerScheduleSlotServiceUpdateBody = [
       {
         day: "monday",
         intervals: [
@@ -126,7 +126,7 @@ describe("ScheduleSlotService", () => {
     ];
 
     await expect(
-      ScheduleSlotServiceUpdate(
+      CustomerScheduleSlotServiceUpdate(
         {
           scheduleId: schedule._id,
           customerId: schedule.customerId,
@@ -139,7 +139,7 @@ describe("ScheduleSlotService", () => {
   it("should not allow overlapping time intervals within a day", async () => {
     const schedule = await createTestSchedule(5);
 
-    const overlappingIntervalsSlot: ScheduleSlotServiceUpdateBody = [
+    const overlappingIntervalsSlot: CustomerScheduleSlotServiceUpdateBody = [
       {
         day: "thursday",
         intervals: [
@@ -156,7 +156,7 @@ describe("ScheduleSlotService", () => {
     ];
 
     await expect(
-      ScheduleSlotServiceUpdate(
+      CustomerScheduleSlotServiceUpdate(
         {
           scheduleId: schedule._id,
           customerId: schedule.customerId,

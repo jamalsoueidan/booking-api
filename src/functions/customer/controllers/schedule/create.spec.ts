@@ -5,14 +5,14 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 import {
-  ScheduleControllerCreate,
-  ScheduleControllerCreateRequest,
-  ScheduleControllerCreateResponse,
+  CustomerScheduleControllerCreate,
+  CustomerScheduleControllerCreateRequest,
+  CustomerScheduleControllerCreateResponse,
 } from "./create";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("ScheduleControllerCreate", () => {
+describe("CustomerScheduleControllerCreate", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
@@ -21,7 +21,7 @@ describe("ScheduleControllerCreate", () => {
   });
 
   it("should be able to create schedule", async () => {
-    request = await createHttpRequest<ScheduleControllerCreateRequest>({
+    request = await createHttpRequest<CustomerScheduleControllerCreateRequest>({
       query: {
         customerId: 123,
       },
@@ -30,8 +30,8 @@ describe("ScheduleControllerCreate", () => {
       },
     });
 
-    const res: HttpSuccessResponse<ScheduleControllerCreateResponse> =
-      await ScheduleControllerCreate(request, context);
+    const res: HttpSuccessResponse<CustomerScheduleControllerCreateResponse> =
+      await CustomerScheduleControllerCreate(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody?.payload).toHaveProperty("_id");

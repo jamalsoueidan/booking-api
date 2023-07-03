@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
+import {
+  CustomerScheduleServiceCreate,
+  CustomerScheduleServiceGet,
+} from "~/functions/customer/services";
 import { LocationTypes } from "~/functions/location";
 import { TimeUnit } from "~/functions/schedule";
-import {
-  ScheduleServiceCreate,
-  ScheduleServiceGet,
-} from "~/functions/schedule/services";
 import { omitObjectIdProps } from "~/library/jest/helpers";
 import {
   CustomerProductServiceDestroy,
@@ -39,7 +39,7 @@ describe("CustomerProductsService", () => {
   };
 
   it("should get all productIds for all schedules", async () => {
-    const schedule1 = await ScheduleServiceCreate({
+    const schedule1 = await CustomerScheduleServiceCreate({
       name: "ab",
       customerId: 7,
     });
@@ -68,7 +68,10 @@ describe("CustomerProductsService", () => {
       product1
     );
 
-    const schedule2 = await ScheduleServiceCreate({ name: "ab", customerId });
+    const schedule2 = await CustomerScheduleServiceCreate({
+      name: "ab",
+      customerId,
+    });
 
     const product2 = { ...product1, scheduleId: schedule2._id };
 
@@ -88,7 +91,7 @@ describe("CustomerProductsService", () => {
       product2
     );
 
-    const schedule3 = await ScheduleServiceCreate({
+    const schedule3 = await CustomerScheduleServiceCreate({
       name: "test",
       customerId,
     });
@@ -119,7 +122,10 @@ describe("CustomerProductsService", () => {
   });
 
   it("should get all products for all schedules", async () => {
-    const schedule1 = await ScheduleServiceCreate({ name: "ab", customerId });
+    const schedule1 = await CustomerScheduleServiceCreate({
+      name: "ab",
+      customerId,
+    });
 
     const product1: CustomerProductServiceUpsertBody = {
       variantId: 1,
@@ -153,7 +159,7 @@ describe("CustomerProductsService", () => {
       product1
     );
 
-    const newSchedule2 = await ScheduleServiceCreate({
+    const newSchedule2 = await CustomerScheduleServiceCreate({
       name: "test",
       customerId,
     });
@@ -181,7 +187,10 @@ describe("CustomerProductsService", () => {
   });
 
   it("should add a new product to the schedule", async () => {
-    const newSchedule = await ScheduleServiceCreate({ name, customerId });
+    const newSchedule = await CustomerScheduleServiceCreate({
+      name,
+      customerId,
+    });
 
     const updateProduct = await CustomerProductServiceUpsert(
       {
@@ -199,7 +208,10 @@ describe("CustomerProductsService", () => {
   });
 
   it("should be able to remove one location from all products", async () => {
-    const newSchedule1 = await ScheduleServiceCreate({ name, customerId });
+    const newSchedule1 = await CustomerScheduleServiceCreate({
+      name,
+      customerId,
+    });
     const locationRemoveId = new mongoose.Types.ObjectId().toString();
     await CustomerProductServiceUpsert(
       {
@@ -243,7 +255,7 @@ describe("CustomerProductsService", () => {
       }
     );
 
-    const newSchedule2 = await ScheduleServiceCreate({
+    const newSchedule2 = await CustomerScheduleServiceCreate({
       name: "test2",
       customerId,
     });
@@ -265,7 +277,7 @@ describe("CustomerProductsService", () => {
       }
     );
 
-    let getSchedule1 = await ScheduleServiceGet({
+    let getSchedule1 = await CustomerScheduleServiceGet({
       customerId,
       scheduleId: newSchedule1.id,
     });
@@ -277,7 +289,7 @@ describe("CustomerProductsService", () => {
       expect(locationIds).toContain(locationRemoveId);
     });
 
-    let getSchedule2 = await ScheduleServiceGet({
+    let getSchedule2 = await CustomerScheduleServiceGet({
       customerId,
       scheduleId: newSchedule2.id,
     });
@@ -298,12 +310,12 @@ describe("CustomerProductsService", () => {
       customerId,
     });
 
-    getSchedule1 = await ScheduleServiceGet({
+    getSchedule1 = await CustomerScheduleServiceGet({
       customerId,
       scheduleId: newSchedule1.id,
     });
 
-    getSchedule2 = await ScheduleServiceGet({
+    getSchedule2 = await CustomerScheduleServiceGet({
       customerId,
       scheduleId: newSchedule2.id,
     });
@@ -321,7 +333,10 @@ describe("CustomerProductsService", () => {
   });
 
   it("should find a product", async () => {
-    const newSchedule = await ScheduleServiceCreate({ name, customerId });
+    const newSchedule = await CustomerScheduleServiceCreate({
+      name,
+      customerId,
+    });
 
     const updatedSchedule = await CustomerProductServiceUpsert(
       {
@@ -340,7 +355,10 @@ describe("CustomerProductsService", () => {
   });
 
   it("should update an existing product in the schedule", async () => {
-    const newSchedule = await ScheduleServiceCreate({ name, customerId });
+    const newSchedule = await CustomerScheduleServiceCreate({
+      name,
+      customerId,
+    });
 
     await CustomerProductServiceUpsert(
       {
@@ -370,7 +388,10 @@ describe("CustomerProductsService", () => {
   });
 
   it("should remove an existing product from the schedule", async () => {
-    const newSchedule = await ScheduleServiceCreate({ name, customerId });
+    const newSchedule = await CustomerScheduleServiceCreate({
+      name,
+      customerId,
+    });
 
     await CustomerProductServiceUpsert(
       {

@@ -1,5 +1,5 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { ScheduleServiceCreate } from "~/functions/schedule/services";
+import { CustomerScheduleServiceCreate } from "~/functions/customer/services";
 import {
   HttpSuccessResponse,
   createContext,
@@ -7,14 +7,14 @@ import {
 } from "~/library/jest/azure";
 
 import {
-  ScheduleControllerUpdate,
-  ScheduleControllerUpdateRequest,
-  ScheduleControllerUpdateResponse,
+  CustomerScheduleControllerUpdate,
+  CustomerScheduleControllerUpdateRequest,
+  CustomerScheduleControllerUpdateResponse,
 } from "./update";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("ScheduleControllerUpdate", () => {
+describe("CustomerScheduleControllerUpdate", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
@@ -23,17 +23,18 @@ describe("ScheduleControllerUpdate", () => {
   });
 
   it("should be able to update slots schedule", async () => {
-    const newSchedule = await ScheduleServiceCreate({
+    const newSchedule = await CustomerScheduleServiceCreate({
       name: "asd",
       customerId: 123,
     });
 
     const updatedScheduleName = "Updated Test Schedule";
-    const updatedScheduleData: ScheduleControllerUpdateRequest["body"] = {
-      name: updatedScheduleName,
-    };
+    const updatedScheduleData: CustomerScheduleControllerUpdateRequest["body"] =
+      {
+        name: updatedScheduleName,
+      };
 
-    request = await createHttpRequest<ScheduleControllerUpdateRequest>({
+    request = await createHttpRequest<CustomerScheduleControllerUpdateRequest>({
       query: {
         customerId: 123,
         scheduleId: newSchedule._id,
@@ -41,8 +42,8 @@ describe("ScheduleControllerUpdate", () => {
       body: updatedScheduleData,
     });
 
-    const res: HttpSuccessResponse<ScheduleControllerUpdateResponse> =
-      await ScheduleControllerUpdate(request, context);
+    const res: HttpSuccessResponse<CustomerScheduleControllerUpdateResponse> =
+      await CustomerScheduleControllerUpdate(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody?.payload.name).toBe(updatedScheduleName);
