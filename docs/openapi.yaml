@@ -72,48 +72,6 @@ components:
       required:
         - success
         - errors
-    Destroy:
-      type: object
-      properties:
-        deletedCount:
-          type: number
-        acknowledged:
-          type: boolean
-      required:
-        - deletedCount
-        - acknowledged
-    Day:
-      type: string
-      enum:
-        - monday
-        - tuesday
-        - wednesday
-        - thursday
-        - friday
-        - saturday
-        - sunday
-    Interval:
-      type: object
-      properties:
-        from:
-          type: string
-        to:
-          type: string
-      required:
-        - from
-        - to
-    Slot:
-      type: object
-      properties:
-        day:
-          $ref: '#/components/schemas/Day'
-        intervals:
-          type: array
-          items:
-            $ref: '#/components/schemas/Interval'
-      required:
-        - day
-        - intervals
     MetaItem:
       type: object
       properties:
@@ -126,7 +84,7 @@ components:
       required:
         - label
         - value
-    Product:
+    CustomerProduct:
       type: object
       properties:
         productId:
@@ -144,11 +102,11 @@ components:
             - type: string
             - type: number
         noticePeriod:
-          $ref: '#/components/schemas/ProductNoticePeriod'
+          $ref: '#/components/schemas/CustomerProductNoticePeriod'
         bookingPeriod:
-          $ref: '#/components/schemas/ProductBookingPeriod'
+          $ref: '#/components/schemas/CustomerProductBookingPeriod'
         locations:
-          $ref: '#/components/schemas/ProductLocations'
+          $ref: '#/components/schemas/CustomerProductLocations'
       required:
         - variantId
         - productId
@@ -157,7 +115,7 @@ components:
         - noticePeriod
         - bookingPeriod
         - locations
-    ProductBookingPeriod:
+    CustomerProductBookingPeriod:
       type: object
       properties:
         value:
@@ -165,17 +123,17 @@ components:
             - type: string
             - type: number
         unit:
-          $ref: '#/components/schemas/ProductBookingUnit'
+          $ref: '#/components/schemas/CustomerProductBookingUnit'
           default: months
       required:
         - value
         - unit
-    ProductBookingUnit:
+    CustomerProductBookingUnit:
       type: string
       enum:
         - weeks
         - months
-    ProductNoticePeriod:
+    CustomerProductNoticePeriod:
       type: object
       properties:
         value:
@@ -183,18 +141,18 @@ components:
             - type: string
             - type: number
         unit:
-          $ref: '#/components/schemas/ProductNoticeUnit'
+          $ref: '#/components/schemas/CustomerProductNoticeUnit'
           default: hours
       required:
         - value
         - unit
-    ProductNoticeUnit:
+    CustomerProductNoticeUnit:
       type: string
       enum:
         - hours
         - days
         - weeks
-    ProductLocations:
+    CustomerProductLocations:
       type: array
       items:
         type: object
@@ -209,115 +167,6 @@ components:
         required:
           - location
           - locationType
-    Schedule:
-      type: object
-      properties:
-        _id:
-          type: string
-        name:
-          type: string
-        customerId:
-          type: number
-        slots:
-          type: array
-          items:
-            $ref: '#/components/schemas/Slot'
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/Product'
-      required:
-        - _id
-        - name
-        - customerId
-        - slots
-        - products
-    ScheduleCreateBody:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-        - name
-    ScheduleCreateResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Schedule'
-      required:
-        - success
-        - payload
-    ScheduleDestroyResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Destroy'
-      required:
-        - success
-        - payload
-    ScheduleListResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/Schedule'
-      required:
-        - success
-        - payload
-    ScheduleGetResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Schedule'
-      required:
-        - success
-        - payload
-    ScheduleUpdateResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Schedule'
-      required:
-        - success
-        - payload
-    ScheduleUpdateBody:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-        - name
-    ScheduleSlotsUpdateResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/Schedule'
-      required:
-        - success
-        - payload
-    ScheduleSlotsUpdateBody:
-      type: array
-      items:
-        $ref: '#/components/schemas/Slot'
     CustomerProductUpsertResponse:
       type: object
       properties:
@@ -347,11 +196,11 @@ components:
             - type: string
             - type: number
         noticePeriod:
-          $ref: '#/components/schemas/ProductNoticePeriod'
+          $ref: '#/components/schemas/CustomerProductNoticePeriod'
         bookingPeriod:
-          $ref: '#/components/schemas/ProductBookingPeriod'
+          $ref: '#/components/schemas/CustomerProductBookingPeriod'
         locations:
-          $ref: '#/components/schemas/ProductLocations'
+          $ref: '#/components/schemas/CustomerProductLocations'
       required:
         - scheduleId
         - variantId
@@ -393,6 +242,157 @@ components:
       required:
         - success
         - payload
+    CustomerScheduleDestroy:
+      type: object
+      properties:
+        deletedCount:
+          type: number
+        acknowledged:
+          type: boolean
+      required:
+        - deletedCount
+        - acknowledged
+    CustomerScheduleSlotDay:
+      type: string
+      enum:
+        - monday
+        - tuesday
+        - wednesday
+        - thursday
+        - friday
+        - saturday
+        - sunday
+    CustomerScheduleSlotInterval:
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+      required:
+        - from
+        - to
+    CustomerScheduleSlot:
+      type: object
+      properties:
+        day:
+          $ref: '#/components/schemas/CustomerScheduleSlotDay'
+        intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerScheduleSlotInterval'
+      required:
+        - day
+        - intervals
+    CustomerSchedule:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        customerId:
+          type: number
+        slots:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerScheduleSlot'
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerProduct'
+      required:
+        - _id
+        - name
+        - customerId
+        - slots
+        - products
+    CustomerScheduleCreateBody:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    CustomerScheduleCreateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/CustomerSchedule'
+      required:
+        - success
+        - payload
+    CustomerScheduleDestroyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/CustomerScheduleDestroy'
+      required:
+        - success
+        - payload
+    CustomerScheduleListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerSchedule'
+      required:
+        - success
+        - payload
+    CustomerScheduleGetResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/CustomerSchedule'
+      required:
+        - success
+        - payload
+    CustomerScheduleUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/CustomerSchedule'
+      required:
+        - success
+        - payload
+    CustomerScheduleUpdateBody:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    CustomerScheduleSlotsUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/CustomerSchedule'
+      required:
+        - success
+        - payload
+    CustomerScheduleSlotsUpdateBody:
+      type: array
+      items:
+        $ref: '#/components/schemas/CustomerScheduleSlot'
     CustomerBooking:
       type: object
       properties:
@@ -512,7 +512,7 @@ components:
     CustomerProductList:
       type: object
       allOf:
-        - $ref: '#/components/schemas/Product'
+        - $ref: '#/components/schemas/CustomerProduct'
         - type: object
           properties:
             scheduleId:
@@ -807,312 +807,6 @@ components:
       required:
         - success
         - payload
-    User:
-      type: object
-      properties:
-        customerId:
-          type: number
-        yearsExperience:
-          type: string
-          format: number
-        professions:
-          type: array
-          items:
-            type: string
-        specialties:
-          type: array
-          items:
-            type: string
-        username:
-          type: string
-        aboutMe:
-          type: string
-        shortDescription:
-          type: string
-        gender:
-          type: string
-        social:
-          type: object
-          properties:
-            youtube:
-              type: string
-            twitter:
-              type: string
-            instagram:
-              type: string
-        images:
-          type: object
-          properties:
-            profile:
-              type: object
-              properties:
-                url:
-                  type: string
-                  format: uri
-                width:
-                  type: integer
-                height:
-                  type: integer
-        speaks:
-          type: array
-          items:
-            type: string
-        fullname:
-          type: string
-        active:
-          type: boolean
-        email:
-          type: string
-          format: email
-        phone:
-          type: string
-      required:
-        - customerId
-        - yearsExperience
-        - professions
-        - fullname
-        - avatar
-        - active
-        - locations
-        - speaks
-        - socialUrls
-        - shortDescription
-        - aboutMe
-    UserLocationDestination:
-      type: object
-      properties:
-        _id:
-          type: string
-        locationType:
-          type: string
-          enum:
-            - origin
-            - destination
-        customerId:
-          type: string
-          format: gid
-        name:
-          type: string
-        minDistanceForFree:
-          type: number
-        distanceHourlyRate:
-          type: number
-        fixedRatePerKm:
-          type: number
-        isDefault:
-          type: boolean
-      required:
-        - _id
-        - locationType
-        - customerId
-        - name
-        - minDistanceForFree
-        - distanceHourlyRate
-        - fixedRatePerKm
-        - isDefault
-    UserLocationOrigin:
-      type: object
-      properties:
-        _id:
-          type: string
-        locationType:
-          type: string
-          enum:
-            - origin
-            - destination
-        customerId:
-          type: string
-          format: gid
-        destinationType:
-          type: string
-          enum:
-            - home
-            - commercial
-        name:
-          type: string
-        fullAddress:
-          type: string
-        geoLocation:
-          type: object
-          required:
-            - type
-            - coordinates
-          properties:
-            type:
-              type: string
-              enum:
-                - Point
-            coordinates:
-              type: array
-              items:
-                type: number
-        isDefault:
-          type: boolean
-      required:
-        - _id
-        - locationType
-        - customerId
-        - destinationType
-        - name
-        - fullAddress
-        - geoLocation
-        - isDefault
-    UserGetResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/User'
-      required:
-        - success
-        - payload
-    UsersListResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: object
-          properties:
-            nextCursor:
-              type: string
-            results:
-              type: array
-              items:
-                $ref: '#/components/schemas/User'
-          required:
-            - results
-      required:
-        - success
-        - payload
-    UsersProfessionsResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: object
-          additionalProperties:
-            type: number
-      required:
-        - success
-        - payload
-    LocationOrigin:
-      type: object
-      properties:
-        _id:
-          type: string
-        locationType:
-          type: string
-          enum:
-            - origin
-            - destination
-        customerId:
-          type: string
-          format: gid
-        destinationType:
-          type: string
-          enum:
-            - home
-            - commercial
-        name:
-          type: string
-        fullAddress:
-          type: string
-        geoLocation:
-          type: object
-          required:
-            - type
-            - coordinates
-          properties:
-            type:
-              type: string
-              enum:
-                - Point
-            coordinates:
-              type: array
-              items:
-                type: number
-      required:
-        - _id
-        - locationType
-        - destinationType
-        - customerId
-        - name
-        - fullAddress
-        - geoLocation
-    LocationDestination:
-      type: object
-      properties:
-        _id:
-          type: string
-        locationType:
-          type: string
-          enum:
-            - origin
-            - destination
-        customerId:
-          type: string
-          format: gid
-        name:
-          type: string
-        minDistanceForFree:
-          type: number
-        distanceHourlyRate:
-          type: number
-        fixedRatePerKm:
-          type: number
-      required:
-        - _id
-        - locationType
-        - customerId
-        - name
-        - minDistanceForFree
-        - distanceHourlyRate
-        - fixedRatePerKm
-    LocationCoordinates:
-      type: object
-      properties:
-        longitude:
-          type: number
-        latitude:
-          type: number
-        fullAddress:
-          type: string
-      required:
-        - longitude
-        - latitude
-        - fullAddress
-    LocationTravelTime:
-      type: object
-      properties:
-        duration:
-          type: object
-          properties:
-            text:
-              type: string
-            value:
-              type: integer
-          required:
-            - text
-            - value
-        distance:
-          type: object
-          properties:
-            text:
-              type: string
-            value:
-              type: integer
-          required:
-            - text
-            - value
-      required:
-        - duration
-        - distance
     CustomerLocationGetAllLocationOrigin:
       type: object
       properties:
@@ -1351,6 +1045,408 @@ components:
       required:
         - success
         - payload
+    User:
+      type: object
+      properties:
+        customerId:
+          type: number
+        yearsExperience:
+          type: string
+          format: number
+        professions:
+          type: array
+          items:
+            type: string
+        specialties:
+          type: array
+          items:
+            type: string
+        username:
+          type: string
+        aboutMe:
+          type: string
+        shortDescription:
+          type: string
+        gender:
+          type: string
+        social:
+          type: object
+          properties:
+            youtube:
+              type: string
+            twitter:
+              type: string
+            instagram:
+              type: string
+        images:
+          type: object
+          properties:
+            profile:
+              type: object
+              properties:
+                url:
+                  type: string
+                  format: uri
+                width:
+                  type: integer
+                height:
+                  type: integer
+        speaks:
+          type: array
+          items:
+            type: string
+        fullname:
+          type: string
+        active:
+          type: boolean
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+      required:
+        - customerId
+        - yearsExperience
+        - professions
+        - fullname
+        - avatar
+        - active
+        - locations
+        - speaks
+        - socialUrls
+        - shortDescription
+        - aboutMe
+    UserLocationDestination:
+      type: object
+      properties:
+        _id:
+          type: string
+        locationType:
+          type: string
+          enum:
+            - origin
+            - destination
+        customerId:
+          type: string
+          format: gid
+        name:
+          type: string
+        minDistanceForFree:
+          type: number
+        distanceHourlyRate:
+          type: number
+        fixedRatePerKm:
+          type: number
+        isDefault:
+          type: boolean
+      required:
+        - _id
+        - locationType
+        - customerId
+        - name
+        - minDistanceForFree
+        - distanceHourlyRate
+        - fixedRatePerKm
+        - isDefault
+    UserLocationOrigin:
+      type: object
+      properties:
+        _id:
+          type: string
+        locationType:
+          type: string
+          enum:
+            - origin
+            - destination
+        customerId:
+          type: string
+          format: gid
+        destinationType:
+          type: string
+          enum:
+            - home
+            - commercial
+        name:
+          type: string
+        fullAddress:
+          type: string
+        geoLocation:
+          type: object
+          required:
+            - type
+            - coordinates
+          properties:
+            type:
+              type: string
+              enum:
+                - Point
+            coordinates:
+              type: array
+              items:
+                type: number
+        isDefault:
+          type: boolean
+      required:
+        - _id
+        - locationType
+        - customerId
+        - destinationType
+        - name
+        - fullAddress
+        - geoLocation
+        - isDefault
+    UserSchedules:
+      type: object
+      properties:
+        customerId:
+          type: number
+        yearsExperience:
+          type: string
+          format: number
+        professions:
+          type: array
+          items:
+            type: string
+        specialties:
+          type: array
+          items:
+            type: string
+        username:
+          type: string
+        aboutMe:
+          type: string
+        shortDescription:
+          type: string
+        gender:
+          type: string
+        social:
+          type: object
+          properties:
+            youtube:
+              type: string
+            twitter:
+              type: string
+            instagram:
+              type: string
+        images:
+          type: object
+          properties:
+            profile:
+              type: object
+              properties:
+                url:
+                  type: string
+                  format: uri
+                width:
+                  type: integer
+                height:
+                  type: integer
+        speaks:
+          type: array
+          items:
+            type: string
+        fullname:
+          type: string
+        active:
+          type: boolean
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        schedules:
+          type: object
+          properties:
+            _id:
+              type: string
+            name:
+              type: string
+            customerId:
+              type: number
+            slots:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerScheduleSlot'
+            locations:
+              type: array
+              items:
+                oneOf:
+                  - $ref: '#/components/schemas/LocationOrigin'
+                  - $ref: '#/components/schemas/LocationDestination'
+          required:
+            - _id
+            - name
+            - customerId
+            - slots
+            - locations
+      required:
+        - customerId
+        - yearsExperience
+        - professions
+        - fullname
+        - avatar
+        - active
+        - locations
+        - speaks
+        - socialUrls
+        - shortDescription
+        - aboutMe
+    UserGetResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/UserSchedules'
+      required:
+        - success
+        - payload
+    UsersListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: object
+          properties:
+            nextCursor:
+              type: string
+            results:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+          required:
+            - results
+      required:
+        - success
+        - payload
+    UsersProfessionsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: object
+          additionalProperties:
+            type: number
+      required:
+        - success
+        - payload
+    LocationOrigin:
+      type: object
+      properties:
+        _id:
+          type: string
+        locationType:
+          type: string
+          enum:
+            - origin
+            - destination
+        customerId:
+          type: string
+          format: gid
+        destinationType:
+          type: string
+          enum:
+            - home
+            - commercial
+        name:
+          type: string
+        fullAddress:
+          type: string
+        geoLocation:
+          type: object
+          required:
+            - type
+            - coordinates
+          properties:
+            type:
+              type: string
+              enum:
+                - Point
+            coordinates:
+              type: array
+              items:
+                type: number
+      required:
+        - _id
+        - locationType
+        - destinationType
+        - customerId
+        - name
+        - fullAddress
+        - geoLocation
+    LocationDestination:
+      type: object
+      properties:
+        _id:
+          type: string
+        locationType:
+          type: string
+          enum:
+            - origin
+            - destination
+        customerId:
+          type: string
+          format: gid
+        name:
+          type: string
+        minDistanceForFree:
+          type: number
+        distanceHourlyRate:
+          type: number
+        fixedRatePerKm:
+          type: number
+      required:
+        - _id
+        - locationType
+        - customerId
+        - name
+        - minDistanceForFree
+        - distanceHourlyRate
+        - fixedRatePerKm
+    LocationCoordinates:
+      type: object
+      properties:
+        longitude:
+          type: number
+        latitude:
+          type: number
+        fullAddress:
+          type: string
+      required:
+        - longitude
+        - latitude
+        - fullAddress
+    LocationTravelTime:
+      type: object
+      properties:
+        duration:
+          type: object
+          properties:
+            text:
+              type: string
+            value:
+              type: integer
+          required:
+            - text
+            - value
+        distance:
+          type: object
+          properties:
+            text:
+              type: string
+            value:
+              type: integer
+          required:
+            - text
+            - value
+      required:
+        - duration
+        - distance
     LocationGetCoordinatesResponse:
       type: object
       properties:
@@ -1406,6 +1502,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  '/user/{username}/schedule/{scheduleId}/location/{locationId}':
+    get:
+      parameters:
+        - name: username
+          in: path
+          description: username
+          required: true
+          schema:
+            type: string
+        - name: scheduleId
+          in: path
+          description: schedule Id
+          required: true
+          schema:
+            type: string
+        - name: locationId
+          in: path
+          description: location id
+          required: true
+          schema:
+            type: string
+      tags:
+        - UserSchedule
+      operationId: userScheduleGet
+      summary: GET Get user schedule
+      description: This endpoint gets user schedule object
+      responses:
+        '200':
+          description: Response with payload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    $ref: '#/components/schemas/CustomerSchedule'
+                required:
+                  - success
+                  - payload
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -1916,14 +2063,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ScheduleCreateBody'
+              $ref: '#/components/schemas/CustomerScheduleCreateBody'
       responses:
         '200':
           description: Response with schedule payload
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ScheduleCreateResponse'
+                $ref: '#/components/schemas/CustomerScheduleCreateResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -1941,11 +2088,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: productsExist
-        in: query
-        description: Indicate if you want to only include schedule that have products
-        schema:
-          type: boolean
     get:
       tags:
         - Schedule
@@ -1958,7 +2100,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ScheduleListResponse'
+                $ref: '#/components/schemas/CustomerScheduleListResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -1992,13 +2134,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ScheduleGetResponse'
+                $ref: '#/components/schemas/CustomerScheduleGetResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
           $ref: '#/components/responses/UnauthorizedResponse'
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
     put:
       tags:
@@ -2011,14 +2155,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ScheduleUpdateBody'
+              $ref: '#/components/schemas/CustomerScheduleUpdateBody'
       responses:
         '200':
           description: Response with schedule payload
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ScheduleUpdateResponse'
+                $ref: '#/components/schemas/CustomerScheduleUpdateResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -2040,7 +2184,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ScheduleDestroyResponse'
+                $ref: '#/components/schemas/CustomerScheduleDestroyResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -2073,14 +2217,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ScheduleSlotsUpdateBody'
+              $ref: '#/components/schemas/CustomerScheduleSlotsUpdateBody'
       responses:
         '200':
           description: Response with schedule payload
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ScheduleSlotsUpdateResponse'
+                $ref: '#/components/schemas/CustomerScheduleSlotsUpdateResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
