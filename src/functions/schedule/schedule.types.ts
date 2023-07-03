@@ -42,14 +42,16 @@ const NoticePeriodZodSchema = z.object({
   ]),
 });
 
+export type ScheduleProductNoticePeriod = z.infer<typeof NoticePeriodZodSchema>;
+
 const LocationZodSchema = z.array(
   z.object({
-    location: z.string(),
+    location: StringOrObjectIdType,
     locationType: z.nativeEnum(LocationTypes),
   })
 );
 
-export type ScheduleProductNoticePeriod = z.infer<typeof NoticePeriodZodSchema>;
+export type ScheduleProductLocation = z.infer<typeof LocationZodSchema>;
 
 export const ScheduleProductZodSchema = z.object({
   productId: GidFormat,

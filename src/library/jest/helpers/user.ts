@@ -15,6 +15,7 @@ export const getUserObject = (props: Partial<User> = {}) => ({
   },
   description: faker.lorem.paragraph(),
   active: true,
+  isBusiness: true,
   avatar: faker.internet.avatar(),
   speaks: [faker.random.locale()],
   locations: [],

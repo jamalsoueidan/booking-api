@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
 
+import { UserScheduleServiceLocationsList } from "../../services/schedule";
 import { UserServiceGet } from "../../services/user";
 import { UserZodSchema } from "../../user.types";
 
@@ -13,12 +14,17 @@ export const UserServiceGetSchema = UserZodSchema.pick({
 });
 
 export type UserControllerGetResponse = Awaited<
-  ReturnType<typeof UserServiceGet>
+  ReturnType<typeof UserServiceGet & typeof UserScheduleServiceLocationsList>
 >;
 
 export const UserControllerGet = _(
   async ({ query }: UserControllerGetRequest) => {
     const validateData = UserServiceGetSchema.parse(query);
-    return UserServiceGet(validateData);
+    const user = await UserServiceGet(validateData);
+    const schedules = await UserScheduleServiceLocationsList(validateData);
+    return {
+      ...user,
+      schedules,
+    };
   }
 );

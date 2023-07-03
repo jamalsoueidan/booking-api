@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { GidFormat, NumberOrStringType } from "~/library/zod";
+import {
+  GidFormat,
+  NumberOrStringType,
+  StringOrObjectIdType,
+} from "~/library/zod";
 
 export enum LocationTypes {
   ORIGIN = "origin",
@@ -11,7 +15,7 @@ export enum LocationDestinationTypes {
   COMMERCIAL = "commercial",
 }
 export const LocationZodSchema = z.object({
-  _id: z.string(),
+  _id: StringOrObjectIdType,
   locationType: z.nativeEnum(LocationTypes),
   customerId: GidFormat,
 });

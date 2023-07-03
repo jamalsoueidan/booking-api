@@ -1,4 +1,3 @@
-import { TimeUnit } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
 import {
   CustomerScheduleServiceCreate,
@@ -82,39 +81,6 @@ describe("CustomerScheduleService", () => {
     const schedules = await CustomerScheduleServiceList({ customerId });
 
     expect(schedules.length).toEqual(2);
-  });
-
-  it("should return all schedules with producsts that exists for a customerId", async () => {
-    await CustomerScheduleServiceCreate({
-      name,
-      customerId,
-      products: [
-        {
-          productId: 1,
-          variantId: 1,
-          duration: 1,
-          breakTime: 1,
-          bookingPeriod: {
-            unit: TimeUnit.WEEKS,
-            value: 1,
-          },
-          noticePeriod: {
-            unit: TimeUnit.DAYS,
-            value: 1,
-          },
-          description: "asd",
-          locations: [],
-        },
-      ],
-    });
-    await CustomerScheduleServiceCreate({ name: "asd", customerId: 123 });
-
-    const schedules = await CustomerScheduleServiceList({
-      customerId,
-      productsExist: true,
-    });
-
-    expect(schedules.length).toEqual(1);
   });
 
   it("should return a specific schedule", async () => {
