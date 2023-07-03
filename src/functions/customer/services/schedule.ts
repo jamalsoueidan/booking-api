@@ -1,6 +1,5 @@
+import { Schedule, ScheduleModel } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
-import { ScheduleModel } from "../schedule.model";
-import { Schedule } from "../schedule.types";
 
 type ScheduleServiceCreateBody = Pick<Schedule, "name" | "customerId"> &
   Pick<Partial<Schedule>, "products">;

@@ -1,6 +1,6 @@
 import { z } from "zod";
+import { ScheduleServiceList } from "~/functions/customer/services";
 import { ScheduleZodSchema } from "~/functions/schedule/schedule.types";
-import { ScheduleServiceList } from "~/functions/schedule/services";
 import { _ } from "~/library/handler";
 import { BooleanOrStringType } from "~/library/zod";
 

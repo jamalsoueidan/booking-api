@@ -1,4 +1,4 @@
-import { ScheduleModel } from "../schedule.model";
+import { ScheduleModel } from "~/functions/schedule";
 import {
   ScheduleSlotServiceUpdate,
   ScheduleSlotServiceUpdateBody,

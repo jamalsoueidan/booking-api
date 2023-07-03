@@ -1,6 +1,6 @@
 import { z } from "zod";
+import { ScheduleServiceUpdate } from "~/functions/customer/services";
 import { ScheduleZodSchema } from "~/functions/schedule/schedule.types";
-import { ScheduleServiceUpdate } from "~/functions/schedule/services";
 import { _ } from "~/library/handler";
 
 export type ScheduleControllerUpdateRequest = {

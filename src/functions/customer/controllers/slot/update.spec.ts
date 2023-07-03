@@ -1,5 +1,4 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { ScheduleServiceCreate } from "~/functions/schedule/services";
 import {
   HttpErrorResponse,
   HttpSuccessResponse,
@@ -7,6 +6,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
+import { ScheduleServiceCreate } from "~/functions/customer/services";
 import {
   ScheduleSlotControllerUpdate,
   ScheduleSlotControllerUpdateRequest,

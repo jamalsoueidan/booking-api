@@ -26,6 +26,14 @@ import {
   CustomerProductsControllerListIds,
 } from "./customer";
 import { CustomerLocationControllerGetAllOrigins } from "./customer/controllers/location/get-all-origins";
+import {
+  ScheduleControllerCreate,
+  ScheduleControllerDestroy,
+  ScheduleControllerGet,
+  ScheduleControllerList,
+  ScheduleControllerUpdate,
+} from "./customer/controllers/schedule";
+import { ScheduleSlotControllerUpdate } from "./customer/controllers/slot";
 
 /* Customer */
 
@@ -200,4 +208,50 @@ app.http("customerLocationSetDefault", {
   authLevel: "anonymous",
   route: "customer/{customerId}/location/{locationId}/setDefault",
   handler: CustomerLocationControllerSetDefault,
+});
+
+/* ******** */
+/* Schedule
+/* ******** */
+
+app.http("scheduleDestroy", {
+  methods: ["DELETE"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/schedule/{scheduleId?}",
+  handler: ScheduleControllerDestroy,
+});
+
+app.http("scheduleCreate", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/schedule",
+  handler: ScheduleControllerCreate,
+});
+
+app.http("scheduleUpdate", {
+  methods: ["PUT"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/schedule/{scheduleId?}",
+  handler: ScheduleControllerUpdate,
+});
+
+app.http("scheduleGet", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/schedule/{scheduleId?}",
+  handler: ScheduleControllerGet,
+});
+
+app.http("scheduleList", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/schedules",
+  handler: ScheduleControllerList,
+});
+
+app.http("scheduleSlotUpdate", {
+  methods: ["PUT"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/schedule/{scheduleId?}/slots",
+  handler: ScheduleSlotControllerUpdate,
 });

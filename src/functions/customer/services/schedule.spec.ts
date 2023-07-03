@@ -1,5 +1,5 @@
+import { TimeUnit } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
-import { TimeUnit } from "../schedule.types";
 import {
   ScheduleServiceCreate,
   ScheduleServiceDestroy,

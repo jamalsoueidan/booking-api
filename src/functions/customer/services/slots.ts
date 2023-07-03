@@ -1,6 +1,5 @@
+import { Schedule, ScheduleModel, ScheduleSlot } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
-import { ScheduleModel } from "../schedule.model";
-import { Schedule, ScheduleSlot } from "../schedule.types";
 
 export type ScheduleSlotServiceUpdateFilter = {
   scheduleId: Schedule["_id"];

@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import { LocationTypes } from "~/functions/location";
-import { TimeUnit } from "~/functions/schedule";
 import {
   ScheduleServiceCreate,
   ScheduleServiceGet,
-} from "~/functions/schedule/services";
+} from "~/functions/customer/services";
+import { LocationTypes } from "~/functions/location";
+import { TimeUnit } from "~/functions/schedule";
 import { omitObjectIdProps } from "~/library/jest/helpers";
 import {
   CustomerProductServiceDestroy,
