@@ -814,10 +814,83 @@ components:
       required:
         - success
         - payload
+    CustomerLocationOrigin:
+      type: object
+      properties:
+        _id:
+          type: string
+        locationType:
+          type: string
+          enum:
+            - origin
+            - destination
+        customerId:
+          type: string
+          format: gid
+        destinationType:
+          type: string
+          enum:
+            - home
+            - commercial
+        name:
+          type: string
+        fullAddress:
+          type: string
+        geoLocation:
+          type: object
+          required:
+            - type
+            - coordinates
+          properties:
+            type:
+              type: string
+              enum:
+                - Point
+            coordinates:
+              type: array
+              items:
+                type: number
+      required:
+        - _id
+        - locationType
+        - destinationType
+        - customerId
+        - name
+        - fullAddress
+        - geoLocation
+    CustomerLocationDestination:
+      type: object
+      properties:
+        _id:
+          type: string
+        locationType:
+          type: string
+          enum:
+            - origin
+            - destination
+        customerId:
+          type: string
+          format: gid
+        name:
+          type: string
+        minDistanceForFree:
+          type: number
+        distanceHourlyRate:
+          type: number
+        fixedRatePerKm:
+          type: number
+      required:
+        - _id
+        - locationType
+        - customerId
+        - name
+        - minDistanceForFree
+        - distanceHourlyRate
+        - fixedRatePerKm
     CustomerLocationDestinationIsDefault:
       type: object
       allOf:
-        - $ref: '#/components/schemas/LocationOrigin'
+        - $ref: '#/components/schemas/CustomerLocationOrigin'
         - type: object
           properties:
             isDefault:
@@ -827,7 +900,7 @@ components:
     CustomerLocationOriginIsDefault:
       type: object
       allOf:
-        - $ref: '#/components/schemas/LocationOrigin'
+        - $ref: '#/components/schemas/CustomerLocationOrigin'
         - type: object
           properties:
             isDefault:
@@ -914,7 +987,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/LocationOrigin'
+          $ref: '#/components/schemas/CustomerLocationOrigin'
       required:
         - success
         - payload
@@ -947,7 +1020,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/LocationDestination'
+          $ref: '#/components/schemas/CustomerLocationDestination'
       required:
         - success
         - payload
@@ -1008,7 +1081,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/LocationDestination'
+          $ref: '#/components/schemas/CustomerLocationDestination'
       required:
         - success
         - payload
@@ -1035,7 +1108,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/LocationOrigin'
+          $ref: '#/components/schemas/CustomerLocationOrigin'
       required:
         - success
         - payload
@@ -1172,8 +1245,8 @@ components:
           type: array
           items:
             oneOf:
-              - $ref: '#/components/schemas/LocationOrigin'
-              - $ref: '#/components/schemas/LocationDestination'
+              - $ref: '#/components/schemas/CustomerLocationOrigin'
+              - $ref: '#/components/schemas/CustomerLocationDestination'
       required:
         - _id
         - name
@@ -1190,8 +1263,8 @@ components:
               type: array
               items:
                 oneOf:
-                  - $ref: '#/components/schemas/LocationOrigin'
-                  - $ref: '#/components/schemas/LocationDestination'
+                  - $ref: '#/components/schemas/CustomerLocationOrigin'
+                  - $ref: '#/components/schemas/CustomerLocationDestination'
           required:
             - locations
     UserScheduleGetResponse:
@@ -1258,79 +1331,6 @@ components:
       required:
         - success
         - payload
-    LocationOrigin:
-      type: object
-      properties:
-        _id:
-          type: string
-        locationType:
-          type: string
-          enum:
-            - origin
-            - destination
-        customerId:
-          type: string
-          format: gid
-        destinationType:
-          type: string
-          enum:
-            - home
-            - commercial
-        name:
-          type: string
-        fullAddress:
-          type: string
-        geoLocation:
-          type: object
-          required:
-            - type
-            - coordinates
-          properties:
-            type:
-              type: string
-              enum:
-                - Point
-            coordinates:
-              type: array
-              items:
-                type: number
-      required:
-        - _id
-        - locationType
-        - destinationType
-        - customerId
-        - name
-        - fullAddress
-        - geoLocation
-    LocationDestination:
-      type: object
-      properties:
-        _id:
-          type: string
-        locationType:
-          type: string
-          enum:
-            - origin
-            - destination
-        customerId:
-          type: string
-          format: gid
-        name:
-          type: string
-        minDistanceForFree:
-          type: number
-        distanceHourlyRate:
-          type: number
-        fixedRatePerKm:
-          type: number
-      required:
-        - _id
-        - locationType
-        - customerId
-        - name
-        - minDistanceForFree
-        - distanceHourlyRate
-        - fixedRatePerKm
     LocationCoordinates:
       type: object
       properties:
