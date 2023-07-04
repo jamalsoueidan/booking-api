@@ -33,6 +33,8 @@ components:
       $ref: paths/meta/_types/item.yaml
 
     # Product
+    CustomerProductBase:
+      $ref: paths/customer/schedule/_types/base-product.yaml
     CustomerProduct:
       $ref: paths/customer/schedule/_types/product.yaml
     CustomerProductBookingPeriod:
@@ -123,6 +125,10 @@ components:
     CustomerProductAvailabilityResponse:
       $ref: paths/customer/product/availability/response.yaml
 
+    CustomerLocationDestinationIsDefault:
+      $ref: paths/customer/location/_types/location-destination-is-default.yaml
+    CustomerLocationOriginIsDefault:
+      $ref: paths/customer/location/_types/location-origin-is-default.yaml
     CustomerLocationGetAllLocationOrigin:
       $ref: paths/customer/location/get-all-origins/location-origin.yaml
     CustomerLocationGetAllRepsonse:
@@ -157,12 +163,14 @@ components:
     # User
     User:
       $ref: paths/user/_types/user.yaml
-    UserLocationDestination:
-      $ref: paths/user/_types/user_location_destination.yaml
-    UserLocationOrigin:
-      $ref: paths/user/_types/user_location_origin.yaml
     UserSchedules:
       $ref: paths/user/_types/user_with_schedules.yaml
+    UserSchedule:
+      $ref: paths/user/_types/schedule_with_locations.yaml
+    UserScheduleProduct:
+      $ref: paths/user/_types/product_with_locations.yaml
+    UserScheduleGetResponse:
+      $ref: paths/user/schedule/get/response.yaml
     UserGetResponse:
       $ref: paths/user/get/response.yaml
     UsersListResponse:

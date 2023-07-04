@@ -6,7 +6,7 @@ post:
       schema:
         type: string
   tags:
-    - Location
+    - CustomerLocation
   operationId: customerLocationCreateOrigin
   summary: POST Create location origin
   description: This endpoint creates new location origin

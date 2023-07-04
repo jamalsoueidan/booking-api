@@ -1,6 +1,6 @@
 put:
   tags:
-    - Schedule
+    - CustomerSchedule
   operationId: customerScheduleUpdate
   summary: PUT Update schedule
   description: This endpoint update schedule

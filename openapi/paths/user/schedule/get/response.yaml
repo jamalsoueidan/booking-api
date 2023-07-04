@@ -4,7 +4,15 @@ properties:
     type: boolean
     example: true
   payload:
-    $ref: ../../../customer/schedule/_types/schedule.yaml
+    allOf:
+      - $ref: ../../_types/schedule_with_locations.yaml
+      - type: object
+        properties:
+          products:
+            type: array
+            items:
+              $ref: ../../_types/product_with_locations.yaml
+
 required:
   - success
   - payload

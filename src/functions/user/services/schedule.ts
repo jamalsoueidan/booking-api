@@ -1,6 +1,6 @@
 import mongoose, { PipelineStage } from "mongoose";
 import { Location } from "~/functions/location";
-import { Schedule, ScheduleModel } from "~/functions/schedule";
+import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
 import { User, UserServiceGet } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
 
@@ -89,17 +89,82 @@ export type UserScheduleServiceGetProps = {
   locationId: Location["_id"];
 };
 
+export type UserScheduleServiceGetReponse = Omit<Schedule, "products"> & {
+  locations: Array<Location>;
+  products: Array<
+    Omit<ScheduleProduct, "locations"> & {
+      locations: Array<Location>;
+    }
+  >;
+};
+
 export const UserScheduleServiceGet = async ({
   scheduleId,
   username,
   locationId,
 }: UserScheduleServiceGetProps) => {
   const { customerId } = await UserServiceGet({ username });
+
   const pipeline = [
     {
       $match: {
         _id: new mongoose.Types.ObjectId(scheduleId),
         customerId: customerId,
+      },
+    },
+    { $unwind: "$products" },
+    { $unwind: "$products.locations" },
+    {
+      $lookup: {
+        from: "Location",
+        localField: "products.locations.location",
+        foreignField: "_id",
+        as: "products.locations",
+      },
+    },
+    { $unwind: "$products.locations" },
+    {
+      $group: {
+        _id: {
+          scheduleId: "$_id",
+          customerId: "$customerId",
+          productId: "$products.productId",
+          variantId: "$products.variantId",
+        },
+        locations: { $addToSet: "$products.locations" },
+        productDetail: { $first: "$products" },
+        name: { $first: "$name" },
+        slots: { $first: "$slots" },
+        createdAt: { $first: "$createdAt" },
+        updatedAt: { $first: "$updatedAt" },
+      },
+    },
+    {
+      $addFields: {
+        "productDetail.locations": "$locations",
+      },
+    },
+    {
+      $group: {
+        _id: "$_id.scheduleId",
+        customerId: { $first: "$_id.customerId" },
+        name: { $first: "$name" },
+        slots: { $first: "$slots" },
+        locations: { $addToSet: "$locations" },
+        products: { $addToSet: "$productDetail" },
+        createdAt: { $first: "$createdAt" },
+        updatedAt: { $first: "$updatedAt" },
+      },
+    },
+    {
+      $addFields: {
+        locations: {
+          $reduce: {
+            input: "$locations",
+            initialValue: [],
+            in: { $concatArrays: ["$$value", "$$this"] },
+          },
+        },
       },
     },
     {
@@ -109,6 +174,7 @@ export const UserScheduleServiceGet = async ({
         customerId: 1,
         createdAt: 1,
         updatedAt: 1,
+        locations: 1,
         products: {
           $filter: {
             input: "$products",
@@ -116,7 +182,7 @@ export const UserScheduleServiceGet = async ({
             cond: {
               $in: [
                 new mongoose.Types.ObjectId(locationId),
-                "$$product.locations.location",
+                "$$product.locations._id",
               ],
             },
           },
@@ -125,8 +191,9 @@ export const UserScheduleServiceGet = async ({
     },
   ];
 
-  const schedule = await ScheduleModel.aggregate<Schedule>(pipeline);
-  if (schedule.length === 0) {
+  const schedules =
+    await ScheduleModel.aggregate<UserScheduleServiceGetReponse>(pipeline);
+  if (schedules.length === 0) {
     throw new NotFoundError([
       {
         path: ["customerId", "scheduleId", "locationId"],
@@ -136,5 +203,13 @@ export const UserScheduleServiceGet = async ({
     ]);
   }
 
-  return schedule[0];
+  const schedule = schedules[0];
+  return {
+    ...schedule,
+    locations: schedule.locations.filter(
+      (location, index, self) =>
+        index ===
+        self.findIndex((l) => l._id.toString() == location._id.toString())
+    ),
+  };
 };

@@ -19,7 +19,7 @@ get:
       schema:
         type: string
   tags:
-    - Booking
+    - CustomerBooking
   operationId: customerBookingGet
   summary: GET Get booking
   description: This endpoint gets booking object

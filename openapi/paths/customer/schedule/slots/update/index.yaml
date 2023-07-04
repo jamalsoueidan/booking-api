@@ -13,7 +13,7 @@ parameters:
       type: string
 put:
   tags:
-    - Slot
+    - CustomerSchedule
   operationId: customerScheduleSlotUpdate
   summary: PUT Update schedule slot
   description: This endpoint update schedule slot

@@ -23,7 +23,7 @@ describe("UserScheduleService", () => {
     const locationOrigin = await createLocationOrigin({ customerId });
     const locationDestination = await createLocationDestination({ customerId });
 
-    await CustomerScheduleServiceCreate({
+    const schedule1 = await CustomerScheduleServiceCreate({
       name: faker.name.firstName(),
       customerId,
       products: [
@@ -50,7 +50,7 @@ describe("UserScheduleService", () => {
       ],
     });
 
-    await CustomerScheduleServiceCreate({
+    const schedule2 = await CustomerScheduleServiceCreate({
       name: faker.name.firstName(),
       customerId,
       products: [
@@ -60,17 +60,13 @@ describe("UserScheduleService", () => {
               location: locationOrigin._id,
               locationType: locationOrigin.locationType,
             },
-            {
-              location: locationDestination._id,
-              locationType: locationDestination.locationType,
-            },
           ],
         }),
         getProductObject({
           locations: [
             {
-              location: locationDestination._id,
-              locationType: locationDestination.locationType,
+              location: locationOrigin._id,
+              locationType: locationOrigin.locationType,
             },
           ],
         }),
@@ -89,40 +85,18 @@ describe("UserScheduleService", () => {
 
     expect(schedules).toHaveLength(2);
 
-    const schedule = schedules[0];
+    const schedule = schedules.find(
+      (s) => s._id.toString() === schedule1._id.toString()
+    );
 
-    const allLocationIds = schedule.locations.map((location) => {
+    const allLocationIds = schedule?.locations.map((location) => {
       return location._id.toString();
     });
 
-    expect(schedule.locations).toHaveLength(2);
+    expect(schedule?.locations).toHaveLength(2);
 
     expect(allLocationIds).toContain(locationOrigin._id.toString());
     expect(allLocationIds).toContain(locationDestination._id.toString());
-
-    const findSchedule = await UserScheduleServiceGet({
-      scheduleId: schedule._id,
-      username,
-      locationId: schedule.locations[1]._id,
-    });
-
-    // Check if the scheduleId matches
-    expect(findSchedule._id.toString()).toEqual(schedule._id.toString());
-
-    // Check if the customerId matches
-    expect(findSchedule.customerId).toEqual(customerId);
-
-    // Check if the products array exists and has at least one product
-    expect(findSchedule.products.length).toBeGreaterThan(0);
-
-    // Check if the product has locations
-    expect(findSchedule.products[0].locations.length).toBeGreaterThan(0);
-
-    // Check if the product's locations array includes the specified locationId
-    const productLocationIds = findSchedule.products[0].locations.map((loc) =>
-      loc.location.toString()
-    );
-    expect(productLocationIds).toContain(schedule.locations[1]._id.toString());
   });
 
   it("should return none schedules when schedule does not contain any products", async () => {
@@ -137,5 +111,54 @@ describe("UserScheduleService", () => {
     });
 
     expect(schedules).toHaveLength(0);
+  });
+
+  it("should get schedule with products only belongs to specific locationId", async () => {
+    const locationOrigin = await createLocationOrigin({ customerId });
+    const locationDestination = await createLocationDestination({ customerId });
+
+    const schedule = await CustomerScheduleServiceCreate({
+      name: faker.name.firstName(),
+      customerId,
+      products: [
+        getProductObject({
+          locations: [
+            {
+              location: locationOrigin._id,
+              locationType: locationOrigin.locationType,
+            },
+            {
+              location: locationDestination._id,
+              locationType: locationDestination.locationType,
+            },
+          ],
+        }),
+        getProductObject({
+          locations: [
+            {
+              location: locationOrigin._id,
+              locationType: locationOrigin.locationType,
+            },
+          ],
+        }),
+      ],
+    });
+
+    const getSchedule = await UserScheduleServiceGet({
+      username,
+      locationId: locationDestination._id,
+      scheduleId: schedule._id,
+    });
+
+    expect(getSchedule._id.toString()).toEqual(schedule._id.toString());
+
+    const allHaveLocationId = getSchedule.products.every((product) =>
+      product.locations.some(
+        (location) =>
+          location._id.toString() === locationDestination._id.toString()
+      )
+    );
+
+    expect(allHaveLocationId).toBe(true);
   });
 });

@@ -1,0 +1,9 @@
+type: object
+allOf:
+  - $ref: ./location-origin.yaml
+  - type: object
+    properties:
+      isDefault:
+        type: boolean
+    required:
+      - isDefault

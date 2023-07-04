@@ -14,7 +14,7 @@ get:
         type: string
         enum: [completed, upcoming]
   tags:
-    - Booking
+    - CustomerBooking
   operationId: customerBookingsList
   summary: GET Get all bookings for customer
   description: This endpoint get all bookings

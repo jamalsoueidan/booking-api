@@ -1,0 +1,13 @@
+type: object
+allOf:
+  - $ref: ../../customer/schedule/_types/base-product.yaml
+  - type: object
+    properties:
+      locations:
+        type: array
+        items:
+          oneOf:
+            - $ref: ../../customer/location/_types/location-origin.yaml
+            - $ref: ../../customer/location/_types/location-destination.yaml
+    required:
+      - locations

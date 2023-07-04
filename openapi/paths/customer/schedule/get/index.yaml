@@ -1,6 +1,6 @@
 get:
   tags:
-    - Schedule
+    - CustomerSchedule
   operationId: customerScheduleGet
   summary: GET Get schedule for customer
   description: This endpoint get schedule for customer

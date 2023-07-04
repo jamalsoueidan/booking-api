@@ -1,100 +1,11 @@
 type: object
-properties:
-  customerId:
-    type: number
-  yearsExperience:
-    type: string
-    format: number
-  professions:
-    type: array
-    items:
-      type: string
-  specialties:
-    type: array
-    items:
-      type: string
-  username:
-    type: string
-  aboutMe:
-    type: string
-  shortDescription:
-    type: string
-  gender:
-    type: string
-  social:
-    type: object
+allOf:
+  - $ref: ./user.yaml
+  - type: object
     properties:
-      youtube:
-        type: string
-      twitter:
-        type: string
-      instagram:
-        type: string
-  images:
-    type: object
-    properties:
-      profile:
-        type: object
-        properties:
-          url:
-            type: string
-            format: uri
-          width:
-            type: integer
-          height:
-            type: integer
-  speaks:
-    type: array
-    items:
-      type: string
-  fullname:
-    type: string
-  active:
-    type: boolean
-  email:
-    type: string
-    format: email
-  phone:
-    type: string
-  schedules:
-    type: array
-    items:
-      type: object
-      properties:
-        _id:
-          type: string
-        name:
-          type: string
-        customerId:
-          type: number
-        slots:
-          type: array
-          items:
-            $ref: ../../customer/schedule/_types/slot.yaml
-        locations:
-          type: array
-          items:
-            oneOf:
-              - $ref: ../../customer/location/_types/location-origin.yaml
-              - $ref: ../../customer/location/_types/location-destination.yaml
-      required:
-        - _id
-        - name
-        - customerId
-        - slots
-        - locations
-required:
-  - username
-  - email
-  - customerId
-  - yearsExperience
-  - professions
-  - fullname
-  - avatar
-  - active
-  - locations
-  - speaks
-  - socialUrls
-  - shortDescription
-  - aboutMe
-  - schedules
+      schedules:
+        type: array
+        items:
+          $ref: ./schedule_with_locations.yaml
+    required:
+      - schedules

@@ -6,7 +6,7 @@ get:
       schema:
         type: string
   tags:
-    - Location
+    - CustomerLocation
   operationId: customerLocationGetAllOrigins
   summary: GET Get all origin locations
   description: This endpoint get all origin locations

@@ -1,6 +1,6 @@
 put:
   tags:
-    - Product
+    - CustomerProduct
   operationId: customerProductUpsert
   summary: PUT Upsert product to schedule
   description: This endpoint update product that exist in schedule

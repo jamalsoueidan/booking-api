@@ -7,7 +7,7 @@ parameters:
       type: string
 get:
   tags:
-    - Schedule
+    - CustomerSchedule
   operationId: customerScheduleList
   summary: GET Get all schedule for customer
   description: This endpoint get all schedule for customer
