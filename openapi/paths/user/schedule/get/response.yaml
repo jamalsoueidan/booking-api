@@ -12,6 +12,8 @@ properties:
             type: array
             items:
               $ref: ../../_types/product_with_locations.yaml
+        required:
+          - products
 
 required:
   - success
