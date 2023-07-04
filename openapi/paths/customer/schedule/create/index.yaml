@@ -7,7 +7,7 @@ parameters:
       type: string
 post:
   tags:
-    - Schedule
+    - CustomerSchedule
   operationId: customerScheduleCreate
   summary: POST Create schedule
   description: This endpoint create new schedule

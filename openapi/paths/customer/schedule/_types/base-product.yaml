@@ -1,0 +1,28 @@
+type: object
+properties:
+  productId:
+    type: number
+  variantId:
+    type: number
+  description:
+    type: string
+  duration:
+    oneOf:
+      - type: string
+      - type: number
+  breakTime:
+    oneOf:
+      - type: string
+      - type: number
+  noticePeriod:
+    $ref: "./product-notice-period.yaml"
+  bookingPeriod:
+    $ref: "./product-booking-period.yaml"
+
+required:
+  - variantId
+  - productId
+  - duration
+  - breakTime
+  - noticePeriod
+  - bookingPeriod

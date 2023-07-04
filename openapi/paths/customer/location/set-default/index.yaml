@@ -11,7 +11,7 @@ put:
       schema:
         type: string
   tags:
-    - Location
+    - CustomerLocation
   operationId: customerLocationSetDefault
   summary: POST Set new default location for user
   description: This endpoint set new default location for user

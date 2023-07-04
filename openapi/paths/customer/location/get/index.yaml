@@ -11,7 +11,7 @@ get:
       schema:
         type: string
   tags:
-    - Location
+    - CustomerLocation
   operationId: customerLocationGet
   summary: GET Get one location from user
   description: This endpoint get one location for user

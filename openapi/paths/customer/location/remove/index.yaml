@@ -11,7 +11,7 @@ delete:
       schema:
         type: string
   tags:
-    - Location
+    - CustomerLocation
   operationId: customerLocationRemove
   summary: POST Remove location from user
   description: This endpoint remove location but does not delete location from db

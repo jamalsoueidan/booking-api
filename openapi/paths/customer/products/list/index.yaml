@@ -7,7 +7,7 @@ parameters:
       type: string
 get:
   tags:
-    - Customer
+    - CustomerProducts
   operationId: customerProductsList
   summary: GET Get products for customer
   description: This endpoint get products for customer

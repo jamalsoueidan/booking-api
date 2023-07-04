@@ -11,7 +11,7 @@ put:
       schema:
         type: string
   tags:
-    - Location
+    - CustomerLocation
   operationId: customerLocationUpdateDestination
   summary: PUT Update location destination
   description: This endpoint update existing location destination

@@ -1,6 +1,6 @@
 get:
   tags:
-    - Product
+    - CustomerProduct
   operationId: customerProductGet
   summary: GET Get product that exist in one of the schedules for customer
   description: This endpoint get product for customer

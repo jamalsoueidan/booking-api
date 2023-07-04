@@ -1,6 +1,6 @@
 delete:
   tags:
-    - Schedule
+    - CustomerSchedule
   operationId: customerScheduleDestroy
   summary: DEL destroy schedule
   description: This endpoint destroy schedule for customer

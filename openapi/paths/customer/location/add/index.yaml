@@ -11,7 +11,7 @@ post:
       schema:
         type: string
   tags:
-    - Location
+    - CustomerLocation
   operationId: customerLocationAdd
   summary: POST Add location to user
   description: This endpoint add new location

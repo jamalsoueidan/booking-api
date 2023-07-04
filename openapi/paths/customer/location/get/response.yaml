@@ -5,8 +5,8 @@ properties:
     example: true
   payload:
     oneOf:
-      - $ref: ../../../user/_types/user_location_destination.yaml
-      - $ref: ../../../user/_types/user_location_origin.yaml
+      - $ref: ../_types/location-destination-is-default.yaml
+      - $ref: ../_types/location-origin-is-default.yaml
 
 required:
   - success
