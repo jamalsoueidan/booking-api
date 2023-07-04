@@ -1,5 +1,9 @@
 import mongoose, { PipelineStage } from "mongoose";
-import { Location } from "~/functions/location";
+import {
+  Location,
+  LocationDestination,
+  LocationOrigin,
+} from "~/functions/location";
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
 import { User, UserServiceGet } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
@@ -90,10 +94,10 @@ export type UserScheduleServiceGetProps = {
 };
 
 export type UserScheduleServiceGetReponse = Omit<Schedule, "products"> & {
-  locations: Array<Location>;
+  locations: Array<Location & (LocationOrigin | LocationDestination)>;
   products: Array<
     Omit<ScheduleProduct, "locations"> & {
-      locations: Array<Location>;
+      locations: Array<Location & (LocationOrigin | LocationDestination)>;
     }
   >;
 };
@@ -206,10 +210,20 @@ export const UserScheduleServiceGet = async ({
   const schedule = schedules[0];
   return {
     ...schedule,
-    locations: schedule.locations.filter(
-      (location, index, self) =>
-        index ===
-        self.findIndex((l) => l._id.toString() == location._id.toString())
-    ),
+    locations: schedule.locations
+      .filter(
+        (location, index, self) =>
+          index ===
+          self.findIndex((l) => l._id.toString() == location._id.toString())
+      )
+      .sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      }),
   };
 };
