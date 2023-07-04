@@ -890,7 +890,7 @@ components:
     CustomerLocationDestinationIsDefault:
       type: object
       allOf:
-        - $ref: '#/components/schemas/CustomerLocationOrigin'
+        - $ref: '#/components/schemas/CustomerLocationDestination'
         - type: object
           properties:
             isDefault:
