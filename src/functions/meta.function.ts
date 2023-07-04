@@ -6,6 +6,22 @@ import {
 } from "@azure/functions";
 import { Professions, Specialties } from "./user";
 
+type a = {
+  a: string;
+  b: string;
+};
+
+type b = {
+  a: number;
+};
+
+type c = a & b;
+
+const test: c = {
+  a: 2,
+  b: "a",
+};
+
 async function MetaProfessions(
   request: HttpRequest,
   context: InvocationContext
