@@ -125,6 +125,10 @@ components:
     CustomerProductAvailabilityResponse:
       $ref: paths/customer/product/availability/response.yaml
 
+    CustomerLocationOrigin:
+      $ref: paths/customer/location/_types/location-origin.yaml
+    CustomerLocationDestination:
+      $ref: paths/customer/location/_types/location-destination.yaml
     CustomerLocationDestinationIsDefault:
       $ref: paths/customer/location/_types/location-destination-is-default.yaml
     CustomerLocationOriginIsDefault:
@@ -179,10 +183,6 @@ components:
       $ref: paths/user/professions/response.yaml
 
     # Location
-    LocationOrigin:
-      $ref: paths/customer/location/_types/location-origin.yaml
-    LocationDestination:
-      $ref: paths/customer/location/_types/location-destination.yaml
     LocationCoordinates:
       $ref: paths/location/_types/coordinates.yaml
     LocationTravelTime:
