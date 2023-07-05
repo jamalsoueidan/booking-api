@@ -6,7 +6,7 @@ properties:
   payload:
     type: array
     items:
-      $ref: ../_types/location-origin.yaml
+      $ref: ../_types/location.yaml
 
 required:
   - success

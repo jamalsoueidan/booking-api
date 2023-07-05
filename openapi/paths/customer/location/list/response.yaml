@@ -6,9 +6,7 @@ properties:
   payload:
     type: array
     items:
-      oneOf:
-        - $ref: ../_types/location-destination-is-default.yaml
-        - $ref: ../_types/location-origin-is-default.yaml
+      $ref: ../_types/location-is-default.yaml
 
 required:
   - success

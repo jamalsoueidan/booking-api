@@ -1,6 +1,6 @@
 type: object
 allOf:
-  - $ref: ./location-origin.yaml
+  - $ref: ./location.yaml
   - type: object
     properties:
       isDefault:

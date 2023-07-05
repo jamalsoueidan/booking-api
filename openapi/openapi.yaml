@@ -126,30 +126,22 @@ components:
     CustomerProductListResponse:
       $ref: paths/customer/product/list/response.yaml
 
-    CustomerLocationOrigin:
-      $ref: paths/customer/location/_types/location-origin.yaml
-    CustomerLocationOriginIsDefault:
-      $ref: paths/customer/location/_types/location-origin-is-default.yaml
-    CustomerLocationDestination:
-      $ref: paths/customer/location/_types/location-destination.yaml
-    CustomerLocationDestinationIsDefault:
-      $ref: paths/customer/location/_types/location-destination-is-default.yaml
+    CustomerLocation:
+      $ref: paths/customer/location/_types/location.yaml
+    CustomerLocationIsDefault:
+      $ref: paths/customer/location/_types/location-is-default.yaml
     CustomerLocationGetAllOriginsRepsonse:
       $ref: paths/customer/location/get-all-origins/response.yaml
-    CustomerLocationCreateOriginBody:
-      $ref: paths/customer/location/create/body-origin.yaml
-    CustomerLocationCreateDestinationBody:
-      $ref: paths/customer/location/create/body-destination.yaml
+    CustomerLocationCreateBody:
+      $ref: paths/customer/location/create/body.yaml
     CustomerLocationCreateResponse:
       $ref: paths/customer/location/create/response.yaml
     CustomerLocationListResponse:
       $ref: paths/customer/location/list/response.yaml
     CustomerLocationGetResponse:
       $ref: paths/customer/location/get/response.yaml
-    CustomerLocationUpdateOriginBody:
-      $ref: paths/customer/location/update/body-origin.yaml
-    CustomerLocationUpdateDestinationBody:
-      $ref: paths/customer/location/update/body-destination.yaml
+    CustomerLocationUpdateBody:
+      $ref: paths/customer/location/update/body.yaml
     CustomerLocationUpdateResponse:
       $ref: paths/customer/location/update/response.yaml
     CustomerLocationAddResponse:

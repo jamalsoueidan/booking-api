@@ -4,9 +4,7 @@ properties:
     type: boolean
     example: true
   payload:
-    oneOf:
-      - $ref: "../_types/location-destination.yaml"
-      - $ref: "../_types/location-origin.yaml"
+    $ref: "../_types/location.yaml"
 required:
   - success
   - payload

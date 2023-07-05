@@ -15,9 +15,7 @@ post:
     content:
       application/json:
         schema:
-          oneOf:
-            - $ref: "./body-origin.yaml"
-            - $ref: "./body-destination.yaml"
+          $ref: "./body.yaml"
 
   responses:
     "200":

@@ -1,9 +1,0 @@
-type: object
-allOf:
-  - $ref: ./location-destination.yaml
-  - type: object
-    properties:
-      isDefault:
-        type: boolean
-    required:
-      - isDefault

@@ -13,9 +13,7 @@ properties:
   locations:
     type: array
     items:
-      oneOf:
-        - $ref: ../../customer/location/_types/location-origin.yaml
-        - $ref: ../../customer/location/_types/location-destination.yaml
+      $ref: ../../customer/location/_types/location.yaml
 required:
   - _id
   - name
