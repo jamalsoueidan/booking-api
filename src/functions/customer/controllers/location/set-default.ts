@@ -2,13 +2,14 @@ import { z } from "zod";
 import { CustomerLocationServiceSetDefault } from "~/functions/customer/services/location";
 import { LocationZodSchema } from "~/functions/location/location.types";
 import { _ } from "~/library/handler";
+import { StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerLocationControllerSetDefaultRequest = {
   query: z.infer<typeof LocationServiceSetDefaultQuerySchema>;
 };
 
 export const LocationServiceSetDefaultQuerySchema = z.object({
-  locationId: LocationZodSchema.shape._id,
+  locationId: StringOrObjectIdType,
   customerId: LocationZodSchema.shape.customerId,
 });
 

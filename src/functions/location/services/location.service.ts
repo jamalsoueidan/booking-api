@@ -1,43 +1,22 @@
 import axios from "axios";
+import mongoose from "mongoose";
 import { UserServiceLocationsAdd } from "~/functions/user";
 import { BadError, NotFoundError } from "~/library/handler";
-import {
-  LocationDestinationModel,
-  LocationModel,
-  LocationOriginModel,
-} from "../location.model";
-import {
-  Location,
-  LocationDestination,
-  LocationOrigin,
-  LocationTypes,
-} from "../location.types";
+import { LocationModel } from "../location.model";
+import { Location, LocationDestination } from "../location.types";
+import { ILocationDocument } from "../schemas";
 
-type LocationUnion = LocationOrigin | LocationDestination;
-
-export type LocationServiceCreateProps = LocationUnion & Omit<Location, "_id">;
+export type LocationServiceCreateProps = Location | LocationDestination;
 
 export const LocationServiceCreate = async (
   body: LocationServiceCreateProps
 ) => {
-  let location;
-  let result;
-
-  switch (body.locationType) {
-    case LocationTypes.DESTINATION:
-      location = new LocationDestinationModel(body);
-      break;
-
-    case LocationTypes.ORIGIN:
-      result = await LocationServiceValidateAddress(body as LocationOrigin);
-      location = new LocationOriginModel(body);
-      location.geoLocation.type = "Point";
-      location.geoLocation.coordinates = [result.longitude, result.latitude];
-      location.fullAddress = result.fullAddress;
-      location.handle = createSlug(body.name);
-      break;
-  }
-
+  let result = await LocationServiceValidateAddress(body);
+  const location = new LocationModel(body);
+  location.geoLocation.type = "Point";
+  location.geoLocation.coordinates = [result.longitude, result.latitude];
+  location.fullAddress = result.fullAddress;
+  location.handle = createSlug(body.name);
   const newLocationDoc = await location.save();
   await UserServiceLocationsAdd({
     _id: newLocationDoc._id.toString(),
@@ -47,18 +26,20 @@ export const LocationServiceCreate = async (
 };
 
 export type LocationUpdateFilterProps = {
-  locationId: Location["_id"];
+  locationId: ILocationDocument["_id"];
   customerId: Location["customerId"];
 };
 
-export type LocationUpdateBody = LocationOrigin | LocationDestination;
+export type LocationUpdateBody =
+  | Partial<Location>
+  | Partial<LocationDestination>;
 
 export const LocationServiceUpdate = async (
   filter: LocationUpdateFilterProps,
   body: LocationUpdateBody
 ) => {
   const location = await LocationModel.findOne({
-    _id: filter.locationId,
+    _id: new mongoose.Types.ObjectId(filter.locationId),
     customerId: filter.customerId,
   }).orFail(
     new NotFoundError([
@@ -70,27 +51,25 @@ export const LocationServiceUpdate = async (
     ])
   );
 
-  if (location.locationType !== LocationTypes.DESTINATION) {
-    const result = await LocationServiceValidateAddress(
-      body as LocationOrigin,
-      filter.locationId.toString()
-    );
-    location.set({
-      fullAddress: result.fullAddress,
-      geoLocation: {
-        type: "Point",
-        coordinates: [result.longitude, result.latitude],
-      },
-      handle: createSlug(body.name),
-    });
-  } else {
-    location.set(body);
-  }
+  const result = await LocationServiceValidateAddress(
+    location,
+    filter.locationId.toString()
+  );
+
+  location.set({
+    ...body,
+    fullAddress: result.fullAddress,
+    geoLocation: {
+      type: "Point",
+      coordinates: [result.longitude, result.latitude],
+    },
+    handle: createSlug(body.name || location.name),
+  });
 
   return location.save();
 };
 
-type LocationServiceGetCoordinates = Pick<LocationOrigin, "fullAddress">;
+type LocationServiceGetCoordinates = Pick<Location, "fullAddress">;
 
 export type ForsyningResponse = Array<{
   id: string;
@@ -127,9 +106,9 @@ export const LocationServiceGetCoordinates = async (
         firstAddress.adgangsadresse.adgangspunkt.koordinater;
 
       return {
-        longitude,
-        latitude,
         fullAddress: firstAddress.adressebetegnelse,
+        latitude,
+        longitude,
       };
     }
   }
@@ -144,7 +123,7 @@ export const LocationServiceGetCoordinates = async (
 };
 
 type LocationServiceValidateAddressProps = Pick<
-  LocationOrigin,
+  Location,
   "fullAddress" | "name"
 >;
 
@@ -161,7 +140,7 @@ export const LocationServiceValidateAddress = async (
     query["_id"] = { $ne: excludeLocationId };
   }
 
-  const location = await LocationOriginModel.findOne(query);
+  const location = await LocationModel.findOne(query);
 
   if (location) {
     throw new BadError([

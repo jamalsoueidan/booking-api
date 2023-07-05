@@ -1,5 +1,5 @@
 import { FilterQuery } from "mongoose";
-import { Location } from "~/functions/location";
+import { ILocationDocument } from "~/functions/location";
 import { NotFoundError } from "~/library/handler";
 import { UserModel } from "../user.model";
 import { IUserDocument } from "../user.schema";
@@ -83,7 +83,7 @@ export const UserServiceProfessions = async () => {
 };
 
 export const UserServiceLocationsAdd = async (location: {
-  _id: Location["_id"];
+  _id: ILocationDocument["_id"];
   customerId: number;
 }) => {
   const user = await UserServiceFindCustomerOrFail(location);
@@ -93,7 +93,7 @@ export const UserServiceLocationsAdd = async (location: {
 };
 
 export const UserServiceLocationsSetDefault = async (location: {
-  _id: Location["_id"];
+  _id: ILocationDocument["_id"];
   customerId: number;
 }) => {
   const user = await UserServiceFindCustomerOrFail(location);
@@ -115,7 +115,7 @@ export const UserServiceLocationsSetDefault = async (location: {
 };
 
 export const UserServiceLocationsRemove = async (location: {
-  locationId: Location["_id"];
+  locationId: ILocationDocument["_id"];
   customerId: number;
 }) => {
   const user = await UserServiceFindCustomerOrFail(location);

@@ -1,7 +1,17 @@
 import mongoose, { Document, Model } from "mongoose";
-import { Location, LocationTypes } from "../location.types";
+import {
+  Location,
+  LocationDestination,
+  LocationOriginTypes,
+  LocationTypes,
+} from "../location.types";
 
-export interface ILocation extends Omit<Location, "_id"> {
+export interface ILocation extends Location, LocationDestination {
+  geoLocation: {
+    type: "Point";
+    coordinates: Array<Number>;
+  };
+  handle: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,6 +33,38 @@ export const LocationMongooseSchema = new mongoose.Schema<
       required: true,
       index: true,
     },
+    name: {
+      type: String,
+      required: true,
+    },
+    geoLocation: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        required: true,
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
+    },
+    fullAddress: {
+      type: String,
+      required: true,
+    },
+    originType: {
+      type: String,
+      enum: [LocationOriginTypes.HOME, LocationOriginTypes.COMMERCIAL],
+      default: LocationOriginTypes.COMMERCIAL,
+      required: true,
+    },
+    minDistanceForFree: Number,
+    distanceHourlyRate: Number,
+    fixedRatePerKm: Number,
+    handle: {
+      type: String,
+      unique: true,
+    },
   },
-  { timestamps: true, discriminatorKey: "locationType" }
+  { timestamps: true }
 );
