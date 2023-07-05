@@ -134,7 +134,7 @@ components:
       $ref: paths/customer/location/_types/location-destination.yaml
     CustomerLocationDestinationIsDefault:
       $ref: paths/customer/location/_types/location-destination-is-default.yaml
-    CustomerLocationGetAllRepsonse:
+    CustomerLocationGetAllOriginsRepsonse:
       $ref: paths/customer/location/get-all-origins/response.yaml
     CustomerLocationCreateOriginBody:
       $ref: paths/customer/location/create/body-origin.yaml
