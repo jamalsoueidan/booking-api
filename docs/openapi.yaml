@@ -516,20 +516,7 @@ components:
       required:
         - success
         - payload
-    CustomerProductList:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/CustomerProduct'
-        - type: object
-          properties:
-            scheduleId:
-              type: string
-            scheduleName:
-              type: string
-          required:
-            - scheduleId
-            - scheduleName
-    CustomerProductAvailability:
+    CustomerAvailability:
       type: object
       properties:
         date:
@@ -590,6 +577,32 @@ components:
         - date
         - customer
         - slots
+    CustomerAvailabilityGetResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerAvailability'
+      required:
+        - success
+        - payload
+    CustomerProductList:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CustomerProduct'
+        - type: object
+          properties:
+            scheduleId:
+              type: string
+            scheduleName:
+              type: string
+          required:
+            - scheduleId
+            - scheduleName
     CustomerIsBusinessResponse:
       type: object
       properties:
@@ -801,19 +814,6 @@ components:
       required:
         - success
         - payload
-    CustomerProductAvailabilityResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerProductAvailability'
-      required:
-        - success
-        - payload
     CustomerLocationOrigin:
       type: object
       properties:
@@ -858,45 +858,6 @@ components:
         - name
         - fullAddress
         - geoLocation
-    CustomerLocationDestination:
-      type: object
-      properties:
-        _id:
-          type: string
-        locationType:
-          type: string
-          enum:
-            - origin
-            - destination
-        customerId:
-          type: string
-          format: gid
-        name:
-          type: string
-        minDistanceForFree:
-          type: number
-        distanceHourlyRate:
-          type: number
-        fixedRatePerKm:
-          type: number
-      required:
-        - _id
-        - locationType
-        - customerId
-        - name
-        - minDistanceForFree
-        - distanceHourlyRate
-        - fixedRatePerKm
-    CustomerLocationDestinationIsDefault:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/CustomerLocationDestination'
-        - type: object
-          properties:
-            isDefault:
-              type: boolean
-          required:
-            - isDefault
     CustomerLocationOriginIsDefault:
       type: object
       allOf:
@@ -907,50 +868,32 @@ components:
               type: boolean
           required:
             - isDefault
-    CustomerLocationGetAllLocationOrigin:
+    CustomerLocationDestination:
       type: object
-      properties:
-        _id:
-          type: string
-        locationType:
-          type: string
-          enum:
-            - origin
-            - destination
-        customerId:
-          type: string
-          format: gid
-        destinationType:
-          type: string
-          enum:
-            - home
-            - commercial
-        name:
-          type: string
-        fullAddress:
-          type: string
-        geoLocation:
-          type: object
-          required:
-            - type
-            - coordinates
+      allOf:
+        - $ref: '#/components/schemas/CustomerLocationDestination'
+        - type: object
           properties:
-            type:
-              type: string
-              enum:
-                - Point
-            coordinates:
-              type: array
-              items:
-                type: number
-      required:
-        - _id
-        - locationType
-        - destinationType
-        - customerId
-        - name
-        - fullAddress
-        - geoLocation
+            minDistanceForFree:
+              type: number
+            distanceHourlyRate:
+              type: number
+            fixedRatePerKm:
+              type: number
+          required:
+            - minDistanceForFree
+            - distanceHourlyRate
+            - fixedRatePerKm
+    CustomerLocationDestinationIsDefault:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CustomerLocationDestination'
+        - type: object
+          properties:
+            isDefault:
+              type: boolean
+          required:
+            - isDefault
     CustomerLocationGetAllRepsonse:
       type: object
       properties:
@@ -960,7 +903,7 @@ components:
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerLocationGetAllLocationOrigin'
+            $ref: '#/components/schemas/CustomerLocationOrigin'
       required:
         - success
         - payload
@@ -971,7 +914,7 @@ components:
           type: string
         fullAddress:
           type: string
-        destinationType:
+        originType:
           type: string
           enum:
             - home
@@ -979,48 +922,39 @@ components:
       required:
         - name
         - fullAddress
-        - destinationType
-    CustomerLocationCreateOriginResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/CustomerLocationOrigin'
-      required:
-        - success
-        - payload
+        - originType
     CustomerLocationCreateDestinationBody:
       type: object
-      properties:
-        name:
-          type: string
-        minDistanceForFree:
-          oneOf:
-            - type: number
-            - type: string
-        distanceHourlyRate:
-          oneOf:
-            - type: number
-            - type: string
-        fixedRatePerKm:
-          oneOf:
-            - type: number
-            - type: string
-      required:
-        - name
-        - minDistanceForFree
-        - distanceHourlyRate
-        - fixedRatePerKm
-    CustomerLocationCreateDestinationResponse:
+      allOf:
+        - $ref: '#/components/schemas/CustomerLocationCreateOriginBody'
+        - type: object
+          properties:
+            minDistanceForFree:
+              oneOf:
+                - type: number
+                - type: string
+            distanceHourlyRate:
+              oneOf:
+                - type: number
+                - type: string
+            fixedRatePerKm:
+              oneOf:
+                - type: number
+                - type: string
+          required:
+            - minDistanceForFree
+            - distanceHourlyRate
+            - fixedRatePerKm
+    CustomerLocationCreateResponse:
       type: object
       properties:
         success:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerLocationDestination'
+          oneOf:
+            - $ref: '#/components/schemas/CustomerLocationDestination'
+            - $ref: '#/components/schemas/CustomerLocationOrigin'
       required:
         - success
         - payload
@@ -1052,39 +986,6 @@ components:
       required:
         - success
         - payload
-    CustomerLocationUpdateDestinationBody:
-      type: object
-      properties:
-        name:
-          type: string
-        minDistanceForFree:
-          oneOf:
-            - type: number
-            - type: string
-        distanceHourlyRate:
-          oneOf:
-            - type: number
-            - type: string
-        fixedRatePerKm:
-          oneOf:
-            - type: number
-            - type: string
-      required:
-        - name
-        - minDistanceForFree
-        - distanceHourlyRate
-        - fixedRatePerKm
-    CustomerLocationUpdateDestinationResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          $ref: '#/components/schemas/CustomerLocationDestination'
-      required:
-        - success
-        - payload
     CustomerLocationUpdateOriginBody:
       type: object
       properties:
@@ -1092,23 +993,39 @@ components:
           type: string
         fullAddress:
           type: string
-        destinationType:
+        originType:
           type: string
           enum:
             - home
             - commercial
-      required:
-        - name
-        - fullAddress
-        - destinationType
-    CustomerLocationUpdateOriginResponse:
+    CustomerLocationUpdateDestinationBody:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CustomerLocationUpdateOriginBody'
+        - type: object
+          properties:
+            minDistanceForFree:
+              oneOf:
+                - type: number
+                - type: string
+            distanceHourlyRate:
+              oneOf:
+                - type: number
+                - type: string
+            fixedRatePerKm:
+              oneOf:
+                - type: number
+                - type: string
+    CustomerLocationUpdateResponse:
       type: object
       properties:
         success:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerLocationOrigin'
+          oneOf:
+            - $ref: '#/components/schemas/CustomerLocationDestination'
+            - $ref: '#/components/schemas/CustomerLocationOrigin'
       required:
         - success
         - payload
@@ -1707,7 +1624,7 @@ paths:
           type: string
     get:
       tags:
-        - CustomerProducts
+        - CustomerProduct
       operationId: customerProductsList
       summary: GET Get products for customer
       description: This endpoint get products for customer
@@ -1735,7 +1652,7 @@ paths:
           type: string
     get:
       tags:
-        - CustomerProducts
+        - CustomerProduct
       operationId: customerProductsListIds
       summary: GET Get product ids for customer
       description: This endpoint get product ids for customer
@@ -1753,7 +1670,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
       security: []
-  '/customer/{customerId}/product/availability':
+  '/customer/{customerId}/availability/get':
     parameters:
       - name: customerId
         in: path
@@ -1775,17 +1692,17 @@ paths:
           type: string
     get:
       tags:
-        - Customer
-      operationId: customerProductAvailability
-      summary: GET Get all availabilty for customer product
-      description: This endpoint get all availability for product for customerId
+        - CustomerAvailability
+      operationId: customerAvailabilityGet
+      summary: GET Get availabilty for customer
+      description: This availabilty for customer
       responses:
         '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerProductAvailabilityResponse'
+                $ref: '#/components/schemas/CustomerAvailabilityGetResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -2245,148 +2162,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-  '/customer/{customerId}/locations/destination':
-    post:
-      parameters:
-        - name: customerId
-          in: path
-          required: true
-          schema:
-            type: string
-      tags:
-        - CustomerLocation
-      operationId: customerLocationCreateDestination
-      summary: POST Create location destination
-      description: This endpoint creates new location destination
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CustomerLocationCreateDestinationBody'
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomerLocationCreateDestinationResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security: []
-  '/customer/{customerId}/location/{locationId}/destination':
-    put:
-      parameters:
-        - name: customerId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: locationId
-          in: path
-          required: true
-          schema:
-            type: string
-      tags:
-        - CustomerLocation
-      operationId: customerLocationUpdateDestination
-      summary: PUT Update location destination
-      description: This endpoint update existing location destination
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CustomerLocationUpdateDestinationBody'
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomerLocationUpdateDestinationResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security: []
-  '/customer/{customerId}/locations/origin':
-    post:
-      parameters:
-        - name: customerId
-          in: path
-          required: true
-          schema:
-            type: string
-      tags:
-        - CustomerLocation
-      operationId: customerLocationCreateOrigin
-      summary: POST Create location origin
-      description: This endpoint creates new location origin
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CustomerLocationCreateOriginBody'
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomerLocationCreateOriginResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security: []
-  '/customer/{customerId}/location/{locationId}/origin':
-    put:
-      parameters:
-        - name: customerId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: locationId
-          in: path
-          required: true
-          schema:
-            type: string
-      tags:
-        - CustomerLocation
-      operationId: customerLocationUpdateOrigin
-      summary: PUT Update location origin
-      description: This endpoint update existing location origin
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CustomerLocationUpdateOriginBody'
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomerLocationUpdateOriginResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-      security: []
   '/customer/{customerId}/location/{locationId}/setDefault':
     put:
       parameters:
@@ -2515,7 +2290,80 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
       security: []
+    put:
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: locationId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - CustomerLocation
+      operationId: customerLocationUpdate
+      summary: PUT Update location
+      description: This endpoint update existing location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/CustomerLocationUpdateOriginBody'
+                - $ref: '#/components/schemas/CustomerLocationUpdateDestinationBody'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerLocationUpdateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
   '/customer/{customerId}/locations':
+    post:
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - CustomerLocation
+      operationId: customerLocationCreate
+      summary: POST Create location origin or destination
+      description: This endpoint creates new location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/CustomerLocationCreateOriginBody'
+                - $ref: '#/components/schemas/CustomerLocationCreateDestinationBody'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerLocationCreateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
     get:
       parameters:
         - name: customerId
