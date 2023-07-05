@@ -897,6 +897,11 @@ components:
           type: string
         fullAddress:
           type: string
+        locationType:
+          type: string
+          enum:
+            - origin
+            - destination
         originType:
           type: string
           enum:
@@ -917,6 +922,7 @@ components:
       required:
         - name
         - fullAddress
+        - locationType
         - originType
         - minDistanceForFree
         - distanceHourlyRate
@@ -961,6 +967,11 @@ components:
       properties:
         name:
           type: string
+        locationType:
+          type: string
+          enum:
+            - origin
+            - destination
         fullAddress:
           type: string
         originType:
