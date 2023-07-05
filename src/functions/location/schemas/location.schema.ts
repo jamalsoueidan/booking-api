@@ -1,12 +1,11 @@
 import mongoose, { Document, Model } from "mongoose";
 import {
   Location,
-  LocationDestination,
   LocationOriginTypes,
   LocationTypes,
 } from "../location.types";
 
-export interface ILocation extends Location, LocationDestination {
+export interface ILocation extends Location {
   geoLocation: {
     type: "Point";
     coordinates: Array<Number>;
@@ -58,9 +57,18 @@ export const LocationMongooseSchema = new mongoose.Schema<
       default: LocationOriginTypes.COMMERCIAL,
       required: true,
     },
-    minDistanceForFree: Number,
-    distanceHourlyRate: Number,
-    fixedRatePerKm: Number,
+    minDistanceForFree: {
+      type: Number,
+      default: 0,
+    },
+    distanceHourlyRate: {
+      type: Number,
+      default: 0,
+    },
+    fixedRatePerKm: {
+      type: Number,
+      default: 0,
+    },
     handle: {
       type: String,
       unique: true,

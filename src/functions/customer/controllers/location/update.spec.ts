@@ -9,10 +9,8 @@ import {
 } from "~/library/jest/azure";
 import { createUser } from "~/library/jest/helpers";
 import {
-  createLocationDestination,
-  createLocationOrigin,
-  getLocationDestinationObject,
-  getLocationOriginObject,
+  createLocation,
+  getLocationObject,
 } from "~/library/jest/helpers/location";
 import {
   CustomerLocationControllerUpdate,
@@ -45,8 +43,8 @@ describe("CustomerLocationControllerUpdate", () => {
   });
 
   it("should be able to update location origin", async () => {
-    const location = await createLocationOrigin({ customerId });
-    const locationBody = getLocationOriginObject({ customerId });
+    const location = await createLocation({ customerId });
+    const locationBody = getLocationObject({ customerId });
 
     request = await createHttpRequest<CustomerLocationControllerUpdateRequest>({
       query: {
@@ -69,8 +67,14 @@ describe("CustomerLocationControllerUpdate", () => {
   });
 
   it("should be able to update location destination", async () => {
-    const location = await createLocationDestination({ customerId });
-    const locationBody = getLocationDestinationObject({ customerId });
+    const location = await createLocation(
+      { customerId },
+      { locationType: LocationTypes.DESTINATION }
+    );
+    const locationBody = getLocationObject({
+      customerId,
+      locationType: LocationTypes.DESTINATION,
+    });
 
     request = await createHttpRequest<CustomerLocationControllerUpdateRequest>({
       query: {

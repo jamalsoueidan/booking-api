@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
 import {
   Location,
-  LocationDestination,
   LocationModel,
   LocationOriginTypes,
   LocationTypes,
@@ -9,7 +8,7 @@ import {
 
 import * as LocationService from "~/functions/location/services/location.service";
 import { createUser } from "~/library/jest/helpers";
-import { CustomerServiceGet, CustomerServiceUpsertBody } from "./customer";
+import { CustomerServiceGet } from "./customer";
 import {
   CustomerLocationServiceCreate,
   CustomerLocationServiceGetAll,
@@ -29,6 +28,9 @@ describe("CustomerLocationService", () => {
     fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
     locationType: LocationTypes.ORIGIN,
     originType: LocationOriginTypes.COMMERCIAL,
+    distanceHourlyRate: 0,
+    fixedRatePerKm: 0,
+    minDistanceForFree: 0,
     customerId,
   };
 
@@ -37,10 +39,13 @@ describe("CustomerLocationService", () => {
     fullAddress: "Dortesvej 45 1, 8220 Brabrand",
     locationType: LocationTypes.ORIGIN,
     originType: LocationOriginTypes.COMMERCIAL,
+    distanceHourlyRate: 0,
+    fixedRatePerKm: 0,
+    minDistanceForFree: 0,
     customerId,
   };
 
-  const location3: LocationDestination = {
+  const location3: Location = {
     name: "test",
     fullAddress: "Dortesvej 45 1, 8220 Brabrand",
     locationType: LocationTypes.DESTINATION,
@@ -51,28 +56,8 @@ describe("CustomerLocationService", () => {
     customerId,
   };
 
-  const userData: CustomerServiceUpsertBody = {
-    username: faker.internet.userName(),
-    fullname: faker.name.fullName(),
-    social: {
-      instagram: faker.internet.url(),
-      youtube: faker.internet.url(),
-      twitter: faker.internet.url(),
-    },
-    active: true,
-    aboutMe: faker.lorem.paragraph(),
-    images: {
-      profile: {
-        url: faker.internet.avatar(),
-      },
-    },
-    locations: [],
-    speaks: [faker.random.locale()],
-    isBusiness: true,
-  };
-
   beforeEach(() => {
-    return createUser({ customerId }, userData);
+    return createUser({ customerId });
   });
 
   it("Should be able to get one location for user", async () => {
@@ -103,7 +88,7 @@ describe("CustomerLocationService", () => {
     const location3doc = await CustomerLocationServiceCreate(location3);
 
     const user = await CustomerServiceGet({ customerId });
-    const location = await CustomerLocationServiceGetOne<LocationDestination>({
+    const location = await CustomerLocationServiceGetOne<Location>({
       locationId: location3doc._id.toString(),
       customerId: user.customerId,
     });
@@ -298,7 +283,7 @@ describe("CustomerLocationService", () => {
   });
 
   it("should be able to get all origins", async () => {
-    createUser({ customerId: 2 }, userData);
+    await createUser({ customerId: 2 });
     jest
       .spyOn(LocationService, "LocationServiceCreate")
       .mockImplementationOnce(() =>

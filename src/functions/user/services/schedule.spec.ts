@@ -1,10 +1,8 @@
 import { faker } from "@faker-js/faker";
 import { CustomerScheduleServiceCreate } from "~/functions/customer/services";
+import { LocationTypes } from "~/functions/location";
 import { createUser } from "~/library/jest/helpers";
-import {
-  createLocationDestination,
-  createLocationOrigin,
-} from "~/library/jest/helpers/location";
+import { createLocation } from "~/library/jest/helpers/location";
 import { getProductObject } from "~/library/jest/helpers/product";
 import {
   UserScheduleServiceGet,
@@ -20,8 +18,11 @@ describe("UserScheduleService", () => {
   beforeEach(() => createUser({ customerId }, { username }));
 
   it("should return all schedules with locations and without products", async () => {
-    const locationOrigin = await createLocationOrigin({ customerId });
-    const locationDestination = await createLocationDestination({ customerId });
+    const locationOrigin = await createLocation({ customerId });
+    const locationDestination = await createLocation(
+      { customerId },
+      { locationType: LocationTypes.DESTINATION }
+    );
 
     const schedule1 = await CustomerScheduleServiceCreate({
       name: faker.name.firstName(),
@@ -114,8 +115,11 @@ describe("UserScheduleService", () => {
   });
 
   it("should get schedule with products only belongs to specific locationId", async () => {
-    const locationOrigin = await createLocationOrigin({ customerId });
-    const locationDestination = await createLocationDestination({ customerId });
+    const locationOrigin = await createLocation({ customerId });
+    const locationDestination = await createLocation(
+      { customerId },
+      { locationType: LocationTypes.DESTINATION }
+    );
 
     const schedule = await CustomerScheduleServiceCreate({
       name: faker.name.firstName(),

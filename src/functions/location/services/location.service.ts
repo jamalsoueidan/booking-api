@@ -3,10 +3,10 @@ import mongoose from "mongoose";
 import { UserServiceLocationsAdd } from "~/functions/user";
 import { BadError, NotFoundError } from "~/library/handler";
 import { LocationModel } from "../location.model";
-import { Location, LocationDestination } from "../location.types";
+import { Location } from "../location.types";
 import { ILocationDocument } from "../schemas";
 
-export type LocationServiceCreateProps = Location | LocationDestination;
+export type LocationServiceCreateProps = Location;
 
 export const LocationServiceCreate = async (
   body: LocationServiceCreateProps
@@ -30,9 +30,7 @@ export type LocationUpdateFilterProps = {
   customerId: Location["customerId"];
 };
 
-export type LocationUpdateBody =
-  | Partial<Location>
-  | Partial<LocationDestination>;
+export type LocationUpdateBody = Partial<Location>;
 
 export const LocationServiceUpdate = async (
   filter: LocationUpdateFilterProps,

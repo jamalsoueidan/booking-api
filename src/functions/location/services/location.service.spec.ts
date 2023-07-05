@@ -1,11 +1,8 @@
-import { faker } from "@faker-js/faker";
 import axios from "axios";
-import { CustomerServiceUpsertBody } from "~/functions/customer";
 import { BadError } from "~/library/handler";
 import { createUser, omitObjectIdProps } from "~/library/jest/helpers";
 import {
   Location,
-  LocationDestination,
   LocationOriginTypes,
   LocationTypes,
 } from "../location.types";
@@ -63,9 +60,12 @@ const originData: Location = {
   originType: LocationOriginTypes.COMMERCIAL,
   locationType: LocationTypes.ORIGIN,
   customerId,
+  distanceHourlyRate: 1,
+  fixedRatePerKm: 10,
+  minDistanceForFree: 10,
 };
 
-const destinationData: LocationDestination = {
+const destinationData: Location = {
   name: "remote",
   fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
   locationType: LocationTypes.DESTINATION,
@@ -83,27 +83,7 @@ describe("LocationService", () => {
   });
 
   beforeEach(() => {
-    const userData: CustomerServiceUpsertBody = {
-      username: faker.internet.userName(),
-      fullname: faker.name.fullName(),
-      social: {
-        instagram: faker.internet.url(),
-        youtube: faker.internet.url(),
-        twitter: faker.internet.url(),
-      },
-      active: true,
-      aboutMe: faker.lorem.paragraph(),
-      images: {
-        profile: {
-          url: faker.internet.avatar(),
-        },
-      },
-      locations: [],
-      speaks: [faker.random.locale()],
-      isBusiness: true,
-    };
-
-    return createUser({ customerId }, userData);
+    return createUser({ customerId });
   });
 
   it("create should be able to create origin", async () => {

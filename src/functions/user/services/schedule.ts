@@ -1,5 +1,5 @@
 import mongoose, { PipelineStage } from "mongoose";
-import { ILocationDocument, LocationDestination } from "~/functions/location";
+import { ILocationDocument, Location } from "~/functions/location";
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
 import { User, UserServiceGet } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
@@ -10,7 +10,7 @@ export type UserScheduleServiceLocationsListReponse = Omit<
   Schedule,
   "products"
 > & {
-  locations: Array<LocationDestination & Pick<ILocationDocument, "_id">>;
+  locations: Array<Location & Pick<ILocationDocument, "_id">>;
 };
 
 export const UserScheduleServiceLocationsList = async ({
@@ -90,10 +90,10 @@ export type UserScheduleServiceGetProps = {
 };
 
 export type UserScheduleServiceGetReponse = Omit<Schedule, "products"> & {
-  locations: Array<Pick<ILocationDocument, "_id"> & LocationDestination>;
+  locations: Array<Pick<ILocationDocument, "_id"> & Location>;
   products: Array<
     Omit<ScheduleProduct, "locations"> & {
-      locations: Array<Pick<ILocationDocument, "_id"> & LocationDestination>;
+      locations: Array<Pick<ILocationDocument, "_id"> & Location>;
     }
   >;
 };

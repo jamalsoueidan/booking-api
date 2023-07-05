@@ -1,18 +1,12 @@
 import { z } from "zod";
-import {
-  LocationDestinationZodSchema,
-  LocationTypes,
-  LocationZodSchema,
-} from "~/functions/location/location.types";
+import { LocationZodSchema } from "~/functions/location/location.types";
 import { LocationServiceUpdate } from "~/functions/location/services";
 import { _ } from "~/library/handler";
 import { StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerLocationControllerUpdateRequest = {
   query: z.infer<typeof LocationServiceUpdateSchema>;
-  body:
-    | z.infer<typeof LocationZodSchema>
-    | z.infer<typeof LocationDestinationZodSchema>;
+  body: z.infer<typeof LocationZodSchema>;
 };
 
 export const LocationServiceUpdateSchema = z.object({
@@ -27,10 +21,7 @@ export type CustomerLocationControllerUpdateResponse = Awaited<
 export const CustomerLocationControllerUpdate = _(
   ({ query, body }: CustomerLocationControllerUpdateRequest) => {
     const validateData = LocationServiceUpdateSchema.parse(query);
-    const validateBody =
-      body.locationType === LocationTypes.ORIGIN
-        ? LocationZodSchema.parse(body)
-        : LocationDestinationZodSchema.parse(body);
+    const validateBody = LocationZodSchema.parse(body);
 
     return LocationServiceUpdate(validateData, validateBody);
   }

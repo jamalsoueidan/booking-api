@@ -8,10 +8,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 import { createUser } from "~/library/jest/helpers";
-import {
-  getLocationDestinationObject,
-  getLocationOriginObject,
-} from "~/library/jest/helpers/location";
+import { getLocationObject } from "~/library/jest/helpers/location";
 import {
   CustomerLocationControllerCreate,
   CustomerLocationControllerCreateRequest,
@@ -47,7 +44,7 @@ describe("CustomerLocationControllerCreate", () => {
       query: {
         customerId,
       },
-      body: getLocationOriginObject({ customerId }),
+      body: getLocationObject({ customerId }),
     });
 
     const res: HttpSuccessResponse<CustomerLocationControllerCreateResponse> =
@@ -62,7 +59,10 @@ describe("CustomerLocationControllerCreate", () => {
       query: {
         customerId,
       },
-      body: getLocationDestinationObject({ customerId }),
+      body: getLocationObject({
+        customerId,
+        locationType: LocationTypes.DESTINATION,
+      }),
     });
 
     const res: HttpSuccessResponse<CustomerLocationControllerCreateResponse> =
