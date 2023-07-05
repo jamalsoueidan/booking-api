@@ -11,20 +11,18 @@ import {
   CustomerControllerUpdate,
   CustomerControllerUpsert,
   CustomerLocationControllerAdd,
-  CustomerLocationControllerCreateDestination,
-  CustomerLocationControllerCreateOrigin,
+  CustomerLocationControllerCreate,
   CustomerLocationControllerGetAll,
   CustomerLocationControllerGetOne,
   CustomerLocationControllerRemove,
   CustomerLocationControllerSetDefault,
-  CustomerLocationControllerUpdateDestination,
-  CustomerLocationControllerUpdateOrigin,
-  CustomerProductControllerAvailability,
+  CustomerLocationControllerUpdate,
   CustomerProductControllerDestroy,
   CustomerProductControllerGet,
   CustomerProductControllerUpsert,
   CustomerProductsControllerListIds,
 } from "./customer";
+import { CustomerAvailabilityControllerGet } from "./customer/controllers/availability";
 import { CustomerLocationControllerGetAllOrigins } from "./customer/controllers/location/get-all-origins";
 import {
   CustomerScheduleControllerCreate,
@@ -90,11 +88,11 @@ app.http("customerProductsList", {
   handler: CustomerProductsControllerList,
 });
 
-app.http("customerProductAvailability", {
+app.http("customerAvailability", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "customer/{customerId?}/product/availability",
-  handler: CustomerProductControllerAvailability,
+  route: "customer/{customerId?}/availability/get",
+  handler: CustomerAvailabilityControllerGet,
 });
 
 app.http("customerProductUpsert", {
@@ -161,32 +159,18 @@ app.http("customerLocationGet", {
   handler: CustomerLocationControllerGetOne,
 });
 
-app.http("customerLocationCreateDestination", {
-  methods: ["POST"],
-  authLevel: "anonymous",
-  route: "customer/{customerId}/locations/destination",
-  handler: CustomerLocationControllerCreateDestination,
-});
-
-app.http("customerLocationUpdateDestination", {
+app.http("customerLocationUpdate", {
   methods: ["PUT"],
   authLevel: "anonymous",
-  route: "customer/{customerId}/location/{locationId?}/destination",
-  handler: CustomerLocationControllerUpdateDestination,
+  route: "customer/{customerId}/location/{locationId?}",
+  handler: CustomerLocationControllerUpdate,
 });
 
-app.http("customerLocationCreateOrigin", {
+app.http("customerLocationCreate", {
   methods: ["POST"],
   authLevel: "anonymous",
-  route: "customer/{customerId}/locations/origin",
-  handler: CustomerLocationControllerCreateOrigin,
-});
-
-app.http("customerLocationUpdateOrigin", {
-  methods: ["PUT"],
-  authLevel: "anonymous",
-  route: "customer/{customerId}/location/{locationId?}/origin",
-  handler: CustomerLocationControllerUpdateOrigin,
+  route: "customer/{customerId}/locations",
+  handler: CustomerLocationControllerCreate,
 });
 
 app.http("customerLocationAdd", {

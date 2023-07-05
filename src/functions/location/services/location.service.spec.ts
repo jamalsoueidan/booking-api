@@ -3,8 +3,12 @@ import axios from "axios";
 import { CustomerServiceUpsertBody } from "~/functions/customer";
 import { BadError } from "~/library/handler";
 import { createUser, omitObjectIdProps } from "~/library/jest/helpers";
-import { LocationDestinationTypes, LocationTypes } from "../location.types";
-import { ILocationDestination, ILocationOrigin } from "../schemas";
+import {
+  Location,
+  LocationDestination,
+  LocationOriginTypes,
+  LocationTypes,
+} from "../location.types";
 import {
   ForsyningResponse,
   GoogleDirectionResponse,
@@ -53,43 +57,31 @@ const travelTimeData: GoogleDirectionResponse = {
   status: "ok",
 };
 
-const originData: Omit<
-  ILocationOrigin,
-  "_id" | "createdAt" | "updatedAt" | "geoLocation"
-> = {
+const originData: Location = {
   name: "Falafel",
   fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
-  destinationType: LocationDestinationTypes.COMMERCIAL,
+  originType: LocationOriginTypes.COMMERCIAL,
   locationType: LocationTypes.ORIGIN,
   customerId,
-  handle: "a",
 };
 
-const originData2: Omit<
-  ILocationOrigin,
-  "_id" | "updatedAt" | "createdAt" | "geoLocation"
-> = {
-  name: "Falafel 1",
-  fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
-  locationType: LocationTypes.ORIGIN,
-  destinationType: LocationDestinationTypes.COMMERCIAL,
-  customerId,
-  handle: "b",
-};
-
-const destinationData: Omit<
-  ILocationDestination,
-  "_id" | "createdAt" | "updatedAt"
-> = {
+const destinationData: LocationDestination = {
   name: "remote",
+  fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
+  locationType: LocationTypes.DESTINATION,
+  originType: LocationOriginTypes.COMMERCIAL,
   distanceHourlyRate: 1,
   fixedRatePerKm: 10,
   minDistanceForFree: 10,
-  locationType: LocationTypes.DESTINATION,
   customerId,
 };
 
 describe("LocationService", () => {
+  afterEach(() => {
+    mockedAxios.get.mockClear();
+    mockedAxios.get.mockReset();
+  });
+
   beforeEach(() => {
     const userData: CustomerServiceUpsertBody = {
       username: faker.internet.userName(),
@@ -132,9 +124,13 @@ describe("LocationService", () => {
   });
 
   it("create should be able to create destination", async () => {
+    mockedAxios.get.mockResolvedValueOnce({
+      data: getCoordinatesData,
+    });
+
     const response = await LocationServiceCreate(destinationData);
 
-    expect(response).toEqual(
+    expect(omitObjectIdProps(response.toObject())).toEqual(
       expect.objectContaining({
         locationType: LocationTypes.DESTINATION,
         customerId: 1,
@@ -171,9 +167,9 @@ describe("LocationService", () => {
     const update = await LocationServiceUpdate(
       { locationId: response._id.toString(), customerId: 1 },
       {
-        fullAddress: "Dortesvej 21 1, 8220 Brabrand",
         name: "Falafel 2",
-        destinationType: LocationDestinationTypes.COMMERCIAL,
+        fullAddress: "Dortesvej 21 1, 8220 Brabrand",
+        originType: LocationOriginTypes.COMMERCIAL,
       }
     );
 
@@ -192,6 +188,26 @@ describe("LocationService", () => {
   });
 
   it("update should be able to update destination", async () => {
+    const getCoordinatesUpdateData = [
+      {
+        id: "",
+        adressebetegnelse: "Dortesvej 21, 1. th, 8220 Brabrand",
+        adgangsadresse: {
+          adgangspunkt: {
+            koordinater: [11.12961271, 57.15563438],
+          },
+        },
+      },
+    ];
+
+    mockedAxios.get
+      .mockResolvedValueOnce({
+        data: getCoordinatesData,
+      })
+      .mockResolvedValueOnce({
+        data: getCoordinatesUpdateData,
+      });
+
     const response = await LocationServiceCreate(destinationData);
 
     const update = await LocationServiceUpdate(
@@ -225,9 +241,9 @@ describe("LocationService", () => {
     });
 
     expect(response).toEqual({
-      longitude: 10.12961271,
-      latitude: 56.15563438,
       fullAddress: "Sigridsvej 45, 1. th, 8220 Brabrand",
+      latitude: 56.15563438,
+      longitude: 10.12961271,
     });
   });
 

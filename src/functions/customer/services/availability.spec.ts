@@ -2,11 +2,11 @@ import { Booking, BookingModel } from "~/functions/booking";
 import { Schedule, TimeUnit } from "~/functions/schedule";
 import { ScheduleModel } from "~/functions/schedule/schedule.model";
 import { UserModel } from "~/functions/user";
-import { CustomerProductAvailabilityService } from "./availability";
+import { CustomerAvailabilityServiceGet } from "./availability";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("CustomerProductAvailabilityService", () => {
+describe("CustomerAvailabilityService", () => {
   const schedule1: Omit<Schedule, "_id"> = {
     name: "another",
     customerId: 1,
@@ -114,7 +114,7 @@ describe("CustomerProductAvailabilityService", () => {
     await ScheduleModel.create(schedule2);
     await ScheduleModel.create(schedule1);
 
-    let result = await CustomerProductAvailabilityService({
+    let result = await CustomerAvailabilityServiceGet({
       customerId: 1,
       productIds: [8022089597202, 8022088745234],
       startDate: new Date().toISOString(),
@@ -125,7 +125,7 @@ describe("CustomerProductAvailabilityService", () => {
     await ScheduleModel.create(schedule2);
     await ScheduleModel.create(schedule1);
 
-    let result = await CustomerProductAvailabilityService({
+    let result = await CustomerAvailabilityServiceGet({
       customerId: 1,
       productIds: [8022089597202, 8022088745234],
       startDate: "2022-12-12",
@@ -165,7 +165,7 @@ describe("CustomerProductAvailabilityService", () => {
 
     await BookingModel.create(booking);
 
-    result = await CustomerProductAvailabilityService({
+    result = await CustomerAvailabilityServiceGet({
       customerId: 1,
       productIds: [8022089597202, 8022088745234],
       startDate: new Date().toISOString(),

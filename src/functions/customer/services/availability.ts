@@ -7,17 +7,17 @@ import {
 import { NotFoundError } from "~/library/handler";
 import { CustomerBookingServiceGetBooked } from "./booking";
 
-export type CustomerProductAvailabilityServiceProps = {
+export type CustomerAvailabilityServiceGetProps = {
   customerId: Schedule["customerId"];
   productIds: Array<ScheduleProduct["productId"]>;
   startDate: string;
 };
 
-export const CustomerProductAvailabilityService = async ({
+export const CustomerAvailabilityServiceGet = async ({
   customerId,
   productIds,
   startDate,
-}: CustomerProductAvailabilityServiceProps) => {
+}: CustomerAvailabilityServiceGetProps) => {
   const schedule = await ScheduleModel.findOne({
     customerId,
     "products.productId": { $all: productIds },

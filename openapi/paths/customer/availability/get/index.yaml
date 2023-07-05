@@ -19,10 +19,10 @@ parameters:
       type: string
 get:
   tags:
-    - Customer
-  operationId: customerProductAvailability
-  summary: GET Get all availabilty for customer product
-  description: This endpoint get all availability for product for customerId
+    - CustomerAvailability
+  operationId: customerAvailabilityGet
+  summary: GET Get availabilty for customer
+  description: This availabilty for customer
   responses:
     "200":
       description: "Response"

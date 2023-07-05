@@ -4,10 +4,10 @@ properties:
     type: string
   fullAddress:
     type: string
-  destinationType:
+  originType:
     type: string
     enum: [home, commercial]
 required:
   - name
   - fullAddress
-  - destinationType
+  - originType

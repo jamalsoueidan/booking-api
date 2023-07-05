@@ -2,13 +2,14 @@ import { z } from "zod";
 import { CustomerLocationServiceGetOne } from "~/functions/customer/services/location";
 import { LocationZodSchema } from "~/functions/location/location.types";
 import { _ } from "~/library/handler";
+import { StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerLocationControllerGetOneRequest = {
   query: z.infer<typeof LocationServiceGetOneQuerySchema>;
 };
 
 export const LocationServiceGetOneQuerySchema = z.object({
-  locationId: LocationZodSchema.shape._id,
+  locationId: StringOrObjectIdType,
   customerId: LocationZodSchema.shape.customerId,
 });
 

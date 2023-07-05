@@ -1,0 +1,4 @@
+post:
+  $ref: "./create/index.yaml#/post"
+get:
+  $ref: "./list/index.yaml#/get"

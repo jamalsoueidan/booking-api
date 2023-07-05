@@ -1,15 +1,12 @@
 import { faker } from "@faker-js/faker";
 import {
+  Location,
   LocationDestination,
-  LocationDestinationModel,
-  LocationDestinationTypes,
-  LocationOriginModel,
+  LocationModel,
+  LocationOriginTypes,
   LocationTypes,
 } from "~/functions/location";
-import {
-  ILocationDestination,
-  ILocationOrigin,
-} from "~/functions/location/schemas";
+
 import * as LocationService from "~/functions/location/services/location.service";
 import { createUser } from "~/library/jest/helpers";
 import { CustomerServiceGet, CustomerServiceUpsertBody } from "./customer";
@@ -27,41 +24,30 @@ require("~/library/jest/mongoose/mongodb.jest");
 describe("CustomerLocationService", () => {
   const customerId = faker.datatype.number();
 
-  const location1: Omit<ILocationOrigin, "_id" | "updatedAt" | "createdAt"> = {
+  const location1: Location = {
     name: "Falafel 1",
     fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
     locationType: LocationTypes.ORIGIN,
-    geoLocation: {
-      coordinates: [2, 3],
-      type: "Point",
-    },
-    destinationType: LocationDestinationTypes.COMMERCIAL,
+    originType: LocationOriginTypes.COMMERCIAL,
     customerId,
-    handle: "b",
   };
 
-  const location2: Omit<ILocationOrigin, "_id" | "updatedAt" | "createdAt"> = {
+  const location2: Location = {
     name: "Falafel 2",
     fullAddress: "Dortesvej 45 1, 8220 Brabrand",
     locationType: LocationTypes.ORIGIN,
-    geoLocation: {
-      coordinates: [4, 5],
-      type: "Point",
-    },
-    destinationType: LocationDestinationTypes.COMMERCIAL,
+    originType: LocationOriginTypes.COMMERCIAL,
     customerId,
-    handle: "a",
   };
 
-  const location3: Omit<
-    ILocationDestination,
-    "_id" | "updatedAt" | "createdAt"
-  > = {
+  const location3: LocationDestination = {
     name: "test",
+    fullAddress: "Dortesvej 45 1, 8220 Brabrand",
+    locationType: LocationTypes.DESTINATION,
+    originType: LocationOriginTypes.COMMERCIAL,
     distanceHourlyRate: 1,
     fixedRatePerKm: 10,
     minDistanceForFree: 10,
-    locationType: LocationTypes.DESTINATION,
     customerId,
   };
 
@@ -92,8 +78,26 @@ describe("CustomerLocationService", () => {
   it("Should be able to get one location for user", async () => {
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(() => LocationOriginModel.create(location1))
-      .mockImplementationOnce(() => LocationDestinationModel.create(location3));
+      .mockImplementationOnce(() =>
+        LocationModel.create({
+          ...location1,
+          geoLocation: {
+            coordinates: [2, 3],
+            type: "Point",
+          },
+          handle: faker.internet.userName(),
+        })
+      )
+      .mockImplementationOnce(() =>
+        LocationModel.create({
+          ...location3,
+          geoLocation: {
+            coordinates: [2, 3],
+            type: "Point",
+          },
+          handle: faker.internet.userName(),
+        })
+      );
 
     await CustomerLocationServiceCreate(location1);
     const location3doc = await CustomerLocationServiceCreate(location3);
@@ -112,8 +116,26 @@ describe("CustomerLocationService", () => {
   it("Should be able to get all locations for user", async () => {
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(() => LocationOriginModel.create(location1))
-      .mockImplementationOnce(() => LocationDestinationModel.create(location3));
+      .mockImplementationOnce(() =>
+        LocationModel.create({
+          ...location1,
+          geoLocation: {
+            coordinates: [2, 3],
+            type: "Point",
+          },
+          handle: faker.internet.userName(),
+        })
+      )
+      .mockImplementationOnce(() =>
+        LocationModel.create({
+          ...location3,
+          geoLocation: {
+            coordinates: [2, 3],
+            type: "Point",
+          },
+          handle: faker.internet.userName(),
+        })
+      );
 
     await CustomerLocationServiceCreate(location1);
     await CustomerLocationServiceCreate(location3);
@@ -133,7 +155,16 @@ describe("CustomerLocationService", () => {
   it("Should be able create location and add to user", async () => {
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementation(() => LocationOriginModel.create(location1));
+      .mockImplementation(() =>
+        LocationModel.create({
+          ...location1,
+          geoLocation: {
+            coordinates: [2, 3],
+            type: "Point",
+          },
+          handle: faker.internet.userName(),
+        })
+      );
 
     const response = await CustomerLocationServiceCreate(location1);
 
@@ -150,8 +181,26 @@ describe("CustomerLocationService", () => {
   it("Should be able create additional location and add to user", async () => {
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(() => LocationOriginModel.create(location1))
-      .mockImplementationOnce(() => LocationOriginModel.create(location2));
+      .mockImplementationOnce(() =>
+        LocationModel.create({
+          ...location1,
+          geoLocation: {
+            coordinates: [2, 3],
+            type: "Point",
+          },
+          handle: faker.internet.userName(),
+        })
+      )
+      .mockImplementationOnce(() =>
+        LocationModel.create({
+          ...location2,
+          geoLocation: {
+            coordinates: [2, 3],
+            type: "Point",
+          },
+          handle: faker.internet.userName(),
+        })
+      );
 
     await CustomerLocationServiceCreate(location1);
     const response = await CustomerLocationServiceCreate(location2);
@@ -169,8 +218,26 @@ describe("CustomerLocationService", () => {
   it("Should be able move default to another one when default is removed", async () => {
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(() => LocationOriginModel.create(location1))
-      .mockImplementationOnce(() => LocationOriginModel.create(location2));
+      .mockImplementationOnce(() =>
+        LocationModel.create({
+          ...location1,
+          geoLocation: {
+            coordinates: [2, 3],
+            type: "Point",
+          },
+          handle: faker.internet.userName(),
+        })
+      )
+      .mockImplementationOnce(() =>
+        LocationModel.create({
+          ...location2,
+          geoLocation: {
+            coordinates: [2, 3],
+            type: "Point",
+          },
+          handle: faker.internet.userName(),
+        })
+      );
 
     const location1doc = await CustomerLocationServiceCreate(location1);
     const location2doc = await CustomerLocationServiceCreate(location2);
@@ -192,8 +259,26 @@ describe("CustomerLocationService", () => {
   it("Should be able to set new default location", async () => {
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(() => LocationOriginModel.create(location1))
-      .mockImplementationOnce(() => LocationOriginModel.create(location2));
+      .mockImplementationOnce(() =>
+        LocationModel.create({
+          ...location1,
+          geoLocation: {
+            coordinates: [2, 3],
+            type: "Point",
+          },
+          handle: faker.internet.userName(),
+        })
+      )
+      .mockImplementationOnce(() =>
+        LocationModel.create({
+          ...location2,
+          geoLocation: {
+            coordinates: [2, 3],
+            type: "Point",
+          },
+          handle: faker.internet.userName(),
+        })
+      );
 
     const location1doc = await CustomerLocationServiceCreate(location1);
     const location2doc = await CustomerLocationServiceCreate(location2);
@@ -216,9 +301,26 @@ describe("CustomerLocationService", () => {
     createUser({ customerId: 2 }, userData);
     jest
       .spyOn(LocationService, "LocationServiceCreate")
-      .mockImplementationOnce(() => LocationOriginModel.create(location1))
       .mockImplementationOnce(() =>
-        LocationOriginModel.create({ ...location2, customerId: 2 })
+        LocationModel.create({
+          ...location1,
+          geoLocation: {
+            coordinates: [2, 3],
+            type: "Point",
+          },
+          handle: faker.internet.userName(),
+        })
+      )
+      .mockImplementationOnce(() =>
+        LocationModel.create({
+          ...location2,
+          geoLocation: {
+            coordinates: [2, 3],
+            type: "Point",
+          },
+          handle: faker.internet.userName(),
+          customerId: 2,
+        })
       );
 
     await CustomerLocationServiceCreate(location1);

@@ -1,4 +1,9 @@
-import { Location, LocationOriginModel } from "~/functions/location";
+import {
+  ILocationDocument,
+  Location,
+  LocationModel,
+  LocationTypes,
+} from "~/functions/location";
 import {
   LocationServiceCreate,
   LocationServiceCreateProps,
@@ -35,7 +40,7 @@ export const CustomerLocationServiceUpdate = (
 };
 
 export type CustomerLocationServiceProps = {
-  locationId: Location["_id"];
+  locationId: ILocationDocument["_id"];
   customerId: Location["customerId"];
 };
 
@@ -96,7 +101,8 @@ export const CustomerLocationServiceGetAllOrigins = async ({
   customerId,
 }: Pick<Location, "customerId">) => {
   const user = await UserModel.findOne({ customerId });
-  return LocationOriginModel.find({
+  return LocationModel.find({
     _id: { $nin: user?.locations?.map((l) => l.location) },
+    locationType: LocationTypes.ORIGIN,
   });
 };

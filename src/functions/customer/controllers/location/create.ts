@@ -1,36 +1,39 @@
 import { z } from "zod";
 import {
-  LocationOriginZodSchema,
+  LocationDestinationZodSchema,
   LocationTypes,
   LocationZodSchema,
 } from "~/functions/location/location.types";
 import { LocationServiceCreate } from "~/functions/location/services";
 import { _ } from "~/library/handler";
 
-export type CustomerLocationControllerCreateOriginRequest = {
+export type CustomerLocationControllerCreateRequest = {
   query: z.infer<typeof LocationServiceCreateOriginQuerySchema>;
-  body: z.infer<typeof LocationServiceCreateOriginBodySchema>;
+  body:
+    | z.infer<typeof LocationZodSchema>
+    | z.infer<typeof LocationDestinationZodSchema>;
 };
 
 export const LocationServiceCreateOriginQuerySchema = z.object({
   customerId: LocationZodSchema.shape.customerId,
 });
 
-export const LocationServiceCreateOriginBodySchema =
-  LocationOriginZodSchema.strict();
-
-export type CustomerLocationControllerCreateOriginResponse = Awaited<
+export type CustomerLocationControllerCreateResponse = Awaited<
   ReturnType<typeof LocationServiceCreate>
 >;
 
-export const CustomerLocationControllerCreateOrigin = _(
-  ({ query, body }: CustomerLocationControllerCreateOriginRequest) => {
+export const CustomerLocationControllerCreate = _(
+  ({ query, body }: CustomerLocationControllerCreateRequest) => {
     const validateData = LocationServiceCreateOriginQuerySchema.parse(query);
-    const validateBody = LocationServiceCreateOriginBodySchema.parse(body);
+
+    const validateBody =
+      body.locationType === LocationTypes.ORIGIN
+        ? LocationZodSchema.parse(body)
+        : LocationDestinationZodSchema.parse(body);
+
     return LocationServiceCreate({
       ...validateData,
       ...validateBody,
-      locationType: LocationTypes.ORIGIN,
     });
   }
 );
