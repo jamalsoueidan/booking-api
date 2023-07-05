@@ -5,11 +5,16 @@ import { _ } from "~/library/handler";
 import { StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerLocationControllerUpdateRequest = {
-  query: z.infer<typeof LocationServiceUpdateSchema>;
+  query: z.infer<typeof CustomerLocationControllerUpdateQuerySchema>;
   body: z.infer<typeof LocationZodSchema>;
 };
 
-export const LocationServiceUpdateSchema = z.object({
+export const CustomerLocationControllerUpdateBodySchema =
+  LocationZodSchema.omit({
+    customerId: true,
+  });
+
+export const CustomerLocationControllerUpdateQuerySchema = z.object({
   locationId: StringOrObjectIdType,
   customerId: LocationZodSchema.shape.customerId,
 });
@@ -20,8 +25,9 @@ export type CustomerLocationControllerUpdateResponse = Awaited<
 
 export const CustomerLocationControllerUpdate = _(
   ({ query, body }: CustomerLocationControllerUpdateRequest) => {
-    const validateData = LocationServiceUpdateSchema.parse(query);
-    const validateBody = LocationZodSchema.parse(body);
+    const validateData =
+      CustomerLocationControllerUpdateQuerySchema.parse(query);
+    const validateBody = CustomerLocationControllerUpdateBodySchema.parse(body);
 
     return LocationServiceUpdate(validateData, validateBody);
   }
