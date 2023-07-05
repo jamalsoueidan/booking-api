@@ -871,7 +871,7 @@ components:
     CustomerLocationDestination:
       type: object
       allOf:
-        - $ref: '#/components/schemas/CustomerLocationDestination'
+        - $ref: '#/components/schemas/CustomerLocationOrigin'
         - type: object
           properties:
             minDistanceForFree:
