@@ -1,6 +1,6 @@
 type: object
 allOf:
-  - $ref: ./location-destination.yaml
+  - $ref: ./location-origin.yaml
   - type: object
     properties:
       minDistanceForFree:
