@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { ScheduleZodSchema } from "~/functions/schedule";
 
-import { LocationZodSchema } from "~/functions/location";
 import { _ } from "~/library/handler";
 import { UserScheduleServiceGet } from "../../services/schedule";
 
@@ -12,7 +11,7 @@ export type UserScheduleControllerGetRequest = {
 const UserScheduleControllerGetQuerySchema = z.object({
   scheduleId: ScheduleZodSchema.shape._id,
   username: z.string(),
-  locationId: LocationZodSchema.shape._id,
+  locationId: z.string(),
 });
 
 export type UserScheduleControllerGetResponse = Awaited<
