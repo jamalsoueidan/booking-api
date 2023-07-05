@@ -894,7 +894,7 @@ components:
               type: boolean
           required:
             - isDefault
-    CustomerLocationGetAllRepsonse:
+    CustomerLocationGetAllOriginsRepsonse:
       type: object
       properties:
         success:
@@ -2152,7 +2152,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerLocationGetAllRepsonse'
+                $ref: '#/components/schemas/CustomerLocationGetAllOriginsRepsonse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
