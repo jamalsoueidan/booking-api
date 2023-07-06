@@ -4,14 +4,14 @@ import { UserServiceLocationsAdd } from "~/functions/user";
 import { BadError, NotFoundError } from "~/library/handler";
 import { LocationModel } from "../location.model";
 import { Location } from "../location.types";
-import { ILocationDocument } from "../schemas";
+import { ILocation, ILocationDocument } from "../schemas";
 
 export type LocationServiceCreateProps = Location;
 
 export const LocationServiceCreate = async (
   body: LocationServiceCreateProps
 ) => {
-  let result = await LocationServiceValidateAddress(body);
+  let result = await LocationServiceValidateAddress(body.fullAddress);
   const location = new LocationModel(body);
   location.geoLocation.type = "Point";
   location.geoLocation.coordinates = [result.longitude, result.latitude];
@@ -30,41 +30,66 @@ export type LocationUpdateFilterProps = {
   customerId: Location["customerId"];
 };
 
-export type LocationUpdateBody = Partial<Location>;
+export type LocationUpdateBody = Partial<ILocation>;
 
 export const LocationServiceUpdate = async (
   filter: LocationUpdateFilterProps,
   body: LocationUpdateBody
 ) => {
-  const location = await LocationModel.findOne({
-    _id: new mongoose.Types.ObjectId(filter.locationId),
-    customerId: filter.customerId,
-  }).orFail(
-    new NotFoundError([
+  if (body.fullAddress) {
+    const existingLocation = await LocationModel.findOne({
+      _id: new mongoose.Types.ObjectId(filter.locationId),
+      customerId: filter.customerId,
+    });
+
+    if (!existingLocation) {
+      throw new NotFoundError([
+        {
+          code: "custom",
+          message: "LOCATION_NOT_FOUND",
+          path: ["location"],
+        },
+      ]);
+    }
+
+    if (body.fullAddress !== existingLocation.fullAddress) {
+      const result = await LocationServiceValidateAddress(
+        body.fullAddress,
+        filter.locationId.toString()
+      );
+
+      body = {
+        ...body,
+        fullAddress: result.fullAddress,
+        geoLocation: {
+          type: "Point",
+          coordinates: [result.longitude, result.latitude],
+        },
+        handle: createSlug(body.name || existingLocation.name),
+      };
+    }
+  }
+
+  const updatedLocation = await LocationModel.findOneAndUpdate(
+    {
+      _id: new mongoose.Types.ObjectId(filter.locationId),
+      customerId: filter.customerId,
+    },
+    body,
+    { new: true }
+  );
+
+  if (!updatedLocation) {
+    throw new NotFoundError([
       {
         code: "custom",
         message: "LOCATION_NOT_FOUND",
         path: ["location"],
       },
-    ])
-  );
+    ]);
+  }
 
-  const result = await LocationServiceValidateAddress(
-    location,
-    filter.locationId.toString()
-  );
-
-  location.set({
-    ...body,
-    fullAddress: result.fullAddress,
-    geoLocation: {
-      type: "Point",
-      coordinates: [result.longitude, result.latitude],
-    },
-    handle: createSlug(body.name || location.name),
-  });
-
-  return location.save();
+  return updatedLocation;
 };
 
 type LocationServiceGetCoordinates = Pick<Location, "fullAddress">;
@@ -120,18 +145,15 @@ export const LocationServiceGetCoordinates = async (
   ]);
 };
 
-type LocationServiceValidateAddressProps = Pick<
-  Location,
-  "fullAddress" | "name"
->;
+type LocationServiceValidateAddressProps = Pick<Location, "fullAddress">;
 
 export const LocationServiceValidateAddress = async (
-  params: LocationServiceValidateAddressProps,
+  fullAddress: string,
   excludeLocationId?: string
 ) => {
-  const response = await LocationServiceGetCoordinates(params);
+  const response = await LocationServiceGetCoordinates({ fullAddress });
   const query: Record<string, any> = {
-    $or: [{ name: params.name }, { fullAddress: response.fullAddress }],
+    $or: [{ fullAddress: response.fullAddress }],
   };
 
   if (excludeLocationId) {
@@ -145,7 +167,7 @@ export const LocationServiceValidateAddress = async (
       {
         code: "custom",
         message: "LOCATION_ALREADY_EXIST",
-        path: ["name", "fullAddress"],
+        path: ["fullAddress"],
       },
     ]);
   }

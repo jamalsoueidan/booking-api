@@ -248,10 +248,9 @@ describe("LocationService", () => {
       data: getCoordinatesData,
     });
 
-    const response = await LocationServiceValidateAddress({
-      name: "BySisters",
-      fullAddress: "Sigridsvej 45 1th, 8220 brabrand",
-    });
+    const response = await LocationServiceValidateAddress(
+      "Sigridsvej 45 1th, 8220 brabrand"
+    );
 
     expect(response).toBeDefined();
   });
@@ -271,8 +270,8 @@ describe("LocationService", () => {
       data: getCoordinatesData,
     });
 
-    await expect(LocationServiceValidateAddress(originData)).rejects.toThrow(
-      BadError
-    );
+    await expect(
+      LocationServiceValidateAddress(originData.fullAddress)
+    ).rejects.toThrow(BadError);
   });
 });

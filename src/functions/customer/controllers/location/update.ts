@@ -6,13 +6,16 @@ import { StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerLocationControllerUpdateRequest = {
   query: z.infer<typeof CustomerLocationControllerUpdateQuerySchema>;
-  body: z.infer<typeof LocationZodSchema>;
+  body: z.infer<typeof CustomerLocationControllerUpdateBodySchema>;
 };
 
 export const CustomerLocationControllerUpdateBodySchema =
   LocationZodSchema.omit({
     customerId: true,
-  });
+    locationType: true,
+  })
+    .strict()
+    .deepPartial();
 
 export const CustomerLocationControllerUpdateQuerySchema = z.object({
   locationId: StringOrObjectIdType,
@@ -27,7 +30,8 @@ export const CustomerLocationControllerUpdate = _(
   ({ query, body }: CustomerLocationControllerUpdateRequest) => {
     const validateData =
       CustomerLocationControllerUpdateQuerySchema.parse(query);
-    const validateBody = CustomerLocationControllerUpdateBodySchema.parse(body);
+    const validateBody =
+      CustomerLocationControllerUpdateBodySchema.parse(body) || {};
 
     return LocationServiceUpdate(validateData, validateBody);
   }

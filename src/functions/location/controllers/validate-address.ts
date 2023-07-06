@@ -8,7 +8,6 @@ export type LocationControllerValidateAddressRequest = {
 };
 
 export const LocationServiceValidateAddressSchema = LocationZodSchema.pick({
-  name: true,
   fullAddress: true,
 });
 
@@ -19,6 +18,6 @@ export type LocationControllerValidateAddressResponse = Awaited<
 export const LocationControllerValidateAddress = _(
   ({ query }: LocationControllerValidateAddressRequest) => {
     const validateData = LocationServiceValidateAddressSchema.parse(query);
-    return LocationServiceValidateAddress(validateData);
+    return LocationServiceValidateAddress(validateData.fullAddress);
   }
 );

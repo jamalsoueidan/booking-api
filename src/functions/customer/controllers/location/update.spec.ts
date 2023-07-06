@@ -44,7 +44,13 @@ describe("CustomerLocationControllerUpdate", () => {
 
   it("should be able to update location origin", async () => {
     const location = await createLocation({ customerId });
-    const locationBody = getLocationObject({ customerId });
+    const {
+      customerId: x,
+      locationType,
+      ...locationBody
+    } = getLocationObject({
+      customerId,
+    });
 
     request = await createHttpRequest<CustomerLocationControllerUpdateRequest>({
       query: {
@@ -71,7 +77,11 @@ describe("CustomerLocationControllerUpdate", () => {
       { customerId },
       { locationType: LocationTypes.DESTINATION }
     );
-    const locationBody = getLocationObject({
+    const {
+      customerId: x,
+      locationType,
+      ...locationBody
+    } = getLocationObject({
       customerId,
       locationType: LocationTypes.DESTINATION,
     });
