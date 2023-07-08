@@ -1,4 +1,5 @@
-import { Schedule, ScheduleModel } from "~/functions/schedule";
+import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
+import { User } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
 
 type CustomerScheduleServiceCreateBody = Pick<Schedule, "name" | "customerId"> &
@@ -99,4 +100,67 @@ export const CustomerScheduleServiceGet = async (
       ])
     );
   return schedule;
+};
+
+export type CustomerScheduleServiceGetWithCustomerProps = {
+  customerId: Schedule["customerId"];
+  productIds: Array<ScheduleProduct["productId"]>;
+};
+
+export const CustomerScheduleServiceGetWithCustomer = async (
+  props: CustomerScheduleServiceGetWithCustomerProps
+) => {
+  const schedules = await ScheduleModel.aggregate<
+    Schedule & { customer: Pick<User, "fullname"> }
+  >([
+    {
+      $match: {
+        customerId: props.customerId,
+        "products.productId": { $all: props.productIds },
+      },
+    },
+    { $unwind: "$products" },
+    { $match: { "products.productId": { $in: props.productIds } } },
+    {
+      $group: {
+        _id: "$_id",
+        name: { $first: "$name" },
+        slots: { $first: "$slots" },
+        customerId: { $first: "$customerId" },
+        products: { $push: "$products" },
+      },
+    },
+    {
+      $lookup: {
+        from: "User",
+        localField: "customerId",
+        foreignField: "customerId",
+        as: "customer",
+      },
+    },
+    { $unwind: "$customer" },
+    {
+      $project: {
+        name: 1,
+        customerId: 1,
+        slots: 1,
+        products: 1,
+        customer: {
+          fullname: 1,
+        },
+      },
+    },
+  ]);
+
+  if (!schedules || schedules.length === 0) {
+    throw new NotFoundError([
+      {
+        code: "custom",
+        message: "PRODUCTS_NOT_FOUND",
+        path: ["productIds"],
+      },
+    ]);
+  }
+
+  return schedules[0];
 };

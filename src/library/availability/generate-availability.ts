@@ -39,6 +39,7 @@ export const generateAvailability = async ({
   schedule,
   startDate: start,
 }: GenerateAvailabilityProps) => {
+  //TODO: can be moved out, if schedule can do the lookup for customerId
   const customer = await UserModel.findOne({ customerId: schedule.customerId })
     .orFail(
       new NotFoundError([
