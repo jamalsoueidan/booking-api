@@ -62,12 +62,14 @@ export const generateAvailability = async ({
 
   let startDate = generateStartDate(start, noticePeriod);
   const endDate = generateEndDate(schedule, startDate, bookingPeriod);
+
   const availability: Availability[] = [];
 
   while (isBefore(startDate, endDate)) {
     const dayOfWeek: string = format(utcToZonedTime(startDate, "UTC"), "EEEE", {
       locale: enUS,
     });
+
     const daySchedule = schedule.slots.find(
       (slot) => slot.day.toLowerCase() === dayOfWeek.toLowerCase()
     );
@@ -109,17 +111,12 @@ export const generateAvailability = async ({
         ) {
           const slotProducts: Availability["slots"][number]["products"] = [];
           let productStartTime = slotStart;
-          let accumulatedBreakTime = 0;
 
           for (let i = 0; i < sortedProducts.length; i++) {
             const product = sortedProducts[i];
-            accumulatedBreakTime += product.breakTime;
 
             const productEndTime = add(productStartTime, {
-              minutes:
-                i === sortedProducts.length - 1
-                  ? product.duration + accumulatedBreakTime
-                  : product.duration,
+              minutes: product.duration + product.breakTime,
             });
 
             slotProducts.push({

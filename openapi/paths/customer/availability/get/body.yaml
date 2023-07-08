@@ -1,0 +1,19 @@
+type: object
+properties:
+  startDate:
+    type: string
+  productIds:
+    type: array
+    items:
+      type: string
+  destination:
+    type: object
+    properties:
+      fullAddress:
+        type: string
+    required:
+      - fullAddress
+
+required:
+  - startDate
+  - productIds
