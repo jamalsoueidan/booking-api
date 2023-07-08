@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
 import {
   findStartAndEndDate,
@@ -9,18 +10,24 @@ import { CustomerBookingServiceGetBooked } from "./booking";
 
 export type CustomerAvailabilityServiceGetProps = {
   customerId: Schedule["customerId"];
-  productIds: Array<ScheduleProduct["productId"]>;
-  startDate: string;
+  locationId: string | Types.ObjectId;
 };
 
-export const CustomerAvailabilityServiceGet = async ({
-  customerId,
-  productIds,
-  startDate,
-}: CustomerAvailabilityServiceGetProps) => {
+export type CustomerAvailabilityServiceGetBody = {
+  productIds: Array<ScheduleProduct["productId"]>;
+  startDate: string;
+  destination?: {
+    fullAddress: string;
+  };
+};
+
+export const CustomerAvailabilityServiceGet = async (
+  filter: CustomerAvailabilityServiceGetProps,
+  body: CustomerAvailabilityServiceGetBody
+) => {
   const schedule = await ScheduleModel.findOne({
-    customerId,
-    "products.productId": { $all: productIds },
+    customerId: filter.customerId,
+    "products.productId": { $all: body.productIds },
   })
     .orFail(
       new NotFoundError([
@@ -34,13 +41,17 @@ export const CustomerAvailabilityServiceGet = async ({
     .lean();
 
   schedule.products = schedule?.products.filter(({ productId }) =>
-    productIds.includes(productId)
+    body.productIds.includes(productId)
   );
 
-  const availability = await generateAvailability({ schedule, startDate });
+  const availability = await generateAvailability({
+    schedule,
+    startDate: body.startDate,
+  });
+
   const date = findStartAndEndDate(availability);
   const booked = await CustomerBookingServiceGetBooked({
-    customerId,
+    customerId: filter.customerId,
     startDate: date.startDate,
     endDate: date.endDate,
   });

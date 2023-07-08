@@ -88,10 +88,10 @@ app.http("customerProductsList", {
   handler: CustomerProductsControllerList,
 });
 
-app.http("customerAvailability", {
-  methods: ["GET"],
+app.http("customerAvailabilityGet", {
+  methods: ["POST"],
   authLevel: "anonymous",
-  route: "customer/{customerId?}/availability/get",
+  route: "customer/{customerId?}/availability/{locationId?}/get",
   handler: CustomerAvailabilityControllerGet,
 });
 

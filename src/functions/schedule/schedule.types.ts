@@ -44,12 +44,10 @@ const NoticePeriodZodSchema = z.object({
 
 export type ScheduleProductNoticePeriod = z.infer<typeof NoticePeriodZodSchema>;
 
-const LocationZodSchema = z.array(
-  z.object({
-    location: StringOrObjectIdType,
-    locationType: z.nativeEnum(LocationTypes),
-  })
-);
+const LocationZodSchema = z.object({
+  location: StringOrObjectIdType,
+  locationType: z.nativeEnum(LocationTypes),
+});
 
 export type ScheduleProductLocation = z.infer<typeof LocationZodSchema>;
 
@@ -61,7 +59,7 @@ export const ScheduleProductZodSchema = z.object({
   breakTime: NumberOrStringType,
   noticePeriod: NoticePeriodZodSchema,
   bookingPeriod: BookingPeriodZodSchema,
-  locations: LocationZodSchema,
+  locations: z.array(LocationZodSchema),
 });
 
 export type ScheduleProduct = z.infer<typeof ScheduleProductZodSchema>;

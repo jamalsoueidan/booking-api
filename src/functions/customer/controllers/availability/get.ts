@@ -3,21 +3,28 @@ import { _ } from "~/library/handler";
 
 import { UserZodSchema } from "~/functions/user";
 
+import { NumberOrStringType, StringOrObjectIdType } from "~/library/zod";
 import { CustomerAvailabilityServiceGet } from "../../services";
 import { CustomerProductsServiceListIds } from "../../services/product";
 
 export type CustomerAvailabilityControllerGetRequest = {
-  query: z.infer<typeof CustomerAvailabilityControllerGetSchema>;
+  query: z.infer<typeof CustomerAvailabilityControllerGetQuerySchema>;
+  body: z.infer<typeof CustomerAvailabilityControllerGetBodySchema>;
 };
 
-const commaSeparatedNumberArray = z
-  .string()
-  .transform((value) => value.split(",").map(Number));
-
-export const CustomerAvailabilityControllerGetSchema = z.object({
+export const CustomerAvailabilityControllerGetQuerySchema = z.object({
   customerId: UserZodSchema.shape.customerId,
-  productIds: commaSeparatedNumberArray,
+  locationId: StringOrObjectIdType,
+});
+
+export const CustomerAvailabilityControllerGetBodySchema = z.object({
+  productIds: z.array(NumberOrStringType),
   startDate: z.string(),
+  destination: z
+    .object({
+      fullAddress: z.string(),
+    })
+    .optional(),
 });
 
 export type CustomerAvailabilityControllerGetResponse = Awaited<
@@ -25,8 +32,9 @@ export type CustomerAvailabilityControllerGetResponse = Awaited<
 >;
 
 export const CustomerAvailabilityControllerGet = _(
-  async ({ query }: CustomerAvailabilityControllerGetRequest) => {
-    const validateData = CustomerAvailabilityControllerGetSchema.parse(query);
-    return CustomerAvailabilityServiceGet(validateData);
+  async ({ query, body }: CustomerAvailabilityControllerGetRequest) => {
+    const filter = CustomerAvailabilityControllerGetQuerySchema.parse(query);
+    const validBody = CustomerAvailabilityControllerGetBodySchema.parse(body);
+    return CustomerAvailabilityServiceGet(filter, validBody);
   }
 );

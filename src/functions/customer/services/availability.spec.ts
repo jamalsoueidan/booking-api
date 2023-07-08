@@ -1,135 +1,152 @@
+import {
+  addDays,
+  differenceInMinutes,
+  format,
+  isWithinInterval,
+} from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 import { Booking, BookingModel } from "~/functions/booking";
-import { Schedule, TimeUnit } from "~/functions/schedule";
-import { ScheduleModel } from "~/functions/schedule/schedule.model";
-import { UserModel } from "~/functions/user";
+import { LocationTypes } from "~/functions/location";
+import { WeekDays } from "~/functions/schedule";
+import { arrayElements, createUser } from "~/library/jest/helpers";
+import { createLocation } from "~/library/jest/helpers/location";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { CustomerAvailabilityServiceGet } from "./availability";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerAvailabilityService", () => {
-  const schedule1: Omit<Schedule, "_id"> = {
-    name: "another",
-    customerId: 1,
-    slots: [
-      {
-        day: "tuesday",
-        intervals: [
-          {
-            to: "11:00",
-            from: "09:00",
-          },
-        ],
-      },
-    ],
-    products: [
-      {
-        productId: 12,
-        variantId: 1,
-        duration: 45,
-        breakTime: 15,
-        noticePeriod: {
-          value: 1,
-          unit: TimeUnit.DAYS,
-        },
-        bookingPeriod: {
-          value: 4,
-          unit: TimeUnit.WEEKS,
-        },
-        locations: [],
-      },
-    ],
-  };
+  const customerId = 1;
+  let user: Awaited<ReturnType<typeof createUser>>;
+  let schedule: Awaited<ReturnType<typeof createSchedule>>;
+  let location1: Awaited<ReturnType<typeof createLocation>>;
+  let location2: Awaited<ReturnType<typeof createLocation>>;
 
-  let schedule2 = {
-    name: "DEFAULT",
-    customerId: 1,
-    slots: [
-      {
-        day: "monday",
-        intervals: [
-          {
-            to: "12:00",
-            from: "08:00",
-          },
-        ],
-      },
-      {
-        day: "tuesday",
-        intervals: [
-          {
-            to: "12:00",
-            from: "08:00",
-          },
-        ],
-      },
-    ],
-    products: [
-      {
-        productId: 43,
-        duration: 30,
-        breakTime: 5,
-        noticePeriod: {
-          value: 1,
-          unit: TimeUnit.DAYS,
-        },
-        bookingPeriod: {
-          value: 4,
-          unit: TimeUnit.WEEKS,
-        },
-      },
-      {
-        productId: 8022089597202,
-        duration: 30,
-        breakTime: 15,
-        noticePeriod: {
-          value: 1,
-          unit: TimeUnit.HOURS,
-        },
-        bookingPeriod: {
-          value: 4,
-          unit: TimeUnit.WEEKS,
-        },
-      },
-      {
-        productId: 8022088745234,
-        duration: 30,
-        breakTime: 15,
-        noticePeriod: {
-          value: 6,
-          unit: TimeUnit.DAYS,
-        },
-        bookingPeriod: {
-          value: 2,
-          unit: TimeUnit.WEEKS,
-        },
-      },
-    ],
-  };
+  const todayInUTC = utcToZonedTime(new Date(), "Etc/UTC");
+
+  const nextDayInUTC = format(
+    addDays(todayInUTC, 1),
+    "iiii"
+  ).toLowerCase() as WeekDays;
+
+  const dayAfterNextInUTC = format(
+    addDays(todayInUTC, 2),
+    "iiii"
+  ).toLowerCase() as WeekDays;
+
+  const days = [nextDayInUTC];
 
   beforeEach(async () => {
-    await UserModel.create({ customerId: 1, fullname: "jamala" });
+    user = await createUser({ customerId });
+
+    location1 = await createLocation(
+      { customerId },
+      { locationType: LocationTypes.ORIGIN }
+    );
+
+    location2 = await createLocation(
+      { customerId },
+      { locationType: LocationTypes.DESTINATION }
+    );
+
+    schedule = await createSchedule(
+      { customerId },
+      {
+        totalProducts: 2,
+        days,
+        locations: [
+          {
+            location: location1._id,
+            locationType: location1.locationType,
+          },
+          {
+            location: location2._id,
+            locationType: location2.locationType,
+          },
+        ],
+      }
+    );
   });
 
   it("should return available slots for the given date range and product", async () => {
-    await ScheduleModel.create(schedule2);
-    await ScheduleModel.create(schedule1);
+    const productIds = arrayElements(schedule.products, 2).map(
+      (product) => product.productId
+    );
 
-    let result = await CustomerAvailabilityServiceGet({
-      customerId: 1,
-      productIds: [8022089597202, 8022088745234],
-      startDate: new Date().toISOString(),
+    const result = await CustomerAvailabilityServiceGet(
+      {
+        customerId,
+        locationId: location1._id,
+      },
+      {
+        productIds,
+        startDate: new Date().toISOString(),
+      }
+    );
+
+    const interval = {
+      start: new Date(`1970-01-01T${schedule.slots[0].intervals[0].from}:00Z`),
+      end: new Date(`1970-01-01T${schedule.slots[0].intervals[0].to}:00Z`),
+    };
+
+    result.forEach((item) => {
+      // All items is either one of the weekDays I have, no other weekdays.
+      const date = new Date(item.date);
+      const day = format(date, "eeee").toLowerCase(); // get day of week
+      expect(days).toContain(day);
+
+      item.slots.forEach((slot) => {
+        // check each slot (start, to) if they are within the interval
+        const slotFromTime = new Date(
+          Date.UTC(
+            1970,
+            0,
+            1,
+            slot.from.getUTCHours(),
+            slot.from.getUTCMinutes()
+          )
+        );
+        const slotToTime = new Date(
+          Date.UTC(1970, 0, 1, slot.to.getUTCHours(), slot.to.getUTCMinutes())
+        );
+
+        expect(isWithinInterval(slotFromTime, interval)).toBe(true);
+        expect(isWithinInterval(slotToTime, interval)).toBe(true);
+
+        // Validate slot.from, slot.to, to be total of all products
+        const slotFrom = new Date(slot.from);
+        const slotTo = new Date(slot.to);
+        const slotTotalTime = differenceInMinutes(slotTo, slotFrom);
+        let totalProductTime = 0;
+
+        slot.products.forEach((product) => {
+          // // All products duration + breaktime is correct
+          const productFrom = new Date(product.from);
+          const productTo = new Date(product.to);
+          const productTotalTime = differenceInMinutes(productTo, productFrom);
+          totalProductTime += productTotalTime;
+          expect(productTotalTime).toEqual(
+            product.duration + product.breakTime
+          );
+        });
+
+        expect(slotTotalTime).toEqual(totalProductTime);
+      });
     });
   });
 
   it("should return available slots and removed booked slots", async () => {
-    await ScheduleModel.create(schedule2);
-    await ScheduleModel.create(schedule1);
+    const productIds = arrayElements(schedule.products, 2).map(
+      (product) => product.productId
+    );
 
-    let result = await CustomerAvailabilityServiceGet({
-      customerId: 1,
-      productIds: [8022089597202, 8022088745234],
-      startDate: "2022-12-12",
-    });
+    let result = await CustomerAvailabilityServiceGet(
+      {
+        customerId,
+        locationId: "",
+      },
+      { productIds, startDate: new Date().toISOString() }
+    );
 
     const targetFromTime = result[0].slots[0].from;
     const targetToTime = result[0].slots[0].to;
@@ -145,7 +162,7 @@ describe("CustomerAvailabilityService", () => {
       lineItems: [
         {
           lineItemId: 14551587684679,
-          productId: 8022088646930,
+          productId: productIds[0],
           variantId: 46727191036231,
           title: "Børneklip (fra 6 år)",
           priceSet: {
@@ -165,11 +182,16 @@ describe("CustomerAvailabilityService", () => {
 
     await BookingModel.create(booking);
 
-    result = await CustomerAvailabilityServiceGet({
-      customerId: 1,
-      productIds: [8022089597202, 8022088745234],
-      startDate: new Date().toISOString(),
-    });
+    result = await CustomerAvailabilityServiceGet(
+      {
+        customerId,
+        locationId: "",
+      },
+      {
+        productIds,
+        startDate: new Date().toISOString(),
+      }
+    );
 
     const availabilityForDate = result.find(
       (a) =>

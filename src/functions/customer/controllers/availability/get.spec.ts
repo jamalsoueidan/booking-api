@@ -6,6 +6,7 @@ import {
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
+import { createLocation } from "~/library/jest/helpers/location";
 import {
   CustomerAvailabilityControllerGet,
   CustomerAvailabilityControllerGetRequest,
@@ -62,6 +63,7 @@ describe("CustomerProductControllerAvailability", () => {
   });
 
   it("Should be able to get availability for product for customer", async () => {
+    const location = await createLocation({ customerId });
     await ScheduleModel.create(scheduleData);
     const startDate = "2023-05-01T00:00:00Z";
 
@@ -69,9 +71,9 @@ describe("CustomerProductControllerAvailability", () => {
       {
         query: {
           customerId,
-          productIds: [productId],
-          startDate,
+          locationId: location._id,
         },
+        body: { productIds: [productId], startDate },
       }
     );
 
