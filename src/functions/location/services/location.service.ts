@@ -3,8 +3,46 @@ import mongoose from "mongoose";
 import { UserServiceLocationsAdd } from "~/functions/user";
 import { BadError, NotFoundError } from "~/library/handler";
 import { LocationModel } from "../location.model";
-import { Location } from "../location.types";
+import { Location, LocationTypes } from "../location.types";
 import { ILocation, ILocationDocument } from "../schemas";
+
+export const LocationServiceLookup = async ({
+  locationId,
+  destination,
+}: {
+  locationId: ILocationDocument["_id"];
+  destination?: string;
+}) => {
+  const location = await LocationModel.findOne({
+    _id: new mongoose.Types.ObjectId(locationId),
+  })
+    .orFail(
+      new NotFoundError([
+        {
+          code: "custom",
+          message: "LOCATION_NOT_FOUND",
+          path: ["locationId"],
+        },
+      ])
+    )
+    .lean();
+
+  if (location.locationType === LocationTypes.DESTINATION) {
+    if (!destination) {
+      throw new NotFoundError([
+        {
+          code: "custom",
+          message: "DESTINATION_MISSING",
+          path: ["destination"],
+        },
+      ]);
+    }
+    return LocationServiceGetTravelTime({
+      origin: location.fullAddress,
+      destination,
+    });
+  }
+};
 
 export type LocationServiceCreateProps = Location;
 
@@ -144,8 +182,6 @@ export const LocationServiceGetCoordinates = async (
     },
   ]);
 };
-
-type LocationServiceValidateAddressProps = Pick<Location, "fullAddress">;
 
 export const LocationServiceValidateAddress = async (
   fullAddress: string,

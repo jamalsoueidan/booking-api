@@ -22,12 +22,9 @@ export const getLocationObject = (props: Partial<Location> = {}): Location => ({
 });
 
 export const createLocation = (
-  filter: Pick<User, "customerId">,
-  props: Partial<Location> = {}
+  filter: Pick<User, "customerId"> & Partial<Location>
 ) => {
-  const location = new LocationModel(
-    getLocationObject({ ...filter, ...props })
-  );
+  const location = new LocationModel(getLocationObject(filter));
   location.geoLocation.type = "Point";
   location.geoLocation.coordinates = [
     parseFloat(faker.address.latitude()),

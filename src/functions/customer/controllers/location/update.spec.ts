@@ -73,10 +73,10 @@ describe("CustomerLocationControllerUpdate", () => {
   });
 
   it("should be able to update location destination", async () => {
-    const location = await createLocation(
-      { customerId },
-      { locationType: LocationTypes.DESTINATION }
-    );
+    const location = await createLocation({
+      customerId,
+      locationType: LocationTypes.DESTINATION,
+    });
     const {
       customerId: x,
       locationType,

@@ -8,50 +8,24 @@ import {
 } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import { enUS } from "date-fns/locale";
-import { Availability, Schedule } from "~/functions/schedule";
-import { UserModel } from "~/functions/user";
+import { CustomerScheduleServiceGetWithCustomer } from "~/functions/customer/services";
+import { LocationServiceGetTravelTime } from "~/functions/location";
+import { Availability } from "~/functions/schedule";
 import { calculateMaxNoticeAndMinBookingPeriod } from "~/library/availability";
-import { NotFoundError } from "../handler";
 import { generateEndDate, generateStartDate } from "./start-end-date";
 
-// Function to convert time string to Date object
-function timeToDate(time: string, date: Date): Date {
-  const [hour, minute] = time.split(":").map(Number);
-  const newDate = new Date(date);
-  newDate.setUTCHours(hour, minute, 0, 0);
-  return newDate;
-}
-
-function roundMinutes(date: Date) {
-  date.setUTCHours(date.getUTCHours() + Math.round(date.getUTCMinutes() / 60));
-  date.setUTCMinutes(0, 0, 0); // Resets also seconds and milliseconds
-
-  return date;
-}
-
 export type GenerateAvailabilityProps = {
-  schedule: Pick<Schedule, "slots" | "products" | "customerId">;
+  schedule: Awaited<ReturnType<typeof CustomerScheduleServiceGetWithCustomer>>;
+  travelTime?: Awaited<ReturnType<typeof LocationServiceGetTravelTime>>;
   startDate: string;
 };
 
 // Function to generate availability
 export const generateAvailability = async ({
   schedule,
+  travelTime,
   startDate: start,
 }: GenerateAvailabilityProps) => {
-  //TODO: can be moved out, if schedule can do the lookup for customerId
-  const customer = await UserModel.findOne({ customerId: schedule.customerId })
-    .orFail(
-      new NotFoundError([
-        {
-          code: "custom",
-          message: "CUSTOMER_NOT_FOUND",
-          path: ["customerId"],
-        },
-      ])
-    )
-    .lean();
-
   // Sort products by total time
   const sortedProducts = [...schedule.products].sort(
     (a, b) => b.duration + b.breakTime - (a.duration + a.breakTime)
@@ -98,6 +72,10 @@ export const generateAvailability = async ({
           }
         }
 
+        const travelDuration = Math.round(
+          (travelTime?.duration?.value || 0) / 60
+        );
+
         // Calculate total product time
         const totalProductTime = sortedProducts.reduce(
           (total, product) => total + product.duration + product.breakTime,
@@ -127,6 +105,7 @@ export const generateAvailability = async ({
               to: productEndTime,
               breakTime: product.breakTime,
               duration: product.duration,
+              travelTime: travelDuration,
             });
 
             productStartTime = productEndTime;
@@ -146,8 +125,8 @@ export const generateAvailability = async ({
         availability.push({
           date: startDate,
           customer: {
-            fullname: customer.fullname,
-            customerId: customer.customerId,
+            fullname: schedule.customer.fullname,
+            customerId: schedule.customerId,
           },
           slots: daySlots,
         });
@@ -159,3 +138,18 @@ export const generateAvailability = async ({
 
   return availability;
 };
+
+// Function to convert time string to Date object
+function timeToDate(time: string, date: Date): Date {
+  const [hour, minute] = time.split(":").map(Number);
+  const newDate = new Date(date);
+  newDate.setUTCHours(hour, minute, 0, 0);
+  return newDate;
+}
+
+function roundMinutes(date: Date) {
+  date.setUTCHours(date.getUTCHours() + Math.round(date.getUTCMinutes() / 60));
+  date.setUTCMinutes(0, 0, 0); // Resets also seconds and milliseconds
+
+  return date;
+}

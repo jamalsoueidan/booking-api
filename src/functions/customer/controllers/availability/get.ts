@@ -3,6 +3,7 @@ import { _ } from "~/library/handler";
 
 import { UserZodSchema } from "~/functions/user";
 
+import { LocationZodSchema } from "~/functions/location";
 import { NumberOrStringType, StringOrObjectIdType } from "~/library/zod";
 import { CustomerAvailabilityServiceGet } from "../../services";
 import { CustomerProductsServiceListIds } from "../../services/product";
@@ -20,11 +21,11 @@ export const CustomerAvailabilityControllerGetQuerySchema = z.object({
 export const CustomerAvailabilityControllerGetBodySchema = z.object({
   productIds: z.array(NumberOrStringType),
   startDate: z.string(),
-  destination: z
-    .object({
-      fullAddress: z.string(),
-    })
-    .optional(),
+  destination: LocationZodSchema.pick({
+    name: true,
+    fullAddress: true,
+    originType: true,
+  }).optional(),
 });
 
 export type CustomerAvailabilityControllerGetResponse = Awaited<

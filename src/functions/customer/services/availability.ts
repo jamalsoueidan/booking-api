@@ -1,4 +1,6 @@
 import { Types } from "mongoose";
+import { Location } from "~/functions/location";
+import { LocationServiceLookup } from "~/functions/location/services";
 import { Schedule, ScheduleProduct } from "~/functions/schedule";
 import {
   findStartAndEndDate,
@@ -16,9 +18,7 @@ export type CustomerAvailabilityServiceGetProps = {
 export type CustomerAvailabilityServiceGetBody = {
   productIds: Array<ScheduleProduct["productId"]>;
   startDate: string;
-  destination?: {
-    fullAddress: string;
-  };
+  destination?: Pick<Location, "name" | "fullAddress" | "originType">;
 };
 
 export const CustomerAvailabilityServiceGet = async (
@@ -30,8 +30,14 @@ export const CustomerAvailabilityServiceGet = async (
     productIds: body.productIds,
   });
 
+  const travelTime = await LocationServiceLookup({
+    locationId: filter.locationId,
+    destination: body.destination?.fullAddress,
+  });
+
   const availability = await generateAvailability({
     schedule,
+    travelTime,
     startDate: body.startDate,
   });
 

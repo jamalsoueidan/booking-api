@@ -3,6 +3,7 @@ import {
   Schedule,
   ScheduleModel,
   ScheduleProductLocation,
+  ScheduleSlotInterval,
   WeekDays,
 } from "~/functions/schedule";
 import { getProductObject } from "./product";
@@ -13,6 +14,7 @@ export type Choices = {
   totalProducts: number;
   days: WeekDays[];
   locations: ScheduleProductLocation[];
+  interval?: ScheduleSlotInterval;
 };
 
 export const getScheduleObject = (
@@ -24,7 +26,7 @@ export const getScheduleObject = (
     .map(() => getProductObject({ locations: choices.locations }));
 
   const intervals = [
-    {
+    choices.interval || {
       from: "12:00",
       to: "15:00",
     },

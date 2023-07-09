@@ -6,7 +6,7 @@ import {
 } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import { Booking, BookingModel } from "~/functions/booking";
-import { LocationTypes } from "~/functions/location";
+import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import { WeekDays } from "~/functions/schedule";
 import { arrayElements, createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
@@ -15,12 +15,21 @@ import { CustomerAvailabilityServiceGet } from "./availability";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
+jest.mock("~/functions/location/services", () => {
+  return {
+    LocationServiceLookup: jest.fn().mockResolvedValueOnce({
+      duration: { text: "14 mins", value: 831 },
+      distance: { text: "5.3 km", value: 5342 },
+    }),
+  };
+});
+
 describe("CustomerAvailabilityService", () => {
   const customerId = 1;
   let user: Awaited<ReturnType<typeof createUser>>;
   let schedule: Awaited<ReturnType<typeof createSchedule>>;
-  let location1: Awaited<ReturnType<typeof createLocation>>;
-  let location2: Awaited<ReturnType<typeof createLocation>>;
+  let locationOrigin: Awaited<ReturnType<typeof createLocation>>;
+  let locationDestination: Awaited<ReturnType<typeof createLocation>>;
 
   const todayInUTC = utcToZonedTime(new Date(), "Etc/UTC");
 
@@ -39,15 +48,16 @@ describe("CustomerAvailabilityService", () => {
   beforeEach(async () => {
     user = await createUser({ customerId });
 
-    location1 = await createLocation(
-      { customerId },
-      { locationType: LocationTypes.ORIGIN }
-    );
+    locationOrigin = await createLocation({
+      customerId,
+      locationType: LocationTypes.ORIGIN,
+    });
 
-    location2 = await createLocation(
-      { customerId },
-      { locationType: LocationTypes.DESTINATION }
-    );
+    locationDestination = await createLocation({
+      customerId,
+      fullAddress: "Sigridsvej 45, 1. th, 8220 Brabrand",
+      locationType: LocationTypes.DESTINATION,
+    });
 
     schedule = await createSchedule(
       { customerId },
@@ -56,16 +66,40 @@ describe("CustomerAvailabilityService", () => {
         days,
         locations: [
           {
-            location: location1._id,
-            locationType: location1.locationType,
+            location: locationOrigin._id,
+            locationType: locationOrigin.locationType,
           },
           {
-            location: location2._id,
-            locationType: location2.locationType,
+            location: locationDestination._id,
+            locationType: locationDestination.locationType,
           },
         ],
       }
     );
+  });
+
+  it("should calculate destination in available slots", async () => {
+    const productIds = arrayElements(schedule.products, 2).map(
+      (product) => product.productId
+    );
+
+    const result = await CustomerAvailabilityServiceGet(
+      {
+        customerId,
+        locationId: locationDestination._id,
+      },
+      {
+        productIds,
+        startDate: new Date().toISOString(),
+        destination: {
+          name: "Hotel A, or hjemmeaddress",
+          fullAddress: "Salling, Søndergade 27, 8000 Aarhus",
+          originType: LocationOriginTypes.HOME,
+        },
+      }
+    );
+
+    //console.log(JSON.stringify(result, null, 2));
   });
 
   it("should return available slots for the given date range and product", async () => {
@@ -76,7 +110,7 @@ describe("CustomerAvailabilityService", () => {
     const result = await CustomerAvailabilityServiceGet(
       {
         customerId,
-        locationId: location1._id,
+        locationId: locationOrigin._id,
       },
       {
         productIds,
@@ -143,7 +177,7 @@ describe("CustomerAvailabilityService", () => {
     let result = await CustomerAvailabilityServiceGet(
       {
         customerId,
-        locationId: "",
+        locationId: locationOrigin._id,
       },
       { productIds, startDate: new Date().toISOString() }
     );
@@ -185,7 +219,7 @@ describe("CustomerAvailabilityService", () => {
     result = await CustomerAvailabilityServiceGet(
       {
         customerId,
-        locationId: "",
+        locationId: locationOrigin._id,
       },
       {
         productIds,

@@ -99,6 +99,7 @@ export const CustomerScheduleServiceGet = async (
         },
       ])
     );
+
   return schedule;
 };
 

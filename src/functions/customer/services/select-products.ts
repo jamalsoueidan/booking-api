@@ -1,9 +1,9 @@
 import { format, isBefore, parse } from "date-fns";
 import {
   Schedule,
-  ScheduleInterval,
   ScheduleModel,
   ScheduleSlot,
+  ScheduleSlotInterval,
 } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
 
@@ -34,10 +34,10 @@ const getScheduleWithProduct = async (
 };
 
 export const mergeIntervals = (
-  prev: ScheduleInterval[],
-  next: ScheduleInterval[]
+  prev: ScheduleSlotInterval[],
+  next: ScheduleSlotInterval[]
 ) => {
-  const merged: ScheduleInterval[] = [];
+  const merged: ScheduleSlotInterval[] = [];
 
   prev.forEach((prevInterval) => {
     next.forEach((nextInterval) => {
