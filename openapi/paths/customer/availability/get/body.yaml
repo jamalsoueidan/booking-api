@@ -9,10 +9,17 @@ properties:
   destination:
     type: object
     properties:
+      name:
+        type: string
       fullAddress:
         type: string
+      originType:
+        type: string
+        enum: [home, commercial]
     required:
+      - name
       - fullAddress
+      - originType
 
 required:
   - startDate

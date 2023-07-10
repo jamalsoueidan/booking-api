@@ -8,9 +8,9 @@ import {
 } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import { enUS } from "date-fns/locale";
+import { Availability } from "~/functions/availability";
 import { CustomerScheduleServiceGetWithCustomer } from "~/functions/customer/services";
 import { LookupServiceCreate } from "~/functions/lookup";
-import { Availability } from "~/functions/schedule";
 import { calculateMaxNoticeAndMinBookingPeriod } from "~/library/availability";
 import { generateEndDate, generateStartDate } from "./start-end-date";
 
@@ -72,7 +72,7 @@ export const generateAvailability = async ({
           }
         }
 
-        const lookupDuration = Math.round((lookup?.duration?.value || 0) / 60);
+        const totalTraveltime = Math.round((lookup?.duration.value || 0) / 60);
 
         // Calculate total product time
         const totalProductTime = sortedProducts.reduce(
@@ -83,7 +83,7 @@ export const generateAvailability = async ({
         while (
           differenceInMinutes(
             slotEnd,
-            add(slotStart, { minutes: totalProductTime })
+            add(slotStart, { minutes: totalProductTime + totalTraveltime })
           ) >= 0
         ) {
           const slotProducts: Availability["slots"][number]["products"] = [];
@@ -99,11 +99,10 @@ export const generateAvailability = async ({
             slotProducts.push({
               productId: product.productId,
               variantId: product.variantId,
-              from: productStartTime,
-              to: productEndTime,
+              from: add(productStartTime, { minutes: totalTraveltime }),
+              to: add(productEndTime, { minutes: totalTraveltime }),
               breakTime: product.breakTime,
               duration: product.duration,
-              travelTime: lookupDuration,
             });
 
             productStartTime = productEndTime;
@@ -111,7 +110,7 @@ export const generateAvailability = async ({
 
           daySlots.push({
             from: slotStart,
-            to: add(slotStart, { minutes: totalProductTime }),
+            to: add(slotStart, { minutes: totalProductTime + totalTraveltime }),
             products: slotProducts,
           });
 
@@ -126,6 +125,7 @@ export const generateAvailability = async ({
             fullname: schedule.customer.fullname,
             customerId: schedule.customerId,
           },
+          lookup,
           slots: daySlots,
         });
       }

@@ -1,4 +1,4 @@
-import { Availability } from "~/functions/schedule";
+import { Availability } from "~/functions/availability";
 import { removeBookedSlots } from "./remove-booked-slots";
 
 describe("removeBookedSlots", () => {

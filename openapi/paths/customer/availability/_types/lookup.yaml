@@ -1,0 +1,47 @@
+type: object
+properties:
+  _id:
+    type: string
+  origin:
+    type: object
+    properties:
+      customerId:
+        type: string
+        format: gid
+      name:
+        type: string
+      fullAddress:
+        type: string
+      minDistanceForFree:
+        type: string
+      distanceHourlyRate:
+        type: string
+      fixedRatePerKm:
+        type: string
+  destination:
+    type: object
+    properties:
+      name:
+        type: string
+      fullAddress:
+        type: string
+  duration:
+    type: object
+    properties:
+      text:
+        type: string
+      value:
+        type: number
+  distance:
+    type: object
+    properties:
+      text:
+        type: string
+      value:
+        type: number
+required:
+  - _id
+  - origin
+  - destination
+  - duration
+  - distance

@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import mongoose from "mongoose";
+import { LocationServiceLookup } from "~/functions/location";
 import { LookupServiceCreate } from "./lookup.service";
-
 require("~/library/jest/mongoose/mongodb.jest");
 
 jest.mock("~/functions/location/services", () => {
@@ -20,7 +20,7 @@ jest.mock("~/functions/location/services", () => {
         duration: { text: "14 mins", value: 831 },
         distance: { text: "5.3 km", value: 5342 },
       },
-    }),
+    } as Awaited<ReturnType<typeof LocationServiceLookup>>),
   };
 });
 

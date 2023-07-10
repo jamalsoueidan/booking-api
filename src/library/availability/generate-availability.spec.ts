@@ -31,12 +31,12 @@ describe("generateAvailability", () => {
     },
   };
 
-  beforeEach(async () => {
-    const user = await UserModel.create({
+  beforeEach(() =>
+    UserModel.create({
       customerId,
       fullname: "jamal soueidan",
-    });
-  });
+    })
+  );
 
   it("should generate an array of objects each representing a day", async () => {
     const startDate = new Date().toISOString();

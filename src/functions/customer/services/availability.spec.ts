@@ -9,6 +9,7 @@ import { utcToZonedTime } from "date-fns-tz";
 import mongoose from "mongoose";
 import { Booking, BookingModel } from "~/functions/booking";
 import { LocationOriginTypes, LocationTypes } from "~/functions/location";
+import { Lookup } from "~/functions/lookup";
 import { WeekDays } from "~/functions/schedule";
 import { arrayElements, createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
@@ -19,8 +20,8 @@ require("~/library/jest/mongoose/mongodb.jest");
 jest.mock("~/functions/lookup", () => {
   return {
     LookupServiceCreate: jest.fn().mockResolvedValueOnce({
-      location: {
-        _id: new mongoose.Types.ObjectId(),
+      _id: new mongoose.Types.ObjectId(),
+      origin: {
         name: faker.name.firstName(),
         customerId: faker.datatype.number({ min: 1, max: 100000 }),
         fullAddress: faker.address.streetAddress(),
@@ -28,11 +29,16 @@ jest.mock("~/functions/lookup", () => {
         fixedRatePerKm: faker.datatype.number({ min: 1, max: 5 }),
         minDistanceForFree: faker.datatype.number({ min: 1, max: 5 }),
       },
-      travelTime: {
-        duration: { text: "14 mins", value: 831 },
-        distance: { text: "5.3 km", value: 5342 },
+      destination: {
+        name: faker.name.firstName(),
+        fullAddress: faker.address.streetAddress(),
       },
-    }),
+      duration: {
+        text: "14 mins",
+        value: faker.helpers.arrayElement([1800, 900, 500]),
+      },
+      distance: { text: "5.3 km", value: 5342 },
+    } as Lookup),
   };
 });
 
@@ -110,8 +116,6 @@ describe("CustomerAvailabilityService", () => {
         },
       }
     );
-
-    //console.log(JSON.stringify(result, null, 2));
   });
 
   it("should return available slots for the given date range and product", async () => {

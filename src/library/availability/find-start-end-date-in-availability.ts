@@ -1,4 +1,4 @@
-import { Availability } from "~/functions/schedule";
+import { Availability } from "~/functions/availability";
 
 export const findStartAndEndDate = (availability: Availability[]) => {
   if (!availability || availability.length === 0) {
