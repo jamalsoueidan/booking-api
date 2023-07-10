@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { Location } from "~/functions/location";
-import { LocationServiceLookup } from "~/functions/location/services";
+import { LookupServiceCreate } from "~/functions/lookup";
 import { Schedule, ScheduleProduct } from "~/functions/schedule";
 import {
   findStartAndEndDate,
@@ -30,14 +30,15 @@ export const CustomerAvailabilityServiceGet = async (
     productIds: body.productIds,
   });
 
-  const travelTime = await LocationServiceLookup({
+  const lookup = await LookupServiceCreate({
     locationId: filter.locationId,
-    destination: body.destination?.fullAddress,
+    customerId: schedule.customerId,
+    ...body.destination,
   });
 
   const availability = await generateAvailability({
     schedule,
-    travelTime,
+    lookup,
     startDate: body.startDate,
   });
 

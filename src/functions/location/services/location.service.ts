@@ -2,6 +2,7 @@ import axios from "axios";
 import mongoose from "mongoose";
 import { UserServiceLocationsAdd } from "~/functions/user";
 import { BadError, NotFoundError } from "~/library/handler";
+import { StringOrObjectId } from "~/library/zod";
 import { LocationModel } from "../location.model";
 import { Location, LocationTypes } from "../location.types";
 import { ILocation, ILocationDocument } from "../schemas";
@@ -10,8 +11,11 @@ export const LocationServiceLookup = async ({
   locationId,
   destination,
 }: {
-  locationId: ILocationDocument["_id"];
-  destination?: string;
+  locationId: StringOrObjectId;
+  destination?: {
+    name?: string;
+    fullAddress: string;
+  };
 }) => {
   const location = await LocationModel.findOne({
     _id: new mongoose.Types.ObjectId(locationId),
@@ -37,10 +41,16 @@ export const LocationServiceLookup = async ({
         },
       ]);
     }
-    return LocationServiceGetTravelTime({
+
+    const travelTime = await LocationServiceGetTravelTime({
       origin: location.fullAddress,
-      destination,
+      destination: destination.fullAddress,
     });
+
+    return {
+      location,
+      travelTime,
+    };
   }
 };
 

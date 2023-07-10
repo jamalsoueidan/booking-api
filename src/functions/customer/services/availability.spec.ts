@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import {
   addDays,
   differenceInMinutes,
@@ -5,6 +6,7 @@ import {
   isWithinInterval,
 } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
+import mongoose from "mongoose";
 import { Booking, BookingModel } from "~/functions/booking";
 import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import { WeekDays } from "~/functions/schedule";
@@ -14,12 +16,22 @@ import { createSchedule } from "~/library/jest/helpers/schedule";
 import { CustomerAvailabilityServiceGet } from "./availability";
 
 require("~/library/jest/mongoose/mongodb.jest");
-
-jest.mock("~/functions/location/services", () => {
+jest.mock("~/functions/lookup", () => {
   return {
-    LocationServiceLookup: jest.fn().mockResolvedValueOnce({
-      duration: { text: "14 mins", value: 831 },
-      distance: { text: "5.3 km", value: 5342 },
+    LookupServiceCreate: jest.fn().mockResolvedValueOnce({
+      location: {
+        _id: new mongoose.Types.ObjectId(),
+        name: faker.name.firstName(),
+        customerId: faker.datatype.number({ min: 1, max: 100000 }),
+        fullAddress: faker.address.streetAddress(),
+        distanceHourlyRate: faker.datatype.number({ min: 1, max: 5 }),
+        fixedRatePerKm: faker.datatype.number({ min: 1, max: 5 }),
+        minDistanceForFree: faker.datatype.number({ min: 1, max: 5 }),
+      },
+      travelTime: {
+        duration: { text: "14 mins", value: 831 },
+        distance: { text: "5.3 km", value: 5342 },
+      },
     }),
   };
 });

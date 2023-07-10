@@ -65,3 +65,5 @@ export const ObjectIdType = z
   .transform((value) => new mongoose.Types.ObjectId(value));
 
 export const StringOrObjectIdType = z.union([z.string(), ObjectIdType]);
+
+export type StringOrObjectId = z.infer<typeof StringOrObjectIdType>;
