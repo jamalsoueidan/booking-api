@@ -13,7 +13,7 @@ properties:
       - customerId
       - fullname
   lookup:
-    $ref: "../_types/availability.yaml"
+    $ref: "../_types/lookup.yaml"
   slots:
     type: array
     items:
