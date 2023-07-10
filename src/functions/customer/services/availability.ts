@@ -33,7 +33,7 @@ export const CustomerAvailabilityServiceGet = async (
   const lookup = await LookupServiceCreate({
     locationId: filter.locationId,
     customerId: schedule.customerId,
-    ...body.destination,
+    destination: body.destination,
   });
 
   const availability = await generateAvailability({

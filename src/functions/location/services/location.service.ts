@@ -13,7 +13,6 @@ export const LocationServiceLookup = async ({
 }: {
   locationId: StringOrObjectId;
   destination?: {
-    name?: string;
     fullAddress: string;
   };
 }) => {
