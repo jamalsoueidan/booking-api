@@ -516,12 +516,39 @@ components:
       required:
         - success
         - payload
+    CustomerAvailabilityBody:
+      type: object
+      properties:
+        startDate:
+          type: string
+        productIds:
+          type: array
+          items:
+            type: string
+        destination:
+          type: object
+          properties:
+            name:
+              type: string
+            fullAddress:
+              type: string
+            originType:
+              type: string
+              enum:
+                - home
+                - commercial
+          required:
+            - name
+            - fullAddress
+            - originType
+      required:
+        - startDate
+        - productIds
     CustomerAvailability:
       type: object
       properties:
         date:
           type: string
-          example: '2023-05-05T00:00:00.000Z'
         customer:
           type: object
           properties:
@@ -532,6 +559,8 @@ components:
           required:
             - customerId
             - fullname
+        lookup:
+          $ref: '#/components/schemas/CustomerAvailability'
         slots:
           type: array
           items:
@@ -539,10 +568,8 @@ components:
             properties:
               from:
                 type: string
-                example: '2023-05-05T00:00:00.000Z'
               to:
                 type: string
-                example: '2023-05-05T00:00:00.000Z'
               products:
                 type: array
                 items:
@@ -554,10 +581,8 @@ components:
                       type: number
                     from:
                       type: string
-                      example: '2023-05-05T00:00:00.000Z'
                     to:
                       type: string
-                      example: '2023-05-05T00:00:00.000Z'
                     breakTime:
                       type: number
                     duration:
@@ -1634,7 +1659,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
       security: []
-  '/customer/{customerId}/availability/get':
+  '/customer/{customerId}/availability/{locationId}/get':
     parameters:
       - name: customerId
         in: path
@@ -1642,24 +1667,24 @@ paths:
         required: true
         schema:
           type: string
-      - name: productIds
-        in: query
-        description: This field for productId
+      - name: locationId
+        in: path
+        description: This field for locationId
         required: true
         schema:
           type: string
-      - name: startDate
-        in: query
-        description: This field filter by start date
-        required: true
-        schema:
-          type: string
-    get:
+    post:
       tags:
         - CustomerAvailability
       operationId: customerAvailabilityGet
-      summary: GET Get availabilty for customer
+      summary: POST get availabilty for customer
       description: This availabilty for customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerAvailabilityBody'
       responses:
         '200':
           description: Response
