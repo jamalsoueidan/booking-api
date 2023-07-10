@@ -19,7 +19,7 @@ export type CustomerControllerUpdateQuery = z.infer<
 export const CustomerControllerUpdateSchema = UserZodSchema.omit({
   _id: true,
   customerId: true,
-}).strict();
+}).strip();
 
 export type CustomerControllerUpdateBody = z.infer<
   typeof CustomerControllerUpdateSchema

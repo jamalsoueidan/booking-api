@@ -24,7 +24,7 @@ export const CustomerControllerUpsertSchema = UserZodSchema.omit({
   email: true,
   phone: true,
   isBusiness: true,
-}).strict();
+}).strip();
 
 export type CustomerControllerUpsertBody = z.infer<
   typeof CustomerControllerUpsertSchema

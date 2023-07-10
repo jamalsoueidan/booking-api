@@ -2,7 +2,6 @@ type: object
 properties:
   date:
     type: string
-    example: "2023-05-05T00:00:00.000Z"
   customer:
     type: object
     properties:
@@ -13,6 +12,8 @@ properties:
     required:
       - customerId
       - fullname
+  lookup:
+    $ref: "../_types/availability.yaml"
   slots:
     type: array
     items:
@@ -20,10 +21,8 @@ properties:
       properties:
         from:
           type: string
-          example: "2023-05-05T00:00:00.000Z"
         to:
           type: string
-          example: "2023-05-05T00:00:00.000Z"
         products:
           type: array
           items:
@@ -35,10 +34,8 @@ properties:
                 type: number
               from:
                 type: string
-                example: "2023-05-05T00:00:00.000Z"
               to:
                 type: string
-                example: "2023-05-05T00:00:00.000Z"
               breakTime:
                 type: number
               duration:

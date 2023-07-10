@@ -1,46 +1,51 @@
-import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
+import { Types } from "mongoose";
+import { Location } from "~/functions/location";
+import { LookupServiceCreate } from "~/functions/lookup";
+import { Schedule, ScheduleProduct } from "~/functions/schedule";
 import {
   findStartAndEndDate,
   generateAvailability,
   removeBookedSlots,
 } from "~/library/availability";
-import { NotFoundError } from "~/library/handler";
 import { CustomerBookingServiceGetBooked } from "./booking";
+import { CustomerScheduleServiceGetWithCustomer } from "./schedule";
 
 export type CustomerAvailabilityServiceGetProps = {
   customerId: Schedule["customerId"];
-  productIds: Array<ScheduleProduct["productId"]>;
-  startDate: string;
+  locationId: string | Types.ObjectId;
 };
 
-export const CustomerAvailabilityServiceGet = async ({
-  customerId,
-  productIds,
-  startDate,
-}: CustomerAvailabilityServiceGetProps) => {
-  const schedule = await ScheduleModel.findOne({
-    customerId,
-    "products.productId": { $all: productIds },
-  })
-    .orFail(
-      new NotFoundError([
-        {
-          code: "custom",
-          message: "PRODUCTS_NOT_FOUND",
-          path: ["productIds"],
-        },
-      ])
-    )
-    .lean();
+export type CustomerAvailabilityServiceGetBody = {
+  productIds: Array<ScheduleProduct["productId"]>;
+  startDate: string;
+  destination?: Pick<Location, "name" | "fullAddress" | "originType">;
+};
 
-  schedule.products = schedule?.products.filter(({ productId }) =>
-    productIds.includes(productId)
-  );
+export const CustomerAvailabilityServiceGet = async (
+  filter: CustomerAvailabilityServiceGetProps,
+  body: CustomerAvailabilityServiceGetBody
+) => {
+  const schedule = await CustomerScheduleServiceGetWithCustomer({
+    customerId: filter.customerId,
+    productIds: body.productIds,
+  });
 
-  const availability = await generateAvailability({ schedule, startDate });
+  const lookup = await LookupServiceCreate({
+    locationId: filter.locationId,
+    customerId: schedule.customerId,
+    ...body.destination,
+  });
+
+  const availability = await generateAvailability({
+    schedule,
+    lookup,
+    startDate: body.startDate,
+  });
+
   const date = findStartAndEndDate(availability);
+
   const booked = await CustomerBookingServiceGetBooked({
-    customerId,
+    customerId: filter.customerId,
     startDate: date.startDate,
     endDate: date.endDate,
   });

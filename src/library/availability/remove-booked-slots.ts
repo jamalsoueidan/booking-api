@@ -1,5 +1,5 @@
 import { isAfter, isBefore, isEqual } from "date-fns";
-import { Availability } from "~/functions/schedule";
+import { Availability } from "~/functions/availability";
 
 type DateInterval = { from: Date; to: Date };
 

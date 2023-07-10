@@ -19,10 +19,10 @@ describe("UserScheduleService", () => {
 
   it("should return all schedules with locations and without products", async () => {
     const locationOrigin = await createLocation({ customerId });
-    const locationDestination = await createLocation(
-      { customerId },
-      { locationType: LocationTypes.DESTINATION }
-    );
+    const locationDestination = await createLocation({
+      customerId,
+      locationType: LocationTypes.DESTINATION,
+    });
 
     const schedule1 = await CustomerScheduleServiceCreate({
       name: faker.name.firstName(),
@@ -116,10 +116,10 @@ describe("UserScheduleService", () => {
 
   it("should get schedule with products only belongs to specific locationId", async () => {
     const locationOrigin = await createLocation({ customerId });
-    const locationDestination = await createLocation(
-      { customerId },
-      { locationType: LocationTypes.DESTINATION }
-    );
+    const locationDestination = await createLocation({
+      customerId,
+      locationType: LocationTypes.DESTINATION,
+    });
 
     const schedule = await CustomerScheduleServiceCreate({
       name: faker.name.firstName(),

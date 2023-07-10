@@ -73,14 +73,24 @@ export const UserScheduleServiceLocationsList = async ({
       pipeline
     ).exec();
 
-  return schedules.map((schedule) => ({
-    ...schedule,
-    locations: schedule.locations.filter(
-      (location, index, self) =>
-        index ===
-        self.findIndex((l) => l._id.toString() == location._id.toString())
-    ),
-  }));
+  return schedules
+    .map((schedule) => ({
+      ...schedule,
+      locations: schedule.locations.filter(
+        (location, index, self) =>
+          index ===
+          self.findIndex((l) => l._id.toString() == location._id.toString())
+      ),
+    }))
+    .sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
 };
 
 export type UserScheduleServiceGetProps = {

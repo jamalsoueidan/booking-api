@@ -4,6 +4,7 @@ import { LocationServiceUpdate } from "~/functions/location/services";
 import { _ } from "~/library/handler";
 import { StringOrObjectIdType } from "~/library/zod";
 
+// should be PATCH and UPSERT
 export type CustomerLocationControllerUpdateRequest = {
   query: z.infer<typeof CustomerLocationControllerUpdateQuerySchema>;
   body: z.infer<typeof CustomerLocationControllerUpdateBodySchema>;
@@ -14,7 +15,7 @@ export const CustomerLocationControllerUpdateBodySchema =
     customerId: true,
     locationType: true,
   })
-    .strict()
+    .strip()
     .deepPartial();
 
 export const CustomerLocationControllerUpdateQuerySchema = z.object({

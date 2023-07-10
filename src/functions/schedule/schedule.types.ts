@@ -5,7 +5,6 @@ import {
   NumberOrStringType,
   StringOrObjectIdType,
 } from "~/library/zod";
-import { User } from "../user";
 
 export enum TimeUnit {
   HOURS = "hours",
@@ -44,12 +43,10 @@ const NoticePeriodZodSchema = z.object({
 
 export type ScheduleProductNoticePeriod = z.infer<typeof NoticePeriodZodSchema>;
 
-const LocationZodSchema = z.array(
-  z.object({
-    location: StringOrObjectIdType,
-    locationType: z.nativeEnum(LocationTypes),
-  })
-);
+const LocationZodSchema = z.object({
+  location: StringOrObjectIdType,
+  locationType: z.nativeEnum(LocationTypes),
+});
 
 export type ScheduleProductLocation = z.infer<typeof LocationZodSchema>;
 
@@ -61,14 +58,14 @@ export const ScheduleProductZodSchema = z.object({
   breakTime: NumberOrStringType,
   noticePeriod: NoticePeriodZodSchema,
   bookingPeriod: BookingPeriodZodSchema,
-  locations: LocationZodSchema,
+  locations: z.array(LocationZodSchema),
 });
 
 export type ScheduleProduct = z.infer<typeof ScheduleProductZodSchema>;
 
 const HourMinuteSchema = z.string().regex(/^([01][0-9]|2[0-3]):[0-5][0-9]$/);
 
-export const IntervalZodSchema = z
+export const ScheduleSlotIntervalZodSchema = z
   .object({
     from: HourMinuteSchema,
     to: HourMinuteSchema,
@@ -95,32 +92,37 @@ export const IntervalZodSchema = z
     }
   );
 
-export type ScheduleInterval = z.infer<typeof IntervalZodSchema>;
+export type ScheduleSlotInterval = z.infer<
+  typeof ScheduleSlotIntervalZodSchema
+>;
 
-const IntervalArraySchema = z.array(IntervalZodSchema).refine(
-  (data) => {
-    const intervals = data
-      .map((interval) => ({
-        from: interval.from.split(":").map(Number),
-        to: interval.to.split(":").map(Number),
-      }))
-      .sort((a, b) => a.from[0] - b.from[0] || a.from[1] - b.from[1]); // sorting
+const ScheduleSlotIntervalArraySchema = z
+  .array(ScheduleSlotIntervalZodSchema)
+  .refine(
+    (data) => {
+      const intervals = data
+        .map((interval) => ({
+          from: interval.from.split(":").map(Number),
+          to: interval.to.split(":").map(Number),
+        }))
+        .sort((a, b) => a.from[0] - b.from[0] || a.from[1] - b.from[1]); // sorting
 
-    for (let i = 0; i < intervals.length - 1; i++) {
-      if (
-        intervals[i].to[0] > intervals[i + 1].from[0] ||
-        (intervals[i].to[0] === intervals[i + 1].from[0] &&
-          intervals[i].to[1] >= intervals[i + 1].from[1])
-      ) {
-        return false;
+      for (let i = 0; i < intervals.length - 1; i++) {
+        if (
+          intervals[i].to[0] > intervals[i + 1].from[0] ||
+          (intervals[i].to[0] === intervals[i + 1].from[0] &&
+            intervals[i].to[1] >= intervals[i + 1].from[1])
+        ) {
+          return false;
+        }
       }
+      return true;
+    },
+    {
+      message: "Invalid schedule: intervals cannot overlap",
     }
-    return true;
-  },
-  {
-    message: "Invalid schedule: intervals cannot overlap",
-  }
-);
+  );
+
 export const ScheduleSlotZodSchema = z.object({
   day: z.enum([
     "monday",
@@ -131,7 +133,7 @@ export const ScheduleSlotZodSchema = z.object({
     "saturday",
     "sunday",
   ]),
-  intervals: IntervalArraySchema,
+  intervals: ScheduleSlotIntervalArraySchema,
 });
 
 export type ScheduleSlot = z.infer<typeof ScheduleSlotZodSchema>;
@@ -171,20 +173,3 @@ export const ScheduleZodSchema = z.object({
 });
 
 export type Schedule = z.infer<typeof ScheduleZodSchema>;
-
-export type Availability = {
-  date: Date;
-  customer: Pick<User, "fullname" | "customerId">;
-  slots: {
-    from: Date;
-    to: Date;
-    products: {
-      productId: number;
-      variantId: number;
-      from: Date;
-      to: Date;
-      breakTime: number;
-      duration: number;
-    }[];
-  }[];
-};

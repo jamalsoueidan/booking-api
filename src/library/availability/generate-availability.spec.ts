@@ -11,6 +11,8 @@ require("~/library/jest/mongoose/mongodb.jest");
 describe("generateAvailability", () => {
   const customerId = 1;
   const schedule: GenerateAvailabilityProps["schedule"] = {
+    _id: "1",
+    name: "asd",
     customerId: 1,
     slots: [
       {
@@ -24,14 +26,17 @@ describe("generateAvailability", () => {
       },
     ],
     products: [getProductObject()],
+    customer: {
+      fullname: "test",
+    },
   };
 
-  beforeEach(async () => {
-    const user = await UserModel.create({
+  beforeEach(() =>
+    UserModel.create({
       customerId,
       fullname: "jamal soueidan",
-    });
-  });
+    })
+  );
 
   it("should generate an array of objects each representing a day", async () => {
     const startDate = new Date().toISOString();

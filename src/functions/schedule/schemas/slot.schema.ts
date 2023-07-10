@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import { BadError } from "~/library/handler";
-import { ScheduleInterval, ScheduleSlot } from "../schedule.types";
+import { ScheduleSlot, ScheduleSlotInterval } from "../schedule.types";
 
-export const IntervalSchema = new mongoose.Schema<ScheduleInterval>(
+export const IntervalSchema = new mongoose.Schema<ScheduleSlotInterval>(
   {
     to: String,
     from: String,
@@ -75,7 +75,9 @@ export function validateSlots(slots: ScheduleSlot[]): void {
   }
 }
 
-function findOverlappingIntervalsIndex(intervals: ScheduleInterval[]): number {
+function findOverlappingIntervalsIndex(
+  intervals: ScheduleSlotInterval[]
+): number {
   for (let i = 0; i < intervals.length; i++) {
     for (let j = i + 1; j < intervals.length; j++) {
       if (isOverlapping(intervals[i], intervals[j])) {
@@ -86,6 +88,9 @@ function findOverlappingIntervalsIndex(intervals: ScheduleInterval[]): number {
   return -1;
 }
 
-function isOverlapping(a: ScheduleInterval, b: ScheduleInterval): boolean {
+function isOverlapping(
+  a: ScheduleSlotInterval,
+  b: ScheduleSlotInterval
+): boolean {
   return a.from < b.to && b.from < a.to;
 }
