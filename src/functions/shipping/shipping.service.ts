@@ -31,7 +31,7 @@ export const ShippingServiceCalculateCost = ({
 export const ShippingServiceGet = async (body: ShippingBody) => {
   let lookupIds = body.items
     .map((item) => item.properties?._lookupId)
-    .filter((id) => typeof id === "number"); // Ensure only numbers
+    .filter((id) => typeof id === "string"); // Ensure only numbers
 
   lookupIds = [...new Set(lookupIds)];
 
