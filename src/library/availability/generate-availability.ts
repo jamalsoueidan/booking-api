@@ -72,7 +72,7 @@ export const generateAvailability = async ({
           }
         }
 
-        const totalTraveltime = Math.round((lookup?.duration.value || 0) / 60);
+        const totalTraveltime = lookup?.duration.value || 0;
 
         // Calculate total product time
         const totalProductTime = sortedProducts.reduce(
@@ -87,7 +87,7 @@ export const generateAvailability = async ({
           ) >= 0
         ) {
           const slotProducts: Availability["slots"][number]["products"] = [];
-          let productStartTime = slotStart;
+          let productStartTime = add(slotStart, { minutes: totalTraveltime });
 
           for (let i = 0; i < sortedProducts.length; i++) {
             const product = sortedProducts[i];
@@ -99,8 +99,8 @@ export const generateAvailability = async ({
             slotProducts.push({
               productId: product.productId,
               variantId: product.variantId,
-              from: add(productStartTime, { minutes: totalTraveltime }),
-              to: add(productEndTime, { minutes: totalTraveltime }),
+              from: productStartTime,
+              to: productEndTime,
               breakTime: product.breakTime,
               duration: product.duration,
             });
@@ -109,7 +109,7 @@ export const generateAvailability = async ({
           }
 
           daySlots.push({
-            from: slotStart,
+            from: add(slotStart, { minutes: totalTraveltime }),
             to: add(slotStart, { minutes: totalProductTime + totalTraveltime }),
             products: slotProducts,
           });
