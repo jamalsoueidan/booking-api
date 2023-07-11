@@ -43,7 +43,7 @@ export type ShippingBody = {
     requires_shipping: boolean;
     taxable: any;
     fulfillment_service: string;
-    properties: Record<string, string> & {
+    properties?: {
       _from: string;
       _to: string;
       _customerId: string;
@@ -51,7 +51,7 @@ export type ShippingBody = {
       Tid: string;
       Behandler: string;
       Varighed: string;
-      _lookupId: string;
+      _lookupId?: string;
     };
     product_id: number;
     variant_id: number;

@@ -28,12 +28,33 @@ export const ShippingServiceCalculateCost = ({
 };
 
 export const ShippingServiceGet = async (body: ShippingBody) => {
-  const lookups = await LookupModel.find({
-    _id: { $in: body.items.map((item) => item.properties._lookupId) },
-  });
+  let lookupIds = body.items
+    .map((item) => item.properties?._lookupId)
+    .filter((id) => typeof id === "number"); // Ensure only numbers
+
+  lookupIds = [...new Set(lookupIds)];
 
   const onMinDate = new Date(Date.now() + 86400000).toISOString(); // +1 day
   const onMaxDate = new Date(Date.now() + 2 * 86400000).toISOString(); // +2 days
+
+  if (!lookupIds.length) {
+    return {
+      rates: [
+        {
+          service_name: `Gratis leverings`,
+          service_code: "ETON",
+          total_price: 0,
+          currency: "DKK",
+          min_delivery_date: onMinDate,
+          max_delivery_date: onMaxDate,
+        },
+      ],
+    };
+  }
+
+  const lookups = await LookupModel.find({
+    _id: { $in: lookupIds },
+  });
 
   const prices = lookups.map((l) => ShippingServiceCalculateCost(l));
 
