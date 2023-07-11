@@ -35,7 +35,7 @@ jest.mock("~/functions/lookup", () => {
       },
       duration: {
         text: "14 mins",
-        value: faker.helpers.arrayElement([1800, 900, 500]),
+        value: faker.helpers.arrayElement([15, 30, 45]),
       },
       distance: { text: "5.3 km", value: 5342 },
     } as Lookup),
