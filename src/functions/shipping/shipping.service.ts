@@ -65,11 +65,13 @@ export const ShippingServiceGet = async (body: ShippingBody) => {
     rates: [
       {
         service_name: `${lookups.length} skønhedseksperter til din lokation`,
+        description: "Inkludere alle udgifter",
         service_code: "ETON",
-        total_price: totalPrices,
+        total_price: totalPrices * 100,
         currency: "DKK",
-        min_delivery_date: onMinDate,
-        max_delivery_date: onMaxDate,
+        phone_required: true,
+        //min_delivery_date: onMinDate,
+        //max_delivery_date: onMaxDate,
       },
     ],
   };
