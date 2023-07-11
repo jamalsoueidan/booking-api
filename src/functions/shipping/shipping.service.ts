@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Lookup, LookupModel } from "../lookup";
 import { ShippingBody } from "./shipping.types";
 
@@ -53,7 +54,7 @@ export const ShippingServiceGet = async (body: ShippingBody) => {
   }
 
   const lookups = await LookupModel.find({
-    _id: { $in: lookupIds },
+    _id: { $in: lookupIds.map((l) => new mongoose.Types.ObjectId(l)) },
   });
 
   const prices = lookups.map((l) => ShippingServiceCalculateCost(l));

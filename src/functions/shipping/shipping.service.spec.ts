@@ -109,7 +109,7 @@ describe("ShippingService", () => {
             Tid: "10:00",
             Behandler: "hana nielsen",
             Varighed: "1 timer",
-            _lookupId: lookup._id,
+            _lookupId: lookup._id.toString(),
           },
           product_id: 8022088646930,
           variant_id: 46727191036231,

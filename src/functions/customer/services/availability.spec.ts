@@ -141,8 +141,10 @@ describe("CustomerAvailabilityService", () => {
 
     result.forEach((item) => {
       // All items is either one of the weekDays I have, no other weekdays.
-      const date = new Date(item.date);
-      const day = format(date, "eeee").toLowerCase(); // get day of week
+      const day = format(
+        utcToZonedTime(new Date(item.date), "Etc/UTC"),
+        "iiii"
+      ).toLowerCase();
       expect(days).toContain(day);
 
       item.slots.forEach((slot) => {

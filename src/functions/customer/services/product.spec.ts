@@ -227,7 +227,7 @@ describe("CustomerProductsService", () => {
             locationType: LocationTypes.ORIGIN,
           },
           {
-            location: new mongoose.Types.ObjectId().toString(),
+            location: new mongoose.Types.ObjectId(),
             locationType: LocationTypes.ORIGIN,
           },
         ],
