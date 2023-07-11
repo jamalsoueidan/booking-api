@@ -19,11 +19,6 @@ export const LookupMongooseSchema = new mongoose.Schema<
         required: true,
         index: true,
       },
-      location: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Location",
-        required: true,
-      },
       name: {
         type: String,
         required: true,
