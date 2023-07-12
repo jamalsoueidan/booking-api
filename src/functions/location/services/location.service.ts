@@ -7,15 +7,17 @@ import { LocationModel } from "../location.model";
 import { Location, LocationTypes } from "../location.types";
 import { ILocation, ILocationDocument } from "../schemas";
 
-export const LocationServiceLookup = async ({
-  locationId,
-  destination,
-}: {
+export type LocationServiceLookupProps = {
   locationId: StringOrObjectId;
   destination?: {
     fullAddress: string;
   };
-}) => {
+};
+
+export const LocationServiceLookup = async ({
+  locationId,
+  destination,
+}: LocationServiceLookupProps) => {
   const location = await LocationModel.findOne({
     _id: new mongoose.Types.ObjectId(locationId),
   })
@@ -260,9 +262,16 @@ export const LocationServiceGetTravelTime = async (
       const leg = route.legs[0];
       const duration = leg.duration;
       const distance = leg.distance;
+
       return {
-        duration,
-        distance,
+        duration: {
+          text: duration.text,
+          value: parseFloat((duration.value / 3600).toFixed(2)),
+        },
+        distance: {
+          text: distance.text,
+          value: distance.value / 1000, // convert from meters to km
+        },
       };
     }
   }

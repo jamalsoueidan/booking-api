@@ -1,4 +1,9 @@
 import mongoose from "mongoose";
+import {
+  LocationServiceLookup,
+  LocationServiceLookupProps,
+} from "~/functions/location";
+import { NotFoundError } from "~/library/handler";
 import { Lookup, LookupModel } from "../lookup";
 import { ShippingBody } from "./shipping.types";
 
@@ -6,14 +11,11 @@ export const ShippingServiceCalculateCost = ({
   duration: { value: duration },
   distance: { value: distance },
   origin,
-}: Omit<Lookup, "_id">) => {
+}: Omit<Lookup, "_id" | "destination">) => {
   const { minDistanceForFree, fixedRatePerKm, distanceHourlyRate } = origin;
 
-  // Convert distance from meters to kilometers.
-  const distanceInKm = distance / 1000;
-
   // Calculate the chargeable distance.
-  const chargeableDistance = Math.max(0, distanceInKm - minDistanceForFree);
+  const chargeableDistance = Math.max(0, distance - minDistanceForFree);
 
   // Calculate the cost for the distance.
   const distanceCost = chargeableDistance * fixedRatePerKm;
@@ -74,5 +76,33 @@ export const ShippingServiceGet = async (body: ShippingBody) => {
         //max_delivery_date: onMaxDate,
       },
     ],
+  };
+};
+
+export const ShippingServiceCalculate = async (
+  props: Required<LocationServiceLookupProps>
+) => {
+  const lookup = await LocationServiceLookup(props);
+  if (!lookup) {
+    throw new NotFoundError([
+      {
+        code: "custom",
+        message: "LOOKUP_NOT_FOUND",
+        path: ["locationId"],
+      },
+    ]);
+  }
+
+  const cost = ShippingServiceCalculateCost({
+    ...lookup?.travelTime,
+    origin: lookup?.location,
+  });
+
+  return {
+    ...lookup.travelTime,
+    cost: {
+      value: cost,
+      currency: "DKK",
+    },
   };
 };

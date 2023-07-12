@@ -11,8 +11,6 @@ export type LookupServiceCreateProps = {
 
 export const LookupServiceCreate = async (props: LookupServiceCreateProps) => {
   const lookup = await LocationServiceLookup(props);
-  const durationValue =
-    Math.ceil((lookup?.travelTime.duration.value || 0) / (60 * 5)) * 5;
 
   if (lookup) {
     const Lookup = new LookupModel({
@@ -22,10 +20,6 @@ export const LookupServiceCreate = async (props: LookupServiceCreateProps) => {
       },
       destination: props.destination,
       ...lookup.travelTime,
-      duration: {
-        text: lookup.travelTime.duration.text,
-        value: durationValue, // we round this value
-      },
     });
 
     return Lookup.save();

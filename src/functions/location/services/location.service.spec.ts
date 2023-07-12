@@ -41,11 +41,11 @@ const travelTimeData: GoogleDirectionResponse = {
         {
           distance: {
             text: "0.4 km",
-            value: 367,
+            value: 400,
           },
           duration: {
             text: "1 min",
-            value: 67,
+            value: 60,
           },
         },
       ],
@@ -238,8 +238,8 @@ describe("LocationService", () => {
     });
 
     expect(response).toEqual({
-      duration: { text: "1 min", value: 67 },
-      distance: { text: "0.4 km", value: 367 },
+      duration: { text: "1 min", value: 0.02 },
+      distance: { text: "0.4 km", value: 0.4 },
     });
   });
 
