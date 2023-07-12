@@ -1355,6 +1355,48 @@ components:
       required:
         - success
         - payload
+    ShippingCalculateBody:
+      type: object
+      properties:
+        locationId:
+          type: string
+        destination:
+          type: object
+          properties:
+            fullAddress:
+              type: string
+          required:
+            - fullAddress
+      required:
+        - locationId
+        - destination
+    ShippingCalculateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/LocationTravelTime'
+            - type: object
+              properties:
+                cost:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                    value:
+                      type: integer
+                  required:
+                    - text
+                    - value
+              required:
+                - cost
+      required:
+        - success
+        - payload
 paths:
   '/user/{username}':
     parameters:
@@ -2514,4 +2556,30 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  /shipping/calculate:
+    post:
+      tags:
+        - ShippingCalculate
+      operationId: shippingCalculate
+      summary: POST get shipping calculate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShippingCalculateBody'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShippingCalculateResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security: []
