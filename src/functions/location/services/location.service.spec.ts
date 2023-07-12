@@ -238,7 +238,7 @@ describe("LocationService", () => {
     });
 
     expect(response).toEqual({
-      duration: { text: "1 min", value: 0.02 },
+      duration: { text: "1 min", value: 1 },
       distance: { text: "0.4 km", value: 0.4 },
     });
   });

@@ -266,7 +266,7 @@ export const LocationServiceGetTravelTime = async (
       return {
         duration: {
           text: duration.text,
-          value: parseFloat((duration.value / 3600).toFixed(2)),
+          value: duration.value / 60,
         },
         distance: {
           text: distance.text,
