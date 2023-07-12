@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
+import { LocationModel } from "~/functions/location/location.model";
 import {
   Location,
-  LocationModel,
   LocationOriginTypes,
   LocationTypes,
-} from "~/functions/location";
+} from "~/functions/location/location.types";
 import { User } from "~/functions/user";
 
 export const DEFAULT_GROUP = "all";

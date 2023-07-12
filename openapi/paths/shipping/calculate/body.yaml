@@ -1,0 +1,15 @@
+type: object
+properties:
+  locationId:
+    type: string
+  destination:
+    type: object
+    properties:
+      fullAddress:
+        type: string
+    required:
+      - fullAddress
+
+required:
+  - locationId
+  - destination

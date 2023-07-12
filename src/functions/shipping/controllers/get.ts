@@ -1,7 +1,7 @@
 import { _ } from "~/library/handler";
 
-import { ShippingServiceGet } from "./shipping.service";
-import { ShippingBody } from "./shipping.types";
+import { ShippingServiceGet } from "../shipping.service";
+import { ShippingBody } from "../shipping.types";
 
 export type ShippingControllerGetRequest = {
   body: ShippingBody;

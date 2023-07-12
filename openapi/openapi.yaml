@@ -184,6 +184,11 @@ components:
     LocationValidateAddressResponse:
       $ref: paths/location/validate-address/response.yaml
 
+    # Shipping
+    ShippingCalculateBody:
+      $ref: paths/shipping/calculate/body.yaml
+    ShippingCalculateResponse:
+      $ref: paths/shipping/calculate/response.yaml
 paths:
   # User
   /user/{username}:
@@ -251,3 +256,7 @@ paths:
     $ref: "./paths/location/validate-address/index.yaml"
   /location/get-travel-time:
     $ref: "./paths/location/get-travel-time/index.yaml"
+
+  # shipping
+  /shipping/calculate:
+    $ref: "./paths/shipping/calculate/index.yaml"

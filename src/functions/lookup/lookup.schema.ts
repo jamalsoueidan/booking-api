@@ -2,6 +2,7 @@ import mongoose, { Document, Model } from "mongoose";
 import { Lookup } from "./lookup.type";
 
 export interface ILookup extends Omit<Lookup, "_id"> {
+  expireAt: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -57,6 +58,11 @@ export const LookupMongooseSchema = new mongoose.Schema<
     distance: {
       text: String,
       value: Number,
+    },
+    expireAt: {
+      type: Date,
+      default: Date.now,
+      index: { expireAfterSeconds: 3600 },
     },
   },
   { timestamps: true }
