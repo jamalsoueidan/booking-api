@@ -1,9 +1,19 @@
 import { app } from "@azure/functions";
-import { ShippingControllerGet } from "./shipping/shipping.controller";
+import {
+  ShippingControllerCalculate,
+  ShippingControllerGet,
+} from "./shipping/controllers";
 
 app.http("shippingRates", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "shipping/rates",
   handler: ShippingControllerGet,
+});
+
+app.http("shippingCalculator", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "shipping/calculate",
+  handler: ShippingControllerCalculate,
 });
