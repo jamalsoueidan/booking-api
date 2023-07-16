@@ -12,12 +12,12 @@ properties:
           cost:
             type: object
             properties:
-              text:
+              currency:
                 type: string
               value:
                 type: integer
             required:
-              - text
+              - currency
               - value
         required:
           - cost
