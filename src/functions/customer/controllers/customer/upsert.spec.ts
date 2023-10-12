@@ -26,7 +26,7 @@ describe("CustomerControllerUpsert", () => {
     yearsExperience: 1,
     username: faker.internet.userName(),
     aboutMe: faker.lorem.paragraph(),
-    speaks: [faker.random.locale()],
+    speaks: [faker.location.countryCode()],
     images: {
       profile: {
         url: faker.internet.avatar(),

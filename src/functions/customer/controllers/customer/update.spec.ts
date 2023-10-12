@@ -25,7 +25,7 @@ describe("CustomerControllerUpdate", () => {
     fullname: "test",
     username: faker.internet.userName(),
     aboutMe: faker.lorem.paragraph(),
-    speaks: [faker.random.locale()],
+    speaks: [faker.location.countryCode()],
     images: {
       profile: {
         url: faker.internet.avatar(),

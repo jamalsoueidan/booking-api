@@ -27,8 +27,8 @@ export const createLocation = (
   const location = new LocationModel(getLocationObject(filter));
   location.geoLocation.type = "Point";
   location.geoLocation.coordinates = [
-    parseFloat(faker.address.latitude()),
-    parseFloat(faker.address.longitude()),
+    faker.location.latitude(),
+    faker.location.longitude(),
   ];
   location.handle = faker.internet.userName();
   return location.save();

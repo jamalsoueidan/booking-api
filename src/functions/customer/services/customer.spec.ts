@@ -25,7 +25,7 @@ describe("CustomerService", () => {
       },
     },
     locations: [],
-    speaks: [faker.random.locale()],
+    speaks: [faker.location.countryCode()],
     isBusiness: true,
   };
 

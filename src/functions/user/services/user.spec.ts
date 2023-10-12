@@ -26,7 +26,7 @@ describe("UserService", () => {
       fullname: faker.name.fullName(),
       shortDescription: faker.lorem.paragraph(),
       aboutMe: faker.lorem.paragraph(),
-      speaks: [faker.random.locale()],
+      speaks: [faker.location.countryCode()],
       active: true,
       isBusiness: true,
       locations: [],
