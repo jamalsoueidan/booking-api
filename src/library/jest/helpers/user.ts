@@ -5,9 +5,9 @@ import { User } from "~/functions/user";
 export const DEFAULT_GROUP = "all";
 
 export const getUserObject = (props: Partial<User> = {}) => ({
-  title: faker.name.jobTitle(),
+  title: faker.person.jobTitle(),
   username: faker.internet.userName().toLowerCase(),
-  fullname: faker.name.fullName(),
+  fullname: faker.person.fullName(),
   social: {
     instagram: faker.internet.url(),
     youtube: faker.internet.url(),

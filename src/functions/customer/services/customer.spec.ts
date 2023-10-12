@@ -11,7 +11,7 @@ require("~/library/jest/mongoose/mongodb.jest");
 describe("CustomerService", () => {
   const userData: CustomerServiceUpsertBody = {
     username: faker.internet.userName(),
-    fullname: faker.name.fullName(),
+    fullname: faker.person.fullName(),
     social: {
       instagram: faker.internet.url(),
       youtube: faker.internet.url(),
@@ -31,7 +31,7 @@ describe("CustomerService", () => {
 
   it("Should create a user", async () => {
     const newUser = await CustomerServiceUpsert(
-      { customerId: faker.datatype.number() },
+      { customerId: faker.number.int() },
       userData
     );
 
@@ -40,7 +40,7 @@ describe("CustomerService", () => {
 
   it("Should get the customer by customerId", async () => {
     const newUser = await CustomerServiceUpsert(
-      { customerId: faker.datatype.number() },
+      { customerId: faker.number.int() },
       userData
     );
 
@@ -53,7 +53,7 @@ describe("CustomerService", () => {
 
   it("Should check if customer exist", async () => {
     const newUser = await CustomerServiceUpsert(
-      { customerId: faker.datatype.number() },
+      { customerId: faker.number.int() },
       userData
     );
 
@@ -64,14 +64,14 @@ describe("CustomerService", () => {
   });
 
   it("Should update a user by customerId", async () => {
-    const filter = { customerId: faker.datatype.number() };
+    const filter = { customerId: faker.number.int() };
     // Create a user first
     await CustomerServiceUpsert(filter, userData);
 
     // Update the user
     const updatedData: CustomerServiceUpsertBody = {
       ...userData,
-      fullname: faker.name.fullName(),
+      fullname: faker.person.fullName(),
     };
 
     const updatedUser = await CustomerServiceUpsert(filter, updatedData);

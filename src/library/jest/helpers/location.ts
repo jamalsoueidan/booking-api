@@ -10,14 +10,14 @@ import { User } from "~/functions/user";
 export const DEFAULT_GROUP = "all";
 
 export const getLocationObject = (props: Partial<Location> = {}): Location => ({
-  name: faker.name.firstName(),
-  customerId: faker.datatype.number({ min: 1, max: 100000 }),
+  name: faker.person.firstName(),
+  customerId: faker.number.int({ min: 1, max: 100000 }),
   locationType: LocationTypes.ORIGIN,
   originType: LocationOriginTypes.COMMERCIAL,
   fullAddress: faker.address.streetAddress(),
-  distanceHourlyRate: faker.datatype.number({ min: 1, max: 5 }),
-  fixedRatePerKm: faker.datatype.number({ min: 1, max: 5 }),
-  minDistanceForFree: faker.datatype.number({ min: 1, max: 5 }),
+  distanceHourlyRate: faker.number.int({ min: 1, max: 5 }),
+  fixedRatePerKm: faker.number.int({ min: 1, max: 5 }),
+  minDistanceForFree: faker.number.int({ min: 1, max: 5 }),
   ...props,
 });
 

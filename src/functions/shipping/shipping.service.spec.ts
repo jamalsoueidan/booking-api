@@ -18,15 +18,15 @@ describe("ShippingService", () => {
   it("should correctly calculate the cost", () => {
     const lookup = {
       origin: {
-        name: faker.name.firstName(),
-        customerId: faker.datatype.number({ min: 1, max: 100000 }),
+        name: faker.person.firstName(),
+        customerId: faker.number.int({ min: 1, max: 100000 }),
         fullAddress: faker.address.streetAddress(),
         distanceHourlyRate: 100,
         fixedRatePerKm: 20,
         minDistanceForFree: 5,
       },
       destination: {
-        name: faker.name.firstName(),
+        name: faker.person.firstName(),
         fullAddress: faker.address.streetAddress(),
       },
       duration: {
@@ -44,15 +44,15 @@ describe("ShippingService", () => {
   it("should calculate destination in available slots", async () => {
     const lookup = await LookupModel.create({
       origin: {
-        name: faker.name.firstName(),
-        customerId: faker.datatype.number({ min: 1, max: 100000 }),
+        name: faker.person.firstName(),
+        customerId: faker.number.int({ min: 1, max: 100000 }),
         fullAddress: faker.address.streetAddress(),
         distanceHourlyRate: 100,
         fixedRatePerKm: 20,
         minDistanceForFree: 5,
       },
       destination: {
-        name: faker.name.firstName(),
+        name: faker.person.firstName(),
         fullAddress: faker.address.streetAddress(),
       },
       duration: {

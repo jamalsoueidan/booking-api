@@ -22,15 +22,15 @@ jest.mock("~/functions/lookup", () => {
     LookupServiceCreate: jest.fn().mockResolvedValueOnce({
       _id: new mongoose.Types.ObjectId(),
       origin: {
-        name: faker.name.firstName(),
-        customerId: faker.datatype.number({ min: 1, max: 100000 }),
+        name: faker.person.firstName(),
+        customerId: faker.number.int({ min: 1, max: 100000 }),
         fullAddress: faker.address.streetAddress(),
-        distanceHourlyRate: faker.datatype.number({ min: 1, max: 5 }),
-        fixedRatePerKm: faker.datatype.number({ min: 1, max: 5 }),
-        minDistanceForFree: faker.datatype.number({ min: 1, max: 5 }),
+        distanceHourlyRate: faker.number.int({ min: 1, max: 5 }),
+        fixedRatePerKm: faker.number.int({ min: 1, max: 5 }),
+        minDistanceForFree: faker.number.int({ min: 1, max: 5 }),
       },
       destination: {
-        name: faker.name.firstName(),
+        name: faker.person.firstName(),
         fullAddress: faker.address.streetAddress(),
       },
       duration: {

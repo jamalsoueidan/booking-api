@@ -19,7 +19,7 @@ describe("CustomerControllerUpdate", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
-  const query = { customerId: faker.datatype.number() };
+  const query = { customerId: faker.number.int() };
   const body: CustomerControllerUpdateBody = {
     yearsExperience: 1,
     fullname: "test",
