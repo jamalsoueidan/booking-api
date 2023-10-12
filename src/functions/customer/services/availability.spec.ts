@@ -24,14 +24,14 @@ jest.mock("~/functions/lookup", () => {
       origin: {
         name: faker.person.firstName(),
         customerId: faker.number.int({ min: 1, max: 100000 }),
-        fullAddress: faker.address.streetAddress(),
+        fullAddress: faker.location.streetAddress(),
         distanceHourlyRate: faker.number.int({ min: 1, max: 5 }),
         fixedRatePerKm: faker.number.int({ min: 1, max: 5 }),
         minDistanceForFree: faker.number.int({ min: 1, max: 5 }),
       },
       destination: {
         name: faker.person.firstName(),
-        fullAddress: faker.address.streetAddress(),
+        fullAddress: faker.location.streetAddress(),
       },
       duration: {
         text: "14 mins",

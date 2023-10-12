@@ -11,7 +11,7 @@ jest.mock("~/functions/location/services", () => {
         _id: new mongoose.Types.ObjectId(),
         name: faker.person.firstName(),
         customerId: faker.number.int({ min: 1, max: 100000 }),
-        fullAddress: faker.address.streetAddress(),
+        fullAddress: faker.location.streetAddress(),
         distanceHourlyRate: faker.number.int({ min: 1, max: 5 }),
         fixedRatePerKm: faker.number.int({ min: 1, max: 5 }),
         minDistanceForFree: faker.number.int({ min: 1, max: 5 }),

@@ -14,7 +14,7 @@ export const getLocationObject = (props: Partial<Location> = {}): Location => ({
   customerId: faker.number.int({ min: 1, max: 100000 }),
   locationType: LocationTypes.ORIGIN,
   originType: LocationOriginTypes.COMMERCIAL,
-  fullAddress: faker.address.streetAddress(),
+  fullAddress: faker.location.streetAddress(),
   distanceHourlyRate: faker.number.int({ min: 1, max: 5 }),
   fixedRatePerKm: faker.number.int({ min: 1, max: 5 }),
   minDistanceForFree: faker.number.int({ min: 1, max: 5 }),
