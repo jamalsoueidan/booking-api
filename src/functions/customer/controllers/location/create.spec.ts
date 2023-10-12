@@ -72,6 +72,6 @@ describe("CustomerLocationControllerCreate", () => {
     expect(res.jsonBody?.payload.locationType).toEqual(
       LocationTypes.DESTINATION
     );
-    expect(res.jsonBody?.payload.minDistanceForFree).toBeDefined();
+    expect(res.jsonBody?.payload.distanceForFree).toBeDefined();
   });
 });

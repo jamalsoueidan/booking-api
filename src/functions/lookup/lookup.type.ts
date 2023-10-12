@@ -11,7 +11,7 @@ export const LookupZodSchema = z.object({
     customerId: GidFormat,
     name: z.string(),
     fullAddress: z.string(),
-    minDistanceForFree: NumberOrStringType,
+    distanceForFree: NumberOrStringType,
     distanceHourlyRate: NumberOrStringType,
     fixedRatePerKm: NumberOrStringType,
   }),

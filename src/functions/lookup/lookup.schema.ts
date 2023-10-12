@@ -28,7 +28,7 @@ export const LookupMongooseSchema = new mongoose.Schema<
         type: String,
         required: true,
       },
-      minDistanceForFree: {
+      distanceForFree: {
         type: Number,
         default: 0,
       },

@@ -62,7 +62,7 @@ const originData: Location = {
   customerId,
   distanceHourlyRate: 1,
   fixedRatePerKm: 10,
-  minDistanceForFree: 10,
+  distanceForFree: 10,
 };
 
 const destinationData: Location = {
@@ -72,7 +72,7 @@ const destinationData: Location = {
   originType: LocationOriginTypes.COMMERCIAL,
   distanceHourlyRate: 1,
   fixedRatePerKm: 10,
-  minDistanceForFree: 10,
+  distanceForFree: 10,
   customerId,
 };
 
@@ -116,7 +116,7 @@ describe("LocationService", () => {
         customerId: 1,
         distanceHourlyRate: 1,
         fixedRatePerKm: 10,
-        minDistanceForFree: 10,
+        distanceForFree: 10,
       })
     );
   });
@@ -196,7 +196,7 @@ describe("LocationService", () => {
         name: "test",
         distanceHourlyRate: 5,
         fixedRatePerKm: 5,
-        minDistanceForFree: 5,
+        distanceForFree: 5,
       }
     );
 
@@ -206,7 +206,7 @@ describe("LocationService", () => {
         customerId: 1,
         distanceHourlyRate: 5,
         fixedRatePerKm: 5,
-        minDistanceForFree: 5,
+        distanceForFree: 5,
       })
     );
   });

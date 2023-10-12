@@ -16,9 +16,12 @@ export const LocationZodSchema = z.object({
   name: z.string(),
   fullAddress: z.string(),
   originType: z.nativeEnum(LocationOriginTypes),
-  minDistanceForFree: NumberOrStringType,
+  distanceForFree: NumberOrStringType,
   distanceHourlyRate: NumberOrStringType,
   fixedRatePerKm: NumberOrStringType,
+  minDriveDistance: NumberOrStringType,
+  maxDriveDistance: NumberOrStringType,
+  startFee: NumberOrStringType,
 });
 
 export type Location = z.infer<typeof LocationZodSchema>;

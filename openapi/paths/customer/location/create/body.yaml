@@ -10,7 +10,7 @@ properties:
   originType:
     type: string
     enum: [home, commercial]
-  minDistanceForFree:
+  distanceForFree:
     oneOf:
       - type: number
       - type: string
@@ -28,6 +28,6 @@ required:
   - fullAddress
   - locationType
   - originType
-  - minDistanceForFree
+  - distanceForFree
   - distanceHourlyRate
   - fixedRatePerKm

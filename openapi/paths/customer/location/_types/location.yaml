@@ -28,7 +28,7 @@ properties:
         type: array
         items:
           type: number
-  minDistanceForFree:
+  distanceForFree:
     type: number
   distanceHourlyRate:
     type: number
@@ -43,6 +43,6 @@ required:
   - name
   - fullAddress
   - geoLocation
-  - minDistanceForFree
+  - distanceForFree
   - distanceHourlyRate
   - fixedRatePerKm

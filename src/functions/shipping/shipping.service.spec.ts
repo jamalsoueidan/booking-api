@@ -23,7 +23,7 @@ describe("ShippingService", () => {
         fullAddress: faker.address.streetAddress(),
         distanceHourlyRate: 100,
         fixedRatePerKm: 20,
-        minDistanceForFree: 5,
+        distanceForFree: 5,
       },
       destination: {
         name: faker.name.firstName(),
@@ -49,7 +49,7 @@ describe("ShippingService", () => {
         fullAddress: faker.address.streetAddress(),
         distanceHourlyRate: 100,
         fixedRatePerKm: 20,
-        minDistanceForFree: 5,
+        distanceForFree: 5,
       },
       destination: {
         name: faker.name.firstName(),
@@ -182,7 +182,7 @@ describe("ShippingService", () => {
       customerId: 1,
       distanceHourlyRate: 200,
       fixedRatePerKm: 2,
-      minDistanceForFree: 0,
+      distanceForFree: 0,
     });
 
     (LocationServiceLookup as jest.Mock).mockResolvedValue({

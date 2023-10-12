@@ -8,6 +8,7 @@ import {
 
 import * as LocationService from "~/functions/location/services/location.service";
 import { createUser } from "~/library/jest/helpers";
+import { getLocationObject } from "~/library/jest/helpers/location";
 import { CustomerServiceGet } from "./customer";
 import {
   CustomerLocationServiceCreate,
@@ -23,38 +24,23 @@ require("~/library/jest/mongoose/mongodb.jest");
 describe("CustomerLocationService", () => {
   const customerId = faker.datatype.number();
 
-  const location1: Location = {
-    name: "Falafel 1",
-    fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
+  const location1: Location = getLocationObject({
     locationType: LocationTypes.ORIGIN,
     originType: LocationOriginTypes.COMMERCIAL,
-    distanceHourlyRate: 0,
-    fixedRatePerKm: 0,
-    minDistanceForFree: 0,
     customerId,
-  };
+  });
 
-  const location2: Location = {
-    name: "Falafel 2",
-    fullAddress: "Dortesvej 45 1, 8220 Brabrand",
+  const location2: Location = getLocationObject({
     locationType: LocationTypes.ORIGIN,
     originType: LocationOriginTypes.COMMERCIAL,
-    distanceHourlyRate: 0,
-    fixedRatePerKm: 0,
-    minDistanceForFree: 0,
     customerId,
-  };
+  });
 
-  const location3: Location = {
-    name: "test",
-    fullAddress: "Dortesvej 45 1, 8220 Brabrand",
+  const location3: Location = getLocationObject({
     locationType: LocationTypes.DESTINATION,
     originType: LocationOriginTypes.COMMERCIAL,
-    distanceHourlyRate: 1,
-    fixedRatePerKm: 10,
-    minDistanceForFree: 10,
     customerId,
-  };
+  });
 
   beforeEach(() => {
     return createUser({ customerId });

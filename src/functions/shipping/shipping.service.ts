@@ -12,10 +12,10 @@ export const ShippingServiceCalculateCost = ({
   distance: { value: distance },
   origin,
 }: Omit<Lookup, "_id" | "destination">) => {
-  const { minDistanceForFree, fixedRatePerKm, distanceHourlyRate } = origin;
+  const { distanceForFree, fixedRatePerKm, distanceHourlyRate } = origin;
 
   // Calculate the chargeable distance.
-  const chargeableDistance = Math.max(0, distance - minDistanceForFree);
+  const chargeableDistance = Math.max(0, distance - distanceForFree);
 
   // Calculate the cost for the distance.
   const distanceCost = chargeableDistance * fixedRatePerKm;

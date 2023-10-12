@@ -27,7 +27,7 @@ jest.mock("~/functions/lookup", () => {
         fullAddress: faker.address.streetAddress(),
         distanceHourlyRate: faker.datatype.number({ min: 1, max: 5 }),
         fixedRatePerKm: faker.datatype.number({ min: 1, max: 5 }),
-        minDistanceForFree: faker.datatype.number({ min: 1, max: 5 }),
+        distanceForFree: faker.datatype.number({ min: 1, max: 5 }),
       },
       destination: {
         name: faker.name.firstName(),

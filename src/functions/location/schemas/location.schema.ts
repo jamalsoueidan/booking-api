@@ -57,7 +57,7 @@ export const LocationMongooseSchema = new mongoose.Schema<
       default: LocationOriginTypes.COMMERCIAL,
       required: true,
     },
-    minDistanceForFree: {
+    distanceForFree: {
       type: Number,
       default: 0,
     },
@@ -66,6 +66,18 @@ export const LocationMongooseSchema = new mongoose.Schema<
       default: 0,
     },
     fixedRatePerKm: {
+      type: Number,
+      default: 0,
+    },
+    minDriveDistance: {
+      type: Number,
+      default: 0,
+    },
+    maxDriveDistance: {
+      type: Number,
+      default: 500,
+    },
+    startFee: {
       type: Number,
       default: 0,
     },

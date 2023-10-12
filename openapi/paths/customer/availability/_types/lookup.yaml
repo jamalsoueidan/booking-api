@@ -12,7 +12,7 @@ properties:
         type: string
       fullAddress:
         type: string
-      minDistanceForFree:
+      distanceForFree:
         type: string
       distanceHourlyRate:
         type: string
