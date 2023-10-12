@@ -21,7 +21,7 @@ import {
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerLocationService", () => {
-  const customerId = faker.datatype.number();
+  const customerId = faker.number.int();
 
   const location1: Location = {
     name: "Falafel 1",

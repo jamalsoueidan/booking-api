@@ -21,12 +21,12 @@ describe("CustomerControllerUpsert", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
-  const query = { customerId: faker.datatype.number() };
+  const query = { customerId: faker.number.int() };
   const body: CustomerControllerUpsertBody = {
     yearsExperience: 1,
     username: faker.internet.userName(),
     aboutMe: faker.lorem.paragraph(),
-    speaks: [faker.random.locale()],
+    speaks: [faker.location.countryCode()],
     images: {
       profile: {
         url: faker.internet.avatar(),

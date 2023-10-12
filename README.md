@@ -57,5 +57,3 @@ let responseJson = pm.response.json();
 let token = responseJson.payload.token;
 pm.environment.set("bearerToken", token);
 ```
-
-.
