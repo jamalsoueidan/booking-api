@@ -6,9 +6,11 @@
     "~": "dist/src"
   },
   "scripts": {
+    "prebuild": "npm run clean",
     "build": "tsc",
     "watch": "tsc -w",
-    "prestart": "npm run build",
+    "clean": "rimraf dist",
+    "prestart": "npm run clean && npm run build",
     "start": "func start",
     "test": "jest --verbose",
     "bundle": "npx swagger-cli bundle openapi/openapi.yaml -t yaml -o docs/openapi.yaml",
@@ -41,7 +43,8 @@
     "mongodb-memory-server": "^9.0.0",
     "orval": "^6.18.1",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "rimraf": "^5.0.0"
   },
   "main": "dist/src/functions/*.js"
 }

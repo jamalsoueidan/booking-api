@@ -29,13 +29,6 @@ app.http("usersProfessions", {
   handler: UserControllerProfessions,
 });
 
-app.http("usersProfessions", {
-  methods: ["GET"],
-  authLevel: "anonymous",
-  route: "users/professions",
-  handler: UserControllerProfessions,
-});
-
 app.http("userScheduleGet", {
   methods: ["GET"],
   authLevel: "anonymous",
