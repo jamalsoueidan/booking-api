@@ -1,13 +1,14 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { CustomerScheduleServiceCreate } from "~/functions/customer/services";
+
 import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
 
-import { CustomerProductServiceUpsert } from "~/functions/customer/services";
 import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
+import { CustomerProductServiceUpsert } from "../../services/product";
+import { CustomerScheduleServiceCreate } from "../../services/schedule";
 import {
   CustomerProductControllerGet,
   CustomerProductControllerGetRequest,

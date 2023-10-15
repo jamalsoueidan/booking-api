@@ -9,7 +9,7 @@ import {
 import { utcToZonedTime } from "date-fns-tz";
 import { enUS } from "date-fns/locale";
 import { Availability } from "~/functions/availability";
-import { CustomerScheduleServiceGetWithCustomer } from "~/functions/customer/services";
+import { CustomerScheduleServiceGetWithCustomer } from "~/functions/customer/services/schedule";
 import { LookupServiceCreate } from "~/functions/lookup";
 import { calculateMaxNoticeAndMinBookingPeriod } from "~/library/availability";
 import { generateEndDate, generateStartDate } from "./start-end-date";

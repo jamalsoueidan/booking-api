@@ -12,7 +12,7 @@ export type Availability = {
       productId: number;
       variantId: number;
       from: Date;
-      to: Date;
+      ["to"]: any;
       breakTime: number;
       duration: number;
     }[];
