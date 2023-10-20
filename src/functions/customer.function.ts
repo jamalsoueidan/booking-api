@@ -3,6 +3,7 @@ import { CustomerProductsControllerList } from "./customer/controllers/products/
 
 import { app } from "@azure/functions";
 
+import { CustomerAvailabilityControllerGet } from "./customer/controllers/availability";
 import {
   CustomerBookingControllerGet,
   CustomerBookingControllerList,
@@ -94,12 +95,12 @@ app.http("customerProductsList", {
   handler: CustomerProductsControllerList,
 });
 
-/*app.http("customerAvailabilityGet", {
+app.http("customerAvailabilityGet", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/availability/{locationId?}/get",
   handler: CustomerAvailabilityControllerGet,
-});*/
+});
 
 app.http("customerProductUpsert", {
   methods: ["PUT"],

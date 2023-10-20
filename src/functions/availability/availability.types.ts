@@ -1,5 +1,5 @@
-import { Lookup } from "../lookup";
-import { User } from "../user";
+import { Lookup } from "../lookup/lookup.type";
+import { User } from "../user/user.types";
 
 export type Availability = {
   date: Date;

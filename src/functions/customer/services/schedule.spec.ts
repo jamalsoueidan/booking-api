@@ -6,6 +6,7 @@ import {
   CustomerScheduleServiceDestroy,
   CustomerScheduleServiceGet,
   CustomerScheduleServiceGetWithCustomer,
+  CustomerScheduleServiceGetWithCustomerResponse,
   CustomerScheduleServiceList,
   CustomerScheduleServiceUpdate,
 } from "./schedule";
@@ -155,10 +156,11 @@ describe("CustomerScheduleService", () => {
       2
     );
 
-    const schedule = await CustomerScheduleServiceGetWithCustomer({
-      customerId,
-      productIds,
-    });
+    const schedule: CustomerScheduleServiceGetWithCustomerResponse =
+      await CustomerScheduleServiceGetWithCustomer({
+        customerId,
+        productIds,
+      });
 
     schedule.products.forEach((product) => {
       expect(productIds).toContain(product.productId);
