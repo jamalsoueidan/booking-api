@@ -1,5 +1,4 @@
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
-import { User } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
 
 type CustomerScheduleServiceCreateBody = Pick<Schedule, "name" | "customerId"> &
@@ -108,12 +107,16 @@ export type CustomerScheduleServiceGetWithCustomerProps = {
   productIds: Array<ScheduleProduct["productId"]>;
 };
 
+export type CustomerScheduleServiceGetWithCustomerResponse = Schedule & {
+  customer: {
+    fullname: string;
+  };
+};
+
 export const CustomerScheduleServiceGetWithCustomer = async (
   props: CustomerScheduleServiceGetWithCustomerProps
 ) => {
-  const schedules = await ScheduleModel.aggregate<
-    Schedule & { customer: Pick<User, "fullname"> }
-  >([
+  const schedules = await ScheduleModel.aggregate([
     {
       $match: {
         customerId: props.customerId,

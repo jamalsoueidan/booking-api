@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { UserZodSchema } from "~/functions/user";
 import { _ } from "~/library/handler";
-import { CustomerServiceGet } from "../../services";
+import { CustomerServiceGet } from "../../services/customer";
 
 export type CustomerControllerGetRequest = {
   query: z.infer<typeof CustomerServiceGetSchema>;

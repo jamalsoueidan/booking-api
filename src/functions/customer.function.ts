@@ -2,28 +2,35 @@ import "module-alias/register";
 import { CustomerProductsControllerList } from "./customer/controllers/products/list";
 
 import { app } from "@azure/functions";
+
+import { CustomerAvailabilityControllerGet } from "./customer/controllers/availability";
 import {
   CustomerBookingControllerGet,
   CustomerBookingControllerList,
+} from "./customer/controllers/booking";
+import {
   CustomerControllerGet,
   CustomerControllerIsBusiness,
   CustomerControllerStatus,
   CustomerControllerUpdate,
   CustomerControllerUpsert,
+} from "./customer/controllers/customer";
+import {
   CustomerLocationControllerAdd,
   CustomerLocationControllerCreate,
   CustomerLocationControllerGetAll,
+  CustomerLocationControllerGetAllOrigins,
   CustomerLocationControllerGetOne,
   CustomerLocationControllerRemove,
   CustomerLocationControllerSetDefault,
   CustomerLocationControllerUpdate,
+} from "./customer/controllers/location";
+import {
   CustomerProductControllerDestroy,
   CustomerProductControllerGet,
   CustomerProductControllerUpsert,
-  CustomerProductsControllerListIds,
-} from "./customer";
-import { CustomerAvailabilityControllerGet } from "./customer/controllers/availability";
-import { CustomerLocationControllerGetAllOrigins } from "./customer/controllers/location/get-all-origins";
+} from "./customer/controllers/product";
+import { CustomerProductsControllerListIds } from "./customer/controllers/products";
 import {
   CustomerScheduleControllerCreate,
   CustomerScheduleControllerDestroy,

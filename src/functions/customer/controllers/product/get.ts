@@ -1,10 +1,11 @@
 import { z } from "zod";
-import { CustomerProductServiceGet } from "~/functions/customer/services";
+
 import {
   ScheduleProductZodSchema,
   ScheduleZodSchema,
 } from "~/functions/schedule/schedule.types";
 import { _ } from "~/library/handler";
+import { CustomerProductServiceGet } from "../../services/product";
 
 export type CustomerProductControllerGetRequest = {
   query: z.infer<typeof CustomerProductControllerGetQuerySchema>;

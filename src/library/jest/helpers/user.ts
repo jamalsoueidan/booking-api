@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { CustomerServiceUpsert } from "~/functions/customer";
+import { CustomerServiceUpsert } from "~/functions/customer/services/customer";
 import { User } from "~/functions/user";
 
 export const DEFAULT_GROUP = "all";

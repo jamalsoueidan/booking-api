@@ -1,4 +1,5 @@
 import { app } from "@azure/functions";
+import "module-alias/register";
 import {
   LocationControllerGetCoordinates,
   LocationControllerGetTravelTime,

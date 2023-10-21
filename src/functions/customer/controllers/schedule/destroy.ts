@@ -1,7 +1,8 @@
 import { z } from "zod";
-import { CustomerScheduleServiceDestroy } from "~/functions/customer/services";
+
 import { ScheduleZodSchema } from "~/functions/schedule/schedule.types";
 import { _ } from "~/library/handler";
+import { CustomerScheduleServiceDestroy } from "../../services/schedule";
 
 export type CustomerScheduleControllerDestroyRequest = {
   query: z.infer<typeof CustomerScheduleControllerDestroySchema>;

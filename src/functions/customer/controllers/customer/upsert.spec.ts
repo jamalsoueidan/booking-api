@@ -7,7 +7,8 @@ import {
 } from "~/library/jest/azure";
 
 import { Professions } from "~/functions/user";
-import { CustomerServiceUpsert } from "../../services";
+
+import { CustomerServiceUpsert } from "../../services/customer";
 import {
   CustomerControllerUpsert,
   CustomerControllerUpsertBody,
