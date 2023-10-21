@@ -9,13 +9,14 @@ import {
 import { utcToZonedTime } from "date-fns-tz";
 import { enUS } from "date-fns/locale";
 import { Availability } from "~/functions/availability";
+import { CustomerScheduleServiceGetWithCustomerResponse } from "~/functions/customer/services/schedule";
 import { LookupServiceCreate } from "~/functions/lookup";
 import { calculateMaxNoticeAndMinBookingPeriod } from "./calculate-max-notice-and-min-booking-period";
 
 import { generateEndDate, generateStartDate } from "./start-end-date";
 
 export type GenerateAvailabilityProps = {
-  schedule: any;
+  schedule: CustomerScheduleServiceGetWithCustomerResponse;
   lookup?: Awaited<ReturnType<typeof LookupServiceCreate>>;
   startDate: string;
 };
