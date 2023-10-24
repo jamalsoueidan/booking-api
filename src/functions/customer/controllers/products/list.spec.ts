@@ -9,7 +9,7 @@ import {
 } from "~/library/jest/azure";
 
 import { CustomerProductServiceUpsert } from "../../services/product";
-import { CustomerScheduleServiceCreate } from "../../services/schedule";
+import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
   CustomerProductsControllerList,
   CustomerProductsControllerListRequest,

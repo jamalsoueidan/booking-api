@@ -12,10 +12,8 @@ import {
   CustomerProductsServiceList,
   CustomerProductsServiceListIds,
 } from "./product";
-import {
-  CustomerScheduleServiceCreate,
-  CustomerScheduleServiceGet,
-} from "./schedule";
+import { CustomerScheduleServiceCreate } from "./schedule/create";
+import { CustomerScheduleServiceGet } from "./schedule/get";
 
 require("~/library/jest/mongoose/mongodb.jest");
 

@@ -9,7 +9,7 @@ import {
 import { omitObjectIdProps } from "~/library/jest/helpers";
 
 import { CustomerProductServiceUpsert } from "../../services/product";
-import { CustomerScheduleServiceCreate } from "../../services/schedule";
+import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
   CustomerProductControllerDestroy,
   CustomerProductControllerDestroyRequest,

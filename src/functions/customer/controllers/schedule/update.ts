@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { ScheduleZodSchema } from "~/functions/schedule/schedule.types";
 import { _ } from "~/library/handler";
-import { CustomerScheduleServiceUpdate } from "../../services/schedule";
+import { CustomerScheduleServiceUpdate } from "../../services/schedule/update";
 
 export type CustomerScheduleControllerUpdateRequest = {
   query: z.infer<typeof CustomerScheduleControllerUpdateQuerySchema>;
