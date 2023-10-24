@@ -7,7 +7,7 @@ import {
 } from "~/library/jest/azure";
 
 import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
-import { CustomerScheduleServiceCreate } from "../../services/schedule";
+import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
   CustomerProductControllerUpsert,
   CustomerProductControllerUpsertRequest,

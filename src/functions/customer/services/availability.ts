@@ -6,7 +6,7 @@ import { findStartAndEndDate } from "~/library/availability/find-start-end-date-
 import { generateAvailability } from "~/library/availability/generate-availability";
 import { removeBookedSlots } from "~/library/availability/remove-booked-slots";
 import { CustomerBookingServiceGetBooked } from "./booking";
-import { CustomerScheduleServiceGetWithCustomer } from "./schedule";
+import { CustomerScheduleServiceGetWithCustomer } from "./schedule/get-with-customer";
 
 export type CustomerAvailabilityServiceGetProps = {
   customerId: Schedule["customerId"];

@@ -5,7 +5,7 @@ import {
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
-import { CustomerScheduleServiceCreate } from "../../services/schedule";
+import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
   CustomerScheduleControllerGet,
   CustomerScheduleControllerGetRequest,

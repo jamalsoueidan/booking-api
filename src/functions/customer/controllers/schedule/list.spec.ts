@@ -6,7 +6,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
-import { CustomerScheduleServiceCreate } from "../../services/schedule";
+import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
   CustomerScheduleControllerList,
   CustomerScheduleControllerListRequest,

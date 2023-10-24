@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule";
+import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { LocationTypes } from "~/functions/location";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
