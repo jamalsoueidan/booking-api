@@ -38,8 +38,8 @@ export const getScheduleObject = (
   }));
 
   return {
-    name: faker.random.word(),
-    customerId: faker.datatype.number(),
+    name: faker.word.sample(),
+    customerId: faker.number.int(),
     slots,
     products,
     ...props,

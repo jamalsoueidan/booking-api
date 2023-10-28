@@ -5,7 +5,7 @@ import {
 } from "~/functions/schedule/schedule.types";
 
 import { _ } from "~/library/handler";
-import { CustomerProductServiceUpsert } from "../../services";
+import { CustomerProductServiceUpsert } from "../../services/product";
 
 export type CustomerProductControllerUpsertRequest = {
   query: z.infer<typeof CustomerProductControllerUpsertQuerySchema>;

@@ -1,5 +1,6 @@
 import { FilterQuery } from "mongoose";
-import { ILocationDocument } from "~/functions/location";
+import { ILocationDocument } from "~/functions/location/schemas/location.schema";
+
 import { NotFoundError } from "~/library/handler";
 import { UserModel } from "../user.model";
 import { IUserDocument } from "../user.schema";

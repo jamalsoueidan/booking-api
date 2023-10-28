@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { UserZodSchema } from "~/functions/user";
 import { _ } from "~/library/handler";
-import { CustomerServiceUpsert } from "../../services";
+import { CustomerServiceUpsert } from "../../services/customer";
 
 export type CustomerControllerUpsertRequest = {
   query: CustomerControllerUpsertQuery;

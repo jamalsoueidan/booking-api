@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { LocationZodSchema } from "~/functions/location";
 import { _ } from "~/library/handler";
-import { CustomerLocationServiceGetAllOrigins } from "../../services";
+import { CustomerLocationServiceGetAllOrigins } from "../../services/location";
 
 export type CustomerLocationControllerGetAllOriginsRequest = {
   query: z.infer<typeof CustomerLocationServiceQuerySchema>;

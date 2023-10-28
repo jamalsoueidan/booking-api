@@ -4,6 +4,7 @@ import {
   InvocationContext,
   app,
 } from "@azure/functions";
+import "module-alias/register";
 import { Professions, Specialties } from "./user";
 
 async function MetaProfessions(

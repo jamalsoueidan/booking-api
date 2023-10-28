@@ -1,8 +1,5 @@
 import mongoose from "mongoose";
-import {
-  CustomerScheduleServiceCreate,
-  CustomerScheduleServiceGet,
-} from "~/functions/customer/services";
+
 import { LocationTypes } from "~/functions/location";
 import { TimeUnit } from "~/functions/schedule";
 import { omitObjectIdProps } from "~/library/jest/helpers";
@@ -15,6 +12,8 @@ import {
   CustomerProductsServiceList,
   CustomerProductsServiceListIds,
 } from "./product";
+import { CustomerScheduleServiceCreate } from "./schedule/create";
+import { CustomerScheduleServiceGet } from "./schedule/get";
 
 require("~/library/jest/mongoose/mongodb.jest");
 

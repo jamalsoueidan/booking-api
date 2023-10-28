@@ -16,17 +16,17 @@ require("~/library/jest/mongoose/mongodb.jest");
 describe("UserService", () => {
   it("Should find user", async () => {
     // Create multiple users
-    const filter = { customerId: faker.datatype.number() };
+    const filter = { customerId: faker.number.int() };
     const username = faker.internet.userName();
     // Create a user first
     const userData: CustomerServiceUpsertBody = {
       yearsExperience: 1,
       professions: [Professions.MAKEUP_ARTIST],
       username,
-      fullname: faker.name.fullName(),
+      fullname: faker.person.fullName(),
       shortDescription: faker.lorem.paragraph(),
       aboutMe: faker.lorem.paragraph(),
-      speaks: [faker.random.locale()],
+      speaks: [faker.location.countryCode()],
       active: true,
       isBusiness: true,
       locations: [],
@@ -79,7 +79,7 @@ describe("UserService", () => {
   it("Should get group and count professions by all users", async () => {
     const professions = Object.values(Professions);
 
-    const professionCount = faker.datatype.number({
+    const professionCount = faker.number.int({
       min: 1,
       max: professions.length,
     });

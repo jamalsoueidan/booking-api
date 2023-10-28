@@ -5,7 +5,7 @@ import { UserZodSchema } from "~/functions/user";
 
 import { LocationZodSchema } from "~/functions/location";
 import { NumberOrStringType, StringOrObjectIdType } from "~/library/zod";
-import { CustomerAvailabilityServiceGet } from "../../services";
+import { CustomerAvailabilityServiceGet } from "../../services/availability";
 import { CustomerProductsServiceListIds } from "../../services/product";
 
 export type CustomerAvailabilityControllerGetRequest = {

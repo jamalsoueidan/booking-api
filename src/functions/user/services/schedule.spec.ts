@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { CustomerScheduleServiceCreate } from "~/functions/customer/services";
+import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { LocationTypes } from "~/functions/location";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
@@ -25,7 +25,7 @@ describe("UserScheduleService", () => {
     });
 
     const schedule1 = await CustomerScheduleServiceCreate({
-      name: faker.name.firstName(),
+      name: faker.person.firstName(),
       customerId,
       products: [
         getProductObject({
@@ -52,7 +52,7 @@ describe("UserScheduleService", () => {
     });
 
     const schedule2 = await CustomerScheduleServiceCreate({
-      name: faker.name.firstName(),
+      name: faker.person.firstName(),
       customerId,
       products: [
         getProductObject({
@@ -75,7 +75,7 @@ describe("UserScheduleService", () => {
     });
 
     await CustomerScheduleServiceCreate({
-      name: faker.name.firstName(),
+      name: faker.person.firstName(),
       customerId,
       products: [],
     });
@@ -102,7 +102,7 @@ describe("UserScheduleService", () => {
 
   it("should return none schedules when schedule does not contain any products", async () => {
     await CustomerScheduleServiceCreate({
-      name: faker.name.firstName(),
+      name: faker.person.firstName(),
       customerId,
       products: [],
     });
@@ -122,7 +122,7 @@ describe("UserScheduleService", () => {
     });
 
     const schedule = await CustomerScheduleServiceCreate({
-      name: faker.name.firstName(),
+      name: faker.person.firstName(),
       customerId,
       products: [
         getProductObject({
