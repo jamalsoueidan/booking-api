@@ -1,6 +1,7 @@
 import axios from "axios";
 import { BadError } from "~/library/handler";
 import { createUser, omitObjectIdProps } from "~/library/jest/helpers";
+import { getLocationObject } from "~/library/jest/helpers/location";
 import {
   Location,
   LocationOriginTypes,
@@ -54,7 +55,7 @@ const travelTimeData: GoogleDirectionResponse = {
   status: "ok",
 };
 
-const originData: Location = {
+const originData: Location = getLocationObject({
   name: "Falafel",
   fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
   originType: LocationOriginTypes.COMMERCIAL,
@@ -63,9 +64,9 @@ const originData: Location = {
   distanceHourlyRate: 1,
   fixedRatePerKm: 10,
   distanceForFree: 10,
-};
+});
 
-const destinationData: Location = {
+const destinationData: Location = getLocationObject({
   name: "remote",
   fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
   locationType: LocationTypes.DESTINATION,
@@ -74,7 +75,7 @@ const destinationData: Location = {
   fixedRatePerKm: 10,
   distanceForFree: 10,
   customerId,
-};
+});
 
 describe("LocationService", () => {
   afterEach(() => {

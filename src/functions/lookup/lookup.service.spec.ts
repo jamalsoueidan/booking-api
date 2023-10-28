@@ -1,6 +1,6 @@
-import { faker } from "@faker-js/faker";
 import mongoose from "mongoose";
 import { LocationServiceLookup } from "~/functions/location";
+import { getLocationObject } from "~/library/jest/helpers/location";
 import { LookupServiceCreate } from "./lookup.service";
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -9,12 +9,7 @@ jest.mock("~/functions/location/services", () => {
     LocationServiceLookup: jest.fn().mockResolvedValueOnce({
       location: {
         _id: new mongoose.Types.ObjectId(),
-        name: faker.person.firstName(),
-        customerId: faker.number.int({ min: 1, max: 100000 }),
-        fullAddress: faker.location.streetAddress(),
-        distanceHourlyRate: faker.number.int({ min: 1, max: 5 }),
-        fixedRatePerKm: faker.number.int({ min: 1, max: 5 }),
-        distanceForFree: faker.number.int({ min: 1, max: 5 }),
+        ...getLocationObject(),
       },
       travelTime: {
         duration: { text: "14 mins", value: 831 },
