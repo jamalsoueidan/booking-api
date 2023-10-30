@@ -34,6 +34,18 @@ properties:
     type: number
   fixedRatePerKm:
     type: number
+  minDriveDistance:
+    oneOf:
+      - type: number
+      - type: string
+  maxDriveDistance:
+    oneOf:
+      - type: number
+      - type: string
+  startFee:
+    oneOf:
+      - type: number
+      - type: string
 
 required:
   - _id
@@ -46,3 +58,6 @@ required:
   - distanceForFree
   - distanceHourlyRate
   - fixedRatePerKm
+  - minDriveDistance
+  - maxDriveDistance
+  - startFree

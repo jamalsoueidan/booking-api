@@ -1,28 +1,10 @@
 type: object
 properties:
-  name:
-    type: string
-  fullAddress:
-    type: string
   locationType:
     type: string
     enum: [origin, destination]
-  originType:
-    type: string
-    enum: [home, commercial]
-  distanceForFree:
-    oneOf:
-      - type: number
-      - type: string
-  distanceHourlyRate:
-    oneOf:
-      - type: number
-      - type: string
-  fixedRatePerKm:
-    oneOf:
-      - type: number
-      - type: string
-
+allOf:
+  - $ref: ../_types/location-body.yaml
 required:
   - name
   - fullAddress
@@ -31,3 +13,6 @@ required:
   - distanceForFree
   - distanceHourlyRate
   - fixedRatePerKm
+  - minDriveDistance
+  - maxDriveDistance
+  - startFree
