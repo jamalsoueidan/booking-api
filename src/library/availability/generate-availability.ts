@@ -9,8 +9,8 @@ import {
 import { utcToZonedTime } from "date-fns-tz";
 import { enUS } from "date-fns/locale";
 import { Availability } from "~/functions/availability";
+import { ShippingServiceGet } from "~/functions/shipping/services/get";
 
-import { LookupServiceCreate } from "~/functions/lookup";
 import { calculateMaxNoticeAndMinBookingPeriod } from "./calculate-max-notice-and-min-booking-period";
 
 import { CustomerScheduleServiceGetWithCustomer } from "~/functions/customer/services/schedule/get-with-customer";
@@ -18,14 +18,14 @@ import { generateEndDate, generateStartDate } from "./start-end-date";
 
 export type GenerateAvailabilityProps = {
   schedule: Awaited<ReturnType<typeof CustomerScheduleServiceGetWithCustomer>>;
-  lookup?: Awaited<ReturnType<typeof LookupServiceCreate>>;
+  shipping?: Awaited<ReturnType<typeof ShippingServiceGet>>;
   startDate: string;
 };
 
 // Function to generate availability
 export const generateAvailability = async ({
   schedule,
-  lookup,
+  shipping,
   startDate: start,
 }: GenerateAvailabilityProps) => {
   // Sort products by total time
@@ -74,7 +74,7 @@ export const generateAvailability = async ({
           }
         }
 
-        const totalTraveltime = lookup?.duration.value || 0;
+        const totalTraveltime = shipping?.duration.value || 0;
 
         // Calculate total product time
         const totalProductTime = sortedProducts.reduce(
@@ -127,7 +127,7 @@ export const generateAvailability = async ({
             fullname: schedule.customer.fullname,
             customerId: schedule.customerId,
           },
-          lookup,
+          shipping,
           slots: daySlots,
         });
       }

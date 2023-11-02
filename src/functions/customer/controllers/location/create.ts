@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { LocationZodSchema } from "~/functions/location/location.types";
-import { LocationServiceCreate } from "~/functions/location/services";
+import { LocationServiceCreate } from "~/functions/location/services/create";
+
 import { _ } from "~/library/handler";
 
 export type CustomerLocationControllerCreateRequest = {

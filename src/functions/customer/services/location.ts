@@ -4,13 +4,16 @@ import {
   LocationModel,
   LocationTypes,
 } from "~/functions/location";
+
 import {
   LocationServiceCreate,
   LocationServiceCreateProps,
+} from "~/functions/location/services/create";
+import {
   LocationServiceUpdate,
   LocationUpdateBody,
   LocationUpdateFilterProps,
-} from "~/functions/location/services";
+} from "~/functions/location/services/update";
 import {
   UserModel,
   UserServiceGetLocations,

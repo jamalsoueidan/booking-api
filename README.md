@@ -57,3 +57,8 @@ let responseJson = pm.response.json();
 let token = responseJson.payload.token;
 pm.environment.set("bearerToken", token);
 ```
+
+## Index.ts
+
+We try to NOT export all internal files from index folder file because we would like to mock single methods in jest.
+It's eaiser when not using index file.

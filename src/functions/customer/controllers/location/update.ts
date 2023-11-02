@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { LocationZodSchema } from "~/functions/location/location.types";
-import { LocationServiceUpdate } from "~/functions/location/services";
+import { LocationServiceUpdate } from "~/functions/location/services/update";
+
 import { _ } from "~/library/handler";
 import { StringOrObjectIdType } from "~/library/zod";
 
