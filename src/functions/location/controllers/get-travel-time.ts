@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
-import { LocationServiceGetTravelTime } from "../services/location.service";
+import { LocationServiceGetTravelTime } from "../services/get-travel-time";
 
 export type LocationControllerGetTravelTimeRequest = {
   query: z.infer<typeof LocationServiceGetTravelTimeSchema>;

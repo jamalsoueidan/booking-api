@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
 import { LocationZodSchema } from "../location.types";
-import { LocationServiceGetCoordinates } from "../services/location.service";
+import { LocationServiceGetCoordinates } from "../services/get-coordinates";
 
 export type LocationControllerGetCoordinatesRequest = {
   query: z.infer<typeof LocationServiceGetCoordinatesSchema>;

@@ -1,21 +1,14 @@
 import axios from "axios";
-import { BadError } from "~/library/handler";
-import { createUser, omitObjectIdProps } from "~/library/jest/helpers";
+import { createUser } from "~/library/jest/helpers";
 import { getLocationObject } from "~/library/jest/helpers/location";
 import {
   Location,
   LocationOriginTypes,
   LocationTypes,
 } from "../location.types";
-import {
-  ForsyningResponse,
-  GoogleDirectionResponse,
-  LocationServiceCreate,
-  LocationServiceGetCoordinates,
-  LocationServiceGetTravelTime,
-  LocationServiceUpdate,
-  LocationServiceValidateAddress,
-} from "./location.service";
+import { LocationServiceCreate } from "./create";
+import { ForsyningResponse } from "./get-coordinates";
+import { LocationServiceUpdate } from "./update";
 
 require("~/library/jest/mongoose/mongodb.jest");
 jest.mock("axios");
@@ -34,26 +27,6 @@ const getCoordinatesData: ForsyningResponse = [
     },
   },
 ];
-
-const travelTimeData: GoogleDirectionResponse = {
-  routes: [
-    {
-      legs: [
-        {
-          distance: {
-            text: "0.4 km",
-            value: 400,
-          },
-          duration: {
-            text: "1 min",
-            value: 60,
-          },
-        },
-      ],
-    },
-  ],
-  status: "ok",
-};
 
 const originData: Location = getLocationObject({
   name: "Falafel",
@@ -77,7 +50,7 @@ const destinationData: Location = getLocationObject({
   customerId,
 });
 
-describe("LocationService", () => {
+describe("LocationServiceUpdate", () => {
   afterEach(() => {
     mockedAxios.get.mockClear();
     mockedAxios.get.mockReset();
@@ -85,41 +58,6 @@ describe("LocationService", () => {
 
   beforeEach(() => {
     return createUser({ customerId });
-  });
-
-  it("create should be able to create origin", async () => {
-    mockedAxios.get.mockResolvedValueOnce({
-      data: getCoordinatesData,
-    });
-
-    const response = await LocationServiceCreate(originData);
-
-    expect(omitObjectIdProps(response.toObject())).toEqual(
-      expect.objectContaining({
-        locationType: LocationTypes.ORIGIN,
-        customerId: 1,
-        fullAddress: "Sigridsvej 45, 1. th, 8220 Brabrand",
-        geoLocation: { coordinates: [10.12961271, 56.15563438], type: "Point" },
-      })
-    );
-  });
-
-  it("create should be able to create destination", async () => {
-    mockedAxios.get.mockResolvedValueOnce({
-      data: getCoordinatesData,
-    });
-
-    const response = await LocationServiceCreate(destinationData);
-
-    expect(omitObjectIdProps(response.toObject())).toEqual(
-      expect.objectContaining({
-        locationType: LocationTypes.DESTINATION,
-        customerId: 1,
-        distanceHourlyRate: 1,
-        fixedRatePerKm: 10,
-        distanceForFree: 10,
-      })
-    );
   });
 
   it("update should be able to update origin", async () => {
@@ -210,69 +148,5 @@ describe("LocationService", () => {
         distanceForFree: 5,
       })
     );
-  });
-
-  it("LocationServiceGetCoordinates should respond with coordinates", async () => {
-    mockedAxios.get.mockResolvedValueOnce({
-      data: getCoordinatesData,
-    });
-
-    const response = await LocationServiceGetCoordinates({
-      fullAddress: "Sigridsvej 45 1th, 8220 Brabrand",
-    });
-
-    expect(response).toEqual({
-      fullAddress: "Sigridsvej 45, 1. th, 8220 Brabrand",
-      latitude: 56.15563438,
-      longitude: 10.12961271,
-    });
-  });
-
-  it("LocationServiceGetTravelTime should respond with duration and distance", async () => {
-    mockedAxios.get.mockResolvedValueOnce({
-      data: travelTimeData,
-    });
-
-    const response = await LocationServiceGetTravelTime({
-      origin: "Sigridsvej 45 1, 8220 brabrand",
-      destination: "City Vest, brabrand 8220",
-    });
-
-    expect(response).toEqual({
-      duration: { text: "1 min", value: 1 },
-      distance: { text: "0.4 km", value: 0.4 },
-    });
-  });
-
-  it("LocationServiceValidateAddress should respond with data", async () => {
-    mockedAxios.get.mockResolvedValueOnce({
-      data: getCoordinatesData,
-    });
-
-    const response = await LocationServiceValidateAddress(
-      "Sigridsvej 45 1th, 8220 brabrand"
-    );
-
-    expect(response).toBeDefined();
-  });
-
-  it("LocationServiceValidateAddress should throw error when name or fullAddress already exist", async () => {
-    mockedAxios.get.mockResolvedValueOnce({
-      data: getCoordinatesData,
-    });
-
-    await LocationServiceCreate({
-      ...originData,
-      locationType: LocationTypes.ORIGIN,
-      customerId: 1,
-    });
-
-    mockedAxios.get.mockResolvedValueOnce({
-      data: getCoordinatesData,
-    });
-
-    await expect(
-      LocationServiceValidateAddress(originData.fullAddress)
-    ).rejects.toThrow(BadError);
   });
 });
