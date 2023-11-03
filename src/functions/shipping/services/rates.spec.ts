@@ -1,55 +1,22 @@
 import { faker } from "@faker-js/faker";
-import { LocationServiceLookup } from "~/functions/location";
-import { createLocation } from "~/library/jest/helpers/location";
-import { LookupModel } from "../lookup";
-import {
-  ShippingServiceCalculate,
-  ShippingServiceCalculateCost,
-  ShippingServiceGet,
-} from "./shipping.service";
+
+import mongoose from "mongoose";
+import { ShippingModel } from "../shipping.model";
+import { ShippingServiceRates } from "./rates";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("~/functions/location", () => ({
-  LocationServiceLookup: jest.fn(),
-}));
-
-describe("ShippingService", () => {
-  it("should correctly calculate the cost", () => {
-    const lookup = {
-      origin: {
-        name: faker.person.firstName(),
-        customerId: faker.number.int({ min: 1, max: 100000 }),
-        fullAddress: faker.location.streetAddress(),
-        distanceHourlyRate: 100,
-        fixedRatePerKm: 20,
-        minDistanceForFree: 5,
-      },
-      destination: {
-        name: faker.person.firstName(),
-        fullAddress: faker.location.streetAddress(),
-      },
-      duration: {
-        text: "1 hour",
-        value: 60,
-      },
-      distance: { text: "5.3 km", value: 5.3 },
-    };
-
-    const actualCost = ShippingServiceCalculateCost(lookup);
-
-    expect(actualCost).toEqual(106);
-  });
-
+describe("ShippingServiceRates", () => {
   it("should calculate destination in available slots", async () => {
-    const lookup = await LookupModel.create({
+    const shipping = await ShippingModel.create({
+      location: new mongoose.Types.ObjectId(),
       origin: {
         name: faker.person.firstName(),
         customerId: faker.number.int({ min: 1, max: 100000 }),
         fullAddress: faker.location.streetAddress(),
         distanceHourlyRate: 100,
         fixedRatePerKm: 20,
-        minDistanceForFree: 5,
+        distanceForFree: 5,
       },
       destination: {
         name: faker.person.firstName(),
@@ -59,6 +26,7 @@ describe("ShippingService", () => {
         text: "1 hour",
         value: 60,
       },
+      cost: 100,
       distance: { text: "5.3 km", value: 5.3 },
     });
 
@@ -116,7 +84,7 @@ describe("ShippingService", () => {
             Tid: "10:00",
             Behandler: "hana nielsen",
             Varighed: "1 timer",
-            _lookupId: lookup._id.toString(),
+            _shippingId: shipping._id.toString(),
           },
           product_id: 8022088646930,
           variant_id: 46727191036231,
@@ -161,55 +129,18 @@ describe("ShippingService", () => {
       locale: "da-DK",
     };
 
-    const response = await ShippingServiceGet(shippingBody);
+    const response = await ShippingServiceRates(shippingBody);
     expect(response).toEqual({
       rates: [
         {
           service_name: "1 skønhedseksperter til din lokation",
           description: "Inkludere alle udgifter",
           service_code: "ETON",
-          total_price: 10600,
+          total_price: 10000,
           currency: "DKK",
           phone_required: true,
         },
       ],
-    });
-  });
-
-  it("should calculate destination from locationId", async () => {
-    const location = await createLocation({
-      locationType: "destination" as any,
-      customerId: 1,
-      distanceHourlyRate: 200,
-      fixedRatePerKm: 2,
-      minDistanceForFree: 0,
-    });
-
-    (LocationServiceLookup as jest.Mock).mockResolvedValue({
-      location,
-      travelTime: {
-        duration: {
-          text: "120 min",
-          value: 120,
-        },
-        distance: {
-          text: "100 km",
-          value: 100,
-        },
-      },
-    });
-
-    const response = await ShippingServiceCalculate({
-      locationId: location._id,
-      destination: {
-        fullAddress: "Dortesvej 17 1 th",
-      },
-    });
-
-    expect(response).toEqual({
-      duration: { text: "120 min", value: 120 },
-      distance: { text: "100 km", value: 100 },
-      cost: { value: 600, currency: "DKK" },
     });
   });
 });

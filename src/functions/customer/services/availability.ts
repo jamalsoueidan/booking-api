@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
-import { Location } from "~/functions/location";
-import { LookupServiceCreate } from "~/functions/lookup";
+
 import { Schedule, ScheduleProduct } from "~/functions/schedule";
+import { ShippingServiceGet } from "~/functions/shipping/services/get";
 import { findStartAndEndDate } from "~/library/availability/find-start-end-date-in-availability";
 import { generateAvailability } from "~/library/availability/generate-availability";
 import { removeBookedSlots } from "~/library/availability/remove-booked-slots";
@@ -16,9 +16,16 @@ export type CustomerAvailabilityServiceGetProps = {
 export type CustomerAvailabilityServiceGetBody = {
   productIds: Array<ScheduleProduct["productId"]>;
   startDate: string;
-  destination?: Pick<Location, "name" | "fullAddress" | "originType">;
+  shippingId?: string | Types.ObjectId;
 };
 
+/**
+ * Gets customer availability by filtering for customer ID and location, generating availability from schedule, removing booked slots, and returning filtered availability.
+ *
+ * @param filter - Filter parameters including customer ID and location ID
+ * @param body - Request body including product IDs, start date
+ * @returns Filtered customer availability with booked slots removed
+ */
 export const CustomerAvailabilityServiceGet = async (
   filter: CustomerAvailabilityServiceGetProps,
   body: CustomerAvailabilityServiceGetBody
@@ -28,15 +35,16 @@ export const CustomerAvailabilityServiceGet = async (
     productIds: body.productIds,
   });
 
-  const lookup = await LookupServiceCreate({
-    locationId: filter.locationId,
-    customerId: schedule.customerId,
-    destination: body.destination,
-  });
+  let shipping: Awaited<ReturnType<typeof ShippingServiceGet>> | undefined;
+  if (body.shippingId) {
+    shipping = await ShippingServiceGet({
+      shippingId: body.shippingId,
+    });
+  }
 
   const availability = await generateAvailability({
     schedule,
-    lookup,
+    shipping,
     startDate: body.startDate,
   });
 

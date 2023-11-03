@@ -1,20 +1,29 @@
 import mongoose, { Document, Model } from "mongoose";
-import { Lookup } from "./lookup.type";
+import { Shipping } from "./shipping.types";
 
-export interface ILookup extends Omit<Lookup, "_id"> {
+export interface IShipping extends Omit<Shipping, "_id"> {
   expireAt: Date;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface ILookupDocument extends ILookup, Document {}
+export interface IShippingDocument extends IShipping, Document {}
 
-export const LookupMongooseSchema = new mongoose.Schema<
-  ILookupDocument,
-  Model<ILookupDocument>
+export const ShippingMongooseSchema = new mongoose.Schema<
+  IShippingDocument,
+  Model<IShippingDocument>
 >(
   {
+    location: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Location",
+      required: true,
+      index: true,
+    },
     origin: {
+      /*------------------*/
+      /* we are moving these information from location, in case the user changes them while booking an appointment */
+      /*------------------*/
       customerId: {
         type: Number,
         required: true,
@@ -28,7 +37,7 @@ export const LookupMongooseSchema = new mongoose.Schema<
         type: String,
         required: true,
       },
-      minDistanceForFree: {
+      distanceForFree: {
         type: Number,
         default: 0,
       },
@@ -37,6 +46,10 @@ export const LookupMongooseSchema = new mongoose.Schema<
         default: 0,
       },
       fixedRatePerKm: {
+        type: Number,
+        default: 0,
+      },
+      startFee: {
         type: Number,
         default: 0,
       },
@@ -59,10 +72,9 @@ export const LookupMongooseSchema = new mongoose.Schema<
       text: String,
       value: Number,
     },
-    expireAt: {
-      type: Date,
-      default: Date.now,
-      index: { expireAfterSeconds: 3600 },
+    cost: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

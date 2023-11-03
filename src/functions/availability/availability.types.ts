@@ -1,10 +1,10 @@
-import { Lookup } from "../lookup/lookup.type";
+import { Shipping } from "../shipping/shipping.types";
 import { User } from "../user/user.types";
 
 export type Availability = {
   date: Date;
   customer: Pick<User, "fullname" | "customerId">;
-  lookup?: Lookup;
+  shipping?: Shipping;
   slots: {
     from: Date;
     to: Date;

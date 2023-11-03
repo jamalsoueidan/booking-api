@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import {
   addDays,
   differenceInMinutes,
@@ -6,41 +5,21 @@ import {
   isWithinInterval,
 } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
-import mongoose from "mongoose";
 import { Booking, BookingModel } from "~/functions/booking";
-import { LocationOriginTypes, LocationTypes } from "~/functions/location";
-import { Lookup } from "~/functions/lookup";
+import { LocationTypes } from "~/functions/location";
+
+import { faker } from "@faker-js/faker";
 import { WeekDays } from "~/functions/schedule";
+import { ShippingModel } from "~/functions/shipping/shipping.model";
 import { arrayElements, createUser } from "~/library/jest/helpers";
-import { createLocation } from "~/library/jest/helpers/location";
+import {
+  createLocation,
+  getLocationObject,
+} from "~/library/jest/helpers/location";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { CustomerAvailabilityServiceGet } from "./availability";
 
 require("~/library/jest/mongoose/mongodb.jest");
-jest.mock("~/functions/lookup", () => {
-  return {
-    LookupServiceCreate: jest.fn().mockResolvedValueOnce({
-      _id: new mongoose.Types.ObjectId(),
-      origin: {
-        name: faker.person.firstName(),
-        customerId: faker.number.int({ min: 1, max: 100000 }),
-        fullAddress: faker.location.streetAddress(),
-        distanceHourlyRate: faker.number.int({ min: 1, max: 5 }),
-        fixedRatePerKm: faker.number.int({ min: 1, max: 5 }),
-        minDistanceForFree: faker.number.int({ min: 1, max: 5 }),
-      },
-      destination: {
-        name: faker.person.firstName(),
-        fullAddress: faker.location.streetAddress(),
-      },
-      duration: {
-        text: "14 mins",
-        value: faker.helpers.arrayElement([15, 30, 45]),
-      },
-      distance: { text: "5.3 km", value: 5342 },
-    } as Lookup),
-  };
-});
 
 describe("CustomerAvailabilityService", () => {
   const customerId = 1;
@@ -97,6 +76,21 @@ describe("CustomerAvailabilityService", () => {
   });
 
   it("should calculate destination in available slots", async () => {
+    const shipping = await ShippingModel.create({
+      location: locationDestination._id,
+      origin: getLocationObject(),
+      destination: {
+        name: faker.person.firstName(),
+        fullAddress: faker.location.streetAddress(),
+      },
+      duration: {
+        text: "14 mins",
+        value: faker.helpers.arrayElement([15, 30, 45]),
+      },
+      distance: { text: "5.3 km", value: 5342 },
+      cost: 40,
+    });
+
     const productIds = arrayElements(schedule.products, 2).map(
       (product) => product.productId
     );
@@ -109,11 +103,7 @@ describe("CustomerAvailabilityService", () => {
       {
         productIds,
         startDate: new Date().toISOString(),
-        destination: {
-          name: "Hotel A, or hjemmeaddress",
-          fullAddress: "Salling, Søndergade 27, 8000 Aarhus",
-          originType: LocationOriginTypes.HOME,
-        },
+        shippingId: shipping._id,
       }
     );
   });

@@ -1,13 +1,18 @@
 type: object
 properties:
+  customerId:
+    $ref: "../../../types/_numberOrString.yaml"
   locationId:
     type: string
   destination:
     type: object
     properties:
+      name:
+        type: string
       fullAddress:
         type: string
     required:
+      - name
       - fullAddress
 
 required:

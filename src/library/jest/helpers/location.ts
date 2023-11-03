@@ -17,7 +17,10 @@ export const getLocationObject = (props: Partial<Location> = {}): Location => ({
   fullAddress: faker.location.streetAddress(),
   distanceHourlyRate: faker.number.int({ min: 1, max: 5 }),
   fixedRatePerKm: faker.number.int({ min: 1, max: 5 }),
-  minDistanceForFree: faker.number.int({ min: 1, max: 5 }),
+  distanceForFree: faker.number.int({ min: 1, max: 5 }),
+  maxDriveDistance: 500,
+  minDriveDistance: 0,
+  startFee: 0,
   ...props,
 });
 

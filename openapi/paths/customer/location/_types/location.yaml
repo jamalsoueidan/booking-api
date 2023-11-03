@@ -28,12 +28,24 @@ properties:
         type: array
         items:
           type: number
-  minDistanceForFree:
+  distanceForFree:
     type: number
   distanceHourlyRate:
     type: number
   fixedRatePerKm:
     type: number
+  minDriveDistance:
+    oneOf:
+      - type: number
+      - type: string
+  maxDriveDistance:
+    oneOf:
+      - type: number
+      - type: string
+  startFee:
+    oneOf:
+      - type: number
+      - type: string
 
 required:
   - _id
@@ -43,6 +55,9 @@ required:
   - name
   - fullAddress
   - geoLocation
-  - minDistanceForFree
+  - distanceForFree
   - distanceHourlyRate
   - fixedRatePerKm
+  - minDriveDistance
+  - maxDriveDistance
+  - startFree

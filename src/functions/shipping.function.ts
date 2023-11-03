@@ -2,14 +2,15 @@ import { app } from "@azure/functions";
 import "module-alias/register";
 import {
   ShippingControllerCalculate,
-  ShippingControllerGet,
+  ShippingControllerCreate,
+  ShippingControllerRates,
 } from "./shipping/controllers";
 
 app.http("shippingRates", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "shipping/rates",
-  handler: ShippingControllerGet,
+  handler: ShippingControllerRates,
 });
 
 app.http("shippingCalculate", {
@@ -17,4 +18,11 @@ app.http("shippingCalculate", {
   authLevel: "anonymous",
   route: "shipping/calculate",
   handler: ShippingControllerCalculate,
+});
+
+app.http("shippingCreate", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "shipping/create",
+  handler: ShippingControllerCreate,
 });
