@@ -950,7 +950,30 @@ components:
         - minDriveDistance
         - maxDriveDistance
         - startFree
-    CustomerLocationBody:
+    CustomerLocationIsDefault:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CustomerLocation'
+        - type: object
+          properties:
+            isDefault:
+              type: boolean
+          required:
+            - isDefault
+    CustomerLocationGetAllOriginsRepsonse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerLocation'
+      required:
+        - success
+        - payload
+    CustomerLocationCreateBody:
       type: object
       properties:
         name:
@@ -986,43 +1009,14 @@ components:
           oneOf:
             - type: number
             - type: string
-    CustomerLocationIsDefault:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/CustomerLocation'
-        - type: object
-          properties:
-            isDefault:
-              type: boolean
-          required:
-            - isDefault
-    CustomerLocationGetAllOriginsRepsonse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerLocation'
-      required:
-        - success
-        - payload
-    CustomerLocationCreateBody:
-      type: object
-      properties:
         locationType:
           type: string
           enum:
             - origin
             - destination
-      allOf:
-        - $ref: '#/components/schemas/CustomerLocationBody'
       required:
         - name
         - fullAddress
-        - locationType
         - originType
         - distanceForFree
         - distanceHourlyRate
@@ -1030,6 +1024,7 @@ components:
         - minDriveDistance
         - maxDriveDistance
         - startFree
+        - locationType
     CustomerLocationCreateResponse:
       type: object
       properties:
@@ -1067,8 +1062,40 @@ components:
         - payload
     CustomerLocationUpdateBody:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/CustomerLocationBody'
+      properties:
+        name:
+          type: string
+        fullAddress:
+          type: string
+        originType:
+          type: string
+          enum:
+            - home
+            - commercial
+        distanceForFree:
+          oneOf:
+            - type: number
+            - type: string
+        distanceHourlyRate:
+          oneOf:
+            - type: number
+            - type: string
+        fixedRatePerKm:
+          oneOf:
+            - type: number
+            - type: string
+        minDriveDistance:
+          oneOf:
+            - type: number
+            - type: string
+        maxDriveDistance:
+          oneOf:
+            - type: number
+            - type: string
+        startFee:
+          oneOf:
+            - type: number
+            - type: string
     CustomerLocationUpdateResponse:
       type: object
       properties:
@@ -1399,6 +1426,10 @@ components:
             - $ref: '#/components/schemas/LocationTravelTime'
             - type: object
               properties:
+                _id:
+                  type: string
+                location:
+                  type: string
                 cost:
                   type: object
                   properties:
