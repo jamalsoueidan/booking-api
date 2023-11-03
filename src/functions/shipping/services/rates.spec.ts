@@ -26,7 +26,10 @@ describe("ShippingServiceRates", () => {
         text: "1 hour",
         value: 60,
       },
-      cost: 100,
+      cost: {
+        currency: "DKK",
+        value: 100,
+      },
       distance: { text: "5.3 km", value: 5.3 },
     });
 

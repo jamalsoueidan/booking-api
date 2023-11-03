@@ -37,6 +37,14 @@ export const ShippingMongooseSchema = new mongoose.Schema<
         type: String,
         required: true,
       },
+      minDriveDistance: {
+        type: Number,
+        default: 0,
+      },
+      maxDriveDistance: {
+        type: Number,
+        default: 500,
+      },
       distanceForFree: {
         type: Number,
         default: 0,
@@ -73,8 +81,8 @@ export const ShippingMongooseSchema = new mongoose.Schema<
       value: Number,
     },
     cost: {
-      type: Number,
-      default: 0,
+      text: String,
+      value: { type: Number, default: 0 },
     },
   },
   { timestamps: true }

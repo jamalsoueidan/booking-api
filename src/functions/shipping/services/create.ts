@@ -34,7 +34,10 @@ export const ShippingServiceCreate = async (
     },
     destination: props.destination,
     ...travelTime,
-    cost,
+    cost: {
+      value: cost,
+      currency: "DKK",
+    },
   });
 
   return shipping.save();

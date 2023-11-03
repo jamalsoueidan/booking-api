@@ -1,22 +1,20 @@
 import { z } from "zod";
-import {
-  GidFormat,
-  NumberOrStringType,
-  StringOrObjectIdType,
-} from "~/library/zod";
+import { LocationZodSchema } from "~/functions/location/location.types";
+import { GidFormat, StringOrObjectIdType } from "~/library/zod";
 
 export const ShippingZodSchema = z.object({
   _id: StringOrObjectIdType,
   location: StringOrObjectIdType,
-  origin: z.object({
-    customerId: GidFormat,
-    name: z.string(),
-    fullAddress: z.string(),
-    distanceForFree: NumberOrStringType,
-    distanceHourlyRate: NumberOrStringType,
-    fixedRatePerKm: NumberOrStringType,
-    startFee: NumberOrStringType,
-  }),
+  origin: z
+    .object({
+      customerId: GidFormat,
+    })
+    .merge(
+      LocationZodSchema.omit({
+        locationType: true,
+        originType: true,
+      })
+    ),
   destination: z.object({
     name: z.string(),
     fullAddress: z.string(),
@@ -29,7 +27,10 @@ export const ShippingZodSchema = z.object({
     text: z.string(),
     value: z.number(),
   }),
-  cost: z.number(),
+  cost: z.object({
+    currency: z.string(),
+    value: z.number(),
+  }),
 });
 
 export type Shipping = z.infer<typeof ShippingZodSchema>;

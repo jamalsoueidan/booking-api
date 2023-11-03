@@ -93,7 +93,7 @@ export const ShippingServiceRates = async (body: ShippingBody) => {
     _id: { $in: shippingIds.map((l) => new mongoose.Types.ObjectId(l)) },
   });
 
-  const prices = shippings.map((l) => l.cost);
+  const prices = shippings.map((l) => l.cost.value);
 
   const totalPrices = prices.reduce((total, price) => total + price, 0);
 

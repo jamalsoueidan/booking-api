@@ -13,6 +13,18 @@ properties:
             type: string
           location:
             type: string
+          origin:
+            $ref: ../../customer/location/create/body.yaml
+          destination:
+            type: object
+            properties:
+              name:
+                type: string
+              fullAddress:
+                type: string
+            required:
+              - name
+              - fullAddress
           cost:
             type: object
             properties:
