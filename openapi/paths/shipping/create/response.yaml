@@ -9,6 +9,10 @@ properties:
       - $ref: ../../location/_types/travel-time.yaml
       - type: object
         properties:
+          _id:
+            type: string
+          location:
+            type: string
           cost:
             type: object
             properties:
