@@ -27,6 +27,8 @@ components:
       $ref: "./responses/unauthorized.yaml"
 
   schemas:
+    NumberOrString:
+      $ref: "types/_numberOrString.yaml"
     Errors:
       $ref: "./schemas/errors.yaml"
     MetaItem:
@@ -187,8 +189,10 @@ components:
       $ref: paths/location/validate-address/response.yaml
 
     # Shipping
-    ShippingCalculateBody:
-      $ref: paths/shipping/calculate/body.yaml
+    ShippingBody:
+      $ref: paths/shipping/_types/body.yaml
+    ShippingCreateResponse:
+      $ref: paths/shipping/create/response.yaml
     ShippingCalculateResponse:
       $ref: paths/shipping/calculate/response.yaml
 paths:
@@ -260,5 +264,7 @@ paths:
     $ref: "./paths/location/get-travel-time/index.yaml"
 
   # shipping
+  /shipping/create:
+    $ref: "./paths/shipping/create/index.yaml"
   /shipping/calculate:
     $ref: "./paths/shipping/calculate/index.yaml"

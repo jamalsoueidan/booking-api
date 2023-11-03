@@ -1,8 +1,8 @@
 post:
   tags:
-    - ShippingCalculate
-  operationId: shippingCalculate
-  summary: POST get shipping calculate
+    - ShippingCreate
+  operationId: shippingCreate
+  summary: POST create shipping
   requestBody:
     required: true
     content:

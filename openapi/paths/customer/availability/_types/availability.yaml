@@ -12,8 +12,8 @@ properties:
     required:
       - customerId
       - fullname
-  lookup:
-    $ref: "../_types/lookup.yaml"
+  shipping:
+    $ref: "../_types/shipping.yaml"
   slots:
     type: array
     items:

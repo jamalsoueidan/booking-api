@@ -2,6 +2,8 @@ type: object
 properties:
   _id:
     type: string
+  location:
+    type: string
   origin:
     type: object
     properties:
@@ -13,11 +15,13 @@ properties:
       fullAddress:
         type: string
       distanceForFree:
-        type: string
+        type: number
       distanceHourlyRate:
-        type: string
+        type: number
       fixedRatePerKm:
-        type: string
+        type: number
+      startFee:
+        type: number
   destination:
     type: object
     properties:
@@ -39,9 +43,12 @@ properties:
         type: string
       value:
         type: number
+  cost:
+    type: number
 required:
   - _id
   - origin
   - destination
   - duration
   - distance
+  - cost

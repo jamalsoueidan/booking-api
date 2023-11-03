@@ -10,7 +10,7 @@ import { ShippingServiceCalculateCost } from "./calculate-cost";
 export const ShippingServiceCalculate = async (
   props: Required<LocationServiceGetProps & Pick<Shipping, "destination">>
 ) => {
-  const location = await LocationServiceGet(props);
+  const location = await LocationServiceGet(props); // we should properly use the customerId to find the locationId
   const { destination } = props;
 
   if (!destination) {
