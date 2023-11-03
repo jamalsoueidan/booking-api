@@ -1,20 +1,11 @@
 import { z } from "zod";
 import { LocationZodSchema } from "~/functions/location/location.types";
-import { GidFormat, StringOrObjectIdType } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 
 export const ShippingZodSchema = z.object({
   _id: StringOrObjectIdType,
   location: StringOrObjectIdType,
-  origin: z
-    .object({
-      customerId: GidFormat,
-    })
-    .merge(
-      LocationZodSchema.omit({
-        locationType: true,
-        originType: true,
-      })
-    ),
+  origin: LocationZodSchema,
   destination: z.object({
     name: z.string(),
     fullAddress: z.string(),
