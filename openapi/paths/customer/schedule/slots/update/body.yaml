@@ -1,13 +1,14 @@
-type: object
-properties:
-  day:
-    $ref: ../../_types/day.yaml
-  intervals:
-    type: array
-    minimum: 1
-    items:
-      $ref: ../../_types/interval.yaml
+type: array
+items:
+  type: object
+  properties:
+    day:
+      $ref: ../../_types/day.yaml
+    intervals:
+      type: array
+      items:
+        $ref: ../../_types/interval.yaml
 
-required:
-  - day
-  - intervals
+  required:
+    - day
+    - intervals
