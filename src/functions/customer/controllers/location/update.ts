@@ -15,9 +15,7 @@ export const CustomerLocationControllerUpdateBodySchema =
   LocationZodSchema.omit({
     customerId: true,
     locationType: true,
-  })
-    .strip()
-    .deepPartial();
+  }).strip();
 
 export const CustomerLocationControllerUpdateQuerySchema = z.object({
   locationId: StringOrObjectIdType,

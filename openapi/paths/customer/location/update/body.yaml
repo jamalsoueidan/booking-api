@@ -19,3 +19,13 @@ properties:
     type: number
   startFee:
     type: number
+required:
+  - name
+  - fullAddress
+  - originType
+  - distanceForFree
+  - distanceHourlyRate
+  - fixedRatePerKm
+  - minDriveDistance
+  - maxDriveDistance
+  - startFee

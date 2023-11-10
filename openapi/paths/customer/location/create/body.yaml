@@ -31,5 +31,5 @@ required:
   - fixedRatePerKm
   - minDriveDistance
   - maxDriveDistance
-  - startFree
+  - startFee
   - locationType
