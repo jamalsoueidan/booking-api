@@ -387,18 +387,19 @@ components:
         - success
         - payload
     CustomerScheduleSlotsUpdateBody:
-      type: object
-      properties:
-        day:
-          $ref: '#/components/schemas/CustomerScheduleSlotDay'
-        intervals:
-          type: array
-          minimum: 1
-          items:
-            $ref: '#/components/schemas/CustomerScheduleSlotInterval'
-      required:
-        - day
-        - intervals
+      type: array
+      items:
+        type: object
+        properties:
+          day:
+            $ref: '#/components/schemas/CustomerScheduleSlotDay'
+          intervals:
+            type: array
+            items:
+              $ref: '#/components/schemas/CustomerScheduleSlotInterval'
+        required:
+          - day
+          - intervals
     CustomerBooking:
       type: object
       properties:
