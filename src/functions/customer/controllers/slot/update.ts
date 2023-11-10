@@ -15,8 +15,9 @@ const CustomerScheduleSlotControllerUpdateQuerySchema = z.object({
   customerId: ScheduleZodSchema.shape.customerId,
 });
 
-const CustomerScheduleSlotControllerUpdateBodySchema =
-  ScheduleZodSchema.shape.slots;
+const CustomerScheduleSlotControllerUpdateBodySchema = ScheduleZodSchema.pick({
+  slots: true,
+}).strip();
 
 export type CustomerScheduleSlotControllerUpdateResponse = Awaited<
   ReturnType<typeof CustomerScheduleSlotServiceUpdate>
@@ -28,6 +29,6 @@ export const CustomerScheduleSlotControllerUpdate = _(
       CustomerScheduleSlotControllerUpdateQuerySchema.parse(query);
     const validateBody =
       CustomerScheduleSlotControllerUpdateBodySchema.parse(body);
-    return CustomerScheduleSlotServiceUpdate(validateQuery, validateBody);
+    return CustomerScheduleSlotServiceUpdate(validateQuery, validateBody.slots);
   }
 );

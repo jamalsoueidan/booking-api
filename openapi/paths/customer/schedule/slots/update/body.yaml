@@ -1,14 +1,8 @@
-type: array
-items:
-  type: object
-  properties:
-    day:
-      $ref: ../../_types/day.yaml
-    intervals:
-      type: array
-      items:
-        $ref: ../../_types/interval.yaml
-
-  required:
-    - day
-    - intervals
+type: object
+properties:
+  slots:
+    type: array
+    items:
+      $ref: ../../_types/slot.yaml
+required:
+  - slots

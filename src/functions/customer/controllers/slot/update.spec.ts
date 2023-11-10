@@ -30,17 +30,19 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
     });
 
     const updatedScheduleData: CustomerScheduleSlotControllerUpdateRequest["body"] =
-      [
-        {
-          day: "wednesday",
-          intervals: [
-            {
-              from: "10:00",
-              to: "13:00",
-            },
-          ],
-        },
-      ];
+      {
+        slots: [
+          {
+            day: "wednesday",
+            intervals: [
+              {
+                from: "10:00",
+                to: "13:00",
+              },
+            ],
+          },
+        ],
+      };
 
     request =
       await createHttpRequest<CustomerScheduleSlotControllerUpdateRequest>({
@@ -65,26 +67,28 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
     });
 
     const updatedScheduleData: CustomerScheduleSlotControllerUpdateRequest["body"] =
-      [
-        {
-          day: "wednesday",
-          intervals: [
-            {
-              from: "10:00",
-              to: "13:00",
-            },
-          ],
-        },
-        {
-          day: "wednesday",
-          intervals: [
-            {
-              from: "08:00",
-              to: "12:00",
-            },
-          ],
-        },
-      ];
+      {
+        slots: [
+          {
+            day: "wednesday",
+            intervals: [
+              {
+                from: "10:00",
+                to: "13:00",
+              },
+            ],
+          },
+          {
+            day: "wednesday",
+            intervals: [
+              {
+                from: "08:00",
+                to: "12:00",
+              },
+            ],
+          },
+        ],
+      };
 
     request =
       await createHttpRequest<CustomerScheduleSlotControllerUpdateRequest>({
@@ -111,17 +115,19 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
     });
 
     const updatedScheduleData: CustomerScheduleSlotControllerUpdateRequest["body"] =
-      [
-        {
-          day: "wednesday",
-          intervals: [
-            {
-              from: "14:00",
-              to: "12:00",
-            },
-          ],
-        },
-      ];
+      {
+        slots: [
+          {
+            day: "wednesday",
+            intervals: [
+              {
+                from: "14:00",
+                to: "12:00",
+              },
+            ],
+          },
+        ],
+      };
 
     request =
       await createHttpRequest<CustomerScheduleSlotControllerUpdateRequest>({
@@ -148,21 +154,23 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
     });
 
     const updatedScheduleData: CustomerScheduleSlotControllerUpdateRequest["body"] =
-      [
-        {
-          day: "wednesday",
-          intervals: [
-            {
-              from: "12:00",
-              to: "15:00",
-            },
-            {
-              from: "14:00",
-              to: "16:00",
-            },
-          ],
-        },
-      ];
+      {
+        slots: [
+          {
+            day: "wednesday",
+            intervals: [
+              {
+                from: "12:00",
+                to: "15:00",
+              },
+              {
+                from: "14:00",
+                to: "16:00",
+              },
+            ],
+          },
+        ],
+      };
 
     request =
       await createHttpRequest<CustomerScheduleSlotControllerUpdateRequest>({
