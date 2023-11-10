@@ -938,7 +938,7 @@ components:
         - fixedRatePerKm
         - minDriveDistance
         - maxDriveDistance
-        - startFree
+        - startFee
     CustomerLocationIsDefault:
       type: object
       allOf:
@@ -1000,7 +1000,7 @@ components:
         - fixedRatePerKm
         - minDriveDistance
         - maxDriveDistance
-        - startFree
+        - startFee
         - locationType
     CustomerLocationCreateResponse:
       type: object
@@ -1061,6 +1061,16 @@ components:
           type: number
         startFee:
           type: number
+      required:
+        - name
+        - fullAddress
+        - originType
+        - distanceForFree
+        - distanceHourlyRate
+        - fixedRatePerKm
+        - minDriveDistance
+        - maxDriveDistance
+        - startFee
     CustomerLocationUpdateResponse:
       type: object
       properties:
