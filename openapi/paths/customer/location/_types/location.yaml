@@ -35,17 +35,11 @@ properties:
   fixedRatePerKm:
     type: number
   minDriveDistance:
-    oneOf:
-      - type: number
-      - type: string
+    type: number
   maxDriveDistance:
-    oneOf:
-      - type: number
-      - type: string
+    type: number
   startFee:
-    oneOf:
-      - type: number
-      - type: string
+    type: number
 
 required:
   - _id

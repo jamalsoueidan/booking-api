@@ -7,13 +7,9 @@ properties:
   description:
     type: string
   duration:
-    oneOf:
-      - type: string
-      - type: number
+    type: number
   breakTime:
-    oneOf:
-      - type: string
-      - type: number
+    type: number
   noticePeriod:
     $ref: "./product-notice-period.yaml"
   bookingPeriod:

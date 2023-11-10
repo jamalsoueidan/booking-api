@@ -3,17 +3,11 @@ properties:
   scheduleId:
     type: string
   variantId:
-    oneOf:
-      - type: string
-      - type: number
+    type: number
   duration:
-    oneOf:
-      - type: string
-      - type: number
+    type: number
   breakTime:
-    oneOf:
-      - type: string
-      - type: number
+    type: number
   noticePeriod:
     $ref: ../../schedule/_types/product-notice-period.yaml
   bookingPeriod:

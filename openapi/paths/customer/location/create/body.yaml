@@ -8,29 +8,17 @@ properties:
     type: string
     enum: [home, commercial]
   distanceForFree:
-    oneOf:
-      - type: number
-      - type: string
+    type: number
   distanceHourlyRate:
-    oneOf:
-      - type: number
-      - type: string
+    type: number
   fixedRatePerKm:
-    oneOf:
-      - type: number
-      - type: string
+    type: number
   minDriveDistance:
-    oneOf:
-      - type: number
-      - type: string
+    type: number
   maxDriveDistance:
-    oneOf:
-      - type: number
-      - type: string
+    type: number
   startFee:
-    oneOf:
-      - type: number
-      - type: string
+    type: number
   locationType:
     type: string
     enum: [origin, destination]

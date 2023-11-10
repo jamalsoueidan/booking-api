@@ -1,9 +1,7 @@
 type: object
 properties:
   value:
-    oneOf:
-      - type: string
-      - type: number
+    type: number
   unit:
     $ref: "./product-notice-unit.yaml"
     default: "hours"
