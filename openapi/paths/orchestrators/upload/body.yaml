@@ -1,0 +1,9 @@
+type: object
+properties:
+  customerId:
+    type: number
+  resourceUrl:
+    type: string
+required:
+  - customerId
+  - resourceUrl

@@ -13,11 +13,9 @@ export const CustomerServiceUpsert = async (
   filter: Pick<User, "customerId">,
   body: CustomerServiceUpsertBody
 ) => {
-  // Use `await` to get the user from the database
   const user = await UserModel.findOne(filter);
 
   if (!user) {
-    // Create a new user
     const newUser = new UserModel({ ...body, customerId: filter.customerId });
     return newUser.save();
   }
