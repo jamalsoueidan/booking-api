@@ -1,6 +1,4 @@
-# Booking Shopify Api
-
-I am moving the API endpoints from Node/Express, which are hosted on Heroku, to Azure Functions. This allows me to primarily focus on the endpoints, rather than managing the Node Express server with its associated plugins and middleware.
+# Booking Api
 
 The API specification can be seen hosted at [https://jamalsoueidan.github.io/booking-api](https://jamalsoueidan.github.io/booking-api)
 
@@ -18,13 +16,23 @@ Assign the correct value to all env values.
     "FUNCTIONS_WORKER_RUNTIME": "node",
     "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
     "CosmosDbConnectionString": "",
+    "DataforsyningenToken": "",
+    "GoogleMapApi": "",
+    "QueueStorage": "",
+    "ShopifyStoreDomain": "",
+    "ShopifyApiKey": "",
+    "ShopifyApiSecretKey": "",
+    "ShopifyApiAccessToken": ""
   }
 }
+
 ```
 
-## 2. To enable V4 you have to add this env to your Azure Function App
+## Azure Functions
 
-To enable your V4 programming model app to run in Azure, you need to add a new application setting named AzureWebJobsFeatureFlags with a value of EnableWorkerIndexing. This setting is already in your local.settings.json file.
+I previously started using Node/Express to develop all api endpoints, which were hosted on Heroku. But with the configuration I had to mantain, and all that comes with Node and Express I choose to move forward to Azure Functions.
+
+This allows me to primarily focus on the endpoints, rather than managing the Node Express server with its associated plugins and middlewares etc.
 
 ## OpenAPI fragments and components (openapi/)
 
@@ -62,3 +70,15 @@ pm.environment.set("bearerToken", token);
 
 We try to NOT export all internal files from index folder file because we would like to mock single methods in jest.
 It's eaiser when not using index file.
+
+## What's included
+
+- Azure Functions
+- Azure Durable
+- Google Map
+- Shopify Api
+- Mongoose (MongoDB)
+- Zod (validation)
+- DateFns
+- Openapi
+- Orval
