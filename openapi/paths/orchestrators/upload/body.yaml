@@ -1,7 +1,9 @@
 type: object
 properties:
   customerId:
-    type: number
+    oneOf:
+      - type: number
+      - type: string
   resourceUrl:
     type: string
 required:

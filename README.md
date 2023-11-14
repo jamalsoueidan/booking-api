@@ -4,6 +4,12 @@ The API specification can be seen hosted at [https://jamalsoueidan.github.io/boo
 
 Download Openapi 3.x definition [https://github.com/jamalsoueidan/booking-shopify-api/blob/main/docs/openapi.yaml](https://github.com/jamalsoueidan/booking-shopify-api/blob/main/docs/openapi.yaml)
 
+## Azure Functions
+
+I previously started using Node/Express to develop all api endpoints, which were hosted on Heroku. But with the configuration I had to mantain, and all that comes with Node and Express I choose to move forward to Azure Functions.
+
+This allows me to primarily focus on the endpoints, rather than managing the Node Express server with its associated plugins and middlewares etc.
+
 ## 1. Create local.settings.json
 
 Assign the correct value to all env values.
@@ -27,12 +33,6 @@ Assign the correct value to all env values.
 }
 
 ```
-
-## Azure Functions
-
-I previously started using Node/Express to develop all api endpoints, which were hosted on Heroku. But with the configuration I had to mantain, and all that comes with Node and Express I choose to move forward to Azure Functions.
-
-This allows me to primarily focus on the endpoints, rather than managing the Node Express server with its associated plugins and middlewares etc.
 
 ## OpenAPI fragments and components (openapi/)
 

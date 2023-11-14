@@ -6,15 +6,15 @@ import { UserModel } from "../user.model";
 import { IUserDocument } from "../user.schema";
 import { User, UserLocations } from "../user.types";
 
-export type UserServiceGetProps = Pick<User, "username">;
+export type UserServiceGetProps = Required<Pick<User, "username">>;
 
-export const UserServiceGet = (props: UserServiceGetProps) => {
-  return UserModel.findOne({ ...props, active: true, isBusiness: true })
+export const UserServiceGet = ({ username }: UserServiceGetProps) => {
+  return UserModel.findOne({ username, active: true, isBusiness: true })
     .lean()
     .orFail(
       new NotFoundError([
         {
-          path: ["userId"],
+          path: ["username"],
           message: "NOT_FOUND",
           code: "custom",
         },

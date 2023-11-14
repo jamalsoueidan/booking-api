@@ -25,12 +25,19 @@ export const CustomerProductsServiceListIds = async (
 
 type CustomerProductsServiceListProps = {
   customerId: Schedule["customerId"];
+  scheduleId?: Schedule["_id"];
 };
 
-export const CustomerProductsServiceList = async (
-  filter: CustomerProductsServiceListProps
-) => {
-  const schedules = await ScheduleModel.find(filter)
+export const CustomerProductsServiceList = async ({
+  customerId,
+  scheduleId,
+}: CustomerProductsServiceListProps) => {
+  let query: any = { customerId };
+  if (scheduleId !== undefined) {
+    query._id = scheduleId;
+  }
+
+  const schedules = await ScheduleModel.find(query)
     .select("name products")
     .lean();
 

@@ -22,8 +22,9 @@ describe("UserControllerGet", () => {
       { customerId: 123 },
       { username: "test", isBusiness: true, active: true }
     );
+
     request = await createHttpRequest<UserControllerGetRequest>({
-      query: { username: user.username },
+      query: { username: user.username! },
     });
 
     const res: HttpSuccessResponse<UserControllerGetResponse> =
