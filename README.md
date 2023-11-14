@@ -10,6 +10,10 @@ I previously started using Node/Express to develop all api endpoints, which were
 
 This allows me to primarily focus on the endpoints, rather than managing the Node Express server with its associated plugins and middlewares etc.
 
+Beside that I'm using Durable Functions which is an extension of Azure Fucntions, which can be long-running, and can call other durable functions synchronously and asynchronously which is great, I use when I need to upload image to shopify.
+
+I'm planning also to use Azure queue storage to handle webhooks data processing.
+
 ## 1. Create local.settings.json
 
 Assign the correct value to all env values.
