@@ -1182,6 +1182,19 @@ components:
         - socialUrls
         - shortDescription
         - aboutMe
+    UserProductsList:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerProductList'
+      required:
+        - success
+        - payload
     UserSchedules:
       type: object
       allOf:
@@ -1459,7 +1472,9 @@ components:
       type: object
       properties:
         customerId:
-          type: number
+          oneOf:
+            - type: number
+            - type: string
         resourceUrl:
           type: string
       required:
@@ -1526,6 +1541,39 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  '/user/{username}/prroducts':
+    get:
+      parameters:
+        - name: username
+          in: path
+          description: username is needed
+          required: true
+          schema:
+            type: string
+        - name: scheduleId
+          in: query
+          description: scheduleId is optional
+          schema:
+            type: string
+      tags:
+        - UserProduct
+      operationId: userProductsList
+      summary: GET Get products for user
+      description: This endpoint get products for user
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProductsList'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
       security: []
   '/user/{username}/schedule/{scheduleId}/location/{locationId}':
     get:

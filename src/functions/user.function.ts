@@ -38,6 +38,6 @@ app.http("userScheduleGet", {
 app.http("userProductsList", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "user/{username}/schedule/{scheduleId}",
+  route: "user/{username}/products",
   handler: UserProductsControllerList,
 });
