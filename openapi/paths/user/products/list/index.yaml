@@ -1,0 +1,33 @@
+parameters:
+  - name: username
+    in: path
+    description: username is needed
+    required: true
+    schema:
+      type: string
+  - name: scheduleId
+    in: path
+    description: scheduleId is optional
+    schema:
+      type: string
+get:
+  tags:
+    - UserProduct
+  operationId: userProductsList
+  summary: GET Get products for user
+  description: This endpoint get products for user
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+
+  security: []

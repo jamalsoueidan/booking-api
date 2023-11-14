@@ -3,14 +3,13 @@ import { _ } from "~/library/handler";
 
 import { UserScheduleServiceLocationsList } from "../../services/schedule";
 import { UserServiceGet } from "../../services/user";
-import { UserZodSchema } from "../../user.types";
 
 export type UserControllerGetRequest = {
   query: z.infer<typeof UserServiceGetSchema>;
 };
 
-export const UserServiceGetSchema = UserZodSchema.pick({
-  username: true,
+export const UserServiceGetSchema = z.object({
+  username: z.string(),
 });
 
 export type UserControllerGetResponse = Awaited<
@@ -22,9 +21,11 @@ export const UserControllerGet = _(
   async ({ query }: UserControllerGetRequest) => {
     const validateData = UserServiceGetSchema.parse(query);
     const user = await UserServiceGet(validateData);
+
     const schedules = await UserScheduleServiceLocationsList({
       customerId: user.customerId,
     });
+
     return {
       ...user,
       schedules,

@@ -159,6 +159,8 @@ components:
     # User
     User:
       $ref: paths/user/_types/user.yaml
+    UserProductsList:
+      $ref: paths/user/products/list/response.yaml
     UserSchedules:
       $ref: paths/user/_types/user_with_schedules.yaml
     UserSchedule:
@@ -203,9 +205,10 @@ paths:
   # User
   /user/{username}:
     $ref: "./paths/user/user.yaml"
+  /user/{username}/schedule/{scheduleId}:
+    $ref: "./paths/user/products/list/index.yaml"
   /user/{username}/schedule/{scheduleId}/location/{locationId}:
     $ref: "./paths/user/schedule/get/index.yaml"
-
   /users/professions:
     $ref: "./paths/user/professions/index.yaml"
 

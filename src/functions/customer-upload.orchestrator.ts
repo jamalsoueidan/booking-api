@@ -10,10 +10,11 @@ import { OrchestrationContext } from "durable-functions";
 import { z } from "zod";
 import { connect } from "~/library/mongoose";
 import { shopifyAdmin } from "~/library/shopify";
+import { NumberOrStringType } from "~/library/zod";
 import { CustomerServiceUpsert } from "./customer/services/customer";
 
 const bodySchema = z.object({
-  customerId: z.coerce.number(),
+  customerId: NumberOrStringType,
   resourceUrl: z.string().url(),
 });
 
@@ -133,6 +134,7 @@ const uploadHttpStart: HttpHandler = async (
 ): Promise<HttpResponse> => {
   const client = df.getClient(context);
   const body: unknown = await request.json();
+  context.log("Request Body:", body);
 
   const instanceId: string = await client.startNew(
     request.params.orchestratorName,

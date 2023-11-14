@@ -31,11 +31,19 @@ export const _ =
       await connect();
 
       for (const handler of middlewares) {
-        let response = isAzureHandler(handler)
-          ? await handler(request, context)
-          : await executeControllerWithParams(request, handler);
+        let response;
+        if (isAzureHandler(handler)) {
+          response = await handler(request, context);
+        } else {
+          response = await executeControllerWithParams(
+            request,
+            handler,
+            context
+          );
+        }
 
         if (response) {
+          context.trace("Response body: ", JSON.stringify(response));
           return { jsonBody: { payload: response, success: true } };
         }
       }
@@ -50,11 +58,13 @@ export const _ =
       ) {
         props.jsonBody = { errors: err.issues, success: false };
         props.status = (err as any).status || 400; // zodError doesn't have status
+        context.error("Zod error: ", props);
         return props;
       }
 
       props.jsonBody = { errors: err, succes: false };
       props.status = 500;
+      context.error("Unknown error: ", props);
       return props;
     }
 
@@ -63,7 +73,8 @@ export const _ =
 
 const executeControllerWithParams = async (
   request: HttpRequest,
-  handler: Function
+  handler: Function,
+  context: InvocationContext
 ) => {
   const getQueries = () => {
     const queryUsed = Object.fromEntries(request.query.entries());
@@ -93,6 +104,9 @@ const executeControllerWithParams = async (
   if (requiredParams.includes("body")) {
     params.body = await getBody();
   }
+
+  context.trace("Request body", params);
+
   return handler(params);
 };
 

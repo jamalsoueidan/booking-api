@@ -1,0 +1,12 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  payload:
+    type: array
+    items:
+      $ref: "../../../customer/_types/product.yaml"
+required:
+  - success
+  - payload
