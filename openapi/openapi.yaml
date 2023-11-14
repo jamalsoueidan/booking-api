@@ -205,7 +205,7 @@ paths:
   # User
   /user/{username}:
     $ref: "./paths/user/user.yaml"
-  /user/{username}/prroducts:
+  /user/{username}/products:
     $ref: "./paths/user/products/list/index.yaml"
   /user/{username}/schedule/{scheduleId}/location/{locationId}:
     $ref: "./paths/user/schedule/get/index.yaml"
