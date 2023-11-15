@@ -3,7 +3,8 @@ import "module-alias/register";
 import { app } from "@azure/functions";
 import { UserProductsControllerList } from "./user/controllers/products/list";
 import { UserScheduleControllerGet } from "./user/controllers/schedule/get";
-import { UserScheduleControllerList } from "./user/controllers/schedule/list";
+import { UserScheduleControllerGetByProductId } from "./user/controllers/schedule/get-by-product";
+import { UserScheduleControllerLocationsList } from "./user/controllers/schedule/locations-list";
 import { UserControllerGet } from "./user/controllers/user/get";
 import { UserControllerList } from "./user/controllers/user/list";
 import { UserControllerProfessions } from "./user/controllers/user/professions";
@@ -36,11 +37,25 @@ app.http("userScheduleGet", {
   handler: UserScheduleControllerGet,
 });
 
-app.http("userSchedulesList", {
+app.http("userScheduleGetByProductId", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "user/{username}/schedules",
-  handler: UserScheduleControllerList,
+  route: "user/{username}/schedule/get-by-product-id/{productId}",
+  handler: UserScheduleControllerGetByProductId,
+});
+
+app.http("userSchedulesLocationsList", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "user/{username}/schedules/locations",
+  handler: UserScheduleControllerLocationsList,
+});
+
+app.http("userSchedulesLocationsListBySchedule", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "user/{username}/schedules/locations",
+  handler: UserScheduleControllerLocationsList,
 });
 
 app.http("userProductsList", {
