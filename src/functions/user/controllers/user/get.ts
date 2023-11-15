@@ -17,18 +17,10 @@ export type UserControllerGetResponse = Awaited<
 > &
   Awaited<ReturnType<typeof UserScheduleServiceLocationsList>>;
 
+// get schedule with products only belongs to specific locationId
 export const UserControllerGet = _(
   async ({ query }: UserControllerGetRequest) => {
     const validateData = UserServiceGetSchema.parse(query);
-    const user = await UserServiceGet(validateData);
-
-    const schedules = await UserScheduleServiceLocationsList({
-      customerId: user.customerId,
-    });
-
-    return {
-      ...user,
-      schedules,
-    };
+    return UserServiceGet(validateData);
   }
 );
