@@ -6,6 +6,25 @@ import { UserModel } from "../user.model";
 import { IUserDocument } from "../user.schema";
 import { User, UserLocations } from "../user.types";
 
+export type UserServiceGetCustomerIdProps = Required<Pick<User, "username">>;
+
+export const UserServiceGetCustomerId = ({ username }: UserServiceGetProps) => {
+  return UserModel.findOne(
+    { username, active: true, isBusiness: true },
+    { customerId: 1 }
+  )
+    .lean()
+    .orFail(
+      new NotFoundError([
+        {
+          path: ["username"],
+          message: "NOT_FOUND",
+          code: "custom",
+        },
+      ])
+    );
+};
+
 export type UserServiceGetProps = Required<Pick<User, "username">>;
 
 export const UserServiceGet = ({ username }: UserServiceGetProps) => {

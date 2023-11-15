@@ -1,97 +1,8 @@
-import mongoose, { PipelineStage } from "mongoose";
+import mongoose from "mongoose";
 import { ILocationDocument, Location } from "~/functions/location";
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
-import { User, UserServiceGet } from "~/functions/user";
+import { UserServiceGetCustomerId } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
-
-export type UserScheduleServiceLocationsListProps = Pick<User, "customerId">;
-
-export type UserScheduleServiceLocationsListReponse = Omit<
-  Schedule,
-  "products"
-> & {
-  locations: Array<Location & Pick<ILocationDocument, "_id">>;
-};
-
-export const UserScheduleServiceLocationsList = async ({
-  customerId,
-}: UserScheduleServiceLocationsListProps) => {
-  const pipeline: PipelineStage[] = [
-    { $match: { customerId, products: { $exists: true, $ne: [] } } },
-    { $unwind: "$products" },
-    { $unwind: "$products.locations" },
-    {
-      $lookup: {
-        from: "Location",
-        localField: "products.locations.location",
-        foreignField: "_id",
-        as: "products.locations",
-      },
-    },
-    { $unwind: "$products.locations" },
-    {
-      $group: {
-        _id: {
-          scheduleId: "$_id",
-          customerId: "$customerId",
-          productId: "$products.productId",
-          variantId: "$products.variantId",
-        },
-        locations: { $addToSet: "$products.locations" },
-        name: { $first: "$name" },
-        slots: { $first: "$slots" },
-        createdAt: { $first: "$createdAt" },
-        updatedAt: { $first: "$updatedAt" },
-      },
-    },
-    {
-      $group: {
-        _id: "$_id.scheduleId",
-        customerId: { $first: "$_id.customerId" },
-        name: { $first: "$name" },
-        slots: { $first: "$slots" },
-        locations: { $addToSet: "$locations" },
-        createdAt: { $first: "$createdAt" },
-        updatedAt: { $first: "$updatedAt" },
-      },
-    },
-    {
-      $addFields: {
-        locations: {
-          $reduce: {
-            input: "$locations",
-            initialValue: [],
-            in: { $concatArrays: ["$$value", "$$this"] },
-          },
-        },
-      },
-    },
-  ];
-
-  let schedules =
-    await ScheduleModel.aggregate<UserScheduleServiceLocationsListReponse>(
-      pipeline
-    ).exec();
-
-  return schedules
-    .map((schedule) => ({
-      ...schedule,
-      locations: schedule.locations.filter(
-        (location, index, self) =>
-          index ===
-          self.findIndex((l) => l._id.toString() == location._id.toString())
-      ),
-    }))
-    .sort((a, b) => {
-      if (a.name < b.name) {
-        return -1;
-      }
-      if (a.name > b.name) {
-        return 1;
-      }
-      return 0;
-    });
-};
 
 export type UserScheduleServiceGetProps = {
   username: string;
@@ -113,7 +24,7 @@ export const UserScheduleServiceGet = async ({
   username,
   locationId,
 }: UserScheduleServiceGetProps) => {
-  const { customerId } = await UserServiceGet({ username });
+  const { customerId } = await UserServiceGetCustomerId({ username });
 
   const pipeline = [
     {
