@@ -1589,7 +1589,9 @@ paths:
                     type: boolean
                     example: true
                   payload:
-                    $ref: '#/components/schemas/UserScheduleWithLocations'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserScheduleWithLocations'
                 required:
                   - success
                   - payload
