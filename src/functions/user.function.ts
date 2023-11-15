@@ -3,6 +3,7 @@ import "module-alias/register";
 import { app } from "@azure/functions";
 import { UserProductsControllerList } from "./user/controllers/products/list";
 import { UserScheduleControllerGet } from "./user/controllers/schedule/get";
+import { UserScheduleControllerList } from "./user/controllers/schedule/list";
 import { UserControllerGet } from "./user/controllers/user/get";
 import { UserControllerList } from "./user/controllers/user/list";
 import { UserControllerProfessions } from "./user/controllers/user/professions";
@@ -33,6 +34,13 @@ app.http("userScheduleGet", {
   authLevel: "anonymous",
   route: "user/{username}/schedule/{scheduleId?}/location/{locationId?}",
   handler: UserScheduleControllerGet,
+});
+
+app.http("userSchedulesList", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "user/{username}/schedules",
+  handler: UserScheduleControllerList,
 });
 
 app.http("userProductsList", {

@@ -5,13 +5,13 @@ properties:
     example: true
   payload:
     allOf:
-      - $ref: ../../_types/schedule_with_locations.yaml
+      - $ref: ../_types/schedule-with-locations.yaml
       - type: object
         properties:
           products:
             type: array
             items:
-              $ref: ../../_types/product_with_locations.yaml
+              $ref: ../_types/product-with-locations.yaml
         required:
           - products
 

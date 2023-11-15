@@ -9,11 +9,11 @@ properties:
   slots:
     type: array
     items:
-      $ref: ../../customer/schedule/_types/slot.yaml
+      $ref: ../../../customer/schedule/_types/slot.yaml
   locations:
     type: array
     items:
-      $ref: ../../customer/location/_types/location.yaml
+      $ref: ../../../customer/location/_types/location.yaml
 required:
   - _id
   - name
