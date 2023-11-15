@@ -1542,7 +1542,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-  '/user/{username}/prroducts':
+  '/user/{username}/products':
     get:
       parameters:
         - name: username
