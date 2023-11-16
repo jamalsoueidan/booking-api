@@ -1598,9 +1598,9 @@ paths:
             type: string
       tags:
         - UserSchedule
-      operationId: userScheduleGetByProductId
+      operationId: userScheduleGetByProduct
       summary: GET Get user schedule
-      description: This endpoint gets user schedule object by product id
+      description: 'This endpoint should retrieve a schedule and locations belonging to a specific productId, along with the product.'
       responses:
         '200':
           description: Response with payload
@@ -1628,9 +1628,9 @@ paths:
             type: string
       tags:
         - UserSchedule
-      operationId: userSchedulesList
+      operationId: userSchedulesListLocations
       summary: GET Get schedules for user
-      description: This endpoint get schedules for user
+      description: This endpoint should return all locations present in all schedules for specific user
       responses:
         '200':
           description: Response
@@ -1679,9 +1679,9 @@ paths:
             type: string
       tags:
         - UserSchedule
-      operationId: userScheduleGet
+      operationId: userScheduleGetByLocation
       summary: GET Get user schedule
-      description: This endpoint gets user schedule object
+      description: This endpoint should retrieve a schedule with products that only belong to a specific locationId.
       responses:
         '200':
           description: Response with payload
