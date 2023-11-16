@@ -4,22 +4,23 @@ import { _ } from "~/library/handler";
 import { CustomerProductsServiceList } from "~/functions/customer/services/product";
 import { UserServiceGet } from "~/functions/user";
 
-export type UserProductsControllerListRequest = {
-  query: z.infer<typeof UserProductsControllerListSchema>;
+export type UserProductsControllerListByScheduleRequest = {
+  query: z.infer<typeof UserProductsControllerListByScheduleSchema>;
 };
 
-export const UserProductsControllerListSchema = z.object({
+export const UserProductsControllerListByScheduleSchema = z.object({
   username: z.string(),
   scheduleId: z.string().optional(),
 });
 
-export type UserProductsControllerListResponse = Awaited<
+export type UserProductsControllerListByScheduleResponse = Awaited<
   ReturnType<typeof CustomerProductsServiceList>
 >;
 
-export const UserProductsControllerList = _(
-  async ({ query }: UserProductsControllerListRequest) => {
-    const validateData = UserProductsControllerListSchema.parse(query);
+export const UserProductsControllerListBySchedule = _(
+  async ({ query }: UserProductsControllerListByScheduleRequest) => {
+    const validateData =
+      UserProductsControllerListByScheduleSchema.parse(query);
     const user = await UserServiceGet(validateData);
     return CustomerProductsServiceList({
       customerId: user.customerId,

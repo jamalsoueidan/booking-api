@@ -1,7 +1,8 @@
 import "module-alias/register";
+import { UserProductsControllerListProductsByLocation } from "./user/controllers/products/list-by-location";
 
 import { app } from "@azure/functions";
-import { UserProductsControllerList } from "./user/controllers/products/list";
+import { UserProductsControllerListBySchedule } from "./user/controllers/products/list-by-schedule";
 import { UserScheduleControllerGetByLocation } from "./user/controllers/schedule/get-by-location";
 import { UserScheduleControllerGetByProduct } from "./user/controllers/schedule/get-by-product";
 import { UserScheduleControllerLocationsList } from "./user/controllers/schedule/locations-list";
@@ -51,9 +52,16 @@ app.http("userSchedulesLocationsList", {
   handler: UserScheduleControllerLocationsList,
 });
 
-app.http("userProductsList", {
+app.http("UserProductsControllerListBySchedule", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "user/{username}/products",
-  handler: UserProductsControllerList,
+  handler: UserProductsControllerListBySchedule,
+});
+
+app.http("UserProductsControllerListByLocation", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "user/{username}/product/{productId}/location/{locationId}",
+  handler: UserProductsControllerListProductsByLocation,
 });

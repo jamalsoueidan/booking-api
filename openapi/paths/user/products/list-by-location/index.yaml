@@ -6,16 +6,23 @@ get:
       required: true
       schema:
         type: string
-    - name: scheduleId
-      in: query
-      description: scheduleId is optional
+    - name: productId
+      in: path
+      description: productId is nedded
+      required: true
+      schema:
+        type: string
+    - name: locationId
+      in: path
+      description: locationId is nedded
+      required: true
       schema:
         type: string
   tags:
     - UserProduct
-  operationId: userProductsList
+  operationId: userProductsListByLocation
   summary: GET Get products for user
-  description: This endpoint get products for user
+  description: This endpoint get products for user by productId and locationId
   responses:
     "200":
       description: "Response"

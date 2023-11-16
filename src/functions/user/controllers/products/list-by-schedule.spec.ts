@@ -12,10 +12,10 @@ import { CustomerProductServiceUpsert } from "~/functions/customer/services/prod
 import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { createUser } from "~/library/jest/helpers";
 import {
-  UserProductsControllerList,
-  UserProductsControllerListRequest,
-  UserProductsControllerListResponse,
-} from "./list";
+  UserProductsControllerListBySchedule,
+  UserProductsControllerListByScheduleRequest,
+  UserProductsControllerListByScheduleResponse,
+} from "./list-by-schedule";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -34,7 +34,7 @@ const newProduct: Omit<ScheduleProduct, "productId"> = {
   locations: [],
 };
 
-describe("UserProductsControllerList", () => {
+describe("UserProductsControllerListBySchedule", () => {
   let context: InvocationContext = createContext();
   let request: HttpRequest;
 
@@ -78,12 +78,13 @@ describe("UserProductsControllerList", () => {
       { ...newProduct, scheduleId: newSchedule2._id }
     );
 
-    request = await createHttpRequest<UserProductsControllerListRequest>({
-      query: { username: user.username! },
-    });
+    request =
+      await createHttpRequest<UserProductsControllerListByScheduleRequest>({
+        query: { username: user.username! },
+      });
 
-    const res: HttpSuccessResponse<UserProductsControllerListResponse> =
-      await UserProductsControllerList(request, context);
+    const res: HttpSuccessResponse<UserProductsControllerListByScheduleResponse> =
+      await UserProductsControllerListBySchedule(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
@@ -130,12 +131,13 @@ describe("UserProductsControllerList", () => {
       { ...newProduct, scheduleId: newSchedule2._id }
     );
 
-    request = await createHttpRequest<UserProductsControllerListRequest>({
-      query: { username: user.username!, scheduleId: newSchedule2._id },
-    });
+    request =
+      await createHttpRequest<UserProductsControllerListByScheduleRequest>({
+        query: { username: user.username!, scheduleId: newSchedule2._id },
+      });
 
-    const res: HttpSuccessResponse<UserProductsControllerListResponse> =
-      await UserProductsControllerList(request, context);
+    const res: HttpSuccessResponse<UserProductsControllerListByScheduleResponse> =
+      await UserProductsControllerListBySchedule(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");

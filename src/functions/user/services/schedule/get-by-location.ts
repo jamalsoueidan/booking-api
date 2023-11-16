@@ -3,11 +3,12 @@ import { ILocationDocument, Location } from "~/functions/location";
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
 import { UserServiceGetCustomerId } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
+import { StringOrObjectId } from "~/library/zod";
 
 export type UserScheduleServiceGetByLocationProps = {
   username: string;
-  scheduleId: Schedule["_id"];
-  locationId: ILocationDocument["_id"];
+  scheduleId: StringOrObjectId;
+  locationId: StringOrObjectId;
 };
 
 export type UserScheduleServiceGetByLocationReponse = Omit<
