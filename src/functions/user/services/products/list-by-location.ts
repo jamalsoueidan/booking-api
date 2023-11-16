@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Schedule, ScheduleModel } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
 import { StringOrObjectId } from "~/library/zod";
@@ -55,7 +56,9 @@ export const UserProductsServiceListProductsByLocation = async ({
         },
         {
           $match: {
-            "products.locations.location": locationId,
+            "products.locations.location": new mongoose.Types.ObjectId(
+              locationId
+            ),
           },
         },
         {
