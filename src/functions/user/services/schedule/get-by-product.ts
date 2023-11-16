@@ -1,3 +1,4 @@
+import { Location } from "~/functions/location";
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
 
@@ -58,6 +59,11 @@ export async function UserScheduleServiceGetByProductId({
       },
       { $unwind: "$products.locations" },
       {
+        $sort: {
+          "products.locations.name": 1,
+        },
+      },
+      {
         $group: {
           _id: "$_id",
           locations: {
@@ -82,5 +88,16 @@ export async function UserScheduleServiceGetByProductId({
     ]);
   }
 
-  return schedules[0];
+  return {
+    ...schedules[0],
+    locations: schedules[0].locations.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    }),
+  };
 }

@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
+import { LocationTypes } from "~/functions/location";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
 import { getProductObject } from "~/library/jest/helpers/product";
@@ -13,8 +14,12 @@ describe("UserScheduleServiceGetByProductId", () => {
 
   beforeEach(() => createUser({ customerId }, { username }));
 
-  it("should get schedule with products only belongs to specific locationId", async () => {
+  it("should get schedule and locations belonging to product id", async () => {
     const locationOrigin = await createLocation({ customerId });
+    const locationDestination = await createLocation({
+      customerId,
+      locationType: LocationTypes.DESTINATION,
+    });
 
     const product = getProductObject({
       locations: [
@@ -22,8 +27,13 @@ describe("UserScheduleServiceGetByProductId", () => {
           location: locationOrigin._id,
           locationType: locationOrigin.locationType,
         },
+        {
+          location: locationDestination._id,
+          locationType: locationDestination.locationType,
+        },
       ],
     });
+
     const schedule = await CustomerScheduleServiceCreate({
       name: faker.person.firstName(),
       customerId,
@@ -71,7 +81,7 @@ describe("UserScheduleServiceGetByProductId", () => {
 
     expect(getSchedule!.name).toBe(schedule.name);
     expect(getSchedule!._id.toString()).toBe(schedule._id.toString());
-    expect(getSchedule!.locations.length).toBe(1);
+    expect(getSchedule!.locations.length).toBe(2);
     expect(getSchedule!.product.productId).toBe(product.productId);
   });
 });
