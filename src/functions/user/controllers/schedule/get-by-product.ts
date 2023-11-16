@@ -2,28 +2,28 @@ import { z } from "zod";
 
 import { _ } from "~/library/handler";
 import { NumberOrStringType } from "~/library/zod";
-import { UserScheduleServiceGetByProductId } from "../../services/schedule/get-by-product";
+import { UserScheduleServiceGetByProductId as UserScheduleServiceGetByProduct } from "../../services/schedule/get-by-product";
 import { UserServiceGetCustomerId } from "../../services/user";
 
-export type UserScheduleControllerGetByProductIdRequest = {
-  query: z.infer<typeof UserScheduleControllerGetByProductIdQuerySchema>;
+export type UserScheduleControllerGetByProductRequest = {
+  query: z.infer<typeof UserScheduleControllerGetByProductQuerySchema>;
 };
 
-const UserScheduleControllerGetByProductIdQuerySchema = z.object({
+const UserScheduleControllerGetByProductQuerySchema = z.object({
   username: z.string(),
   productId: NumberOrStringType,
 });
 
-export type UserScheduleControllerGetByProductIdResponse = Awaited<
-  ReturnType<typeof UserScheduleServiceGetByProductId>
+export type UserScheduleControllerGetByProductResponse = Awaited<
+  ReturnType<typeof UserScheduleServiceGetByProduct>
 >;
 
-export const UserScheduleControllerGetByProductId = _(
-  async ({ query }: UserScheduleControllerGetByProductIdRequest) => {
+export const UserScheduleControllerGetByProduct = _(
+  async ({ query }: UserScheduleControllerGetByProductRequest) => {
     const validateQuery =
-      UserScheduleControllerGetByProductIdQuerySchema.parse(query);
+      UserScheduleControllerGetByProductQuerySchema.parse(query);
     const user = await UserServiceGetCustomerId(validateQuery);
-    return UserScheduleServiceGetByProductId({
+    return UserScheduleServiceGetByProduct({
       productId: validateQuery.productId,
       customerId: user.customerId,
     });

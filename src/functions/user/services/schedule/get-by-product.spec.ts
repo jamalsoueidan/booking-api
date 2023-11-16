@@ -14,7 +14,7 @@ describe("UserScheduleServiceGetByProductId", () => {
 
   beforeEach(() => createUser({ customerId }, { username }));
 
-  it("should get schedule and locations belonging to product id", async () => {
+  it("should retrieve a schedule and locations belonging to a specific productId, along with the product", async () => {
     const locationOrigin = await createLocation({ customerId });
     const locationDestination = await createLocation({
       customerId,

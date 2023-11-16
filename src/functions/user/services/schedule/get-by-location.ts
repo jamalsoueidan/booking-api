@@ -4,13 +4,16 @@ import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
 import { UserServiceGetCustomerId } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
 
-export type UserScheduleServiceGetProps = {
+export type UserScheduleServiceGetByLocationProps = {
   username: string;
   scheduleId: Schedule["_id"];
   locationId: ILocationDocument["_id"];
 };
 
-export type UserScheduleServiceGetReponse = Omit<Schedule, "products"> & {
+export type UserScheduleServiceGetByLocationReponse = Omit<
+  Schedule,
+  "products"
+> & {
   locations: Array<Pick<ILocationDocument, "_id"> & Location>;
   products: Array<
     Omit<ScheduleProduct, "locations"> & {
@@ -19,11 +22,11 @@ export type UserScheduleServiceGetReponse = Omit<Schedule, "products"> & {
   >;
 };
 
-export const UserScheduleServiceGet = async ({
+export const UserScheduleServiceGetByLocation = async ({
   scheduleId,
   username,
   locationId,
-}: UserScheduleServiceGetProps) => {
+}: UserScheduleServiceGetByLocationProps) => {
   const { customerId } = await UserServiceGetCustomerId({ username });
 
   const pipeline = [
@@ -113,7 +116,9 @@ export const UserScheduleServiceGet = async ({
   ];
 
   const schedules =
-    await ScheduleModel.aggregate<UserScheduleServiceGetReponse>(pipeline);
+    await ScheduleModel.aggregate<UserScheduleServiceGetByLocationReponse>(
+      pipeline
+    );
   if (schedules.length === 0) {
     throw new NotFoundError([
       {

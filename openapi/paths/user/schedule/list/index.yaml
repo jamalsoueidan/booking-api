@@ -8,9 +8,9 @@ get:
         type: string
   tags:
     - UserSchedule
-  operationId: userSchedulesList
+  operationId: userSchedulesListLocations
   summary: GET Get schedules for user
-  description: This endpoint get schedules for user
+  description: This endpoint should return all locations present in all schedules for specific user
   responses:
     "200":
       description: "Response"

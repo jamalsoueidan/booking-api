@@ -38,7 +38,7 @@ describe("UserProductsControllerList", () => {
   let context: InvocationContext = createContext();
   let request: HttpRequest;
 
-  it("Should be able to get all products for user-name", async () => {
+  it("Should be able to get all products for user-name (in all schedules, location doesn't count)", async () => {
     const user = await createUser(
       { customerId: 1234321 },
       { username: "jamalsoueidan", isBusiness: true, active: true }
@@ -90,7 +90,7 @@ describe("UserProductsControllerList", () => {
     expect(res.jsonBody?.payload).toHaveLength(3);
   });
 
-  it("Should be able to get all products for user-name for specific schedule", async () => {
+  it("Should be able to get all products for user-name for specific schedule (location doesn't count)", async () => {
     const user = await createUser(
       { customerId: 1234321 },
       { username: "jamalsoueidan", isBusiness: true, active: true }

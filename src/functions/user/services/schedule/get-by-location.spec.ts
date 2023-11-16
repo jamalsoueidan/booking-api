@@ -4,17 +4,17 @@ import { LocationTypes } from "~/functions/location";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { UserScheduleServiceGet } from "./get";
+import { UserScheduleServiceGetByLocation } from "./get-by-location";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("UserScheduleServiceGet", () => {
+describe("UserScheduleServiceGetByLocation", () => {
   const customerId = 123;
   const username = "test";
 
   beforeEach(() => createUser({ customerId }, { username }));
 
-  it("should get schedule with products only belongs to specific locationId", async () => {
+  it("should retrieve a schedule with products that only belong to a specific locationId", async () => {
     const locationOrigin = await createLocation({ customerId });
     const locationDestination = await createLocation({
       customerId,
@@ -48,7 +48,7 @@ describe("UserScheduleServiceGet", () => {
       ],
     });
 
-    const getSchedule = await UserScheduleServiceGet({
+    const getSchedule = await UserScheduleServiceGetByLocation({
       username,
       locationId: locationDestination._id,
       scheduleId: schedule._id,

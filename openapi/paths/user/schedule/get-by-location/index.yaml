@@ -20,9 +20,9 @@ get:
         type: string
   tags:
     - UserSchedule
-  operationId: userScheduleGet
+  operationId: userScheduleGetByLocation
   summary: GET Get user schedule
-  description: This endpoint gets user schedule object
+  description: This endpoint should retrieve a schedule with products that only belong to a specific locationId.
   responses:
     "200":
       description: Response with payload

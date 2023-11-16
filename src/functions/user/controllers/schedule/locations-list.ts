@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { _ } from "~/library/handler";
-import { UserScheduleServiceLocationsList } from "../../services/schedule/locations/locations-list";
+import { UserScheduleServiceLocationsList } from "../../services/schedule/locations-list";
 import { UserServiceGet } from "../../services/user";
 
 export type UserScheduleControllerLocationsListRequest = {

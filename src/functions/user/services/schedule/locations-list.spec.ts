@@ -14,7 +14,7 @@ describe("UserScheduleServiceLocationsList", () => {
 
   beforeEach(() => createUser({ customerId }, { username }));
 
-  it("should return all schedules with locations and without products", async () => {
+  it("should return all locations present in schedules", async () => {
     const locationOrigin = await createLocation({ customerId });
     const locationDestination = await createLocation({
       customerId,
