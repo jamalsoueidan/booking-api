@@ -1,0 +1,11 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  payload:
+    $ref: ../../../customer/location/_types/location.yaml
+
+required:
+  - success
+  - payload

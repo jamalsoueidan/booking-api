@@ -1,0 +1,34 @@
+get:
+  parameters:
+    - name: username
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: locationId
+      in: path
+      required: true
+      schema:
+        type: string
+  tags:
+    - UserLocation
+  operationId: userLocationGet
+  summary: GET Get one location from user
+  description: This endpoint get one location for user
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
+
+  security: []
