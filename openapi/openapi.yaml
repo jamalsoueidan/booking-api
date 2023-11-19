@@ -165,9 +165,13 @@ components:
       $ref: paths/user/schedule/_types/product-with-locations.yaml
     UserProductsListByLocationResponse:
       $ref: paths/user/products/list-by-location/response.yaml
+    UserProductsGetProductsBody:
+      $ref: paths/user/products/get-products/body.yaml
+    UserProductsGetProductsResponse:
+      $ref: paths/user/products/get-products/response.yaml
     UserProductsListByScheduleResponse:
       $ref: paths/user/products/list-by-schedule/response.yaml
-    UserScheduleGetResponse:
+    UserScheduleGetByLocationResponse:
       $ref: paths/user/schedule/get-by-location/response.yaml
     UserScheduleGetByProductIdResponse:
       $ref: paths/user/schedule/get-by-product/response.yaml
@@ -211,6 +215,8 @@ paths:
     $ref: "./paths/user/products/list-by-schedule/index.yaml"
   /user/{username}/product/{productId}/location/{locationId}:
     $ref: "./paths/user/products/list-by-location/index.yaml"
+  /user/{username}/products/location/{locationId}:
+    $ref: "./paths/user/products/get-products/index.yaml"
   /user/{username}/schedule/get-by-product-id/{productId}:
     $ref: paths/user/schedule/get-by-product/index.yaml
   /user/{username}/schedules/locations:
