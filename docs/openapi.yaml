@@ -1230,6 +1230,28 @@ components:
       required:
         - success
         - payload
+    UserProductsGetProductsBody:
+      type: object
+      properties:
+        productIds:
+          type: array
+          items:
+            type: string
+      required:
+        - productIds
+    UserProductsGetProductsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerProductBase'
+      required:
+        - success
+        - payload
     UserProductsListByScheduleResponse:
       type: object
       properties:
@@ -1243,7 +1265,7 @@ components:
       required:
         - success
         - payload
-    UserScheduleGetResponse:
+    UserScheduleGetByLocationResponse:
       type: object
       properties:
         success:
@@ -1619,7 +1641,7 @@ paths:
         - UserProduct
       operationId: userProductsListByLocation
       summary: GET Get products for user
-      description: This endpoint get products for user by productId and locationId
+      description: This endpoint is intended to be used when we need to fetch related products from the same schedule and same location.
       responses:
         '200':
           description: Response
@@ -1627,6 +1649,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserProductsListByLocationResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
+  '/user/{username}/products/location/{locationId}':
+    post:
+      parameters:
+        - name: username
+          in: path
+          description: username is needed
+          required: true
+          schema:
+            type: string
+        - name: locationId
+          in: path
+          description: locationId is nedded
+          required: true
+          schema:
+            type: string
+      tags:
+        - UserProduct
+      operationId: userProductsGetProducts
+      summary: GET Get products for user
+      description: This endpoint get products in productsId from one schedule by location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProductsGetProductsBody'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProductsGetProductsResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
@@ -1741,7 +1803,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserScheduleGetResponse'
+                $ref: '#/components/schemas/UserScheduleGetByLocationResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
