@@ -1217,6 +1217,17 @@ components:
                 $ref: '#/components/schemas/CustomerLocation'
           required:
             - locations
+    UserLocationGetResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/CustomerLocation'
+      required:
+        - success
+        - payload
     UserProductsListByLocationResponse:
       type: object
       properties:
@@ -1770,6 +1781,40 @@ paths:
           $ref: '#/components/responses/UnauthorizedResponse'
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
+      security: []
+  '/user/{username}/location/{locationId}':
+    get:
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: locationId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - UserLocation
+      operationId: userLocationGet
+      summary: GET Get one location from user
+      description: This endpoint get one location for user
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLocationGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
   '/user/{username}/schedule/{scheduleId}/location/{locationId}':
     get:
