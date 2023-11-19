@@ -163,6 +163,8 @@ components:
       $ref: paths/user/schedule/_types/schedule-with-locations.yaml
     UserScheduleProductWithLocations:
       $ref: paths/user/schedule/_types/product-with-locations.yaml
+    UserLocationGetResponse:
+      $ref: paths/user/location/get/response.yaml
     UserProductsListByLocationResponse:
       $ref: paths/user/products/list-by-location/response.yaml
     UserProductsGetProductsBody:
@@ -221,6 +223,8 @@ paths:
     $ref: paths/user/schedule/get-by-product/index.yaml
   /user/{username}/schedules/locations:
     $ref: "./paths/user/schedule/list/index.yaml"
+  /user/{username}/location/{locationId}:
+    $ref: "./paths/user/location/get/index.yaml"
   /user/{username}/schedule/{scheduleId}/location/{locationId}:
     $ref: "./paths/user/schedule/get-by-location/index.yaml"
   /users/professions:

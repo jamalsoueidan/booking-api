@@ -161,11 +161,21 @@ export const UserServiceLocationsRemove = async (location: {
 
 export const UserServiceGetLocations = async <T>({
   customerId,
+  username,
 }: {
-  customerId: number;
+  customerId?: number;
+  username?: string;
 }) => {
-  const pipeline = [
-    { $match: { customerId } },
+  const pipeline = [];
+  if (customerId) {
+    pipeline.push({ $match: { customerId } });
+  }
+
+  if (username) {
+    pipeline.push({ $match: { username } });
+  }
+
+  pipeline.push(
     { $unwind: "$locations" },
     {
       $lookup: {
@@ -193,8 +203,8 @@ export const UserServiceGetLocations = async <T>({
         _id: 0,
         locations: 1,
       },
-    },
-  ];
+    }
+  );
 
   const locations = await UserModel.aggregate<{
     locations: Array<UserLocations & T>;

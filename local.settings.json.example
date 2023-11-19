@@ -1,0 +1,17 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
+    "CosmosDbConnectionString": "",
+    "DataforsyningenToken": "",
+    "GoogleMapApi": "",
+    "QueueStorage": "",
+    "ShopifyStoreDomain": "",
+    "ShopifyApiKey": "",
+    "ShopifyApiSecretKey": "",
+    "ShopifyApiAccessToken": "",
+    "APPINSIGHTS_INSTRUMENTATIONKEY": ""
+  }
+}

@@ -14,29 +14,9 @@ Beside that I'm using Durable Functions which is an extension of Azure Fucntions
 
 I'm planning also to use Azure queue storage to handle webhooks data processing.
 
-## 1. Create local.settings.json
+## 1. Edit local.settings.json.example
 
-Assign the correct value to all env values.
-
-```js
-{
-  "IsEncrypted": false,
-  "Values": {
-    "AzureWebJobsStorage": "",
-    "FUNCTIONS_WORKER_RUNTIME": "node",
-    "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
-    "CosmosDbConnectionString": "",
-    "DataforsyningenToken": "",
-    "GoogleMapApi": "",
-    "QueueStorage": "",
-    "ShopifyStoreDomain": "",
-    "ShopifyApiKey": "",
-    "ShopifyApiSecretKey": "",
-    "ShopifyApiAccessToken": ""
-  }
-}
-
-```
+Assign the correct value to all env values and rename to local.settings.json
 
 ## OpenAPI fragments and components (openapi/)
 
