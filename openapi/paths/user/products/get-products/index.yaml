@@ -1,14 +1,8 @@
-get:
+post:
   parameters:
     - name: username
       in: path
       description: username is needed
-      required: true
-      schema:
-        type: string
-    - name: productId
-      in: path
-      description: productId is nedded
       required: true
       schema:
         type: string
@@ -20,9 +14,15 @@ get:
         type: string
   tags:
     - UserProduct
-  operationId: userProductsListByLocation
+  operationId: userProductsGetProducts
   summary: GET Get products for user
-  description: This endpoint is intended to be used when we need to fetch related products from the same schedule and same location.
+  description: This endpoint get products in productsId from one schedule by location
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./body.yaml"
   responses:
     "200":
       description: "Response"

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { PipelineStage } from "mongoose";
 import { Schedule, ScheduleModel } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
 import { StringOrObjectId } from "~/library/zod";
@@ -10,8 +10,8 @@ export type UserProductsServiceListProductsByLocationReturn = Pick<
 
 export type UserProductsServiceListProductsByLocationProps = {
   username: string;
-  productId?: number;
-  locationId?: StringOrObjectId;
+  productId: number | number[];
+  locationId: StringOrObjectId;
 };
 
 export const UserProductsServiceListProductsByLocation = async ({
@@ -19,63 +19,84 @@ export const UserProductsServiceListProductsByLocation = async ({
   productId,
   locationId,
 }: UserProductsServiceListProductsByLocationProps) => {
+  const schedulesPipeline: PipelineStage[] = [
+    {
+      $lookup: {
+        from: "User", // The name of the customer collection
+        localField: "customerId", // Field in the current documents
+        foreignField: "customerId", // Field in the customer documents to match on
+        as: "customer",
+      },
+    },
+    {
+      $unwind: "$customer",
+    },
+    {
+      $match: {
+        "customer.username": username,
+      },
+    },
+    {
+      $lookup: {
+        from: "schedules", // The name of the schedule collection
+        localField: "customer.customerId",
+        foreignField: "customerId",
+        as: "scheduleInfo",
+      },
+    },
+  ];
+
+  if (!Array.isArray(productId)) {
+    schedulesPipeline.push(
+      {
+        $match: {
+          "products.productId": productId,
+        },
+      },
+      {
+        $unwind: "$products",
+      }
+    );
+  }
+
+  if (Array.isArray(productId)) {
+    schedulesPipeline.push(
+      {
+        $unwind: "$products",
+      },
+      {
+        $match: {
+          "products.productId": { $in: productId },
+        },
+      }
+    );
+  }
+
+  schedulesPipeline.push(
+    {
+      $match: {
+        "products.locations.location": new mongoose.Types.ObjectId(locationId),
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        name: { $first: "$name" },
+        products: { $push: "$products" },
+      },
+    },
+    {
+      $project: {
+        scheduleId: "$_id",
+        scheduleName: "$name",
+        products: 1,
+      },
+    }
+  );
+
   const schedules =
     await ScheduleModel.aggregate<UserProductsServiceListProductsByLocationReturn>(
-      [
-        {
-          $lookup: {
-            from: "User", // The name of the customer collection
-            localField: "customerId", // Field in the current documents
-            foreignField: "customerId", // Field in the customer documents to match on
-            as: "customer",
-          },
-        },
-        {
-          $unwind: "$customer",
-        },
-        {
-          $match: {
-            "customer.username": username,
-          },
-        },
-        {
-          $lookup: {
-            from: "schedules", // The name of the schedule collection
-            localField: "customer.customerId",
-            foreignField: "customerId",
-            as: "scheduleInfo",
-          },
-        },
-        {
-          $match: {
-            "products.productId": productId,
-          },
-        },
-        {
-          $unwind: "$products",
-        },
-        {
-          $match: {
-            "products.locations.location": new mongoose.Types.ObjectId(
-              locationId
-            ),
-          },
-        },
-        {
-          $group: {
-            _id: "$_id",
-            name: { $first: "$name" },
-            products: { $push: "$products" },
-          },
-        },
-        {
-          $project: {
-            scheduleId: "$_id",
-            scheduleName: "$name",
-            products: 1,
-          },
-        },
-      ]
+      schedulesPipeline
     );
 
   if (schedules.length === 0) {
