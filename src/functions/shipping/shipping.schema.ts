@@ -81,7 +81,7 @@ export const ShippingMongooseSchema = new mongoose.Schema<
       value: Number,
     },
     cost: {
-      text: String,
+      currency: String,
       value: { type: Number, default: 0 },
     },
   },
