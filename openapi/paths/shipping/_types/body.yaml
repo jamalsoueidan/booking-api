@@ -1,7 +1,7 @@
 type: object
 properties:
   customerId:
-    $ref: "../../../types/_numberOrString.yaml"
+    type: number
   locationId:
     type: string
   destination:

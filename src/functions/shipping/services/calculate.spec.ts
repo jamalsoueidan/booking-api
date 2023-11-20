@@ -36,18 +36,21 @@ describe("ShippingServiceCalculate", () => {
       },
     } as Awaited<ReturnType<typeof LocationServiceGetTravelTime>>);
 
-    const response = await ShippingServiceCalculate({
+    const request = {
       locationId: location._id,
       destination: {
         name: "hotel a",
         fullAddress: "Dortesvej 17 1 th",
       },
-    });
+    };
+
+    const response = await ShippingServiceCalculate(request);
 
     expect(response).toEqual({
       duration: { text: "120 min", value: 120 },
       distance: { text: "100 km", value: 100 },
       cost: { value: 600, currency: "DKK" },
+      ...request,
     });
   });
 

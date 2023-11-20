@@ -54,6 +54,7 @@ export const ShippingServiceCalculate = async (
   });
 
   return {
+    ...props,
     ...travelTime,
     cost: {
       value: cost,

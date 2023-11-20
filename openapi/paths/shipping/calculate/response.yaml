@@ -9,6 +9,20 @@ properties:
       - $ref: ../../location/_types/travel-time.yaml
       - type: object
         properties:
+          customerId:
+            type: number
+          locationId:
+            type: string
+          destination:
+            type: object
+            properties:
+              name:
+                type: string
+              fullAddress:
+                type: string
+            required:
+              - name
+              - fullAddress
           cost:
             type: object
             properties:
@@ -21,6 +35,7 @@ properties:
               - value
         required:
           - cost
+          - destination
 
 required:
   - success
