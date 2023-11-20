@@ -1434,7 +1434,7 @@ components:
       type: object
       properties:
         customerId:
-          $ref: '#/components/schemas/NumberOrString'
+          type: number
         locationId:
           type: string
         destination:
@@ -1505,6 +1505,20 @@ components:
             - $ref: '#/components/schemas/LocationTravelTime'
             - type: object
               properties:
+                customerId:
+                  type: number
+                locationId:
+                  type: string
+                destination:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    fullAddress:
+                      type: string
+                  required:
+                    - name
+                    - fullAddress
                 cost:
                   type: object
                   properties:
@@ -1517,6 +1531,7 @@ components:
                     - value
               required:
                 - cost
+                - destination
       required:
         - success
         - payload
