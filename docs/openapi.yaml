@@ -1489,6 +1489,10 @@ components:
                     - currency
                     - value
               required:
+                - _id
+                - location
+                - destination
+                - origin
                 - cost
       required:
         - success
