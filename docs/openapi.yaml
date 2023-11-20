@@ -1532,6 +1532,8 @@ components:
               required:
                 - cost
                 - destination
+                - locationId
+                - customerId
       required:
         - success
         - payload
