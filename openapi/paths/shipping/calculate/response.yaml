@@ -36,6 +36,8 @@ properties:
         required:
           - cost
           - destination
+          - locationId
+          - customerId
 
 required:
   - success
