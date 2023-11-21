@@ -17,11 +17,11 @@ import {
   getLocationObject,
 } from "~/library/jest/helpers/location";
 import { createSchedule } from "~/library/jest/helpers/schedule";
-import { CustomerAvailabilityServiceGet } from "./availability";
+import { UserAvailabilityServiceGenerate } from "./generate";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("CustomerAvailabilityService", () => {
+describe("UserAvailabilityServiceGenerate", () => {
   const customerId = 1;
   let user: Awaited<ReturnType<typeof createUser>>;
   let schedule: Awaited<ReturnType<typeof createSchedule>>;
@@ -95,14 +95,14 @@ describe("CustomerAvailabilityService", () => {
       (product) => product.productId
     );
 
-    const result = await CustomerAvailabilityServiceGet(
+    const result = await UserAvailabilityServiceGenerate(
       {
-        customerId,
+        username: user.username!,
         locationId: locationDestination._id,
       },
       {
         productIds,
-        startDate: new Date().toISOString(),
+        fromDate: new Date().toISOString(),
         shippingId: shipping._id,
       }
     );
@@ -113,14 +113,14 @@ describe("CustomerAvailabilityService", () => {
       (product) => product.productId
     );
 
-    const result = await CustomerAvailabilityServiceGet(
+    const result = await UserAvailabilityServiceGenerate(
       {
-        customerId,
+        username: user.username!,
         locationId: locationOrigin._id,
       },
       {
         productIds,
-        startDate: new Date().toISOString(),
+        fromDate: new Date().toISOString(),
       }
     );
 
@@ -182,12 +182,12 @@ describe("CustomerAvailabilityService", () => {
       (product) => product.productId
     );
 
-    let result = await CustomerAvailabilityServiceGet(
+    let result = await UserAvailabilityServiceGenerate(
       {
-        customerId,
+        username: user.username!,
         locationId: locationOrigin._id,
       },
-      { productIds, startDate: new Date().toISOString() }
+      { productIds, fromDate: new Date().toISOString() }
     );
 
     const targetFromTime = result[0].slots[0].from;
@@ -224,14 +224,14 @@ describe("CustomerAvailabilityService", () => {
 
     await BookingModel.create(booking);
 
-    result = await CustomerAvailabilityServiceGet(
+    result = await UserAvailabilityServiceGenerate(
       {
-        customerId,
+        username: user.username!,
         locationId: locationOrigin._id,
       },
       {
         productIds,
-        startDate: new Date().toISOString(),
+        fromDate: new Date().toISOString(),
       }
     );
 

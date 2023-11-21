@@ -6,6 +6,7 @@ import {
   isSameDay,
   isWithinInterval,
 } from "date-fns";
+
 import { utcToZonedTime } from "date-fns-tz";
 import { enUS } from "date-fns/locale";
 import { Availability } from "~/functions/availability";
@@ -13,20 +14,22 @@ import { ShippingServiceGet } from "~/functions/shipping/services/get";
 
 import { calculateMaxNoticeAndMinBookingPeriod } from "./calculate-max-notice-and-min-booking-period";
 
-import { CustomerScheduleServiceGetWithCustomer } from "~/functions/customer/services/schedule/get-with-customer";
+import { UserScheduleServiceGetWithCustomer } from "~/functions/user/services/schedule/get-with-customer";
 import { generateEndDate, generateStartDate } from "./start-end-date";
 
 export type GenerateAvailabilityProps = {
-  schedule: Awaited<ReturnType<typeof CustomerScheduleServiceGetWithCustomer>>;
+  schedule: Awaited<ReturnType<typeof UserScheduleServiceGetWithCustomer>>;
   shipping?: Awaited<ReturnType<typeof ShippingServiceGet>>;
-  startDate: string;
+  fromDate?: string;
+  toDate?: string;
 };
 
 // Function to generate availability
 export const generateAvailability = async ({
   schedule,
   shipping,
-  startDate: start,
+  fromDate,
+  toDate,
 }: GenerateAvailabilityProps) => {
   // Sort products by total time
   const sortedProducts = [...schedule.products].sort(
@@ -37,8 +40,17 @@ export const generateAvailability = async ({
     schedule.products
   );
 
-  let startDate = generateStartDate(start, noticePeriod);
-  const endDate = generateEndDate(schedule, startDate, bookingPeriod);
+  let startDate = generateStartDate({ fromDate, noticePeriod });
+  let endDate = generateEndDate({
+    schedule,
+    startDate,
+    bookingPeriod,
+  });
+
+  if (fromDate && toDate) {
+    startDate = new Date(fromDate);
+    endDate = new Date(toDate);
+  }
 
   const availability: Availability[] = [];
 
@@ -65,6 +77,12 @@ export const generateAvailability = async ({
             startDate.getUTCMinutes(),
             0,
             0
+          );
+          console.log(
+            now,
+            slotStart,
+            slotEnd,
+            isWithinInterval(now, { start: slotStart, end: slotEnd })
           );
           if (isWithinInterval(now, { start: slotStart, end: slotEnd })) {
             now = roundMinutes(now);

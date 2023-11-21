@@ -1,3 +1,4 @@
+import { isEqual } from "date-fns";
 import { format, utcToZonedTime } from "date-fns-tz";
 import { UserModel } from "~/functions/user/user.model";
 import { getProductObject } from "../jest/helpers/product";
@@ -24,6 +25,15 @@ describe("generateAvailability", () => {
           },
         ],
       },
+      {
+        day: "friday",
+        intervals: [
+          {
+            from: "12:00",
+            to: "15:00",
+          },
+        ],
+      },
     ],
     products: [getProductObject()],
     customer: {
@@ -40,7 +50,10 @@ describe("generateAvailability", () => {
 
   it("should generate an array of objects each representing a day", async () => {
     const startDate = new Date().toISOString();
-    const availability = await generateAvailability({ schedule, startDate });
+    const availability = await generateAvailability({
+      schedule,
+      fromDate: startDate,
+    });
     expect(Array.isArray(availability)).toBe(true);
     availability.forEach((day) => {
       expect(day).toHaveProperty("date");
@@ -48,9 +61,37 @@ describe("generateAvailability", () => {
     });
   });
 
+  it("should generate an array of objects each representing a day", async () => {
+    const startDate = new Date().toISOString();
+
+    let availability = await generateAvailability({
+      schedule,
+      fromDate: startDate,
+    });
+
+    const randomObject = getRandomElement(availability);
+    const randomSlot = getRandomElement(randomObject.slots);
+
+    availability = await generateAvailability({
+      schedule,
+      fromDate: randomSlot.from,
+      toDate: randomSlot.to,
+    });
+
+    expect(availability.length).toBe(1);
+    const slot = availability[0].slots.find(
+      (slot) =>
+        isEqual(slot.from, randomSlot.from) && isEqual(slot.to, randomSlot.to)
+    );
+    expect(slot).toBeDefined();
+  });
+
   it("should not generate availability for the days not defined in the schedule", async () => {
     const startDate = new Date().toISOString();
-    const availability = await generateAvailability({ schedule, startDate });
+    const availability = await generateAvailability({
+      schedule,
+      fromDate: startDate,
+    });
     availability.forEach((day) => {
       const dayOfWeek = format(
         utcToZonedTime(new Date(day.date), "Etc/UTC"),
@@ -65,7 +106,10 @@ describe("generateAvailability", () => {
 
   it("should generate slots for each day based on the intervals defined in the schedule", async () => {
     const startDate = new Date().toISOString();
-    const availability = await generateAvailability({ schedule, startDate });
+    const availability = await generateAvailability({
+      schedule,
+      fromDate: startDate,
+    });
     availability.forEach((day) => {
       const dayOfWeek = format(
         utcToZonedTime(new Date(day.date), "Etc/UTC"),
@@ -103,3 +147,7 @@ describe("generateAvailability", () => {
     return newDate;
   }
 });
+
+function getRandomElement(array: any[]) {
+  return array[Math.floor(Math.random() * array.length)];
+}

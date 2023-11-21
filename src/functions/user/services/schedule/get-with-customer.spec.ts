@@ -1,11 +1,11 @@
 import { NotFoundError } from "~/library/handler";
 import { arrayElements, createUser } from "~/library/jest/helpers";
 import { createSchedule } from "~/library/jest/helpers/schedule";
-import { CustomerScheduleServiceGetWithCustomer } from "./get-with-customer";
+import { UserScheduleServiceGetWithCustomer } from "./get-with-customer";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("CustomerScheduleServiceGetWithCustomer", () => {
+describe("UserScheduleServiceGetWithCustomer", () => {
   const customerId = 123;
   const name = "Test Schedule";
 
@@ -30,7 +30,7 @@ describe("CustomerScheduleServiceGetWithCustomer", () => {
     );
 
     await expect(
-      CustomerScheduleServiceGetWithCustomer({
+      UserScheduleServiceGetWithCustomer({
         customerId,
         productIds: [...productIds, 1],
       })
@@ -53,7 +53,7 @@ describe("CustomerScheduleServiceGetWithCustomer", () => {
       2
     );
 
-    const schedule = await CustomerScheduleServiceGetWithCustomer({
+    const schedule = await UserScheduleServiceGetWithCustomer({
       customerId,
       productIds,
     });
