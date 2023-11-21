@@ -1333,7 +1333,7 @@ components:
         - type: object
           properties:
             slot:
-              $ref: '#/components/schemas/UserAvailabilityShipping'
+              $ref: '#/components/schemas/UserAvailabilitySlot'
           required:
             - slot
     UserAvailabilityGetBody:
