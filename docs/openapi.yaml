@@ -1380,7 +1380,7 @@ components:
     UserAvailabilityGenerateBody:
       type: object
       properties:
-        startDate:
+        fromDate:
           type: string
         productIds:
           type: array
