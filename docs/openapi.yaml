@@ -1216,67 +1216,124 @@ components:
       required:
         - success
         - payload
+    UserAvailabilityShipping:
+      type: object
+      properties:
+        _id:
+          type: string
+        location:
+          type: string
+        origin:
+          type: object
+          properties:
+            customerId:
+              type: string
+              format: gid
+            name:
+              type: string
+            fullAddress:
+              type: string
+            distanceForFree:
+              type: number
+            distanceHourlyRate:
+              type: number
+            fixedRatePerKm:
+              type: number
+            startFee:
+              type: number
+        destination:
+          type: object
+          properties:
+            name:
+              type: string
+            fullAddress:
+              type: string
+        duration:
+          type: object
+          properties:
+            text:
+              type: string
+            value:
+              type: number
+        distance:
+          type: object
+          properties:
+            text:
+              type: string
+            value:
+              type: number
+        cost:
+          type: number
+      required:
+        - _id
+        - origin
+        - destination
+        - duration
+        - distance
+        - cost
+    UserAvailabilitySlot:
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: number
+              variantId:
+                type: number
+              from:
+                type: string
+              to:
+                type: string
+              breakTime:
+                type: number
+              duration:
+                type: number
+            required:
+              - productId
+              - variantId
+              - from
+              - to
+              - breakTime
+              - duration
+      required:
+        - from
+        - to
+        - products
+    UserAvailability:
+      type: object
+      properties:
+        date:
+          type: string
+        customer:
+          type: object
+          properties:
+            customerId:
+              type: string
+            fullname:
+              type: string
+          required:
+            - customerId
+            - fullname
+        shipping:
+          $ref: '#/components/schemas/UserAvailabilityShipping'
+      required:
+        - date
+        - customer
     UserAvailabilitySingle:
       type: object
       allOf:
-        - $ref: '#/components/schemas/UserAvailabilityMulti/allOf/0'
+        - $ref: '#/components/schemas/UserAvailability'
         - type: object
           properties:
             slot:
-              type: object
-              properties:
-                _id:
-                  type: string
-                location:
-                  type: string
-                origin:
-                  type: object
-                  properties:
-                    customerId:
-                      type: string
-                      format: gid
-                    name:
-                      type: string
-                    fullAddress:
-                      type: string
-                    distanceForFree:
-                      type: number
-                    distanceHourlyRate:
-                      type: number
-                    fixedRatePerKm:
-                      type: number
-                    startFee:
-                      type: number
-                destination:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                    fullAddress:
-                      type: string
-                duration:
-                  type: object
-                  properties:
-                    text:
-                      type: string
-                    value:
-                      type: number
-                distance:
-                  type: object
-                  properties:
-                    text:
-                      type: string
-                    value:
-                      type: number
-                cost:
-                  type: number
-              required:
-                - _id
-                - origin
-                - destination
-                - duration
-                - distance
-                - cost
+              $ref: '#/components/schemas/UserAvailabilityShipping'
           required:
             - slot
     UserAvailabilityGetBody:
@@ -1311,64 +1368,13 @@ components:
     UserAvailabilityMulti:
       type: object
       allOf:
-        - type: object
-          properties:
-            date:
-              type: string
-            customer:
-              type: object
-              properties:
-                customerId:
-                  type: string
-                fullname:
-                  type: string
-              required:
-                - customerId
-                - fullname
-            shipping:
-              $ref: '#/components/schemas/UserAvailabilitySingle/allOf/1/properties/slot'
-          required:
-            - date
-            - customer
+        - $ref: '#/components/schemas/UserAvailability'
         - type: object
           properties:
             slots:
               type: array
               items:
-                type: object
-                properties:
-                  from:
-                    type: string
-                  to:
-                    type: string
-                  products:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        productId:
-                          type: number
-                        variantId:
-                          type: number
-                        from:
-                          type: string
-                        to:
-                          type: string
-                        breakTime:
-                          type: number
-                        duration:
-                          type: number
-                      required:
-                        - productId
-                        - variantId
-                        - from
-                        - to
-                        - breakTime
-                        - duration
-                required:
-                  - from
-                  - to
-                  - products
+                $ref: '#/components/schemas/UserAvailabilitySlot'
           required:
             - slots
     UserAvailabilityGenerateBody:
