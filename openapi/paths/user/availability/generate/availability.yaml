@@ -1,0 +1,12 @@
+type: object
+allOf:
+  - $ref: ../_types/availability.yaml
+  - type: object
+    properties:
+      slots:
+        type: array
+        items:
+          $ref: "../_types/slot.yaml"
+
+    required:
+      - slots

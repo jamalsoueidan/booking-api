@@ -13,5 +13,6 @@
     "ShopifyApiSecretKey": "",
     "ShopifyApiAccessToken": "",
     "APPINSIGHTS_INSTRUMENTATIONKEY": ""
+    "TZ": "Etc/UTC"
   }
 }

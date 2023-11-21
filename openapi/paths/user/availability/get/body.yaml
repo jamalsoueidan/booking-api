@@ -1,0 +1,18 @@
+type: object
+properties:
+  fromDate:
+    type: string
+  toDate:
+    type: string
+  productIds:
+    type: array
+    items:
+      type: string
+  shippingId:
+    type: string
+
+required:
+  - startDate
+  - productIds
+  - fromDate
+  - toDate

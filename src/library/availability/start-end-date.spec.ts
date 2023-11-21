@@ -9,12 +9,15 @@ import { generateEndDate, generateStartDate } from "./start-end-date";
 
 describe("generateStartDate", () => {
   it("should return the correct start date when notice period has not passed", () => {
-    const startDate = new Date();
+    const fromDate = new Date().toISOString();
     const noticePeriod: ScheduleProductNoticePeriod = {
       unit: TimeUnit.DAYS,
       value: 2,
     };
-    const result = generateStartDate(startDate.toISOString(), noticePeriod);
+    const result = generateStartDate({
+      fromDate,
+      noticePeriod,
+    });
     const expected = add(new Date(), {
       [noticePeriod.unit]: noticePeriod.value,
     });
@@ -24,15 +27,18 @@ describe("generateStartDate", () => {
   });
 
   it("should return the start date when notice period has already passed", () => {
-    const startDate = add(new Date(), { days: 2 });
+    const fromDate = add(new Date(), { days: 2 }).toISOString();
     const noticePeriod: ScheduleProductNoticePeriod = {
       unit: TimeUnit.DAYS,
       value: 1,
     };
 
-    const result = generateStartDate(startDate.toISOString(), noticePeriod);
+    const result = generateStartDate({
+      fromDate,
+      noticePeriod,
+    });
     expect(result.toISOString().slice(0, -4)).toStrictEqual(
-      startDate.toISOString().slice(0, -4)
+      fromDate.slice(0, -4)
     );
   });
 });
@@ -51,7 +57,11 @@ describe("generateEndDate", () => {
       ],
       products: [],
     };
-    const result = generateEndDate(schedule, startDate, bookingPeriod);
+    const result = generateEndDate({
+      schedule,
+      startDate,
+      bookingPeriod,
+    });
     const expected = add(startDate, {
       [bookingPeriod.unit]: bookingPeriod.value,
     });
@@ -68,7 +78,11 @@ describe("generateEndDate", () => {
       slots: [{ day: "monday", intervals: [] }],
       products: [],
     };
-    const result = generateEndDate(schedule, startDate, bookingPeriod);
+    const result = generateEndDate({
+      schedule,
+      startDate,
+      bookingPeriod,
+    });
     const expected = add(startDate, {
       [bookingPeriod.unit]: bookingPeriod.value,
     });
@@ -86,7 +100,11 @@ describe("generateEndDate", () => {
       slots: [{ day: "monday", intervals: [] }], // only one slot per week
       products: [],
     };
-    const result = generateEndDate(schedule, startDate, bookingPeriod);
+    const result = generateEndDate({
+      schedule,
+      startDate,
+      bookingPeriod,
+    });
 
     // Calculate the expected end date based on the number of slots and the frequency of slots
     const expected = add(startDate, { weeks: 14 }); // The function should limit the end date to 14 weeks, not the booking period

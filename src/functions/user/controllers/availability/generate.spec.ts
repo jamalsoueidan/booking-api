@@ -1,21 +1,21 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 import { Schedule, ScheduleModel, TimeUnit } from "~/functions/schedule";
-import { UserModel } from "~/functions/user";
 import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
+import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
 import {
-  CustomerAvailabilityControllerGet,
-  CustomerAvailabilityControllerGetRequest,
-  CustomerAvailabilityControllerGetResponse,
-} from "./get";
+  UserAvailabilityControllerGenerate,
+  UserAvailabilityControllerGenerateRequest,
+  UserAvailabilityControllerGenerateResponse,
+} from "./generate";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("CustomerProductControllerAvailability", () => {
+describe("UserAvailabilityControllerGenerate", () => {
   let context: InvocationContext;
   let request: HttpRequest;
   const productId = 99;
@@ -59,26 +59,26 @@ describe("CustomerProductControllerAvailability", () => {
 
   beforeEach(async () => {
     context = createContext();
-    await UserModel.create({ customerId, fullname: "jamal soueidan" });
   });
 
   it("Should be able to get availability for product for customer", async () => {
+    const user = await createUser({ customerId }, { username: "test" });
+
     const location = await createLocation({ customerId });
     await ScheduleModel.create(scheduleData);
-    const startDate = "2023-05-01T00:00:00Z";
+    const fromDate = "2023-05-01T00:00:00Z";
 
-    request = await createHttpRequest<CustomerAvailabilityControllerGetRequest>(
-      {
+    request =
+      await createHttpRequest<UserAvailabilityControllerGenerateRequest>({
         query: {
-          customerId,
+          username: user.username!,
           locationId: location._id,
         },
-        body: { productIds: [productId], startDate },
-      }
-    );
+        body: { productIds: [productId], fromDate },
+      });
 
-    const res: HttpSuccessResponse<CustomerAvailabilityControllerGetResponse> =
-      await CustomerAvailabilityControllerGet(request, context);
+    const res: HttpSuccessResponse<UserAvailabilityControllerGenerateResponse> =
+      await UserAvailabilityControllerGenerate(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");

@@ -27,8 +27,6 @@ components:
       $ref: "./responses/unauthorized.yaml"
 
   schemas:
-    NumberOrString:
-      $ref: "types/_numberOrString.yaml"
     Errors:
       $ref: "./schemas/errors.yaml"
     MetaItem:
@@ -98,14 +96,6 @@ components:
       $ref: paths/customer/booking/get/response.yaml
     CustomerBookingListResponse:
       $ref: paths/customer/booking/list/response.yaml
-
-    # Availability
-    CustomerAvailabilityBody:
-      $ref: paths/customer/availability/get/body.yaml
-    CustomerAvailability:
-      $ref: paths/customer/availability/_types/availability.yaml
-    CustomerAvailabilityGetResponse:
-      $ref: paths/customer/availability/get/response.yaml
 
     # Customer
     CustomerProductList:
@@ -184,6 +174,20 @@ components:
     UsersProfessionsResponse:
       $ref: paths/user/professions/response.yaml
 
+    # UserAvailability
+    UserAvailabilitySingle:
+      $ref: paths/user/availability/get/availability.yaml
+    UserAvailabilityGetBody:
+      $ref: paths/user/availability/get/body.yaml
+    UserAvailabilityGeResponse:
+      $ref: paths/user/availability/get/response.yaml
+    UserAvailabilityMulti:
+      $ref: paths/user/availability/generate/availability.yaml
+    UserAvailabilityGenerateBody:
+      $ref: paths/user/availability/generate/body.yaml
+    UserAvailabilityGenerateResponse:
+      $ref: paths/user/availability/generate/response.yaml
+
     # Location
     LocationCoordinates:
       $ref: paths/location/_types/coordinates.yaml
@@ -229,6 +233,10 @@ paths:
     $ref: "./paths/user/schedule/get-by-location/index.yaml"
   /users/professions:
     $ref: "./paths/user/professions/index.yaml"
+  /user/{username}/availability/{locationId}/generate:
+    $ref: "paths/user/availability/generate/index.yaml"
+  /user/{username}/availability/{locationId}/get:
+    $ref: "paths/user/availability/get/index.yaml"
 
   /users:
     $ref: "./paths/user/list/index.yaml"
@@ -246,8 +254,6 @@ paths:
     $ref: "./paths/customer/product/list/index.yaml"
   /customer/{customerId}/products/ids:
     $ref: "./paths/customer/product/list-ids/index.yaml"
-  /customer/{customerId}/availability/{locationId}/get:
-    $ref: "paths/customer/availability/get/index.yaml"
   /customer/{customerId}/product/{productId}:
     $ref: "paths/customer/product/product.yaml"
   /customer/{customerId}/booking/{orderId}:

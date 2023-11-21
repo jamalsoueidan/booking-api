@@ -1,21 +1,24 @@
 import { Types } from "mongoose";
+import { CustomerBookingServiceGetBooked } from "~/functions/customer/services/booking";
+import { UserScheduleServiceGetWithCustomer } from "~/functions/user/services/schedule/get-with-customer";
 
-import { Schedule, ScheduleProduct } from "~/functions/schedule";
+import { ScheduleProduct } from "~/functions/schedule";
 import { ShippingServiceGet } from "~/functions/shipping/services/get";
 import { findStartAndEndDate } from "~/library/availability/find-start-end-date-in-availability";
 import { generateAvailability } from "~/library/availability/generate-availability";
 import { removeBookedSlots } from "~/library/availability/remove-booked-slots";
-import { CustomerBookingServiceGetBooked } from "./booking";
-import { CustomerScheduleServiceGetWithCustomer } from "./schedule/get-with-customer";
+import { StringOrObjectId } from "~/library/zod";
+import { UserServiceGetCustomerId } from "../user";
 
-export type CustomerAvailabilityServiceGetProps = {
-  customerId: Schedule["customerId"];
-  locationId: string | Types.ObjectId;
+export type UserAvailabilityServiceGenerateProps = {
+  username: string;
+  locationId: StringOrObjectId;
 };
 
-export type CustomerAvailabilityServiceGetBody = {
+export type UserAvailabilityServiceGenerateBody = {
   productIds: Array<ScheduleProduct["productId"]>;
-  startDate: string;
+  fromDate: string;
+  toDate?: string;
   shippingId?: string | Types.ObjectId;
 };
 
@@ -26,12 +29,14 @@ export type CustomerAvailabilityServiceGetBody = {
  * @param body - Request body including product IDs, start date
  * @returns Filtered customer availability with booked slots removed
  */
-export const CustomerAvailabilityServiceGet = async (
-  filter: CustomerAvailabilityServiceGetProps,
-  body: CustomerAvailabilityServiceGetBody
+export const UserAvailabilityServiceGenerate = async (
+  filter: UserAvailabilityServiceGenerateProps,
+  body: UserAvailabilityServiceGenerateBody
 ) => {
-  const schedule = await CustomerScheduleServiceGetWithCustomer({
-    customerId: filter.customerId,
+  const user = await UserServiceGetCustomerId({ username: filter.username });
+
+  const schedule = await UserScheduleServiceGetWithCustomer({
+    customerId: user.customerId,
     productIds: body.productIds,
   });
 
@@ -45,13 +50,14 @@ export const CustomerAvailabilityServiceGet = async (
   const availability = await generateAvailability({
     schedule,
     shipping,
-    startDate: body.startDate,
+    fromDate: body.fromDate,
+    toDate: body.toDate,
   });
 
   const date = findStartAndEndDate(availability);
 
   const booked = await CustomerBookingServiceGetBooked({
-    customerId: filter.customerId,
+    customerId: user.customerId,
     startDate: date.startDate,
     endDate: date.endDate,
   });
