@@ -4,6 +4,6 @@ allOf:
   - type: object
     properties:
       slot:
-        $ref: "../_types/shipping.yaml"
+        $ref: "../_types/slot.yaml"
     required:
       - slot
