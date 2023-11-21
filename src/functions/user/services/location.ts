@@ -13,6 +13,7 @@ export const UserLocationServiceGetOne = async <T>({
   const location = locations.find(
     (l) => l.location.toString() === locationId.toString()
   );
+
   if (!location) {
     new NotFoundError([
       {

@@ -78,6 +78,6 @@ app.http("UserProductsControllerGetProducts", {
 app.http("UserLocationControllerGet", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "user/{username}/locaion/{locationId}",
+  route: "user/{username}/location/{locationId}",
   handler: UserLocationControllerGetOne,
 });
