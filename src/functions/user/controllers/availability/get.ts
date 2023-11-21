@@ -2,7 +2,7 @@ import { z } from "zod";
 import { _ } from "~/library/handler";
 
 import { NumberOrStringType, StringOrObjectIdType } from "~/library/zod";
-import { UserAvailabilityServiceGenerate } from "../../services/availability/generate";
+import { UserAvailabilityServiceGet } from "../../services/availability/get";
 
 export type UserAvailabilityControllerGetRequest = {
   query: z.infer<typeof QuerySchema>;
@@ -22,13 +22,13 @@ const BodySchema = z.object({
 });
 
 export type UserAvailabilityControllerGetResponse = Awaited<
-  ReturnType<typeof UserAvailabilityServiceGenerate>
+  ReturnType<typeof UserAvailabilityServiceGet>
 >;
 
 export const UserAvailabilityControllerGet = _(
   async ({ query, body }: UserAvailabilityControllerGetRequest) => {
     const filter = QuerySchema.parse(query);
     const validBody = BodySchema.parse(body);
-    return UserAvailabilityServiceGenerate(filter, validBody);
+    return UserAvailabilityServiceGet(filter, validBody);
   }
 );
