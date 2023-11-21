@@ -1,0 +1,39 @@
+parameters:
+  - name: username
+    in: path
+    description: This field for username
+    required: true
+    schema:
+      type: string
+  - name: locationId
+    in: path
+    description: This field for locationId
+    required: true
+    schema:
+      type: string
+post:
+  tags:
+    - UserAvailability
+  operationId: userAvailabilityGenerate
+  summary: POST generate availabilty for user
+  description: This endpoint generate availabilty for user
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./body.yaml"
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+  security: []

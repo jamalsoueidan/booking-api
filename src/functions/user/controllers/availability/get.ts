@@ -25,7 +25,7 @@ export type UserAvailabilityControllerGetResponse = Awaited<
   ReturnType<typeof UserAvailabilityServiceGenerate>
 >;
 
-export const UserAvailabilityControllerGenerate = _(
+export const UserAvailabilityControllerGet = _(
   async ({ query, body }: UserAvailabilityControllerGetRequest) => {
     const filter = QuerySchema.parse(query);
     const validBody = BodySchema.parse(body);

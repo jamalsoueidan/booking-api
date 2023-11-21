@@ -1,0 +1,19 @@
+type: object
+properties:
+  date:
+    type: string
+  customer:
+    type: object
+    properties:
+      customerId:
+        type: string
+      fullname:
+        type: string
+    required:
+      - customerId
+      - fullname
+  shipping:
+    $ref: "../_types/shipping.yaml"
+required:
+  - date
+  - customer

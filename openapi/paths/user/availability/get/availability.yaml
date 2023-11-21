@@ -1,0 +1,9 @@
+type: object
+allOf:
+  - $ref: ../_types/availability.yaml
+  - type: object
+    properties:
+      slot:
+        $ref: "../_types/shipping.yaml"
+    required:
+      - slot

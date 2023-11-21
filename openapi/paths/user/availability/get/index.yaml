@@ -1,7 +1,7 @@
 parameters:
-  - name: customerId
+  - name: username
     in: path
-    description: This field for customerId
+    description: This field for username
     required: true
     schema:
       type: string
@@ -13,10 +13,10 @@ parameters:
       type: string
 post:
   tags:
-    - CustomerAvailability
-  operationId: customerAvailabilityGet
-  summary: POST get availabilty for customer
-  description: This availabilty for customer
+    - UserAvailability
+  operationId: UserAvailabilityGet
+  summary: POST get single availabilty for user
+  description: This endpoint get's one single availabilty for user
   requestBody:
     required: true
     content:

@@ -1,4 +1,5 @@
 import "module-alias/register";
+import { UserAvailabilityControllerGet } from "./user/controllers/availability/get";
 
 import { app } from "@azure/functions";
 
@@ -9,4 +10,11 @@ app.http("userAvailabilityGenerate", {
   authLevel: "anonymous",
   route: "user/{username?}/availability/{locationId?}/generate",
   handler: UserAvailabilityControllerGenerate,
+});
+
+app.http("userAvailabilityGet", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "user/{username?}/availability/{locationId?}/get",
+  handler: UserAvailabilityControllerGet,
 });

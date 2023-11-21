@@ -1,0 +1,34 @@
+type: object
+properties:
+  from:
+    type: string
+  to:
+    type: string
+  products:
+    type: array
+    items:
+      type: object
+      properties:
+        productId:
+          type: number
+        variantId:
+          type: number
+        from:
+          type: string
+        to:
+          type: string
+        breakTime:
+          type: number
+        duration:
+          type: number
+      required:
+        - productId
+        - variantId
+        - from
+        - to
+        - breakTime
+        - duration
+required:
+  - from
+  - to
+  - products
