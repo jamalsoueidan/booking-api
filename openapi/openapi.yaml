@@ -205,6 +205,8 @@ components:
       $ref: paths/location/validate-address/response.yaml
 
     # Shipping
+    Shipping:
+      $ref: paths/shipping/_types/shipping.yaml
     ShippingBody:
       $ref: paths/shipping/_types/body.yaml
     ShippingCreateResponse:
