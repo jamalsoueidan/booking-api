@@ -175,8 +175,6 @@ components:
       $ref: paths/user/professions/response.yaml
 
     # UserAvailability
-    UserAvailabilityShipping:
-      $ref: paths/user/availability/_types/shipping.yaml
     UserAvailabilitySlot:
       $ref: paths/user/availability/_types/slot.yaml
     UserAvailability:
@@ -207,6 +205,8 @@ components:
       $ref: paths/location/validate-address/response.yaml
 
     # Shipping
+    Shipping:
+      $ref: paths/shipping/_types/shipping.yaml
     ShippingBody:
       $ref: paths/shipping/_types/body.yaml
     ShippingCreateResponse:

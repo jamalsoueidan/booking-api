@@ -46,12 +46,13 @@ describe("ShippingServiceCalculate", () => {
 
     const response = await ShippingServiceCalculate(request);
 
-    expect(response).toEqual({
-      duration: { text: "120 min", value: 120 },
-      distance: { text: "100 km", value: 100 },
-      cost: { value: 600, currency: "DKK" },
-      ...request,
-    });
+    expect(response).toEqual(
+      expect.objectContaining({
+        duration: { text: "120 min", value: 120 },
+        distance: { text: "100 km", value: 100 },
+        cost: { value: 600, currency: "DKK" },
+      })
+    );
   });
 
   it("should throw error since maxDriveDistance 50, and distance is 100", async () => {

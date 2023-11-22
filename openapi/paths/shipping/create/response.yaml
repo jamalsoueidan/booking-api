@@ -4,43 +4,7 @@ properties:
     type: boolean
     example: true
   payload:
-    type: object
-    allOf:
-      - $ref: ../../location/_types/travel-time.yaml
-      - type: object
-        properties:
-          _id:
-            type: string
-          location:
-            type: string
-          origin:
-            $ref: ../../customer/location/create/body.yaml
-          destination:
-            type: object
-            properties:
-              name:
-                type: string
-              fullAddress:
-                type: string
-            required:
-              - name
-              - fullAddress
-          cost:
-            type: object
-            properties:
-              currency:
-                type: string
-              value:
-                type: integer
-            required:
-              - currency
-              - value
-        required:
-          - _id
-          - location
-          - destination
-          - origin
-          - cost
+    $ref: ../_types/shipping.yaml
 
 required:
   - success

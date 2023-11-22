@@ -1,14 +1,16 @@
-import {
-  LocationServiceGet,
-  LocationServiceGetProps,
-} from "~/functions/location/services/get";
+import { LocationServiceGet } from "~/functions/location/services/get";
 import { LocationServiceGetTravelTime } from "~/functions/location/services/get-travel-time";
 import { NotFoundError } from "~/library/handler";
+import { StringOrObjectId } from "~/library/zod";
 import { Shipping } from "../shipping.types";
 import { ShippingServiceCalculateCost } from "./calculate-cost";
 
+export type ShippingServiceCalculateProps = {
+  locationId: StringOrObjectId;
+} & Pick<Shipping, "destination">;
+
 export const ShippingServiceCalculate = async (
-  props: Required<LocationServiceGetProps & Pick<Shipping, "destination">>
+  props: ShippingServiceCalculateProps
 ) => {
   const location = await LocationServiceGet(props); // we should properly use the customerId to find the locationId
   const { destination } = props;
@@ -54,11 +56,13 @@ export const ShippingServiceCalculate = async (
   });
 
   return {
-    ...props,
-    ...travelTime,
+    location: props.locationId,
+    origin: location,
+    destination,
     cost: {
       value: cost,
       currency: "DKK",
     },
+    ...travelTime,
   };
 };

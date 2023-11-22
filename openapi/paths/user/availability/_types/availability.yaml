@@ -13,7 +13,7 @@ properties:
       - customerId
       - fullname
   shipping:
-    $ref: "../_types/shipping.yaml"
+    $ref: ../../../shipping/_types/shipping.yaml
 required:
   - date
   - customer
