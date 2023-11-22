@@ -175,8 +175,6 @@ components:
       $ref: paths/user/professions/response.yaml
 
     # UserAvailability
-    UserAvailabilityShipping:
-      $ref: paths/user/availability/_types/shipping.yaml
     UserAvailabilitySlot:
       $ref: paths/user/availability/_types/slot.yaml
     UserAvailability:
