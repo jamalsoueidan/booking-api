@@ -1,0 +1,39 @@
+type: object
+properties:
+  productId:
+    type: number
+  totalUsers:
+    type: number
+  users:
+    type: array
+    items:
+      type: object
+      properties:
+        customerId:
+          type: number
+        username:
+          type: string
+        images:
+          type: object
+          properties:
+            profile:
+              type: object
+              properties:
+                url:
+                  type: string
+                  format: uri
+                width:
+                  type: integer
+                height:
+                  type: integer
+        fullname:
+          type: string
+      required:
+        - customerId
+        - fullname
+        - username
+        - images
+
+required:
+  - productId
+  - totalUsers

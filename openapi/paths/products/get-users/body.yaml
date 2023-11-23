@@ -1,0 +1,9 @@
+type: object
+properties:
+  productIds:
+    type: array
+    items:
+      type: string
+
+required:
+  - productIds

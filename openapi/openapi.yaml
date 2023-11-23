@@ -219,7 +219,19 @@ components:
       $ref: paths/orchestrators/upload/body.yaml
     UploadResponse:
       $ref: paths/orchestrators/upload/response.yaml
+
+    # Products
+    ProductsGetUsersBody:
+      $ref: paths/products/get-users/body.yaml
+    ProductsGetUsers:
+      $ref: paths/products/get-users/response.yaml
+    ProductsGetUsersResponse:
+      $ref: paths/products/get-users/product_users.yaml
 paths:
+  # Products
+  /products/get-users:
+    $ref: "./paths/products/get-users/index.yaml"
+
   # User
   /user/{username}:
     $ref: "./paths/user/user.yaml"

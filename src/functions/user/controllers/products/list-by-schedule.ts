@@ -2,7 +2,7 @@ import { z } from "zod";
 import { _ } from "~/library/handler";
 
 import { CustomerProductsServiceList } from "~/functions/customer/services/product";
-import { UserServiceGet } from "~/functions/user";
+import { UserServiceGetCustomerId } from "~/functions/user";
 
 export type UserProductsControllerListByScheduleRequest = {
   query: z.infer<typeof UserProductsControllerListByScheduleSchema>;
@@ -21,7 +21,7 @@ export const UserProductsControllerListBySchedule = _(
   async ({ query }: UserProductsControllerListByScheduleRequest) => {
     const validateData =
       UserProductsControllerListByScheduleSchema.parse(query);
-    const user = await UserServiceGet(validateData);
+    const user = await UserServiceGetCustomerId(validateData);
     return CustomerProductsServiceList({
       customerId: user.customerId,
       scheduleId: validateData.scheduleId,
