@@ -37,3 +37,4 @@ properties:
 required:
   - productId
   - totalUsers
+  - users
