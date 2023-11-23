@@ -4,8 +4,9 @@ import { User } from "~/functions/user";
 
 export const DEFAULT_GROUP = "all";
 
-export const getUserObject = (props: Partial<User> = {}) => ({
-  title: faker.person.jobTitle(),
+export const getUserObject = (
+  props: Partial<User> = {}
+): Omit<User, "_id"> => ({
   username: faker.internet.userName().toLowerCase(),
   fullname: faker.person.fullName(),
   social: {
@@ -13,12 +14,17 @@ export const getUserObject = (props: Partial<User> = {}) => ({
     youtube: faker.internet.url(),
     twitter: faker.internet.url(),
   },
-  description: faker.lorem.paragraph(),
+  shortDescription: faker.lorem.paragraph(),
   active: true,
   isBusiness: true,
-  avatar: faker.internet.avatar(),
+  images: {
+    profile: {
+      url: faker.internet.avatar(),
+    },
+  },
   speaks: [faker.location.countryCode()],
   locations: [],
+  customerId: faker.number.int({ min: 1, max: 10000000 }),
   ...props,
 });
 
