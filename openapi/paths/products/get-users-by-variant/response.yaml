@@ -14,12 +14,12 @@ properties:
         type: number
       nextCursor:
         type: string
-      results:
+      result:
         type: array
         items:
           $ref: "./user.yaml"
     required:
-      - results
+      - result
       - totalUsers
       - variantId
       - productId

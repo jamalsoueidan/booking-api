@@ -4,13 +4,13 @@ parameters:
     description: product Id
     required: true
     schema:
-      type: number
+      type: string
   - name: variantId
     in: query
     description: variant Id
     required: true
     schema:
-      type: number
+      type: string
   - name: nextCursor
     in: query
     description: nextCursor
@@ -26,8 +26,8 @@ get:
   tags:
     - Products
   operationId: productsGetUsersByVariant
-  summary: GET Get all users
-  description: This endpoint get all users
+  summary: GET Get all users for specific productId and variantId
+  description: This endpoint get all users for specific productId and variantId
   responses:
     "200":
       description: "Response"
