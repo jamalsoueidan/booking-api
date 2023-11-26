@@ -1622,12 +1622,12 @@ components:
               type: number
             nextCursor:
               type: string
-            results:
+            result:
               type: array
               items:
                 $ref: '#/components/schemas/ProductsGetUsersByVariant'
           required:
-            - results
+            - result
             - totalUsers
             - variantId
             - productId
@@ -1705,13 +1705,13 @@ paths:
         description: product Id
         required: true
         schema:
-          type: number
+          type: string
       - name: variantId
         in: query
         description: variant Id
         required: true
         schema:
-          type: number
+          type: string
       - name: nextCursor
         in: query
         description: nextCursor
@@ -1726,8 +1726,8 @@ paths:
       tags:
         - Products
       operationId: productsGetUsersByVariant
-      summary: GET Get all users
-      description: This endpoint get all users
+      summary: GET Get all users for specific productId and variantId
+      description: This endpoint get all users for specific productId and variantId
       responses:
         '200':
           description: Response
