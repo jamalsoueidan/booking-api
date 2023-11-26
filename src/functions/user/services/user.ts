@@ -72,14 +72,15 @@ export const UserServiceList = async ({
     };
   }
 
+  const l = limit || 10;
   const users = await UserModel.find(query)
     .sort({ createdAt: sortParam })
-    .limit(limit || 10);
+    .limit(l);
 
   return {
     results: users,
     nextCursor:
-      users.length > 0 ? users[users.length - 1].createdAt : undefined,
+      users.length >= l ? users[users.length - 1].createdAt : undefined,
   };
 };
 

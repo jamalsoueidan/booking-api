@@ -1,0 +1,29 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  payload:
+    type: object
+    properties:
+      productId:
+        type: number
+      variantId:
+        type: number
+      totalUsers:
+        type: number
+      nextCursor:
+        type: string
+      results:
+        type: array
+        items:
+          $ref: "./user.yaml"
+    required:
+      - results
+      - totalUsers
+      - variantId
+      - productId
+
+required:
+  - success
+  - payload

@@ -221,16 +221,22 @@ components:
       $ref: paths/orchestrators/upload/response.yaml
 
     # Products
-    ProductsGetUsersBody:
-      $ref: paths/products/get-users/body.yaml
-    ProductsGetUsers:
-      $ref: paths/products/get-users/response.yaml
-    ProductsGetUsersResponse:
-      $ref: paths/products/get-users/product_users.yaml
+    ProductsGetUsersImageBody:
+      $ref: paths/products/get-users-image/body.yaml
+    ProductsGetUsersImageResponse:
+      $ref: paths/products/get-users-image/response.yaml
+    ProductsGetUsersImage:
+      $ref: paths/products/get-users-image/product_users.yaml
+    ProductsGetUsersByVariantResponse:
+      $ref: paths/products/get-users-by-variant/response.yaml
+    ProductsGetUsersByVariant:
+      $ref: paths/products/get-users-by-variant/user.yaml
 paths:
   # Products
-  /products/get-users:
-    $ref: "./paths/products/get-users/index.yaml"
+  /products/get-users-image:
+    $ref: "./paths/products/get-users-image/index.yaml"
+  /products/get-users-by-variant:
+    $ref: "./paths/products/get-users-by-variant/index.yaml"
 
   # User
   /user/{username}:

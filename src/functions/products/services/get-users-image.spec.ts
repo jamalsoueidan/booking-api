@@ -2,11 +2,11 @@ import { faker } from "@faker-js/faker";
 import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { UserProductsServiceGetUsers } from "./get-users";
+import { UserProductsServiceGetUsersImage } from "./get-users-image";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("ProductsServiceGetUsers", () => {
+describe("UserProductsServiceGetUsersImage", () => {
   it("should return user images that offer those products", async () => {
     const product1 = getProductObject({});
     const product2 = getProductObject({});
@@ -28,7 +28,7 @@ describe("ProductsServiceGetUsers", () => {
       products: [product1, product2],
     });
 
-    let getSchedule = await UserProductsServiceGetUsers({
+    let getSchedule = await UserProductsServiceGetUsersImage({
       productIds: [product1.productId],
     });
 
@@ -42,7 +42,7 @@ describe("ProductsServiceGetUsers", () => {
     expect(containsCustomerId1).toBe(true);
     expect(containsCustomerId2).toBe(true);
 
-    getSchedule = await UserProductsServiceGetUsers({
+    getSchedule = await UserProductsServiceGetUsersImage({
       productIds: [12],
     });
 
@@ -109,7 +109,7 @@ describe("ProductsServiceGetUsers", () => {
       products: [product2],
     });
 
-    let getSchedule = await UserProductsServiceGetUsers({
+    let getSchedule = await UserProductsServiceGetUsersImage({
       productIds: [product1.productId, product2.productId],
     });
 
