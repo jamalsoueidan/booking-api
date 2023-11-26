@@ -1,0 +1,47 @@
+parameters:
+  - name: productId
+    in: query
+    description: product Id
+    required: true
+    schema:
+      type: number
+  - name: variantId
+    in: query
+    description: variant Id
+    required: true
+    schema:
+      type: number
+  - name: nextCursor
+    in: query
+    description: nextCursor
+    schema:
+      type: string
+  - name: limit
+    in: query
+    description: limit items (default 5)
+    schema:
+      type: string
+
+get:
+  tags:
+    - Products
+  operationId: productsGetUsersByVariant
+  summary: GET Get all users
+  description: This endpoint get all users
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../responses/not-found.yaml"
+
+  security: []

@@ -1,9 +1,9 @@
 post:
   tags:
     - Products
-  operationId: productsGetUsers
-  summary: POST get users belongs to products
-  description: This endpoint respond with products users
+  operationId: productsGetUsersImage
+  summary: POST get users belongs to productIds array
+  description: This endpoint respond with users images
   requestBody:
     required: true
     content:
