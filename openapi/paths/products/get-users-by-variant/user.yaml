@@ -28,7 +28,7 @@ properties:
   fullname:
     type: string
   variantId:
-    type: string
+    type: number
 required:
   - customerId
   - fullname
