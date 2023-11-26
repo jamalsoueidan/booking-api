@@ -27,9 +27,12 @@ properties:
       - profile
   fullname:
     type: string
+  variantId:
+    type: string
 required:
   - customerId
   - fullname
   - shortDescription
   - username
   - images
+  - variantId
