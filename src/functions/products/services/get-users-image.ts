@@ -1,20 +1,20 @@
 import { ScheduleModel } from "~/functions/schedule";
 import { User } from "../../user/user.types";
 
-export type ProductsServiceGetUsersReturn = {
+export type ProductsServiceGetUsersImageReturn = {
   productId: number;
   totalUsers: number;
   users: Array<Pick<User, "customerId" | "username" | "fullname" | "images">>;
 };
 
-export type ProductsServiceGetUsersProps = {
+export type ProductsServiceGetUsersImageProps = {
   productIds: number[];
 };
 
-export const UserProductsServiceGetUsers = async ({
+export const UserProductsServiceGetUsersImage = async ({
   productIds,
-}: ProductsServiceGetUsersProps): Promise<
-  Array<ProductsServiceGetUsersReturn>
+}: ProductsServiceGetUsersImageProps): Promise<
+  Array<ProductsServiceGetUsersImageReturn>
 > => {
   const countPipeline = [
     {
@@ -41,6 +41,7 @@ export const UserProductsServiceGetUsers = async ({
                 $and: [
                   { $eq: ["$customerId", "$$customerId"] },
                   { $eq: ["$active", true] },
+                  { $eq: ["$isBusiness", true] },
                 ],
               },
             },
@@ -90,6 +91,7 @@ export const UserProductsServiceGetUsers = async ({
                 $and: [
                   { $eq: ["$customerId", "$$customerId"] },
                   { $eq: ["$active", true] },
+                  { $eq: ["$isBusiness", true] },
                   { $ifNull: ["$images.profile.url", false] },
                 ],
               },
@@ -100,6 +102,7 @@ export const UserProductsServiceGetUsers = async ({
               customerId: 1,
               username: 1,
               fullname: 1,
+              shortDescription: 1,
               "images.profile": "$images.profile",
             },
           },
@@ -132,7 +135,12 @@ export const UserProductsServiceGetUsers = async ({
 
   const usersSchedule = await ScheduleModel.aggregate<{
     productId: number;
-    users: Array<Pick<User, "customerId" | "username" | "fullname" | "images">>;
+    users: Array<
+      Pick<
+        User,
+        "customerId" | "username" | "fullname" | "images" | "shortDescription"
+      >
+    >;
   }>(usersPipeline);
 
   return countSchedule.map((p) => {
