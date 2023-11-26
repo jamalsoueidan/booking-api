@@ -1,6 +1,5 @@
 import { PipelineStage } from "mongoose";
 import { ScheduleModel } from "~/functions/schedule";
-import { NotFoundError } from "~/library/handler";
 import { User } from "../../user/user.types";
 
 type Users = Array<
@@ -205,20 +204,20 @@ export const UserProductsServiceGetUsersVariant = async ({
   }>(usersPipeline);
 
   if (countSchedule.length === 0 || usersSchedule.length === 0) {
-    throw new NotFoundError([
-      {
-        path: ["productId", "variantId"],
-        message: "NOT_FOUND",
-        code: "custom",
-      },
-    ]);
+    return {
+      productId,
+      variantId,
+      totalUsers: 0,
+      result: [],
+      nextCursor: undefined,
+    };
   }
 
   const users = usersSchedule[0].users;
 
   return {
-    productId: countSchedule[0].productId,
-    variantId: countSchedule[0].variantId,
+    productId,
+    variantId,
     totalUsers: countSchedule[0].totalUsers,
     result: users,
     nextCursor:
