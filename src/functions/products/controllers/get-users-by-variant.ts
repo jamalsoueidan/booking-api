@@ -9,10 +9,10 @@ export type ProductsControllerGetUsersByVariantRequest = {
 };
 
 export const ProductsControllerGetUsersByVariantSchema = z.object({
+  productId: NumberOrStringType,
   nextCursor: z.string().optional(),
   limit: NumberOrStringType.optional(),
-  productId: NumberOrStringType,
-  variantId: NumberOrStringType,
+  variantId: NumberOrStringType.optional(),
 });
 
 export type ProductsControllerGetUsersByVariantResponse = Awaited<
