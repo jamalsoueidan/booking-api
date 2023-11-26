@@ -61,7 +61,7 @@ describe("UserProductsServiceGetUsersVariant", () => {
     await CustomerScheduleServiceCreate({
       name: faker.person.firstName(),
       customerId: user2.customerId,
-      products: [product1, product2],
+      products: [product1, { ...product2, variantId: 2 }],
     });
 
     const user3 = await createUser({ customerId: 3 });
@@ -106,7 +106,6 @@ describe("UserProductsServiceGetUsersVariant", () => {
 
     let getSchedule = await UserProductsServiceGetUsersVariant({
       productId: product2.productId,
-      variantId: product2.variantId,
     });
 
     expect(getSchedule.totalUsers).toBe(7);
@@ -116,7 +115,6 @@ describe("UserProductsServiceGetUsersVariant", () => {
 
     getSchedule = await UserProductsServiceGetUsersVariant({
       productId: product2.productId,
-      variantId: product2.variantId,
       nextCursor: getSchedule.nextCursor,
     });
 

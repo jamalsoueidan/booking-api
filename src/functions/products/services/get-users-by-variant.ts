@@ -8,12 +8,12 @@ type Users = Array<
     "customerId" | "username" | "fullname" | "images" | "shortDescription"
   > & {
     createdAt: Date;
+    variantId: number;
   }
 >;
 
 export type ProductsServiceGetUsersByVariantReturn = {
   productId: number;
-  variantId: number;
   totalUsers: number;
   result: Users;
   nextCursor?: Date;
@@ -21,7 +21,7 @@ export type ProductsServiceGetUsersByVariantReturn = {
 
 export type ProductsServiceGetUsersByVariantProps = {
   productId: number;
-  variantId: number;
+  variantId?: number;
   limit?: number;
   nextCursor?: Date | string;
 };
@@ -38,7 +38,7 @@ export const UserProductsServiceGetUsersVariant = async ({
     {
       $match: {
         "products.productId": productId,
-        "products.variantId": variantId,
+        ...(variantId ? { "products.variantId": variantId } : {}),
       },
     },
     {
@@ -47,7 +47,7 @@ export const UserProductsServiceGetUsersVariant = async ({
     {
       $match: {
         "products.productId": productId,
-        "products.variantId": variantId,
+        ...(variantId ? { "products.variantId": variantId } : {}),
       },
     },
     {
@@ -82,7 +82,6 @@ export const UserProductsServiceGetUsersVariant = async ({
       $group: {
         _id: {
           productId: "$products.productId",
-          variantId: "$products.variantId",
         },
         totalUsers: { $sum: 1 },
       },
@@ -91,17 +90,21 @@ export const UserProductsServiceGetUsersVariant = async ({
       $project: {
         _id: 0,
         productId: "$_id.productId",
-        variantId: "$_id.variantId",
         totalUsers: "$totalUsers",
       },
     },
   ];
 
+  const countSchedule = await ScheduleModel.aggregate<{
+    productId: number;
+    totalUsers: number;
+  }>(countPipeline);
+
   const usersPipeline: PipelineStage[] = [
     {
       $match: {
         "products.productId": productId,
-        "products.variantId": variantId,
+        ...(variantId ? { "products.variantId": variantId } : {}),
       },
     },
     {
@@ -110,7 +113,7 @@ export const UserProductsServiceGetUsersVariant = async ({
     {
       $match: {
         "products.productId": productId,
-        "products.variantId": variantId,
+        ...(variantId ? { "products.variantId": variantId } : {}),
       },
     },
     {
@@ -147,6 +150,11 @@ export const UserProductsServiceGetUsersVariant = async ({
     {
       $unwind: "$userDetails",
     },
+    {
+      $addFields: {
+        "userDetails.variantId": "$products.variantId",
+      },
+    },
   ];
 
   if (nextCursor) {
@@ -175,7 +183,6 @@ export const UserProductsServiceGetUsersVariant = async ({
       $group: {
         _id: {
           productId: "$products.productId",
-          variantId: "$products.variantId",
         },
         users: { $push: "$userDetails" },
       },
@@ -185,28 +192,19 @@ export const UserProductsServiceGetUsersVariant = async ({
       $project: {
         _id: 0,
         productId: "$_id.productId",
-        variantId: "$_id.variantId",
         users: "$users",
       },
     }
   );
 
-  const countSchedule = await ScheduleModel.aggregate<{
-    productId: number;
-    variantId: number;
-    totalUsers: number;
-  }>(countPipeline);
-
   const usersSchedule = await ScheduleModel.aggregate<{
     productId: number;
-    variantId: number;
     users: Users;
   }>(usersPipeline);
 
   if (countSchedule.length === 0 || usersSchedule.length === 0) {
     return {
       productId,
-      variantId,
       totalUsers: 0,
       result: [],
       nextCursor: undefined,
@@ -217,7 +215,6 @@ export const UserProductsServiceGetUsersVariant = async ({
 
   return {
     productId,
-    variantId,
     totalUsers: countSchedule[0].totalUsers,
     result: users,
     nextCursor:

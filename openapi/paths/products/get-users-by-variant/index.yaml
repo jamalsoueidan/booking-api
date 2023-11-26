@@ -8,7 +8,6 @@ parameters:
   - name: variantId
     in: query
     description: variant Id
-    required: true
     schema:
       type: string
   - name: nextCursor

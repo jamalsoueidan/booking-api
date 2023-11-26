@@ -78,12 +78,7 @@ export const generateAvailability = async ({
             0,
             0
           );
-          console.log(
-            now,
-            slotStart,
-            slotEnd,
-            isWithinInterval(now, { start: slotStart, end: slotEnd })
-          );
+
           if (isWithinInterval(now, { start: slotStart, end: slotEnd })) {
             now = roundMinutes(now);
             slotStart = timeToDate(now.toISOString().slice(11, -8), startDate);
