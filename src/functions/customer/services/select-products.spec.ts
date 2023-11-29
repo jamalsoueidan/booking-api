@@ -1,4 +1,5 @@
 import { Schedule, ScheduleModel, TimeUnit } from "~/functions/schedule";
+import { getProductObject } from "~/library/jest/helpers/product";
 import { compareSchedule, mergeIntervals } from "./select-products";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -24,7 +25,7 @@ describe("MultiAvailability", () => {
       },
     ],
     products: [
-      {
+      getProductObject({
         productId: 9,
         variantId: 1,
         breakTime: 15,
@@ -38,8 +39,8 @@ describe("MultiAvailability", () => {
           unit: TimeUnit.MONTHS,
         },
         locations: [],
-      },
-      {
+      }),
+      getProductObject({
         productId: 99,
         variantId: 1,
         breakTime: 15,
@@ -53,7 +54,7 @@ describe("MultiAvailability", () => {
           unit: TimeUnit.MONTHS,
         },
         locations: [],
-      },
+      }),
     ],
   };
 
@@ -81,7 +82,7 @@ describe("MultiAvailability", () => {
       },
     ],
     products: [
-      {
+      getProductObject({
         productId: 101,
         variantId: 1,
         breakTime: 15,
@@ -95,8 +96,8 @@ describe("MultiAvailability", () => {
           unit: TimeUnit.MONTHS,
         },
         locations: [],
-      },
-      {
+      }),
+      getProductObject({
         productId: 9912,
         variantId: 1,
         breakTime: 15,
@@ -110,7 +111,7 @@ describe("MultiAvailability", () => {
           unit: TimeUnit.MONTHS,
         },
         locations: [],
-      },
+      }),
     ],
   };
 
@@ -129,7 +130,7 @@ describe("MultiAvailability", () => {
       },
     ],
     products: [
-      {
+      getProductObject({
         productId: 91,
         variantId: 1,
         breakTime: 15,
@@ -143,7 +144,7 @@ describe("MultiAvailability", () => {
           unit: TimeUnit.MONTHS,
         },
         locations: [],
-      },
+      }),
     ],
   };
 
@@ -162,7 +163,7 @@ describe("MultiAvailability", () => {
       },
     ],
     products: [
-      {
+      getProductObject({
         productId: 123,
         variantId: 1,
         breakTime: 15,
@@ -176,7 +177,7 @@ describe("MultiAvailability", () => {
           unit: TimeUnit.MONTHS,
         },
         locations: [],
-      },
+      }),
     ],
   };
 

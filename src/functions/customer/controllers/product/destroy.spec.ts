@@ -1,6 +1,6 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 
-import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
+import { TimeUnit } from "~/functions/schedule";
 import {
   HttpSuccessResponse,
   createContext,
@@ -8,6 +8,7 @@ import {
 } from "~/library/jest/azure";
 import { omitObjectIdProps } from "~/library/jest/helpers";
 
+import { getProductObject } from "~/library/jest/helpers/product";
 import { CustomerProductServiceUpsert } from "../../services/product";
 import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
@@ -22,7 +23,7 @@ describe("CustomerProductControllerDestroy", () => {
   let context: InvocationContext;
   let request: HttpRequest;
   const productId = 1000;
-  const product: Omit<ScheduleProduct, "productId"> = {
+  const product = getProductObject({
     variantId: 1,
     duration: 60,
     breakTime: 0,
@@ -35,7 +36,7 @@ describe("CustomerProductControllerDestroy", () => {
       unit: TimeUnit.WEEKS,
     },
     locations: [],
-  };
+  });
 
   beforeEach(async () => {
     context = createContext();
@@ -58,6 +59,7 @@ describe("CustomerProductControllerDestroy", () => {
     expect(omitObjectIdProps(newProduct)).toMatchObject(
       omitObjectIdProps({
         ...product,
+        productId: newProduct.productId,
         scheduleId: newSchedule._id,
         scheduleName: newSchedule.name,
       })

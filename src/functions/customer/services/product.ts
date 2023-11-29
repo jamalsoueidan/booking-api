@@ -98,7 +98,7 @@ export const CustomerProductServiceUpsert = async (
       _id: product.scheduleId,
       customerId: filter.customerId,
     },
-    { $push: { products: { productId: filter.productId, ...product } } },
+    { $push: { products: { ...product, productId: filter.productId } } },
     { new: true, upsert: true }
   )
     .orFail(

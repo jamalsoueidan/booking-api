@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 import { LocationTypes } from "~/functions/location";
 import { TimeUnit } from "~/functions/schedule";
 import { omitObjectIdProps } from "~/library/jest/helpers";
+import { getProductObject } from "~/library/jest/helpers/product";
 import {
   CustomerProductServiceDestroy,
   CustomerProductServiceGet,
   CustomerProductServiceRemoveLocationFromAll,
   CustomerProductServiceUpsert,
-  CustomerProductServiceUpsertBody,
   CustomerProductsServiceList,
   CustomerProductsServiceListIds,
 } from "./product";
@@ -21,9 +21,8 @@ describe("CustomerProductsService", () => {
   const customerId = 123;
   const name = "Test Schedule";
   const productId = 1000;
-  const newProduct: CustomerProductServiceUpsertBody = {
+  const newProduct = getProductObject({
     variantId: 1,
-    scheduleId: "",
     duration: 60,
     breakTime: 0,
     noticePeriod: {
@@ -35,7 +34,7 @@ describe("CustomerProductsService", () => {
       unit: TimeUnit.WEEKS,
     },
     locations: [],
-  };
+  });
 
   it("should get all productIds for all schedules", async () => {
     const schedule1 = await CustomerScheduleServiceCreate({
@@ -43,9 +42,8 @@ describe("CustomerProductsService", () => {
       customerId: 7,
     });
 
-    const product1: CustomerProductServiceUpsertBody = {
+    const product1 = getProductObject({
       variantId: 1,
-      scheduleId: schedule1._id,
       duration: 60,
       breakTime: 0,
       noticePeriod: {
@@ -57,14 +55,14 @@ describe("CustomerProductsService", () => {
         unit: TimeUnit.WEEKS,
       },
       locations: [],
-    };
+    });
 
     await CustomerProductServiceUpsert(
       {
         customerId: schedule1.customerId,
         productId: 999,
       },
-      product1
+      { ...product1, scheduleId: schedule1._id }
     );
 
     const schedule2 = await CustomerScheduleServiceCreate({
@@ -126,9 +124,8 @@ describe("CustomerProductsService", () => {
       customerId,
     });
 
-    const product1: CustomerProductServiceUpsertBody = {
+    const product1 = getProductObject({
       variantId: 1,
-      scheduleId: schedule1._id,
       duration: 60,
       breakTime: 0,
       noticePeriod: {
@@ -140,14 +137,14 @@ describe("CustomerProductsService", () => {
         unit: TimeUnit.WEEKS,
       },
       locations: [],
-    };
+    });
 
     await CustomerProductServiceUpsert(
       {
         customerId: schedule1.customerId,
         productId: 1001,
       },
-      product1
+      { ...product1, scheduleId: schedule1._id }
     );
 
     await CustomerProductServiceUpsert(
@@ -155,7 +152,7 @@ describe("CustomerProductsService", () => {
         customerId: schedule1.customerId,
         productId: 1000,
       },
-      product1
+      { ...product1, scheduleId: schedule1._id }
     );
 
     const newSchedule2 = await CustomerScheduleServiceCreate({
@@ -200,8 +197,8 @@ describe("CustomerProductsService", () => {
     );
 
     expect(updateProduct).toMatchObject({
-      productId,
       ...newProduct,
+      productId,
       scheduleId: newSchedule._id.toString(),
     });
   });
@@ -382,7 +379,12 @@ describe("CustomerProductsService", () => {
     );
 
     expect(omitObjectIdProps(updateProduct)).toEqual(
-      expect.objectContaining(omitObjectIdProps(productBody))
+      expect.objectContaining(
+        omitObjectIdProps({
+          ...productBody,
+          productId: updateProduct.productId,
+        })
+      )
     );
   });
 

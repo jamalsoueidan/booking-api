@@ -6,7 +6,8 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
-import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
+import { TimeUnit } from "~/functions/schedule";
+import { getProductObject } from "~/library/jest/helpers/product";
 import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
   CustomerProductControllerUpsert,
@@ -22,7 +23,7 @@ describe("ScheduleProductControllerUpdate", () => {
   const customerId = 123;
   const name = "Test Schedule";
   const productId = 1000;
-  const newProduct: Omit<ScheduleProduct, "productId"> = {
+  const newProduct = getProductObject({
     locations: [],
     variantId: 1,
     duration: 60,
@@ -35,7 +36,7 @@ describe("ScheduleProductControllerUpdate", () => {
       value: 1,
       unit: TimeUnit.WEEKS,
     },
-  };
+  });
 
   beforeEach(async () => {
     context = createContext();
@@ -59,6 +60,6 @@ describe("ScheduleProductControllerUpdate", () => {
       await CustomerProductControllerUpsert(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
-    expect(res.jsonBody?.payload).toMatchObject({ productId, ...newProduct });
+    expect(res.jsonBody?.payload).toMatchObject({ ...newProduct, productId });
   });
 });

@@ -8,6 +8,10 @@ export const getProductObject = (
   variantId: faker.number.int({ min: 1, max: 10000000 }),
   duration: faker.helpers.arrayElement([30, 45, 60]),
   breakTime: faker.helpers.arrayElement([5, 10, 15]),
+  selectedOptions: {
+    name: "Pris",
+    value: "Artist",
+  },
   bookingPeriod: {
     unit: TimeUnit.WEEKS,
     value: 1,

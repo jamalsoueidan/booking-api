@@ -1,12 +1,13 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 
-import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
+import { TimeUnit } from "~/functions/schedule";
 
 import {
   HttpSuccessResponse,
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
+import { getProductObject } from "~/library/jest/helpers/product";
 import { CustomerProductServiceUpsert } from "../../services/product";
 import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
@@ -21,7 +22,7 @@ describe("CustomerProductControllerGet", () => {
   let context: InvocationContext;
   let request: HttpRequest;
   const productId = 1000;
-  const product: Omit<ScheduleProduct, "productId"> = {
+  const product = getProductObject({
     variantId: 1,
     duration: 60,
     breakTime: 0,
@@ -34,7 +35,7 @@ describe("CustomerProductControllerGet", () => {
       unit: TimeUnit.WEEKS,
     },
     locations: [],
-  };
+  });
 
   beforeEach(async () => {
     context = createContext();
