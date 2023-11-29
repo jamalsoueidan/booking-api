@@ -103,6 +103,26 @@ components:
           required:
             - name
             - value
+        price:
+          type: object
+          properties:
+            amount:
+              type: string
+            currencyCode:
+              type: string
+          required:
+            - amount
+            - currencyCode
+        compareAtPrice:
+          type: object
+          properties:
+            amount:
+              type: string
+            currencyCode:
+              type: string
+          required:
+            - amount
+            - currencyCode
         duration:
           type: number
         breakTime:
@@ -115,6 +135,7 @@ components:
         - variantId
         - productId
         - duration
+        - price
         - selectedOptions
         - breakTime
         - noticePeriod
@@ -205,6 +226,26 @@ components:
           required:
             - name
             - value
+        price:
+          type: object
+          properties:
+            amount:
+              type: string
+            currencyCode:
+              type: string
+          required:
+            - amount
+            - currencyCode
+        compareAtPrice:
+          type: object
+          properties:
+            amount:
+              type: string
+            currencyCode:
+              type: string
+          required:
+            - amount
+            - currencyCode
         duration:
           type: number
         breakTime:
@@ -218,6 +259,7 @@ components:
       required:
         - scheduleId
         - variantId
+        - price
         - duration
         - selectedOptions
         - breakTime
