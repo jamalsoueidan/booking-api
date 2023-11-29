@@ -15,6 +15,14 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       name: String,
       value: String,
     },
+    price: {
+      amount: String,
+      currencyCode: String,
+    },
+    compareAtPrice: {
+      amount: String,
+      currencyCode: String,
+    },
     description: String,
     duration: {
       type: Number,

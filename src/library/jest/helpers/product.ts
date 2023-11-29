@@ -12,6 +12,10 @@ export const getProductObject = (
     name: "Pris",
     value: "Artist",
   },
+  price: {
+    currencyCode: "DKK",
+    amount: "200.00",
+  },
   bookingPeriod: {
     unit: TimeUnit.WEEKS,
     value: 1,

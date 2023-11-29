@@ -14,6 +14,26 @@ properties:
     required:
       - name
       - value
+  price:
+    type: object
+    properties:
+      amount:
+        type: string
+      currencyCode:
+        type: string
+    required:
+      - amount
+      - currencyCode
+  compareAtPrice:
+    type: object
+    properties:
+      amount:
+        type: string
+      currencyCode:
+        type: string
+    required:
+      - amount
+      - currencyCode
   duration:
     type: number
   breakTime:
@@ -28,6 +48,7 @@ properties:
 required:
   - scheduleId
   - variantId
+  - price
   - duration
   - selectedOptions
   - breakTime

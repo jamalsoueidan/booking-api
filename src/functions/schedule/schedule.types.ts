@@ -57,6 +57,16 @@ export const ScheduleProductZodSchema = z.object({
     name: z.string(),
     value: z.string(),
   }),
+  price: z.object({
+    amount: z.string(),
+    currencyCode: z.string(),
+  }),
+  compareAtPrice: z
+    .object({
+      amount: z.string(),
+      currencyCode: z.string(),
+    })
+    .optional(),
   description: z.string().optional(),
   duration: NumberOrStringType,
   breakTime: NumberOrStringType,
