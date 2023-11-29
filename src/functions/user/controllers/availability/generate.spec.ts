@@ -7,6 +7,7 @@ import {
 } from "~/library/jest/azure";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
+import { getProductObject } from "~/library/jest/helpers/product";
 import {
   UserAvailabilityControllerGenerate,
   UserAvailabilityControllerGenerateRequest,
@@ -39,7 +40,7 @@ describe("UserAvailabilityControllerGenerate", () => {
       },
     ],
     products: [
-      {
+      getProductObject({
         productId,
         variantId: 1,
         duration: 30,
@@ -53,7 +54,7 @@ describe("UserAvailabilityControllerGenerate", () => {
           value: 1,
         },
         locations: [],
-      },
+      }),
     ],
   };
 

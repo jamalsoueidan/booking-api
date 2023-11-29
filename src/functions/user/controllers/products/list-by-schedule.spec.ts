@@ -1,6 +1,6 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 
-import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
+import { TimeUnit } from "~/functions/schedule";
 
 import {
   HttpSuccessResponse,
@@ -11,6 +11,7 @@ import {
 import { CustomerProductServiceUpsert } from "~/functions/customer/services/product";
 import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { createUser } from "~/library/jest/helpers";
+import { getProductObject } from "~/library/jest/helpers/product";
 import {
   UserProductsControllerListBySchedule,
   UserProductsControllerListByScheduleRequest,
@@ -19,7 +20,7 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-const newProduct: Omit<ScheduleProduct, "productId"> = {
+const newProduct = getProductObject({
   variantId: 1,
   duration: 60,
   breakTime: 0,
@@ -32,7 +33,7 @@ const newProduct: Omit<ScheduleProduct, "productId"> = {
     unit: TimeUnit.WEEKS,
   },
   locations: [],
-};
+});
 
 describe("UserProductsControllerListBySchedule", () => {
   let context: InvocationContext = createContext();

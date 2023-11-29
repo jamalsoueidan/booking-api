@@ -1,6 +1,6 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 
-import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
+import { TimeUnit } from "~/functions/schedule";
 
 import {
   HttpSuccessResponse,
@@ -8,6 +8,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
+import { getProductObject } from "~/library/jest/helpers/product";
 import { CustomerProductServiceUpsert } from "../../services/product";
 import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
@@ -24,7 +25,7 @@ describe("UserProductsControllerList", () => {
 
   it("Should be able to get all products for customer-id in all schedules", async () => {
     const customerId = 123;
-    const newProduct: Omit<ScheduleProduct, "productId"> = {
+    const newProduct = getProductObject({
       variantId: 1,
       duration: 60,
       breakTime: 0,
@@ -37,7 +38,7 @@ describe("UserProductsControllerList", () => {
         unit: TimeUnit.WEEKS,
       },
       locations: [],
-    };
+    });
 
     const newSchedule = await CustomerScheduleServiceCreate({
       name: "ab",

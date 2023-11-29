@@ -6,6 +6,16 @@ properties:
     type: number
   description:
     type: string
+  selectedOptions:
+    type: object
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+    required:
+      - name
+      - value
   duration:
     type: number
   breakTime:
@@ -19,6 +29,7 @@ required:
   - variantId
   - productId
   - duration
+  - selectedOptions
   - breakTime
   - noticePeriod
   - bookingPeriod

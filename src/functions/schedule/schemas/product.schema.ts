@@ -11,6 +11,10 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
     variantId: {
       type: Number,
     },
+    selectedOptions: {
+      name: String,
+      value: String,
+    },
     description: String,
     duration: {
       type: Number,
