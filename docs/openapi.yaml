@@ -93,6 +93,16 @@ components:
           type: number
         description:
           type: string
+        selectedOptions:
+          type: object
+          properties:
+            name:
+              type: string
+            value:
+              type: string
+          required:
+            - name
+            - value
         duration:
           type: number
         breakTime:
@@ -105,6 +115,7 @@ components:
         - variantId
         - productId
         - duration
+        - selectedOptions
         - breakTime
         - noticePeriod
         - bookingPeriod
@@ -184,6 +195,16 @@ components:
           type: string
         variantId:
           type: number
+        selectedOptions:
+          type: object
+          properties:
+            name:
+              type: string
+            value:
+              type: string
+          required:
+            - name
+            - value
         duration:
           type: number
         breakTime:
@@ -198,6 +219,7 @@ components:
         - scheduleId
         - variantId
         - duration
+        - selectedOptions
         - breakTime
         - noticePeriod
         - bookingPeriod
