@@ -15,7 +15,7 @@ app.http("userScheduleServiceGetByLocationId", {
 app.http("userScheduleGetByProductId", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "user/{username}/schedule/get-by-product-id/{productId}",
+  route: "user/{username}/schedule/get-by-product-id/{productHandle}",
   handler: UserScheduleControllerGetByProduct,
 });
 
