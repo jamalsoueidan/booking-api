@@ -6,9 +6,9 @@ get:
       required: true
       schema:
         type: string
-    - name: productId
+    - name: productHandle
       in: path
-      description: product Id
+      description: productHandle
       required: true
       schema:
         type: string
@@ -16,7 +16,7 @@ get:
     - UserSchedule
   operationId: userScheduleGetByProduct
   summary: GET Get user schedule
-  description: This endpoint should retrieve a schedule and locations belonging to a specific productId, along with the product.
+  description: This endpoint should retrieve a schedule and locations belonging to a specific productHandle, along with the product.
   responses:
     "200":
       description: Response with payload

@@ -9,21 +9,21 @@ export type UesrScheduleAggreateReturnValue = Pick<
 
 export type UserScheduleServiceGetByProductIdProps = {
   customerId: number;
-  productId: number;
+  productHandle: string;
 };
 
 export async function UserScheduleServiceGetByProductId({
   customerId,
-  productId,
+  productHandle,
 }: UserScheduleServiceGetByProductIdProps) {
   // first just the schedule with the product
   const schedule = await ScheduleModel.findOne({
     customerId,
-    "products.productId": productId,
+    "products.productHandle": productHandle,
   }).orFail(
     new NotFoundError([
       {
-        path: ["customerId", "productId"],
+        path: ["customerId", "productHandle"],
         message: "NOT_FOUND",
         code: "custom",
       },
@@ -43,7 +43,7 @@ export async function UserScheduleServiceGetByProductId({
       },
       {
         $match: {
-          "products.productId": productId,
+          "products.productHandle": productHandle,
         },
       },
       {

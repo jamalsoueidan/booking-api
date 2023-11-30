@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 import { _ } from "~/library/handler";
-import { NumberOrStringType } from "~/library/zod";
 import { UserScheduleServiceGetByProductId as UserScheduleServiceGetByProduct } from "../../services/schedule/get-by-product";
 import { UserServiceGetCustomerId } from "../../services/user";
 
@@ -11,7 +10,7 @@ export type UserScheduleControllerGetByProductRequest = {
 
 const UserScheduleControllerGetByProductQuerySchema = z.object({
   username: z.string(),
-  productId: NumberOrStringType,
+  productHandle: z.string(),
 });
 
 export type UserScheduleControllerGetByProductResponse = Awaited<
@@ -24,7 +23,7 @@ export const UserScheduleControllerGetByProduct = _(
       UserScheduleControllerGetByProductQuerySchema.parse(query);
     const user = await UserServiceGetCustomerId(validateQuery);
     return UserScheduleServiceGetByProduct({
-      productId: validateQuery.productId,
+      productHandle: validateQuery.productHandle,
       customerId: user.customerId,
     });
   }
