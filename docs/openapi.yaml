@@ -1931,7 +1931,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
       security: []
-  '/user/{username}/product/{productId}/location/{locationId}':
+  '/user/{username}/product/{productHandle}/location/{locationId}':
     get:
       parameters:
         - name: username
@@ -1940,9 +1940,9 @@ paths:
           required: true
           schema:
             type: string
-        - name: productId
+        - name: productHandle
           in: path
-          description: productId is nedded
+          description: productHandle is nedded
           required: true
           schema:
             type: string
