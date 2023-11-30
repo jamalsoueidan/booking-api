@@ -19,16 +19,6 @@ properties:
           required:
             - amount
             - currencyCode
-        compareAtPrice:
-          type: object
-          properties:
-            amount:
-              type: string
-            currencyCode:
-              type: string
-          required:
-            - amount
-            - currencyCode
         productId:
           type: number
         variantId:

@@ -9,7 +9,7 @@ import {
 
 import { utcToZonedTime } from "date-fns-tz";
 import { enUS } from "date-fns/locale";
-import { Availability } from "~/functions/availability";
+import { Availability, AvailabilityProducts } from "~/functions/availability";
 import { ShippingServiceGet } from "~/functions/shipping/services/get";
 
 import { calculateMaxNoticeAndMinBookingPeriod } from "./calculate-max-notice-and-min-booking-period";
@@ -101,7 +101,7 @@ export const generateAvailability = async ({
             add(slotStart, { minutes: totalProductTime + totalTraveltime })
           ) >= 0
         ) {
-          const slotProducts: Availability["slots"][number]["products"] = [];
+          const slotProducts: AvailabilityProducts = [];
           let productStartTime = add(slotStart, { minutes: totalTraveltime });
 
           for (let i = 0; i < sortedProducts.length; i++) {
@@ -114,6 +114,7 @@ export const generateAvailability = async ({
             slotProducts.push({
               productId: product.productId,
               variantId: product.variantId,
+              price: product.price,
               from: productStartTime,
               to: productEndTime,
               breakTime: product.breakTime,
