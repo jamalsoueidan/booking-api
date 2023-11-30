@@ -87,6 +87,8 @@ components:
     CustomerProductBase:
       type: object
       properties:
+        productHandle:
+          type: string
         productId:
           type: number
         variantId:
@@ -214,6 +216,8 @@ components:
       properties:
         scheduleId:
           type: string
+        productHandle:
+          type: string
         variantId:
           type: number
         selectedOptions:
@@ -258,6 +262,7 @@ components:
           $ref: '#/components/schemas/CustomerProductLocations'
       required:
         - scheduleId
+        - productHandle
         - variantId
         - price
         - duration
@@ -1859,7 +1864,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-  '/user/{username}/products/{productId}':
+  '/user/{username}/products/{productHandle}':
     get:
       parameters:
         - name: username
@@ -1867,7 +1872,7 @@ paths:
           required: true
           schema:
             type: string
-        - name: productId
+        - name: productHandle
           in: path
           required: true
           schema:
