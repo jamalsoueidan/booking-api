@@ -1,8 +1,8 @@
 type: object
 properties:
-  productIds:
+  productHandlers:
     type: array
     items:
       type: string
 required:
-  - productIds
+  - productHandlers

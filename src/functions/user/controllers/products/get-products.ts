@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
 
-import { NumberOrStringType, StringOrObjectIdType } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 import { UserProductsServiceListProductsByLocation } from "../../services/products/list-by-location";
 
 export type UserProductsControllerGetProductsByLocationRequest = {
@@ -15,7 +15,7 @@ export const UserProductsControllerGetProductsByLocationQuerySchema = z.object({
 });
 
 export const UserProductsControllerGetProductsByLocationBodySchema = z.object({
-  productIds: z.array(NumberOrStringType),
+  productHandlers: z.array(z.string()),
 });
 
 export type UserProductsControllerListProductsByLocationResponse = Awaited<
@@ -34,7 +34,7 @@ export const UserProductsControllerGetProductsByLocation = _(
 
     return UserProductsServiceListProductsByLocation({
       ...queryData,
-      productId: bodyData.productIds,
+      productHandle: bodyData.productHandlers,
     });
   }
 );
