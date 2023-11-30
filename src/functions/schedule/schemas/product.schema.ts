@@ -4,6 +4,10 @@ import { ScheduleProduct, TimeUnit } from "../schedule.types";
 
 export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
   {
+    productHandle: {
+      type: String,
+      index: true,
+    },
     productId: {
       type: Number,
       index: true,

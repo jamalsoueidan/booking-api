@@ -4,6 +4,7 @@ import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
 export const getProductObject = (
   props: Partial<ScheduleProduct> = {}
 ): ScheduleProduct => ({
+  productHandle: faker.string.uuid(),
   productId: faker.number.int({ min: 1, max: 10000000 }),
   variantId: faker.number.int({ min: 1, max: 10000000 }),
   duration: faker.helpers.arrayElement([30, 45, 60]),
