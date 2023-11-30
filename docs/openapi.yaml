@@ -1291,6 +1291,26 @@ components:
           items:
             type: object
             properties:
+              price:
+                type: object
+                properties:
+                  amount:
+                    type: string
+                  currencyCode:
+                    type: string
+                required:
+                  - amount
+                  - currencyCode
+              compareAtPrice:
+                type: object
+                properties:
+                  amount:
+                    type: string
+                  currencyCode:
+                    type: string
+                required:
+                  - amount
+                  - currencyCode
               productId:
                 type: number
               variantId:
@@ -1304,6 +1324,7 @@ components:
               duration:
                 type: number
             required:
+              - price
               - productId
               - variantId
               - from
