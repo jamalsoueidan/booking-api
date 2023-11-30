@@ -51,6 +51,7 @@ const LocationZodSchema = z.object({
 export type ScheduleProductLocation = z.infer<typeof LocationZodSchema>;
 
 export const ScheduleProductZodSchema = z.object({
+  productHandle: z.string(),
   productId: GidFormat,
   variantId: GidFormat,
   selectedOptions: z.object({

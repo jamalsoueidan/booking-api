@@ -30,6 +30,6 @@ app.http("UserProductsControllerGetProducts", {
 app.http("UserProductsControllerGet", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "user/{username}/products/{productId}",
+  route: "user/{username}/products/{productHandle}",
   handler: UserProductsControllerGet,
 });
