@@ -1,9 +1,5 @@
 import { ScheduleModel } from "~/functions/schedule";
-import {
-  User,
-  UserModel,
-  UserServiceFindCustomerOrFail,
-} from "~/functions/user";
+import { User, UserModel } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
 
 export type CustomerServiceUpsert = Pick<User, "customerId">;
@@ -61,22 +57,32 @@ export const CustomerServiceStatus = async ({
 }: {
   customerId: number;
 }) => {
-  const user = await UserServiceFindCustomerOrFail({ customerId });
-  const schedule = await ScheduleModel.count({ customerId });
-  const services = await ScheduleModel.count({
-    customerId,
-    "products.0": { $exists: true },
-  });
+  const user = await UserModel.findOne({ customerId });
+  if (user) {
+    const schedule = await ScheduleModel.count({ customerId });
+    const services = await ScheduleModel.count({
+      customerId,
+      "products.0": { $exists: true },
+    });
 
-  const aboutMe = user.aboutMe !== undefined;
-  const shortDescription = user.shortDescription !== undefined;
-  const professions = !!user.professions && user.professions.length > 0;
+    const aboutMe = user.aboutMe !== undefined;
+    const shortDescription = user.shortDescription !== undefined;
+    const professions = !!user.professions && user.professions.length > 0;
 
-  return {
-    profile: aboutMe && shortDescription && professions,
-    locations: user.locations && user.locations?.length > 0,
-    schedules: schedule > 0,
-    services: services > 0,
-    profileImage: user.images?.profile?.url !== undefined,
-  };
+    return {
+      profile: aboutMe && shortDescription && professions,
+      locations: user.locations && user.locations?.length > 0,
+      schedules: schedule > 0,
+      services: services > 0,
+      profileImage: user.images?.profile?.url !== undefined,
+    };
+  } else {
+    return {
+      profile: false,
+      locations: false,
+      schedules: false,
+      services: false,
+      profileImage: false,
+    };
+  }
 };
