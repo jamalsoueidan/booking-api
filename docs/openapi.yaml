@@ -1149,6 +1149,17 @@ components:
       required:
         - success
         - payload
+    UserProductsGetResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/CustomerProductList'
+      required:
+        - success
+        - payload
     UserProductsListByLocationResponse:
       type: object
       properties:
@@ -1839,6 +1850,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserGetResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  '/user/{username}/products/{productId}':
+    get:
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - UserProduct
+      operationId: UserProductGet
+      summary: GET Get product that exist in one of the schedules for customer
+      description: This endpoint get product for customer
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProductsGetResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
