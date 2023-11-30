@@ -52,7 +52,7 @@ describe("UserProductsServiceListProductsByLocation", () => {
 
     let getSchedule = await UserProductsServiceListProductsByLocation({
       username,
-      productId: product1.productId,
+      productHandle: product1.productHandle,
       locationId: locationOrigin._id,
     });
 
@@ -60,7 +60,7 @@ describe("UserProductsServiceListProductsByLocation", () => {
 
     getSchedule = await UserProductsServiceListProductsByLocation({
       username,
-      productId: product1.productId,
+      productHandle: product1.productHandle,
       locationId: locationDestination._id,
     });
 
@@ -121,15 +121,15 @@ describe("UserProductsServiceListProductsByLocation", () => {
 
     let getSchedule = await UserProductsServiceListProductsByLocation({
       username,
-      productId: [product1.productId, product2.productId],
+      productHandle: [product1.productHandle, product2.productHandle],
       locationId: locationOrigin._id,
     });
 
     const containsProduct1 = getSchedule.some(
-      (product) => product.productId === product1.productId
+      (product) => product.productHandle === product1.productHandle
     );
     const containsProduct2 = getSchedule.some(
-      (product) => product.productId === product2.productId
+      (product) => product.productHandle === product2.productHandle
     );
     expect(getSchedule.length).toBe(2);
     expect(containsProduct1).toBe(true);
@@ -137,15 +137,15 @@ describe("UserProductsServiceListProductsByLocation", () => {
 
     getSchedule = await UserProductsServiceListProductsByLocation({
       username,
-      productId: [product2.productId, product3.productId],
+      productHandle: [product2.productHandle, product3.productHandle],
       locationId: locationDestination._id,
     });
 
     const containsProduct3 = getSchedule.some(
-      (product) => product.productId === product2.productId
+      (product) => product.productHandle === product2.productHandle
     );
     const containsProduct4 = getSchedule.some(
-      (product) => product.productId === product3.productId
+      (product) => product.productHandle === product3.productHandle
     );
 
     expect(getSchedule.length).toBe(2);
@@ -157,7 +157,7 @@ describe("UserProductsServiceListProductsByLocation", () => {
     await expect(
       UserProductsServiceListProductsByLocation({
         username: "test",
-        productId: 123,
+        productHandle: "productHandle",
         locationId: "ads" as any,
       })
     ).rejects.toThrowError();

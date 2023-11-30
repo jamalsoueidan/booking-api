@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
 
-import { NumberOrStringType, StringOrObjectIdType } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 import { UserProductsServiceListProductsByLocation } from "../../services/products/list-by-location";
 
 export type UserProductsControllerListProductsByLocationRequest = {
@@ -10,7 +10,7 @@ export type UserProductsControllerListProductsByLocationRequest = {
 
 export const UserProductsControllerListProductsByLocationSchema = z.object({
   username: z.string(),
-  productId: NumberOrStringType,
+  productHandle: z.string(),
   locationId: StringOrObjectIdType,
 });
 

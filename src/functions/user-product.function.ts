@@ -16,7 +16,7 @@ app.http("UserProductsControllerListBySchedule", {
 app.http("UserProductsControllerListByLocation", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "user/{username}/product/{productId}/location/{locationId}",
+  route: "user/{username}/product/{productHandle}/location/{locationId}",
   handler: UserProductsControllerListProductsByLocation,
 });
 

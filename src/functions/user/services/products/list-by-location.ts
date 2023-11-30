@@ -10,13 +10,13 @@ export type UserProductsServiceListProductsByLocationReturn = Pick<
 
 export type UserProductsServiceListProductsByLocationProps = {
   username: string;
-  productId: number | number[];
+  productHandle: string | string[];
   locationId: StringOrObjectId;
 };
 
 export const UserProductsServiceListProductsByLocation = async ({
   username,
-  productId,
+  productHandle,
   locationId,
 }: UserProductsServiceListProductsByLocationProps) => {
   const schedulesPipeline: PipelineStage[] = [
@@ -46,11 +46,11 @@ export const UserProductsServiceListProductsByLocation = async ({
     },
   ];
 
-  if (!Array.isArray(productId)) {
+  if (!Array.isArray(productHandle)) {
     schedulesPipeline.push(
       {
         $match: {
-          "products.productId": productId,
+          "products.productHandle": productHandle,
         },
       },
       {
@@ -59,14 +59,14 @@ export const UserProductsServiceListProductsByLocation = async ({
     );
   }
 
-  if (Array.isArray(productId)) {
+  if (Array.isArray(productHandle)) {
     schedulesPipeline.push(
       {
         $unwind: "$products",
       },
       {
         $match: {
-          "products.productId": { $in: productId },
+          "products.productHandle": { $in: productHandle },
         },
       }
     );
@@ -102,7 +102,7 @@ export const UserProductsServiceListProductsByLocation = async ({
   if (schedules.length === 0) {
     throw new NotFoundError([
       {
-        path: ["username", "productId", "locationId"],
+        path: ["username", "productHandle", "locationId"],
         message: "NOT_FOUND",
         code: "custom",
       },

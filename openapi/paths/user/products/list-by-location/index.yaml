@@ -6,9 +6,9 @@ get:
       required: true
       schema:
         type: string
-    - name: productId
+    - name: productHandle
       in: path
-      description: productId is nedded
+      description: productHandle is nedded
       required: true
       schema:
         type: string

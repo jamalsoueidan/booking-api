@@ -247,7 +247,7 @@ paths:
     $ref: "./paths/user/products/get/index.yaml"
   /user/{username}/products:
     $ref: "./paths/user/products/list-by-schedule/index.yaml"
-  /user/{username}/product/{productId}/location/{locationId}:
+  /user/{username}/product/{productHandle}/location/{locationId}:
     $ref: "./paths/user/products/list-by-location/index.yaml"
   /user/{username}/products/location/{locationId}:
     $ref: "./paths/user/products/get-products/index.yaml"
