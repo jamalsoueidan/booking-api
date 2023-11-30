@@ -76,7 +76,7 @@ describe("UserScheduleServiceGetByProductId", () => {
 
     const getSchedule = await UserScheduleServiceGetByProductId({
       customerId: schedule.customerId,
-      productId: product.productId,
+      productHandle: product.productHandle,
     });
 
     expect(getSchedule!.name).toBe(schedule.name);

@@ -83,6 +83,7 @@ describe("generateAvailability", () => {
       (slot) =>
         isEqual(slot.from, randomSlot.from) && isEqual(slot.to, randomSlot.to)
     );
+
     expect(slot).toBeDefined();
   });
 
