@@ -1181,12 +1181,12 @@ components:
     UserProductsGetProductsBody:
       type: object
       properties:
-        productIds:
+        productHandlers:
           type: array
           items:
             type: string
       required:
-        - productIds
+        - productHandlers
     UserProductsGetProductsResponse:
       type: object
       properties:
@@ -1990,7 +1990,7 @@ paths:
         - UserProduct
       operationId: userProductsGetProducts
       summary: GET Get products for user
-      description: This endpoint get products in productsId from one schedule by location
+      description: This endpoint get products from one schedule by location
       requestBody:
         required: true
         content:
