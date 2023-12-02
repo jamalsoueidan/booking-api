@@ -16,14 +16,17 @@ export type CustomerControllerUpsertQuery = z.infer<
   typeof CustomerControllerUpsertQuerySchema
 >;
 
-export const CustomerControllerUpsertSchema = UserZodSchema.omit({
-  _id: true,
-  customerId: true,
-  active: true,
+export const CustomerControllerUpsertSchema = UserZodSchema.pick({
   fullname: true,
-  email: true,
   phone: true,
-  isBusiness: true,
+  yearsExperience: true,
+  gender: true,
+  professions: true,
+  specialties: true,
+  speaks: true,
+  aboutMe: true,
+  shortDescription: true,
+  social: true,
 }).strip();
 
 export type CustomerControllerUpsertBody = z.infer<
@@ -38,9 +41,6 @@ export const CustomerControllerUpsert = _(
   ({ query, body }: CustomerControllerUpsertRequest) => {
     const validateQuery = CustomerControllerUpsertQuerySchema.parse(query);
     const validateBody = CustomerControllerUpsertSchema.parse(body);
-    return CustomerServiceUpsert(validateQuery, {
-      ...validateBody,
-      isBusiness: true,
-    });
+    return CustomerServiceUpsert(validateQuery, validateBody);
   }
 );

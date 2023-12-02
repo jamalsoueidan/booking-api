@@ -1,5 +1,4 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { faker } from "@faker-js/faker";
 import {
   HttpSuccessResponse,
   createContext,
@@ -8,10 +7,9 @@ import {
 
 import { Professions } from "~/functions/user";
 
-import { CustomerServiceUpsert } from "../../services/customer";
+import { createUser } from "~/library/jest/helpers";
 import {
   CustomerControllerUpsert,
-  CustomerControllerUpsertBody,
   CustomerControllerUpsertRequest,
   CustomerControllerUpsertResponse,
 } from "./upsert";
@@ -22,78 +20,21 @@ describe("CustomerControllerUpsert", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
-  const query = { customerId: faker.number.int() };
-  const body: CustomerControllerUpsertBody = {
-    yearsExperience: 1,
-    username: faker.internet.userName(),
-    aboutMe: faker.lorem.paragraph(),
-    speaks: [faker.location.countryCode()],
-    images: {
-      profile: {
-        url: faker.internet.avatar(),
-      },
-    },
-    locations: [],
-  };
-
   beforeEach(() => {
     context = createContext();
   });
 
-  it("Should be able to create user", async () => {
-    await CustomerServiceUpsert(query, {
-      fullname: "asd",
-      username: "asd",
-    });
-
-    request = await createHttpRequest<CustomerControllerUpsertRequest>({
-      query,
-      body,
-    });
-
-    const res: HttpSuccessResponse<CustomerControllerUpsertResponse> =
-      await CustomerControllerUpsert(request, context);
-
-    expect(res.jsonBody?.success).toBeTruthy();
-    expect(res.jsonBody).toHaveProperty("payload");
-    expect(res.jsonBody?.payload.fullname).toEqual("asd");
-  });
-
   it("Should able to update user", async () => {
-    await CustomerServiceUpsert(query, {
-      fullname: "asd",
-      username: "asd",
-      ...body,
-    });
+    const user = await createUser({ customerId: 123 });
 
     request = await createHttpRequest<CustomerControllerUpsertRequest>({
-      query,
-      body: {
-        username: "test",
-      } as any,
-    });
-
-    const res: HttpSuccessResponse<CustomerControllerUpsertResponse> =
-      await CustomerControllerUpsert(request, context);
-
-    expect(res.jsonBody?.success).toBeTruthy();
-    expect(res.jsonBody).toHaveProperty("payload");
-    expect(res.jsonBody?.payload.username).toEqual("test");
-    expect(res.jsonBody?.payload.isBusiness).toEqual(true);
-  });
-
-  it("Should update user professions and speciellity", async () => {
-    await CustomerServiceUpsert(query, {
-      fullname: "asd",
-      username: "asd",
-      ...body,
-    });
-
-    request = await createHttpRequest<CustomerControllerUpsertRequest>({
-      query,
+      query: {
+        customerId: user.customerId,
+      },
       body: {
         professions: [Professions.HAIR_STYLIST],
         specialties: ["fade"],
+        fullname: "jamal",
       },
     });
 
@@ -102,9 +43,7 @@ describe("CustomerControllerUpsert", () => {
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");
-    expect(res.jsonBody?.payload.professions).toEqual([
-      Professions.HAIR_STYLIST,
-    ]);
+    expect(res.jsonBody?.payload.fullname).toEqual("jamal");
     expect(res.jsonBody?.payload.specialties).toEqual(["fade"]);
   });
 });

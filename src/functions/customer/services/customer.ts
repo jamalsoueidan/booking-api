@@ -2,20 +2,37 @@ import { ScheduleModel } from "~/functions/schedule";
 import { User, UserModel } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
 
+export type CustomerServiceCreateBody = Omit<User, "_id">;
+
+export const CustomerServiceCreate = async (
+  body: CustomerServiceCreateBody
+) => {
+  const user = new UserModel(body);
+  return user.save();
+};
+
 export type CustomerServiceUpsert = Pick<User, "customerId">;
-export type CustomerServiceUpsertBody = Omit<User, "_id" | "customerId">;
+export type CustomerServiceUpsertBody = Partial<
+  Pick<
+    User,
+    | "fullname"
+    | "phone"
+    | "email"
+    | "yearsExperience"
+    | "gender"
+    | "professions"
+    | "specialties"
+    | "speaks"
+    | "aboutMe"
+    | "shortDescription"
+    | "social"
+  >
+>;
 
 export const CustomerServiceUpsert = async (
   filter: Pick<User, "customerId">,
   body: CustomerServiceUpsertBody
 ) => {
-  const user = await UserModel.findOne(filter);
-
-  if (!user) {
-    const newUser = new UserModel({ ...body, customerId: filter.customerId });
-    return newUser.save();
-  }
-
   return UserModel.findOneAndUpdate(filter, body, {
     new: true,
   }).orFail(

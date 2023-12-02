@@ -42,6 +42,7 @@ export const UserMongooseSchema = new mongoose.Schema<
     },
     email: {
       type: String,
+      unqiue: true,
     },
     phone: {
       type: String,

@@ -1,5 +1,7 @@
 type: object
 properties:
+  fullname:
+    type: string
   professions:
     type: array
     items:

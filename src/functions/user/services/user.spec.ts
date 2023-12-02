@@ -1,9 +1,6 @@
 import { faker } from "@faker-js/faker";
-import {
-  CustomerServiceUpsert,
-  CustomerServiceUpsertBody,
-} from "~/functions/customer/services/customer";
-import { createUser } from "~/library/jest/helpers";
+import { CustomerServiceCreate } from "~/functions/customer/services/customer";
+import { createUser, getUserObject } from "~/library/jest/helpers";
 import { Professions } from "../user.types";
 import {
   UserServiceGet,
@@ -15,24 +12,14 @@ require("~/library/jest/mongoose/mongodb.jest");
 
 describe("UserService", () => {
   it("Should find user", async () => {
-    // Create multiple users
-    const filter = { customerId: faker.number.int() };
     const username = faker.internet.userName();
-    // Create a user first
-    const userData: CustomerServiceUpsertBody = {
+    const userData = getUserObject({
       yearsExperience: 1,
       professions: [Professions.MAKEUP_ARTIST],
       username,
-      fullname: faker.person.fullName(),
-      shortDescription: faker.lorem.paragraph(),
-      aboutMe: faker.lorem.paragraph(),
-      speaks: [faker.location.countryCode()],
-      active: true,
-      isBusiness: true,
-      locations: [],
-    };
+    });
 
-    await CustomerServiceUpsert(filter, userData);
+    await CustomerServiceCreate(userData);
 
     const findUser = await UserServiceGet({ username });
 
