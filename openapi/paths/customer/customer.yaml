@@ -1,4 +1,4 @@
 put:
-  $ref: "./upsert/index.yaml#/put"
+  $ref: "./update/index.yaml#/put"
 get:
   $ref: "./get/index.yaml#/get"

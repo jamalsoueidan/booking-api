@@ -11,7 +11,7 @@ import { z } from "zod";
 import { connect } from "~/library/mongoose";
 import { shopifyAdmin } from "~/library/shopify";
 import { NumberOrStringType } from "~/library/zod";
-import { CustomerServiceUpsert } from "./customer/services/customer";
+import { CustomerServiceUpdate } from "./customer/services/customer";
 
 const bodySchema = z.object({
   customerId: NumberOrStringType,
@@ -75,7 +75,7 @@ df.app.activity("updateCustomer", {
   handler: async ({ customerId, image }: updateCustomer) => {
     await connect();
 
-    const response = await CustomerServiceUpsert(
+    const response = await CustomerServiceUpdate(
       { customerId },
       {
         images: {

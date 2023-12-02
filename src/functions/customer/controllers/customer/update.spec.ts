@@ -9,14 +9,14 @@ import { Professions } from "~/functions/user";
 
 import { createUser } from "~/library/jest/helpers";
 import {
-  CustomerControllerUpsert,
-  CustomerControllerUpsertRequest,
-  CustomerControllerUpsertResponse,
-} from "./upsert";
+  CustomerControllerUpdate,
+  CustomerControllerUpdateRequest,
+  CustomerControllerUpdateResponse,
+} from "./update";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("CustomerControllerUpsert", () => {
+describe("CustomerControllerUpdate", () => {
   let context: InvocationContext;
   let request: HttpRequest;
 
@@ -27,7 +27,7 @@ describe("CustomerControllerUpsert", () => {
   it("Should able to update user", async () => {
     const user = await createUser({ customerId: 123 });
 
-    request = await createHttpRequest<CustomerControllerUpsertRequest>({
+    request = await createHttpRequest<CustomerControllerUpdateRequest>({
       query: {
         customerId: user.customerId,
       },
@@ -38,8 +38,8 @@ describe("CustomerControllerUpsert", () => {
       },
     });
 
-    const res: HttpSuccessResponse<CustomerControllerUpsertResponse> =
-      await CustomerControllerUpsert(request, context);
+    const res: HttpSuccessResponse<CustomerControllerUpdateResponse> =
+      await CustomerControllerUpdate(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
     expect(res.jsonBody).toHaveProperty("payload");

@@ -7,14 +7,14 @@ import {
   CustomerControllerGet,
   CustomerControllerIsBusiness,
   CustomerControllerStatus,
-  CustomerControllerUpsert,
+  CustomerControllerUpdate,
 } from "./customer/controllers/customer";
 
 app.http("customerUpsert", {
   methods: ["PUT"],
   authLevel: "anonymous",
   route: "customer/{customerId?}",
-  handler: CustomerControllerUpsert,
+  handler: CustomerControllerUpdate,
 });
 
 app.http("customerCreate", {

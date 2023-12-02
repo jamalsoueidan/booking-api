@@ -108,14 +108,14 @@ components:
       $ref: paths/customer/status/response.yaml
     CustomerGetResponse:
       $ref: paths/customer/get/response.yaml
+    CustomerCreateResponse:
+      $ref: paths/customer/create/response.yaml
+    CustomerCreateBody:
+      $ref: paths/customer/create/body.yaml
     CustomerUpdateResponse:
       $ref: paths/customer/update/response.yaml
     CustomerUpdateBody:
       $ref: paths/customer/update/body.yaml
-    CustomerUpsertResponse:
-      $ref: paths/customer/upsert/response.yaml
-    CustomerUpsertBody:
-      $ref: paths/customer/upsert/body.yaml
     CustomerProductListIdsResponse:
       $ref: paths/customer/product/list-ids/response.yaml
     CustomerProductListResponse:
@@ -274,8 +274,8 @@ paths:
     $ref: "./paths/customer/customer.yaml"
   /customer/{customerId}/status:
     $ref: "./paths/customer/status/index.yaml"
-  /customer/{customerId}/update:
-    $ref: "./paths/customer/update/index.yaml"
+  /customer:
+    $ref: "./paths/customer/create/index.yaml"
   /customer/{customerId}/isBusiness:
     $ref: "./paths/customer/is-business/index.yaml"
   /customer/{customerId}/products:

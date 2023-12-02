@@ -3,7 +3,7 @@ import { UserZodSchema } from "~/functions/user";
 import { _ } from "~/library/handler";
 import {
   CustomerServiceCreate,
-  CustomerServiceUpsert,
+  CustomerServiceUpdate,
 } from "../../services/customer";
 
 export type CustomerControllerCreateRequest = {
@@ -19,7 +19,7 @@ export type CustomerControllerCreteBody = z.infer<
 >;
 
 export type CustomerControllerCreateResponse = Awaited<
-  ReturnType<typeof CustomerServiceUpsert>
+  ReturnType<typeof CustomerServiceUpdate>
 >;
 
 export const CustomerControllerCreate = _(

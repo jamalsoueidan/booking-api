@@ -2,7 +2,7 @@ import { createUser, getUserObject } from "~/library/jest/helpers";
 import {
   CustomerServiceCreate,
   CustomerServiceGet,
-  CustomerServiceUpsert,
+  CustomerServiceUpdate,
 } from "./customer";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -31,7 +31,7 @@ describe("CustomerService", () => {
       aboutMe: "test test",
     };
 
-    const updatedUser = await CustomerServiceUpsert(
+    const updatedUser = await CustomerServiceUpdate(
       { customerId: user.customerId },
       updatedData
     );

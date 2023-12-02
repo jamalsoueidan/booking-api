@@ -1,7 +1,20 @@
 type: object
 properties:
+  customerId:
+    type: number
   fullname:
     type: string
+  email:
+    type: string
+    format: email
+  phone:
+    type: string
+  username:
+    type: string
+    pattern: ^[a-zA-Z0-9-_]+$
+  yearsExperience:
+    type: string
+    format: number
   professions:
     type: array
     items:
@@ -10,12 +23,11 @@ properties:
     type: array
     items:
       type: string
-  username:
-    type: string
-    pattern: ^[a-zA-Z0-9-_]+$
   aboutMe:
     type: string
   shortDescription:
+    type: string
+  gender:
     type: string
   social:
     type: object
@@ -27,15 +39,20 @@ properties:
       instagram:
         type: string
   speaks:
-    oneOf:
-      - type: array
-        items:
-          type: string
-      - type: string
-
+    type: array
+    items:
+      type: string
 required:
+  - customerId
+  - fullname
+  - username
+  - email
+  - phone
+  - yearsExperience
   - professions
   - specialties
-  - username
   - aboutMe
   - shortDescription
+  - gender
+  - social
+  - speaks

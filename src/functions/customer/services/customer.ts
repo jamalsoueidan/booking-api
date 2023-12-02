@@ -11,8 +11,8 @@ export const CustomerServiceCreate = async (
   return user.save();
 };
 
-export type CustomerServiceUpsert = Pick<User, "customerId">;
-export type CustomerServiceUpsertBody = Partial<
+export type CustomerServiceUpdate = Pick<User, "customerId">;
+export type CustomerServiceUpdateBody = Partial<
   Pick<
     User,
     | "fullname"
@@ -29,9 +29,9 @@ export type CustomerServiceUpsertBody = Partial<
   >
 >;
 
-export const CustomerServiceUpsert = async (
+export const CustomerServiceUpdate = async (
   filter: Pick<User, "customerId">,
-  body: CustomerServiceUpsertBody
+  body: CustomerServiceUpdateBody
 ) => {
   return UserModel.findOneAndUpdate(filter, body, {
     new: true,
