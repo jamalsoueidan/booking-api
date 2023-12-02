@@ -49,7 +49,7 @@ export enum Specialties {
 export const UserZodSchema = z.object({
   _id: z.string(),
   customerId: GidFormat,
-  isBusiness: BooleanOrStringType,
+  isBusiness: z.boolean(),
   yearsExperience: NumberOrStringType.optional(),
   professions: z
     .array(z.nativeEnum(Professions))
@@ -67,8 +67,7 @@ export const UserZodSchema = z.object({
     .optional(),
   username: z
     .string()
-    .transform((input) => input.replace(/[^a-zA-Z0-9-_]/g, "-").toLowerCase())
-    .optional(),
+    .transform((input) => input.replace(/[^a-zA-Z0-9-_]/g, "-").toLowerCase()),
   aboutMe: z.string().optional(),
   shortDescription: z.string().optional(),
   gender: z.string().optional(),
@@ -99,9 +98,9 @@ export const UserZodSchema = z.object({
     )
     .optional(),
   speaks: z.array(z.string()).optional(),
-  fullname: z.string().optional(),
-  active: z.boolean().optional(),
-  email: z.string().optional(),
+  fullname: z.string(),
+  active: z.boolean(),
+  email: z.string(),
   phone: z.string().optional(),
 });
 

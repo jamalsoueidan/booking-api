@@ -2,6 +2,15 @@ type: object
 properties:
   customerId:
     type: number
+  fullname:
+    type: string
+  email:
+    type: string
+    format: email
+  phone:
+    type: string
+  username:
+    type: string
   yearsExperience:
     type: string
     format: number
@@ -13,8 +22,6 @@ properties:
     type: array
     items:
       type: string
-  username:
-    type: string
   aboutMe:
     type: string
   shortDescription:
@@ -30,6 +37,10 @@ properties:
         type: string
       instagram:
         type: string
+  speaks:
+    type: array
+    items:
+      type: string
   images:
     type: object
     properties:
@@ -43,27 +54,18 @@ properties:
             type: integer
           height:
             type: integer
-  speaks:
-    type: array
-    items:
-      type: string
-  fullname:
-    type: string
-  active:
-    type: boolean
-  email:
-    type: string
-    format: email
-  phone:
-    type: string
 required:
   - customerId
+  - fullname
+  - username
+  - email
+  - phone
   - yearsExperience
   - professions
-  - fullname
-  - active
-  - locations
-  - speaks
-  - socialUrls
-  - shortDescription
+  - specialties
   - aboutMe
+  - shortDescription
+  - gender
+  - social
+  - speaks
+  - images

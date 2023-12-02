@@ -1,15 +1,9 @@
-put:
-  parameters:
-    - name: customerId
-      in: path
-      required: true
-      schema:
-        type: string
+post:
   tags:
     - Customer
-  operationId: customerUpsert
-  summary: PUT Create or Update user (restricted fields)
-  description: This endpoint creates new or updates user
+  operationId: customerCreate
+  summary: PUT Create user
+  description: This endpoint creates new user
   requestBody:
     required: true
     content:

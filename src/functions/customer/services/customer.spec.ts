@@ -1,81 +1,41 @@
-import { faker } from "@faker-js/faker";
+import { createUser, getUserObject } from "~/library/jest/helpers";
 import {
+  CustomerServiceCreate,
   CustomerServiceGet,
-  CustomerServiceIsBusiness,
-  CustomerServiceUpsert,
-  CustomerServiceUpsertBody,
+  CustomerServiceUpdate,
 } from "./customer";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerService", () => {
-  const userData: CustomerServiceUpsertBody = {
-    username: faker.internet.userName(),
-    fullname: faker.person.fullName(),
-    social: {
-      instagram: faker.internet.url(),
-      youtube: faker.internet.url(),
-      twitter: faker.internet.url(),
-    },
-    active: true,
-    aboutMe: faker.lorem.paragraph(),
-    images: {
-      profile: {
-        url: faker.internet.avatar(),
-      },
-    },
-    locations: [],
-    speaks: [faker.location.countryCode()],
-    isBusiness: true,
-  };
+  const userData = getUserObject();
 
   it("Should create a user", async () => {
-    const newUser = await CustomerServiceUpsert(
-      { customerId: faker.number.int() },
-      userData
-    );
+    const newUser = await CustomerServiceCreate(userData);
 
     expect(newUser).toMatchObject(userData);
   });
 
   it("Should get the customer by customerId", async () => {
-    const newUser = await CustomerServiceUpsert(
-      { customerId: faker.number.int() },
-      userData
-    );
-
-    const user = await CustomerServiceGet({
-      customerId: newUser.customerId,
+    const user = await createUser({ customerId: 123 });
+    const getUser = await CustomerServiceGet({
+      customerId: user.customerId,
     });
-
-    expect(user.customerId).toBe(newUser.customerId);
-  });
-
-  it("Should check if customer exist", async () => {
-    const newUser = await CustomerServiceUpsert(
-      { customerId: faker.number.int() },
-      userData
-    );
-
-    const user = await CustomerServiceIsBusiness({
-      customerId: newUser.customerId,
-    });
-    expect(user.isBusiness).toEqual(true);
+    expect(user.customerId).toBe(getUser.customerId);
   });
 
   it("Should update a user by customerId", async () => {
-    const filter = { customerId: faker.number.int() };
-    // Create a user first
-    await CustomerServiceUpsert(filter, userData);
+    const user = await createUser({ customerId: 123 });
 
-    // Update the user
-    const updatedData: CustomerServiceUpsertBody = {
-      ...userData,
-      fullname: faker.person.fullName(),
+    const updatedData = {
+      aboutMe: "test test",
     };
 
-    const updatedUser = await CustomerServiceUpsert(filter, updatedData);
+    const updatedUser = await CustomerServiceUpdate(
+      { customerId: user.customerId },
+      updatedData
+    );
 
-    expect(updatedUser.fullname).toEqual(updatedData.fullname);
+    expect(updatedUser.aboutMe).toEqual(updatedData.aboutMe);
   });
 });

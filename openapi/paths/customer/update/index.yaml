@@ -2,15 +2,14 @@ put:
   parameters:
     - name: customerId
       in: path
-      description: must be customerId
       required: true
       schema:
         type: string
   tags:
     - Customer
   operationId: customerUpdate
-  summary: PUT Create or Update user (all fields allowed)
-  description: This endpoint creates new or updates user
+  summary: PUT Update user
+  description: This endpoint update user
   requestBody:
     required: true
     content:

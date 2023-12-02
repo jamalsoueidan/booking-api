@@ -3,27 +3,25 @@ import "module-alias/register";
 import { app } from "@azure/functions";
 
 import {
+  CustomerControllerCreate,
   CustomerControllerGet,
   CustomerControllerIsBusiness,
   CustomerControllerStatus,
   CustomerControllerUpdate,
-  CustomerControllerUpsert,
 } from "./customer/controllers/customer";
-
-/* Customer */
-
-app.http("customerUpsert", {
-  methods: ["PUT"],
-  authLevel: "anonymous",
-  route: "customer/{customerId?}",
-  handler: CustomerControllerUpsert,
-});
 
 app.http("customerUpdate", {
   methods: ["PUT"],
   authLevel: "anonymous",
-  route: "customer/{customerId?}/update",
+  route: "customer/{customerId?}",
   handler: CustomerControllerUpdate,
+});
+
+app.http("customerCreate", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "customer",
+  handler: CustomerControllerCreate,
 });
 
 app.http("customerIsBusiness", {
