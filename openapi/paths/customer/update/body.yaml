@@ -6,17 +6,13 @@ properties:
     type: string
     format: number
   professions:
-    oneOf:
-      - type: array
-        items:
-          type: string
-      - type: string
+    type: array
+    items:
+      type: string
   specialties:
-    oneOf:
-      - type: array
-        items:
-          type: string
-      - type: string
+    type: array
+    items:
+      type: string
   username:
     type: string
   aboutMe:

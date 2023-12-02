@@ -1,17 +1,13 @@
 type: object
 properties:
   professions:
-    oneOf:
-      - type: array
-        items:
-          type: string
-      - type: string
+    type: array
+    items:
+      type: string
   specialties:
-    oneOf:
-      - type: array
-        items:
-          type: string
-      - type: string
+    type: array
+    items:
+      type: string
   username:
     type: string
     pattern: ^[a-zA-Z0-9-_]+$
