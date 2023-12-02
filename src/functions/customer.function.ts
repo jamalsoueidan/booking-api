@@ -10,7 +10,7 @@ import {
   CustomerControllerUpdate,
 } from "./customer/controllers/customer";
 
-app.http("customerUpsert", {
+app.http("customerUpdate", {
   methods: ["PUT"],
   authLevel: "anonymous",
   route: "customer/{customerId?}",
