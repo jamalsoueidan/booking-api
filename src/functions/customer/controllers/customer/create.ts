@@ -12,6 +12,8 @@ export type CustomerControllerCreateRequest = {
 
 export const CustomerControllerCreateSchema = UserZodSchema.omit({
   _id: true,
+  active: true,
+  isBusiness: true,
 }).strip();
 
 export type CustomerControllerCreteBody = z.infer<

@@ -2,12 +2,15 @@ import { ScheduleModel } from "~/functions/schedule";
 import { User, UserModel } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
 
-export type CustomerServiceCreateBody = Omit<User, "_id">;
+export type CustomerServiceCreateBody = Omit<
+  User,
+  "_id" | "active" | "isBusiness"
+>;
 
 export const CustomerServiceCreate = async (
   body: CustomerServiceCreateBody
 ) => {
-  const user = new UserModel({ ...body, isBusiness: true });
+  const user = new UserModel({ ...body, isBusiness: true, active: true });
   return user.save();
 };
 
