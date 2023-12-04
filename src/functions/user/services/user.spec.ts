@@ -6,11 +6,30 @@ import {
   UserServiceGet,
   UserServiceList,
   UserServiceProfessions,
+  UserServiceUsernameTaken,
 } from "./user";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("UserService", () => {
+  it("check username is taken", async () => {
+    const userData = getUserObject();
+
+    await CustomerServiceCreate(userData);
+
+    let response = await UserServiceUsernameTaken({
+      username: userData.username,
+    });
+
+    expect(response.usernameTaken).toBeTruthy();
+
+    response = await UserServiceUsernameTaken({
+      username: "testerne",
+    });
+
+    expect(response.usernameTaken).toBeFalsy();
+  });
+
   it("Should find user", async () => {
     const username = faker.internet.userName();
     const userData = getUserObject({

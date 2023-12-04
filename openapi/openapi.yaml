@@ -147,6 +147,8 @@ components:
       $ref: paths/customer/location/set-default/response.yaml
 
     # User
+    UserUsernameTakenResponse:
+      $ref: paths/user/username-taken/response.yaml
     User:
       $ref: paths/user/_types/user.yaml
     UserScheduleWithLocations:
@@ -241,6 +243,8 @@ paths:
     $ref: "./paths/products/get-users-by-variant/index.yaml"
 
   # User
+  /user/{username}/username-taken:
+    $ref: "./paths/user/username-taken/index.yaml"
   /user/{username}:
     $ref: "./paths/user/user.yaml"
   /user/{username}/products/{productHandle}:
