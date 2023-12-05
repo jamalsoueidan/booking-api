@@ -11,7 +11,15 @@ import { z } from "zod";
 import { connect } from "~/library/mongoose";
 import { shopifyAdmin } from "~/library/shopify";
 import { NumberOrStringType } from "~/library/zod";
+import { CustomerUploadControllerResourceURL } from "./customer/controllers/upload/resource-url";
 import { UserModel } from "./user";
+
+function getFilenameFromUrl(url: string) {
+  const urlObj = new URL(url);
+  const pathname = urlObj.pathname;
+  const segments = pathname.split("/");
+  return segments.pop(); // Returns the last segment of the pathname
+}
 
 const bodySchema = z.object({
   customerId: NumberOrStringType,
@@ -151,12 +159,12 @@ app.http("uploadHttpStart", {
   handler: uploadHttpStart,
 });
 
-function getFilenameFromUrl(url: string) {
-  const urlObj = new URL(url);
-  const pathname = urlObj.pathname;
-  const segments = pathname.split("/");
-  return segments.pop(); // Returns the last segment of the pathname
-}
+app.http("uploadResourceRequest", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/upload/resource-url",
+  handler: CustomerUploadControllerResourceURL,
+});
 
 const FILE_CREATE = `#graphql
   mutation fileCreate($files: [FileCreateInput!]!) {
