@@ -1,0 +1,31 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  payload:
+    type: object
+    properties:
+      resourceUrl:
+        type: string
+      url:
+        type: string
+      parameters:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            value:
+              type: string
+          required:
+            - name
+            - value
+    required:
+      - resourceURL
+      - url
+      - parameters
+required:
+  - success
+  - payload

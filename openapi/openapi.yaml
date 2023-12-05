@@ -32,6 +32,10 @@ components:
     MetaItem:
       $ref: paths/meta/_types/item.yaml
 
+    # Upload
+    CustomerUploadResourceURLResponse:
+      $ref: paths/customer/upload/resource-url/response.yaml
+
     # Product
     CustomerProductBase:
       $ref: paths/customer/schedule/_types/base-product.yaml
@@ -274,6 +278,8 @@ paths:
     $ref: "./paths/user/list/index.yaml"
 
   # Customer
+  /customer/{customerId}/upload/resource-url:
+    $ref: paths/customer/upload/resource-url/index.yaml
   /customer/{customerId}:
     $ref: "./paths/customer/customer.yaml"
   /customer/{customerId}/status:
