@@ -13,7 +13,8 @@ export const getUserObject = (
   social: {
     instagram: faker.internet.url(),
     youtube: faker.internet.url(),
-    twitter: faker.internet.url(),
+    x: faker.internet.url(),
+    facebook: faker.internet.url(),
   },
   shortDescription: faker.lorem.paragraph(),
   active: true,

@@ -74,8 +74,9 @@ export const UserZodSchema = z.object({
   social: z
     .object({
       youtube: z.string().optional(),
-      twitter: z.string().optional(),
+      x: z.string().optional(),
       instagram: z.string().optional(),
+      facebook: z.string().optional(),
     })
     .optional(),
   images: z

@@ -50,7 +50,8 @@ export const UserMongooseSchema = new mongoose.Schema<
     social: {
       instagram: String,
       youtube: String,
-      twitter: String,
+      x: String,
+      facebook: String,
     },
     aboutMe: String,
     gender: String,

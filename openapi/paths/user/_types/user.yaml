@@ -33,9 +33,11 @@ properties:
     properties:
       youtube:
         type: string
-      twitter:
+      x:
         type: string
       instagram:
+        type: string
+      facebook:
         type: string
   speaks:
     type: array
