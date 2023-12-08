@@ -33,7 +33,7 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
 
   const zodParse = bodySchema.safeParse(body);
   if (!zodParse.success) {
-    context.log("Error parsing request body:", zodParse.error);
+    context.error("Error parsing request body:", zodParse.error);
     return { sucess: false, error: zodParse.error };
   }
 
@@ -67,7 +67,7 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
     });
   }
 
-  context.log(`Data for ${body.customerId} not available after retries.`);
+  context.error(`Data for ${body.customerId} not available after retries.`);
 
   return {
     failed: true,
@@ -142,7 +142,6 @@ const uploadHttpStart: HttpHandler = async (
 ): Promise<HttpResponse> => {
   const client = df.getClient(context);
   const body: unknown = await request.json();
-  context.log("Request Body:", body);
 
   const instanceId: string = await client.startNew(
     request.params.orchestratorName,

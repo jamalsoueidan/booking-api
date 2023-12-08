@@ -43,11 +43,11 @@ export const _ =
         }
 
         if (response) {
-          context.trace("Response body: ", JSON.stringify(response));
           return { jsonBody: { payload: response, success: true } };
         }
       }
     } catch (err: unknown) {
+      context.error("Error: ", JSON.stringify(err));
       const props: HttpResponseInit = {};
       if (
         err instanceof UnauthorizedError ||
@@ -58,13 +58,12 @@ export const _ =
       ) {
         props.jsonBody = { errors: err.issues, success: false };
         props.status = (err as any).status || 400; // zodError doesn't have status
-        context.error("Zod error: ", props);
+
         return props;
       }
 
       props.jsonBody = { errors: err, succes: false };
       props.status = 500;
-      context.error("Unknown error: ", props);
       return props;
     }
 
@@ -105,7 +104,7 @@ const executeControllerWithParams = async (
     params.body = await getBody();
   }
 
-  context.trace("Request body", params);
+  context.log("Request (" + request.url + ")", params);
 
   return handler(params);
 };
