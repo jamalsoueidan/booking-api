@@ -1,7 +1,7 @@
 import { InvocationContext } from "@azure/functions";
 import { createContext } from "~/library/jest/azure";
 import { orderNofulfillment } from "./data-ordre";
-import { orderWithfulfillmentAndRefunds } from "./data-with-fullfilment-and-refunds";
+import { orderWithfulfillmentAndRefunds } from "./data-ordre-with-fullfilment-and-refunds";
 import { webhookOrderProcess } from "./order";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -26,7 +26,7 @@ describe("webhookOrderProcess", () => {
     res = await webhookOrderProcess(orderWithfulfillmentAndRefunds, context);
 
     expect(res).toBeDefined();
-    expect(res?.fulfillments.length).toBe(5);
+    expect(res?.fulfillments.length).toBe(3);
     expect(res?.refunds.length).toBe(1);
   });
 });

@@ -11,7 +11,6 @@ export async function webhookOrderProcess(
 ) {
   try {
     const order = Order.parse(queueItem);
-
     await connect();
 
     context.log("webhook order success");

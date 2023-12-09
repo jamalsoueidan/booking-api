@@ -1,11 +1,11 @@
 import { OrderModel } from "~/functions/order/order.models";
 import { Order } from "~/functions/order/order.types";
-import { orderWithfulfillmentAndRefunds } from "~/functions/webhook/data-with-fullfilment-and-refunds";
+import { orderWithfulfillmentAndRefunds } from "~/functions/webhook/data-ordre-with-fullfilment-and-refunds";
 import { CustomerOrderServiceList } from "./order";
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerOrderService", () => {
-  it("should return upcoming bookings for customer", async () => {
+  it("should return upcoming orders for customer", async () => {
     const dumbData = Order.parse(orderWithfulfillmentAndRefunds);
     const response = await OrderModel.create(dumbData);
 

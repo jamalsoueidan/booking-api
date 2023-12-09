@@ -6,6 +6,7 @@
     "~": "dist/src"
   },
   "scripts": {
+    "tunnel": "ssh -R 80:localhost:7071 serveo.net",
     "prebuild": "npm run clean",
     "build": "tsc --project tsconfig.build.json",
     "watch": "tsc -w",

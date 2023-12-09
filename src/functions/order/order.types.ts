@@ -188,7 +188,7 @@ const FulfillmentZod = z.object({
     .array(LineItemZod)
     .transform((items) =>
       items.filter((item) =>
-        item.properties?.some((prop) => prop.name === "_customerId")
+        item.properties.some((prop) => prop.name === "_customerId")
       )
     ),
 });
