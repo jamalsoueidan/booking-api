@@ -82,22 +82,25 @@ export const CustomerOrderServiceList = async ({
     },
     {
       $addFields: {
-        "line_items.refunds": {
+        refunds: {
           $map: {
             input: {
               $filter: {
-                input: {
-                  $reduce: {
-                    input: "$refunds",
-                    initialValue: [],
-                    in: {
-                      $concatArrays: ["$$value", "$$this.refund_line_items"],
+                input: "$refunds",
+                as: "refund",
+                cond: {
+                  $anyElementTrue: {
+                    $map: {
+                      input: "$$refund.refund_line_items",
+                      as: "refund_refund_line_items",
+                      in: {
+                        $eq: [
+                          "$$refund_refund_line_items.line_item_id",
+                          "$line_items._id",
+                        ],
+                      },
                     },
                   },
-                },
-                as: "refund_line_item",
-                cond: {
-                  $eq: ["$$refund_line_item.line_item_id", "$line_items._id"],
                 },
               },
             },
@@ -115,33 +118,48 @@ export const CustomerOrderServiceList = async ({
             },
           },
         },
-      },
-    },
-    {
-      $addFields: {
-        "line_items.fulfillments": {
-          $cond: {
-            if: { $eq: [{ $size: "$line_items.refunds" }, 0] },
-            then: {
+        fulfillments: {
+          $map: {
+            input: {
               $filter: {
-                input: {
-                  $reduce: {
-                    input: "$fulfillments",
-                    initialValue: [],
-                    in: { $concatArrays: ["$$value", "$$this.line_items"] },
-                  },
-                },
-                as: "fulfillment_line_item",
+                input: "$fulfillments",
+                as: "fulfillment",
                 cond: {
-                  $eq: ["$$fulfillment_line_item._id", "$line_items._id"],
+                  $anyElementTrue: {
+                    $map: {
+                      input: "$$fulfillment.line_items",
+                      as: "fulfillment_line_item",
+                      in: {
+                        $eq: ["$$fulfillment_line_item._id", "$line_items._id"],
+                      },
+                    },
+                  },
                 },
               },
             },
-            else: [],
+            as: "fulfillment",
+            in: {
+              _id: "$$fulfillment._id",
+              admin_graphql_api_id: "$$fulfillment.admin_graphql_api_id",
+              created_at: "$$fulfillment.created_at",
+              location_id: "$$fulfillment.location_id",
+              name: "$$fulfillment.name",
+              order_id: "$$fulfillment.order_id",
+              service: "$$fulfillment.service",
+              shipment_status: "$$fulfillment.shipment_status",
+              status: "$$fulfillment.status",
+              tracking_company: "$$fulfillment.tracking_company",
+              tracking_number: "$$fulfillment.tracking_number",
+              tracking_numbers: "$$fulfillment.tracking_numbers",
+              tracking_url: "$$fulfillment.tracking_url",
+              tracking_urls: "$$fulfillment.tracking_urls",
+              updated_at: "$$fulfillment.updated_at",
+            },
           },
         },
       },
     },
+
     {
       $project: {
         id: 1,
@@ -156,6 +174,8 @@ export const CustomerOrderServiceList = async ({
         cancelled_at: 1,
         note: 1,
         note_attributes: 1,
+        fulfillments: 1,
+        refunds: 1,
       },
     },
   ]);

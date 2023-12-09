@@ -1,7 +1,7 @@
 import { OrderModel } from "~/functions/order/order.models";
 import { Order } from "~/functions/order/order.types";
 import { orderWithfulfillmentAndRefunds } from "~/functions/webhook/data-ordre-with-fullfilment-and-refunds";
-import { CustomerOrderServiceList } from "./order";
+import { CustomerOrderServiceList } from "./list";
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerOrderService", () => {
@@ -15,8 +15,8 @@ describe("CustomerOrderService", () => {
 
     const orders = await CustomerOrderServiceList({
       customerId: customerId || 0,
-      year: 2023,
-      month: 12,
+      year: 2024,
+      month: 1,
     });
 
     expect(orders.length).toBe(1);
