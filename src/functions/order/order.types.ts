@@ -83,6 +83,7 @@ const CustomerZod = z.object({
 const propertySchema = z.object({
   name: z.string(),
   value: z.union([z.string(), z.number(), z.coerce.date()]), // Allow string, number, or date
+  kind: z.string().optional(),
 });
 
 const propertiesSchema = z
@@ -99,6 +100,7 @@ const propertiesSchema = z
           });
         } else {
           properties[index].value = parsedNumber; // Transform to number
+          properties[index].kind = "CustomerIdProperty";
         }
       } else if (property.name === "_from" || property.name === "_to") {
         const parsedDate = new Date(property.value);
@@ -110,7 +112,10 @@ const propertiesSchema = z
           });
         } else {
           properties[index].value = parsedDate; // Transform to date
+          properties[index].kind = "DateProperty";
         }
+      } else {
+        properties[index].kind = "OtherProperty";
       }
     });
   });
@@ -179,7 +184,13 @@ const FulfillmentZod = z.object({
   tracking_url: z.string().nullable(),
   tracking_urls: z.array(z.string()),
   updated_at: z.string(),
-  line_items: z.array(LineItemZod),
+  line_items: z
+    .array(LineItemZod)
+    .transform((items) =>
+      items.filter((item) =>
+        item.properties?.some((prop) => prop.name === "_customerId")
+      )
+    ),
 });
 
 const RefundLineItemZod = z.object({
@@ -247,7 +258,7 @@ const ShippingLineZod = z.object({
   ), // Define further if structure is known
 });
 
-export const OrderZod = z.object({
+export const Order = z.object({
   id: z.number(),
   admin_graphql_api_id: z.string(),
   app_id: z.number().nullable(),
@@ -337,8 +348,18 @@ export const OrderZod = z.object({
       /* ... */
     })
   ),
-  fulfillments: z.array(FulfillmentZod),
-  line_items: z.array(LineItemZod),
+  fulfillments: z
+    .array(FulfillmentZod)
+    .transform((fulfillments) =>
+      fulfillments.filter((fulfillment) => fulfillment.line_items.length > 0)
+    ),
+  line_items: z
+    .array(LineItemZod)
+    .transform((items) =>
+      items.filter((item) =>
+        item.properties?.some((prop) => prop.name === "_customerId")
+      )
+    ),
   payment_terms: z
     .object({
       /* ... */
@@ -349,4 +370,4 @@ export const OrderZod = z.object({
   shipping_lines: z.array(ShippingLineZod),
 });
 
-export type Order = z.infer<typeof OrderZod>;
+export type Order = z.infer<typeof Order>;

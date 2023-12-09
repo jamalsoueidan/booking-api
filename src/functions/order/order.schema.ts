@@ -85,6 +85,13 @@ const CustomerSchema = new Schema({
   default_address: AddressSchema,
 });
 
+const propertySchema = new Schema(
+  {
+    name: { type: String, required: true, index: true },
+  },
+  { discriminatorKey: "kind", _id: false }
+);
+
 const LineItemSchema = new Schema({
   _id: {
     type: Number,
@@ -101,18 +108,7 @@ const LineItemSchema = new Schema({
   price_set: PriceSetSchema,
   product_exists: Boolean,
   product_id: Number,
-  properties: [
-    {
-      name: {
-        type: String,
-        index: true,
-      },
-      value: {
-        type: Schema.Types.Mixed,
-        index: true,
-      },
-    },
-  ],
+  properties: [propertySchema],
   quantity: Number,
   requires_shipping: Boolean,
   sku: String,
@@ -132,6 +128,33 @@ const LineItemSchema = new Schema({
   ],
   discount_allocations: [DiscountAllocationSchema],
 });
+
+const properties =
+  LineItemSchema.path<Schema.Types.DocumentArray>("properties");
+
+properties.discriminator(
+  "CustomerIdProperty",
+  new Schema(
+    {
+      value: { type: Number, index: true },
+    },
+    { _id: false }
+  )
+);
+
+properties.discriminator(
+  "DateProperty",
+  new Schema({
+    value: { type: Date, index: true },
+  })
+);
+
+properties.discriminator(
+  "OtherProperty",
+  new Schema({
+    value: String,
+  })
+);
 
 const FulfillmentSchema = new Schema({
   _id: {
