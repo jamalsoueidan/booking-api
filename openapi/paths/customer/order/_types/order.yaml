@@ -58,9 +58,7 @@ properties:
     items:
       $ref: fulfillment.yaml
   line_items:
-    type: array
-    items:
-      $ref: line-item.yaml
+    $ref: line-item.yaml
   refunds:
     type: array
     items:
