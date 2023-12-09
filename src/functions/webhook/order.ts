@@ -15,7 +15,7 @@ export async function webhookOrderProcess(
 
     context.log("webhook order success");
 
-    return await OrderModel.findOneAndUpdate({ _id: order.id }, order, {
+    return OrderModel.findOneAndUpdate({ id: order.id }, order, {
       new: true,
       upsert: true,
     });

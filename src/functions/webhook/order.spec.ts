@@ -24,7 +24,6 @@ describe("webhookOrderProcess", () => {
     expect(res?.refunds.length).toBe(0);
 
     res = await webhookOrderProcess(orderWithfulfillmentAndRefunds, context);
-    if (!res) throw new Error("res is undefined");
 
     // TODO: Find a way to test that fulfillment actually gets the latest fulfillment of the unique line_item out from updated_at
     /*const oldFulfillment = orderWithfulfillmentAndRefunds.fulfillments.find(

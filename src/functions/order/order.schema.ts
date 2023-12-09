@@ -133,6 +133,7 @@ const LineItemSchema = new Schema(
       type: Number,
       required: true,
       unique: true,
+      index: true,
     },
     admin_graphql_api_id: String,
     fulfillable_quantity: Number,
@@ -221,7 +222,15 @@ const FulfillmentSchema = new Schema(
     tracking_url: String,
     tracking_urls: [String],
     updated_at: Date,
-    line_items: [LineItemSchema],
+    line_items: [
+      {
+        id: {
+          type: Number,
+          index: true,
+        },
+        name: String,
+      },
+    ],
   },
   {
     autoIndex: false,
@@ -247,7 +256,10 @@ const RefundLineItemSchema = new Schema(
     subtotal_set: PriceSetSchema,
     total_tax: String,
     total_tax_set: PriceSetSchema,
-    line_item: LineItemSchema,
+    line_item: {
+      id: Number,
+      name: String,
+    },
   },
   {
     autoIndex: false,
@@ -312,6 +324,7 @@ export const OrdreMongooseSchema = new Schema<IOrderDocument, IOrderModel>({
     type: Number,
     required: true,
     unique: true,
+    index: true,
   },
   admin_graphql_api_id: String,
   app_id: Number,

@@ -192,6 +192,13 @@ const FulfillmentZod = z.object({
       items.filter((item) =>
         item.properties.some((prop) => prop.name === "_customerId")
       )
+    )
+    .transform((items) =>
+      items.map((item) => ({
+        id: item.id,
+        name: item.name,
+        // If there are other specific fields you want to include, add them here.
+      }))
     ),
 });
 
@@ -238,6 +245,15 @@ const RefundZod = z.object({
       items.filter((item) =>
         item.line_item.properties?.some((prop) => prop.name === "_customerId")
       )
+    )
+    .transform((items) =>
+      items.map((item) => ({
+        ...item,
+        line_item: {
+          id: item.line_item.id,
+          name: item.line_item.name,
+        },
+      }))
     ),
   duties: z.array(
     z.object({
