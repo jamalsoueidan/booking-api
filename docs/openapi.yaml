@@ -669,9 +669,7 @@ components:
           items:
             $ref: '#/components/schemas/CustomerOrderFulfillment'
         line_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerOrderLineItem'
+          $ref: '#/components/schemas/CustomerOrderLineItem'
         refunds:
           type: array
           items:
