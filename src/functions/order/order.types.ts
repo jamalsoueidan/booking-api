@@ -195,6 +195,8 @@ const FulfillmentZod = z.object({
     ),
 });
 
+export type OrderFulfillment = z.infer<typeof FulfillmentZod>;
+
 const RefundLineItemZod = z.object({
   id: z.number(),
   line_item_id: z.number(),
@@ -207,6 +209,8 @@ const RefundLineItemZod = z.object({
   total_tax_set: MoneySetZod,
   line_item: LineItemZod,
 });
+
+export type OrderRefundLineItem = z.infer<typeof RefundLineItemZod>;
 
 const RefundZod = z.object({
   id: z.number(),
@@ -241,6 +245,8 @@ const RefundZod = z.object({
     })
   ), // Define further if structure is known
 });
+
+export type OrderRefund = z.infer<typeof RefundZod>;
 
 const ShippingLineZod = z.object({
   id: z.number(),
