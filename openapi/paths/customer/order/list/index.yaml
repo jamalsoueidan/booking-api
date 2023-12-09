@@ -1,0 +1,42 @@
+get:
+  parameters:
+    - name: customerId
+      in: path
+      description: customerId for the customer
+      required: true
+      schema:
+        type: string
+    - name: year
+      in: path
+      description: year 2023
+      required: true
+      schema:
+        type: number
+    - name: month
+      in: path
+      description: month 1,2,3,4...
+      required: true
+      schema:
+        type: number
+  tags:
+    - CustomerOrder
+  operationId: customerOrderList
+  summary: GET Get all order for customer in one month
+  description: This endpoint get all orders in one month
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
+
+  security: []

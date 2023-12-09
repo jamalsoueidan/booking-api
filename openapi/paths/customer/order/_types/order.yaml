@@ -1,0 +1,94 @@
+type: object
+properties:
+  id:
+    type: number
+  admin_graphql_api_id:
+    type: string
+  buyer_accepts_marketing:
+    type: boolean
+  cancel_reason:
+    type: string
+    nullable: true
+  cancelled_at:
+    type: string
+    format: date-time
+    nullable: true
+  client_details:
+    $ref: client.yaml
+  closed_at:
+    type: string
+    format: date-time
+    nullable: true
+  confirmed:
+    type: boolean
+  contact_email:
+    type: string
+    nullable: true
+  created_at:
+    type: string
+    format: date-time
+  currency:
+    type: string
+  current_subtotal_price:
+    type: string
+  current_subtotal_price_set:
+    $ref: money.yaml
+  current_total_additional_fees_set:
+    $ref: money.yaml
+    nullable: true
+  current_total_discounts:
+    type: string
+  current_total_discounts_set:
+    $ref: money.yaml
+  current_total_duties_set:
+    $ref: money.yaml
+    nullable: true
+  current_total_price:
+    type: string
+  current_total_price_set:
+    $ref: money.yaml
+  current_total_tax:
+    type: string
+  current_total_tax_set:
+    $ref: money.yaml
+  customer:
+    $ref: customer.yaml
+  fulfillments:
+    type: array
+    items:
+      $ref: fulfillment.yaml
+  line_items:
+    type: array
+    items:
+      $ref: line-item.yaml
+  refunds:
+    type: array
+    items:
+      $ref: refund.yaml
+  shipping_address:
+    $ref: address.yaml
+    nullable: true
+  shipping_lines:
+    type: array
+    items:
+      $ref: shipping.yaml
+required:
+  - id
+  - admin_graphql_api_id
+  - buyer_accepts_marketing
+  - confirmed
+  - created_at
+  - currency
+  - customer
+  - current_subtotal_price
+  - current_subtotal_price_set
+  - current_total_discounts
+  - current_total_discounts_set
+  - current_total_price
+  - current_total_price_set
+  - current_total_tax
+  - current_total_tax_set
+  - fulfillments
+  - line_items
+  - refunds
+  - shipping_lines

@@ -1,0 +1,77 @@
+type: object
+properties:
+  id:
+    type: number
+  admin_graphql_api_id:
+    type: string
+  fulfillable_quantity:
+    type: number
+  fulfillment_service:
+    type: string
+  fulfillment_status:
+    type: string
+    nullable: true
+  gift_card:
+    type: boolean
+  grams:
+    type: number
+  name:
+    type: string
+  price:
+    type: string
+  price_set:
+    $ref: money.yaml
+  product_exists:
+    type: boolean
+  product_id:
+    type: number
+    nullable: true
+  properties:
+    type: array
+    items:
+      $ref: property.yaml
+  quantity:
+    type: number
+  requires_shipping:
+    type: boolean
+  sku:
+    type: string
+    nullable: true
+  taxable:
+    type: boolean
+  title:
+    type: string
+  total_discount:
+    type: string
+  total_discount_set:
+    $ref: money.yaml
+  variant_id:
+    type: number
+    nullable: true
+  variant_inventory_management:
+    type: string
+    nullable: true
+  variant_title:
+    type: string
+    nullable: true
+  vendor:
+    type: string
+    nullable: true
+required:
+  - id
+  - admin_graphql_api_id
+  - fulfillable_quantity
+  - fulfillment_service
+  - gift_card
+  - grams
+  - name
+  - price
+  - properties
+  - price_set
+  - product_exists
+  - quantity
+  - requires_shipping
+  - taxable
+  - title
+  - total_discount
+  - total_discount_set
