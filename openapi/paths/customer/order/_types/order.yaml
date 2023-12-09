@@ -11,13 +11,10 @@ properties:
     nullable: true
   cancelled_at:
     type: string
-    format: date-time
-    nullable: true
   client_details:
     $ref: client.yaml
   closed_at:
     type: string
-    format: date-time
     nullable: true
   confirmed:
     type: boolean
@@ -26,7 +23,6 @@ properties:
     nullable: true
   created_at:
     type: string
-    format: date-time
   currency:
     type: string
   current_subtotal_price:

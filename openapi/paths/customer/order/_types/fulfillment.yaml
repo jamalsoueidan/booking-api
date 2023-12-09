@@ -6,7 +6,6 @@ properties:
     type: string
   created_at:
     type: string
-    format: date-time
   location_id:
     type: number
   name:
@@ -39,7 +38,6 @@ properties:
       type: string
   updated_at:
     type: string
-    format: date-time
   line_items:
     type: array
     items:

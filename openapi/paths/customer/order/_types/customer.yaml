@@ -9,10 +9,8 @@ properties:
     type: boolean
   created_at:
     type: string
-    format: date-time
   updated_at:
     type: string
-    format: date-time
   first_name:
     type: string
   last_name:
@@ -44,7 +42,6 @@ properties:
         type: string
       consent_updated_at:
         type: string
-        format: date-time
       consent_collected_from:
         type: string
     nullable: true

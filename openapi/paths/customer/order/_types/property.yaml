@@ -6,8 +6,7 @@ properties:
     oneOf:
       - type: string
       - type: number
-      - type: string
-        format: date-time
+
   kind:
     type: string
 required:
