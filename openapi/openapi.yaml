@@ -104,12 +104,24 @@ components:
     # Order
     CustomerOrder:
       $ref: paths/customer/order/_types/order.yaml
+    CustomerOrderMoney:
+      $ref: paths/customer/order/_types/money.yaml
+    CustomerOrderAddress:
+      $ref: paths/customer/order/_types/address.yaml
+    CustomerOrderClient:
+      $ref: paths/customer/order/_types/client.yaml
+    CustomerOrderDiscount:
+      $ref: paths/customer/order/_types/discount.yaml
+    CustomerOrderSimpleLineItem:
+      $ref: paths/customer/order/_types/simple-line-item.yaml
     CustomerOrderCustomer:
       $ref: paths/customer/order/_types/customer.yaml
     CustomerOrderLineItem:
       $ref: paths/customer/order/_types/line-item.yaml
     CustomerOrderRefund:
       $ref: paths/customer/order/_types/refund.yaml
+    CustomerOrderShipping:
+      $ref: paths/customer/order/_types/shipping.yaml
     CustomerOrderFulfillment:
       $ref: paths/customer/order/_types/fulfillment.yaml
     CustomerOrderGetResponse:
