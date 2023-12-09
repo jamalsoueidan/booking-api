@@ -83,7 +83,7 @@ const CustomerZod = z.object({
 const propertySchema = z.object({
   name: z.string(),
   value: z.union([z.string(), z.number(), z.coerce.date()]), // Allow string, number, or date
-  kind: z.string(),
+  kind: z.string().optional(),
 });
 
 const propertiesSchema = z
