@@ -1,17 +1,20 @@
-import { Booking } from "~/functions/booking";
 import { OrderModel } from "~/functions/order/order.models";
 
 export type CustomerOrderServiceListProps = {
   customerId: number;
+  year: number;
+  month: number;
 };
 
 export const CustomerOrderServiceList = async ({
   customerId,
+  year,
+  month,
 }: CustomerOrderServiceListProps) => {
-  const todayStart = new Date();
-  todayStart.setUTCHours(0, 0, 0, 0);
+  const firstDayOfMonth = new Date(Date.UTC(year, month - 1, 1));
+  const lastDayOfMonth = new Date(Date.UTC(year, month, 0));
 
-  return OrderModel.aggregate<Booking>([
+  return OrderModel.aggregate([
     {
       $match: {
         $and: [
@@ -22,7 +25,13 @@ export const CustomerOrderServiceList = async ({
           },
           {
             "line_items.properties": {
-              $elemMatch: { name: "_from", value: { $gte: todayStart } },
+              $elemMatch: {
+                name: "_from",
+                value: {
+                  $gte: firstDayOfMonth,
+                  $lte: lastDayOfMonth,
+                },
+              },
             },
           },
         ],
@@ -39,7 +48,13 @@ export const CustomerOrderServiceList = async ({
           },
           {
             "line_items.properties": {
-              $elemMatch: { name: "_from", value: { $gte: todayStart } },
+              $elemMatch: {
+                name: "_from",
+                value: {
+                  $gte: firstDayOfMonth,
+                  $lte: lastDayOfMonth,
+                },
+              },
             },
           },
         ],
@@ -68,17 +83,35 @@ export const CustomerOrderServiceList = async ({
     {
       $addFields: {
         "line_items.refunds": {
-          $filter: {
+          $map: {
             input: {
-              $reduce: {
-                input: "$refunds",
-                initialValue: [],
-                in: { $concatArrays: ["$$value", "$$this.refund_line_items"] },
+              $filter: {
+                input: {
+                  $reduce: {
+                    input: "$refunds",
+                    initialValue: [],
+                    in: {
+                      $concatArrays: ["$$value", "$$this.refund_line_items"],
+                    },
+                  },
+                },
+                as: "refund_line_item",
+                cond: {
+                  $eq: ["$$refund_line_item.line_item_id", "$line_items._id"],
+                },
               },
             },
-            as: "refund_line_item",
-            cond: {
-              $eq: ["$$refund_line_item.line_item_id", "$line_items._id"],
+            as: "refund",
+            in: {
+              _id: "$$refund._id",
+              line_item_id: "$$refund.line_item_id",
+              location_id: "$$refund.location_id",
+              quantity: "$$refund.quantity",
+              restock_type: "$$refund.restock_type",
+              subtotal: "$$refund.subtotal",
+              subtotal_set: "$$refund.subtotal_set",
+              total_tax: "$$refund.total_tax",
+              total_tax_set: "$$refund.total_tax_set",
             },
           },
         },

@@ -5,7 +5,7 @@ import { CustomerOrderServiceList } from "./order";
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerOrderService", () => {
-  it("should return upcoming orders for customer", async () => {
+  it("should return orders for customer on specific year/month", async () => {
     const dumbData = Order.parse(orderWithfulfillmentAndRefunds);
     const response = await OrderModel.create(dumbData);
 
@@ -15,6 +15,10 @@ describe("CustomerOrderService", () => {
 
     const orders = await CustomerOrderServiceList({
       customerId: customerId || 0,
+      year: 2023,
+      month: 12,
     });
+
+    expect(orders.length).toBe(1);
   });
 });

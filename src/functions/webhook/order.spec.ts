@@ -24,9 +24,27 @@ describe("webhookOrderProcess", () => {
     expect(res?.refunds.length).toBe(0);
 
     res = await webhookOrderProcess(orderWithfulfillmentAndRefunds, context);
+    if (!res) throw new Error("res is undefined");
+
+    // TODO: Find a way to test that fulfillment actually gets the latest fulfillment of the unique line_item out from updated_at
+    /*const oldFulfillment = orderWithfulfillmentAndRefunds.fulfillments.find(
+      (f) => {
+        return f.line_items.some(
+          (l: OrderLineItem) => l.name === "Børneklip (fra 6 år) - Artist 0"
+        );
+      }
+    );
+
+    const newFulfillment = res.fulfillments.find((f) => {
+      return f.line_items.some(
+        (l: OrderLineItem) => l.name === "Børneklip (fra 6 år) - Artist 0"
+      );
+    });
+    console.log(oldFulfillment);
+    console.log(newFulfillment);*/
 
     expect(res).toBeDefined();
-    expect(res?.fulfillments.length).toBe(3);
+    expect(res?.fulfillments.length).toBe(2);
     expect(res?.refunds.length).toBe(1);
   });
 });

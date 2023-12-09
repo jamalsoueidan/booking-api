@@ -162,6 +162,8 @@ const LineItemZod = z.object({
   ),
 });
 
+export type OrderLineItem = z.infer<typeof LineItemZod>;
+
 const FulfillmentZod = z.object({
   id: z.number(),
   admin_graphql_api_id: z.string(),
@@ -358,7 +360,27 @@ export const Order = z.object({
     .array(FulfillmentZod)
     .transform((fulfillments) =>
       fulfillments.filter((fulfillment) => fulfillment.line_items.length > 0)
-    ),
+    )
+    .transform((fulfillments) => {
+      // remove old fulfilment for duplicated line-items
+      const latestFulfillmentsMap = new Map();
+
+      fulfillments.forEach((fulfillment) => {
+        fulfillment.line_items.forEach((lineItem) => {
+          const existingFulfillment = latestFulfillmentsMap.get(lineItem.id);
+          if (
+            !existingFulfillment ||
+            new Date(fulfillment?.updated_at) >
+              new Date(existingFulfillment?.updated_at)
+          ) {
+            latestFulfillmentsMap.set(lineItem.id, fulfillment);
+          }
+        });
+      });
+
+      // Return an array of fulfillments with unique latest line items
+      return Array.from(latestFulfillmentsMap.values());
+    }),
   line_items: z
     .array(LineItemZod)
     .transform((items) =>

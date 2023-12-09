@@ -157,10 +157,7 @@ properties.discriminator(
 );
 
 const FulfillmentSchema = new Schema({
-  _id: {
-    type: Number,
-    index: true,
-  },
+  _id: Number,
   admin_graphql_api_id: String,
   created_at: Date,
   location_id: Number,
@@ -181,11 +178,11 @@ const FulfillmentSchema = new Schema({
 });
 
 const RefundLineItemSchema = new Schema({
-  _id: {
+  _id: Number,
+  line_item_id: {
     type: Number,
     index: true,
   },
-  line_item_id: Number,
   location_id: Number,
   quantity: Number,
   restock_type: String,
@@ -197,10 +194,7 @@ const RefundLineItemSchema = new Schema({
 });
 
 const RefundSchema = new Schema({
-  _id: {
-    type: Number,
-    index: true,
-  },
+  _id: Number,
   admin_graphql_api_id: String,
   created_at: Date,
   note: String,
