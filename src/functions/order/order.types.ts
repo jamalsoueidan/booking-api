@@ -226,7 +226,13 @@ const RefundZod = z.object({
       /* ... */
     })
   ), // Define further if structure is known
-  refund_line_items: z.array(RefundLineItemZod),
+  refund_line_items: z
+    .array(RefundLineItemZod)
+    .transform((items) =>
+      items.filter((item) =>
+        item.line_item.properties?.some((prop) => prop.name === "_customerId")
+      )
+    ),
   duties: z.array(
     z.object({
       /* ... */
@@ -365,7 +371,11 @@ export const Order = z.object({
       /* ... */
     })
     .nullable(),
-  refunds: z.array(RefundZod),
+  refunds: z
+    .array(RefundZod)
+    .transform((refunds) =>
+      refunds.filter((refund) => refund.refund_line_items.length > 0)
+    ),
   shipping_address: AddressZod.nullable(),
   shipping_lines: z.array(ShippingLineZod),
 });

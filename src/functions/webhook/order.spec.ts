@@ -16,7 +16,6 @@ describe("webhookOrderProcess", () => {
   let context: InvocationContext = createContext();
 
   it("Should be able to add body to order and update it", async () => {
-    console.log(orderNofulfillment.refunds);
     let res = await webhookOrderProcess(orderNofulfillment, context);
 
     expect(res).toBeDefined();
