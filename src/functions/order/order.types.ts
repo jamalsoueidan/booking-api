@@ -145,21 +145,6 @@ const LineItemZod = z.object({
   variant_inventory_management: z.string().nullable(),
   variant_title: z.string().nullable(),
   vendor: z.string().nullable(),
-  tax_lines: z.array(
-    z.object({
-      /* ... */
-    })
-  ),
-  duties: z.array(
-    z.object({
-      /* ... */
-    })
-  ),
-  discount_allocations: z.array(
-    z.object({
-      /* ... */
-    })
-  ),
 });
 
 export type OrderLineItem = z.infer<typeof LineItemZod>;
@@ -171,12 +156,6 @@ const FulfillmentZod = z.object({
   location_id: z.number(),
   name: z.string(),
   order_id: z.number(),
-  origin_address: z.object({
-    /* ... */
-  }), // Define further if structure is known
-  receipt: z.object({
-    /* ... */
-  }), // Define further if structure is known
   service: z.string(),
   shipment_status: z.string().nullable(),
   status: z.string(),
@@ -229,16 +208,6 @@ const RefundZod = z.object({
   restock: z.boolean(),
   total_duties_set: MoneySetZod.nullable(),
   user_id: z.number(),
-  order_adjustments: z.array(
-    z.object({
-      /* ... */
-    })
-  ), // Define further if structure is known
-  transactions: z.array(
-    z.object({
-      /* ... */
-    })
-  ), // Define further if structure is known
   refund_line_items: z
     .array(RefundLineItemZod)
     .transform((items) =>
@@ -255,11 +224,6 @@ const RefundZod = z.object({
         },
       }))
     ),
-  duties: z.array(
-    z.object({
-      /* ... */
-    })
-  ), // Define further if structure is known
 });
 
 export type OrderRefund = z.infer<typeof RefundZod>;
@@ -276,32 +240,16 @@ const ShippingLineZod = z.object({
   requested_fulfillment_service_id: z.string().nullable(),
   source: z.string(),
   title: z.string(),
-  tax_lines: z.array(
-    z.object({
-      /* ... */
-    })
-  ), // Define further if structure is known
-  discount_allocations: z.array(
-    z.object({
-      /* ... */
-    })
-  ), // Define further if structure is known
 });
 
 export const Order = z.object({
   id: z.number(),
   admin_graphql_api_id: z.string(),
-  app_id: z.number().nullable(),
-  browser_ip: z.string(),
   buyer_accepts_marketing: z.boolean(),
   cancel_reason: z.string().nullable(),
   cancelled_at: z.string().nullable(),
-  cart_token: z.string(),
-  checkout_id: z.number().nullable(),
-  checkout_token: z.string().nullable(),
   client_details: ClientDetailsZod,
   closed_at: z.string().nullable(),
-  confirmation_number: z.string().nullable(),
   confirmed: z.boolean(),
   contact_email: z.string().nullable(),
   created_at: z.string(),
@@ -317,34 +265,23 @@ export const Order = z.object({
   current_total_tax: z.string(),
   current_total_tax_set: MoneySetZod,
   customer_locale: z.string().nullable(),
-  device_id: z.number().nullable(),
   discount_codes: z.array(DiscountCodeZod),
   email: z.string(),
   estimated_taxes: z.boolean(),
   financial_status: z.string(),
   fulfillment_status: z.string().nullable(),
-  landing_site: z.string(),
-  landing_site_ref: z.string().nullable(),
   location_id: z.number().nullable(),
-  merchant_of_record_app_id: z.number().nullable(),
   name: z.string(),
   note: z.string().nullable(),
   note_attributes: z.array(z.object({ name: z.string(), value: z.string() })),
   number: z.number(),
   order_number: z.number(),
   order_status_url: z.string(),
-  original_total_additional_fees_set: MoneySetZod.nullable(),
-  original_total_duties_set: MoneySetZod.nullable(),
-  payment_gateway_names: z.array(z.string()),
   phone: z.string().nullable(),
   po_number: z.string().nullable(),
   presentment_currency: z.string(),
   processed_at: z.string(),
-  reference: z.string().nullable(),
-  referring_site: z.string().nullable(),
   source_identifier: z.string().nullable(),
-  source_name: z.string(),
-  source_url: z.string().nullable(),
   subtotal_price: z.string(),
   subtotal_price_set: MoneySetZod,
   tags: z.string(),
@@ -356,7 +293,6 @@ export const Order = z.object({
   ),
   taxes_included: z.boolean(),
   test: z.boolean(),
-  token: z.string(),
   total_discounts: z.string(),
   total_discounts_set: MoneySetZod,
   total_line_items_price: z.string(),

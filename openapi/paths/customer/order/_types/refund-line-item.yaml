@@ -1,0 +1,35 @@
+type: object
+properties:
+  id:
+    type: number
+  line_item_id:
+    type: number
+  location_id:
+    type: number
+  quantity:
+    type: number
+  restock_type:
+    type: string
+  subtotal:
+    oneOf:
+      - type: string
+      - type: number
+  subtotal_set:
+    $ref: money.yaml
+  total_tax:
+    oneOf:
+      - type: string
+      - type: number
+  total_tax_set:
+    $ref: money.yaml
+  line_item:
+    $ref: simple-line-item.yaml
+required:
+  - id
+  - line_item_id
+  - location_id
+  - quantity
+  - restock_type
+  - subtotal
+  - subtotal_set
+  - line_item

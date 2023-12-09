@@ -1,0 +1,56 @@
+type: object
+properties:
+  id:
+    type: number
+  admin_graphql_api_id:
+    type: string
+  created_at:
+    type: string
+    format: date-time
+  location_id:
+    type: number
+  name:
+    type: string
+  order_id:
+    type: number
+  service:
+    type: string
+  shipment_status:
+    type: string
+    nullable: true
+  status:
+    type: string
+  tracking_company:
+    type: string
+    nullable: true
+  tracking_number:
+    type: string
+    nullable: true
+  tracking_numbers:
+    type: array
+    items:
+      type: string
+  tracking_url:
+    type: string
+    nullable: true
+  tracking_urls:
+    type: array
+    items:
+      type: string
+  updated_at:
+    type: string
+    format: date-time
+  line_items:
+    type: array
+    items:
+      $ref: simple-line-item.yaml
+required:
+  - id
+  - admin_graphql_api_id
+  - created_at
+  - location_id
+  - name
+  - order_id
+  - service
+  - status
+  - line_items

@@ -1,0 +1,19 @@
+type: object
+properties:
+  accept_language:
+    type: string
+    nullable: true
+  browser_height:
+    type: number
+    nullable: true
+  browser_ip:
+    type: string
+  browser_width:
+    type: number
+    nullable: true
+  session_hash:
+    type: string
+    nullable: true
+  user_agent:
+    type: string
+    nullable: true

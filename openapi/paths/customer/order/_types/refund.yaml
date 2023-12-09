@@ -1,0 +1,37 @@
+type: object
+properties:
+  id:
+    type: number
+  admin_graphql_api_id:
+    type: string
+  created_at:
+    type: string
+    format: date-time
+  note:
+    type: string
+    nullable: true
+  order_id:
+    type: number
+  processed_at:
+    type: string
+    format: date-time
+  restock:
+    type: boolean
+  total_duties_set:
+    $ref: money.yaml
+    nullable: true
+  user_id:
+    type: number
+  refund_line_items:
+    type: array
+    items:
+      $ref: refund-line-item.yaml
+required:
+  - id
+  - admin_graphql_api_id
+  - created_at
+  - order_id
+  - processed_at
+  - restock
+  - user_id
+  - refund_line_items

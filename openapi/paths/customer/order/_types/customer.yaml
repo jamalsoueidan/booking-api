@@ -1,0 +1,81 @@
+type: object
+properties:
+  id:
+    type: number
+  email:
+    type: string
+    nullable: true
+  accepts_marketing:
+    type: boolean
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  first_name:
+    type: string
+  last_name:
+    type: string
+  state:
+    type: string
+  note:
+    type: string
+    nullable: true
+  verified_email:
+    type: boolean
+  multipass_identifier:
+    type: string
+    nullable: true
+  tax_exempt:
+    type: boolean
+  phone:
+    type: string
+    nullable: true
+  email_marketing_consent:
+    type: boolean
+    nullable: true
+  sms_marketing_consent:
+    type: object
+    properties:
+      state:
+        type: string
+      opt_in_level:
+        type: string
+      consent_updated_at:
+        type: string
+        format: date-time
+      consent_collected_from:
+        type: string
+    nullable: true
+  tags:
+    type: string
+  currency:
+    type: string
+  accepts_marketing_updated_at:
+    type: string
+  marketing_opt_in_level:
+    type: string
+    nullable: true
+  tax_exemptions:
+    type: array
+    items:
+      type: string
+  admin_graphql_api_id:
+    type: string
+  default_address:
+    $ref: address.yaml
+    nullable: true
+required:
+  - id
+  - accepts_marketing
+  - created_at
+  - updated_at
+  - first_name
+  - last_name
+  - state
+  - verified_email
+  - tax_exempt
+  - tags
+  - currency
+  - admin_graphql_api_id

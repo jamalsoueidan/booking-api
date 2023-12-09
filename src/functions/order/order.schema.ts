@@ -24,32 +24,6 @@ const PriceSetSchema = new Schema(
   }
 );
 
-const TaxLineSchema = new Schema(
-  {
-    channel_liable: Boolean,
-    price: String,
-    price_set: PriceSetSchema,
-    rate: Number,
-    title: String,
-  },
-  {
-    autoIndex: false,
-    _id: false,
-  }
-);
-
-const DiscountAllocationSchema = new Schema(
-  {
-    amount: String,
-    amount_set: PriceSetSchema,
-    discount_application_index: Number,
-  },
-  {
-    autoIndex: false,
-    _id: false,
-  }
-);
-
 const DiscountCodeSchema = new Schema(
   {
     code: String,
@@ -158,13 +132,6 @@ const LineItemSchema = new Schema(
     variant_inventory_management: String,
     variant_title: String,
     vendor: String,
-    tax_lines: [TaxLineSchema],
-    duties: [
-      {
-        /* Schema definition if available */
-      },
-    ],
-    discount_allocations: [DiscountAllocationSchema],
   },
   {
     autoIndex: false,
@@ -211,8 +178,6 @@ const FulfillmentSchema = new Schema(
     location_id: Number,
     name: String,
     order_id: Number,
-    origin_address: {},
-    receipt: {},
     service: String,
     shipment_status: String,
     status: String,
@@ -282,10 +247,7 @@ const RefundSchema = new Schema(
     restock: Boolean,
     total_duties_set: PriceSetSchema,
     user_id: Number,
-    order_adjustments: [{}],
-    transactions: [{}],
     refund_line_items: [RefundLineItemSchema],
-    duties: [{}],
   },
   {
     autoIndex: false,
@@ -310,8 +272,6 @@ const ShippingLineSchema = new Schema(
     requested_fulfillment_service_id: String,
     source: String,
     title: String,
-    tax_lines: [{}],
-    discount_allocations: [{}],
   },
   {
     autoIndex: false,
@@ -327,16 +287,10 @@ export const OrdreMongooseSchema = new Schema<IOrderDocument, IOrderModel>({
     index: true,
   },
   admin_graphql_api_id: String,
-  app_id: Number,
-  browser_ip: String,
   buyer_accepts_marketing: Boolean,
   cancel_reason: String,
   cancelled_at: Date,
-  cart_token: String,
-  checkout_id: Number,
-  checkout_token: String,
   closed_at: Date,
-  confirmation_number: String,
   confirmed: Boolean,
   contact_email: String,
   created_at: Date,
@@ -352,34 +306,23 @@ export const OrdreMongooseSchema = new Schema<IOrderDocument, IOrderModel>({
   current_total_tax: String,
   current_total_tax_set: PriceSetSchema,
   customer_locale: String,
-  device_id: Number,
   discount_codes: [DiscountCodeSchema],
   email: String,
   estimated_taxes: Boolean,
   financial_status: String,
   fulfillment_status: String,
-  landing_site: String,
-  landing_site_ref: String,
   location_id: Number,
-  merchant_of_record_app_id: Number,
   name: String,
   note: String,
   note_attributes: [{}],
   number: Number,
   order_number: Number,
   order_status_url: String,
-  original_total_additional_fees_set: PriceSetSchema,
-  original_total_duties_set: PriceSetSchema,
-  payment_gateway_names: [String],
   phone: String,
   po_number: String,
   presentment_currency: String,
   processed_at: Date,
-  reference: String,
-  referring_site: String,
   source_identifier: String,
-  source_name: String,
-  source_url: String,
   subtotal_price: String,
   subtotal_price_set: PriceSetSchema,
   tags: String,
@@ -387,7 +330,6 @@ export const OrdreMongooseSchema = new Schema<IOrderDocument, IOrderModel>({
   tax_lines: [{}],
   taxes_included: Boolean,
   test: Boolean,
-  token: String,
   total_discounts: String,
   total_discounts_set: PriceSetSchema,
   total_line_items_price: String,

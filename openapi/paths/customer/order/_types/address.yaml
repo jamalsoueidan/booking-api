@@ -1,0 +1,38 @@
+type: object
+properties:
+  first_name:
+    type: string
+  address1:
+    type: string
+  phone:
+    type: string
+  city:
+    type: string
+  zip:
+    type: string
+  province:
+    type: string
+    nullable: true
+  country:
+    type: string
+  last_name:
+    type: string
+  address2:
+    type: string
+    nullable: true
+  company:
+    type: string
+    nullable: true
+  latitude:
+    type: number
+    nullable: true
+  longitude:
+    type: number
+    nullable: true
+  name:
+    type: string
+  country_code:
+    type: string
+  province_code:
+    type: string
+    nullable: true
