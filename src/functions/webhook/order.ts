@@ -1,7 +1,7 @@
 import { InvocationContext } from "@azure/functions";
 
 import { OrderModel } from "~/functions/order/order.models";
-import { OrderZod } from "~/functions/order/order.types";
+import { Order } from "~/functions/order/order.types";
 import { telemetryClient } from "~/library/application-insight";
 import { connect } from "~/library/mongoose";
 
@@ -10,13 +10,12 @@ export async function webhookOrderProcess(
   context: InvocationContext
 ) {
   try {
-    const order = OrderZod.parse(queueItem);
-
+    const order = Order.parse(queueItem);
     await connect();
 
     context.log("webhook order success");
 
-    return await OrderModel.findOneAndUpdate({ _id: order.id }, order, {
+    return OrderModel.findOneAndUpdate({ id: order.id }, order, {
       new: true,
       upsert: true,
     });

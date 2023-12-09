@@ -7,212 +7,325 @@ export interface IOrderDocument extends IOrder, Omit<Document, "id"> {}
 
 export interface IOrderModel extends Model<IOrderDocument> {}
 
-const PriceSetSchema = new Schema({
-  shop_money: {
-    amount: String,
-    currency_code: String,
-  },
-  presentment_money: {
-    amount: String,
-    currency_code: String,
-  },
-});
-
-const TaxLineSchema = new Schema({
-  channel_liable: Boolean,
-  price: String,
-  price_set: PriceSetSchema,
-  rate: Number,
-  title: String,
-});
-
-const DiscountAllocationSchema = new Schema({
-  amount: String,
-  amount_set: PriceSetSchema,
-  discount_application_index: Number,
-});
-
-const DiscountCodeSchema = new Schema({
-  code: String,
-  amount: String,
-  type: String,
-});
-
-const AddressSchema = new Schema({
-  _id: Number,
-  first_name: String,
-  address1: String,
-  phone: String,
-  city: String,
-  zip: String,
-  province: String,
-  country: String,
-  last_name: String,
-  address2: String,
-  company: String,
-  latitude: Number,
-  longitude: Number,
-  name: String,
-  country_code: String,
-  province_code: String,
-});
-
-const CustomerSchema = new Schema({
-  _id: {
-    type: Number,
-    index: true,
-  },
-  email: String,
-  accepts_marketing: Boolean,
-  created_at: Date,
-  updated_at: Date,
-  first_name: String,
-  last_name: String,
-  state: String,
-  note: String,
-  verified_email: Boolean,
-  multipass_identifier: String,
-  tax_exempt: Boolean,
-  phone: String,
-  email_marketing_consent: {},
-  sms_marketing_consent: {},
-  tags: String,
-  currency: String,
-  accepts_marketing_updated_at: Date,
-  marketing_opt_in_level: String,
-  tax_exemptions: [String],
-  admin_graphql_api_id: String,
-  default_address: AddressSchema,
-});
-
-const LineItemSchema = new Schema({
-  _id: {
-    type: Number,
-    index: true,
-  },
-  admin_graphql_api_id: String,
-  fulfillable_quantity: Number,
-  fulfillment_service: String,
-  fulfillment_status: String,
-  gift_card: Boolean,
-  grams: Number,
-  name: String,
-  price: String,
-  price_set: PriceSetSchema,
-  product_exists: Boolean,
-  product_id: Number,
-  properties: [
-    {
-      name: {
-        type: String,
-        index: true,
-      },
-      value: {
-        type: Schema.Types.Mixed,
-        index: true,
-      },
+const PriceSetSchema = new Schema(
+  {
+    shop_money: {
+      amount: String,
+      currency_code: String,
     },
-  ],
-  quantity: Number,
-  requires_shipping: Boolean,
-  sku: String,
-  taxable: Boolean,
-  title: String,
-  total_discount: String,
-  total_discount_set: PriceSetSchema,
-  variant_id: Number,
-  variant_inventory_management: String,
-  variant_title: String,
-  vendor: String,
-  tax_lines: [TaxLineSchema],
-  duties: [
-    {
-      /* Schema definition if available */
+    presentment_money: {
+      amount: String,
+      currency_code: String,
     },
-  ],
-  discount_allocations: [DiscountAllocationSchema],
-});
-
-const FulfillmentSchema = new Schema({
-  _id: {
-    type: Number,
-    index: true,
   },
-  admin_graphql_api_id: String,
-  created_at: Date,
-  location_id: Number,
-  name: String,
-  order_id: Number,
-  origin_address: {},
-  receipt: {},
-  service: String,
-  shipment_status: String,
-  status: String,
-  tracking_company: String,
-  tracking_number: String,
-  tracking_numbers: [String],
-  tracking_url: String,
-  tracking_urls: [String],
-  updated_at: Date,
-  line_items: [LineItemSchema],
-});
+  {
+    autoIndex: false,
+    _id: false,
+  }
+);
 
-const RefundLineItemSchema = new Schema({
-  _id: {
-    type: Number,
-    index: true,
+const TaxLineSchema = new Schema(
+  {
+    channel_liable: Boolean,
+    price: String,
+    price_set: PriceSetSchema,
+    rate: Number,
+    title: String,
   },
-  line_item_id: Number,
-  location_id: Number,
-  quantity: Number,
-  restock_type: String,
-  subtotal: String,
-  subtotal_set: PriceSetSchema,
-  total_tax: String,
-  total_tax_set: PriceSetSchema,
-  line_item: LineItemSchema,
-});
+  {
+    autoIndex: false,
+    _id: false,
+  }
+);
 
-const RefundSchema = new Schema({
-  _id: {
-    type: Number,
-    index: true,
+const DiscountAllocationSchema = new Schema(
+  {
+    amount: String,
+    amount_set: PriceSetSchema,
+    discount_application_index: Number,
   },
-  admin_graphql_api_id: String,
-  created_at: Date,
-  note: String,
-  order_id: Number,
-  processed_at: Date,
-  restock: Boolean,
-  total_duties_set: PriceSetSchema,
-  user_id: Number,
-  order_adjustments: [{}],
-  transactions: [{}],
-  refund_line_items: [RefundLineItemSchema],
-  duties: [{}],
-});
+  {
+    autoIndex: false,
+    _id: false,
+  }
+);
 
-const ShippingLineSchema = new Schema({
-  _id: {
-    type: Number,
-    index: true,
+const DiscountCodeSchema = new Schema(
+  {
+    code: String,
+    amount: String,
+    type: String,
   },
-  carrier_identifier: String,
-  code: String,
-  discounted_price: String,
-  discounted_price_set: PriceSetSchema,
-  phone: String,
-  price: String,
-  price_set: PriceSetSchema,
-  requested_fulfillment_service_id: String,
-  source: String,
-  title: String,
-  tax_lines: [{}],
-  discount_allocations: [{}],
-});
+  {
+    autoIndex: false,
+    _id: false,
+  }
+);
+
+const AddressSchema = new Schema(
+  {
+    first_name: String,
+    address1: String,
+    phone: String,
+    city: String,
+    zip: String,
+    province: String,
+    country: String,
+    last_name: String,
+    address2: String,
+    company: String,
+    latitude: Number,
+    longitude: Number,
+    name: String,
+    country_code: String,
+    province_code: String,
+  },
+  {
+    _id: false,
+  }
+);
+
+const CustomerSchema = new Schema(
+  {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
+    email: String,
+    accepts_marketing: Boolean,
+    created_at: Date,
+    updated_at: Date,
+    first_name: String,
+    last_name: String,
+    state: String,
+    note: String,
+    verified_email: Boolean,
+    multipass_identifier: String,
+    tax_exempt: Boolean,
+    phone: String,
+    email_marketing_consent: {},
+    sms_marketing_consent: {},
+    tags: String,
+    currency: String,
+    accepts_marketing_updated_at: Date,
+    marketing_opt_in_level: String,
+    tax_exemptions: [String],
+    admin_graphql_api_id: String,
+    default_address: AddressSchema,
+  },
+  {
+    autoIndex: false,
+    _id: false,
+  }
+);
+
+const propertySchema = new Schema(
+  {
+    name: { type: String, required: true, unqiue: true, index: true },
+  },
+  { discriminatorKey: "kind", _id: false }
+);
+
+const LineItemSchema = new Schema(
+  {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+      index: true,
+    },
+    admin_graphql_api_id: String,
+    fulfillable_quantity: Number,
+    fulfillment_service: String,
+    fulfillment_status: String,
+    gift_card: Boolean,
+    grams: Number,
+    name: String,
+    price: String,
+    price_set: PriceSetSchema,
+    product_exists: Boolean,
+    product_id: Number,
+    properties: [propertySchema],
+    quantity: Number,
+    requires_shipping: Boolean,
+    sku: String,
+    taxable: Boolean,
+    title: String,
+    total_discount: String,
+    total_discount_set: PriceSetSchema,
+    variant_id: Number,
+    variant_inventory_management: String,
+    variant_title: String,
+    vendor: String,
+    tax_lines: [TaxLineSchema],
+    duties: [
+      {
+        /* Schema definition if available */
+      },
+    ],
+    discount_allocations: [DiscountAllocationSchema],
+  },
+  {
+    autoIndex: false,
+    _id: false,
+  }
+);
+
+const properties =
+  LineItemSchema.path<Schema.Types.DocumentArray>("properties");
+
+properties.discriminator(
+  "CustomerIdProperty",
+  new Schema(
+    {
+      value: { type: Number, index: true },
+    },
+    { _id: false }
+  )
+);
+
+properties.discriminator(
+  "DateProperty",
+  new Schema({
+    value: { type: Date, index: true },
+  })
+);
+
+properties.discriminator(
+  "OtherProperty",
+  new Schema({
+    value: String,
+  })
+);
+
+const FulfillmentSchema = new Schema(
+  {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
+    admin_graphql_api_id: String,
+    created_at: Date,
+    location_id: Number,
+    name: String,
+    order_id: Number,
+    origin_address: {},
+    receipt: {},
+    service: String,
+    shipment_status: String,
+    status: String,
+    tracking_company: String,
+    tracking_number: String,
+    tracking_numbers: [String],
+    tracking_url: String,
+    tracking_urls: [String],
+    updated_at: Date,
+    line_items: [
+      {
+        id: {
+          type: Number,
+          index: true,
+        },
+        name: String,
+      },
+    ],
+  },
+  {
+    autoIndex: false,
+    _id: false,
+  }
+);
+
+const RefundLineItemSchema = new Schema(
+  {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
+    line_item_id: {
+      type: Number,
+      index: true,
+    },
+    location_id: Number,
+    quantity: Number,
+    restock_type: String,
+    subtotal: String,
+    subtotal_set: PriceSetSchema,
+    total_tax: String,
+    total_tax_set: PriceSetSchema,
+    line_item: {
+      id: Number,
+      name: String,
+    },
+  },
+  {
+    autoIndex: false,
+    _id: false,
+  }
+);
+
+const RefundSchema = new Schema(
+  {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
+    admin_graphql_api_id: String,
+    created_at: Date,
+    note: String,
+    order_id: Number,
+    processed_at: Date,
+    restock: Boolean,
+    total_duties_set: PriceSetSchema,
+    user_id: Number,
+    order_adjustments: [{}],
+    transactions: [{}],
+    refund_line_items: [RefundLineItemSchema],
+    duties: [{}],
+  },
+  {
+    autoIndex: false,
+    _id: false,
+  }
+);
+
+const ShippingLineSchema = new Schema(
+  {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
+    carrier_identifier: String,
+    code: String,
+    discounted_price: String,
+    discounted_price_set: PriceSetSchema,
+    phone: String,
+    price: String,
+    price_set: PriceSetSchema,
+    requested_fulfillment_service_id: String,
+    source: String,
+    title: String,
+    tax_lines: [{}],
+    discount_allocations: [{}],
+  },
+  {
+    autoIndex: false,
+    _id: false,
+  }
+);
 
 export const OrdreMongooseSchema = new Schema<IOrderDocument, IOrderModel>({
-  _id: Number,
+  id: {
+    type: Number,
+    required: true,
+    unique: true,
+    index: true,
+  },
   admin_graphql_api_id: String,
   app_id: Number,
   browser_ip: String,

@@ -83,6 +83,7 @@ const CustomerZod = z.object({
 const propertySchema = z.object({
   name: z.string(),
   value: z.union([z.string(), z.number(), z.coerce.date()]), // Allow string, number, or date
+  kind: z.string().optional(),
 });
 
 const propertiesSchema = z
@@ -99,6 +100,7 @@ const propertiesSchema = z
           });
         } else {
           properties[index].value = parsedNumber; // Transform to number
+          properties[index].kind = "CustomerIdProperty";
         }
       } else if (property.name === "_from" || property.name === "_to") {
         const parsedDate = new Date(property.value);
@@ -110,7 +112,10 @@ const propertiesSchema = z
           });
         } else {
           properties[index].value = parsedDate; // Transform to date
+          properties[index].kind = "DateProperty";
         }
+      } else {
+        properties[index].kind = "OtherProperty";
       }
     });
   });
@@ -157,6 +162,8 @@ const LineItemZod = z.object({
   ),
 });
 
+export type OrderLineItem = z.infer<typeof LineItemZod>;
+
 const FulfillmentZod = z.object({
   id: z.number(),
   admin_graphql_api_id: z.string(),
@@ -179,8 +186,23 @@ const FulfillmentZod = z.object({
   tracking_url: z.string().nullable(),
   tracking_urls: z.array(z.string()),
   updated_at: z.string(),
-  line_items: z.array(LineItemZod),
+  line_items: z
+    .array(LineItemZod)
+    .transform((items) =>
+      items.filter((item) =>
+        item.properties.some((prop) => prop.name === "_customerId")
+      )
+    )
+    .transform((items) =>
+      items.map((item) => ({
+        id: item.id,
+        name: item.name,
+        // If there are other specific fields you want to include, add them here.
+      }))
+    ),
 });
+
+export type OrderFulfillment = z.infer<typeof FulfillmentZod>;
 
 const RefundLineItemZod = z.object({
   id: z.number(),
@@ -194,6 +216,8 @@ const RefundLineItemZod = z.object({
   total_tax_set: MoneySetZod,
   line_item: LineItemZod,
 });
+
+export type OrderRefundLineItem = z.infer<typeof RefundLineItemZod>;
 
 const RefundZod = z.object({
   id: z.number(),
@@ -215,13 +239,30 @@ const RefundZod = z.object({
       /* ... */
     })
   ), // Define further if structure is known
-  refund_line_items: z.array(RefundLineItemZod),
+  refund_line_items: z
+    .array(RefundLineItemZod)
+    .transform((items) =>
+      items.filter((item) =>
+        item.line_item.properties?.some((prop) => prop.name === "_customerId")
+      )
+    )
+    .transform((items) =>
+      items.map((item) => ({
+        ...item,
+        line_item: {
+          id: item.line_item.id,
+          name: item.line_item.name,
+        },
+      }))
+    ),
   duties: z.array(
     z.object({
       /* ... */
     })
   ), // Define further if structure is known
 });
+
+export type OrderRefund = z.infer<typeof RefundZod>;
 
 const ShippingLineZod = z.object({
   id: z.number(),
@@ -247,7 +288,7 @@ const ShippingLineZod = z.object({
   ), // Define further if structure is known
 });
 
-export const OrderZod = z.object({
+export const Order = z.object({
   id: z.number(),
   admin_graphql_api_id: z.string(),
   app_id: z.number().nullable(),
@@ -337,16 +378,50 @@ export const OrderZod = z.object({
       /* ... */
     })
   ),
-  fulfillments: z.array(FulfillmentZod),
-  line_items: z.array(LineItemZod),
+  fulfillments: z
+    .array(FulfillmentZod)
+    .transform((fulfillments) =>
+      fulfillments.filter((fulfillment) => fulfillment.line_items.length > 0)
+    )
+    .transform((fulfillments) => {
+      // remove old fulfilment for duplicated line-items
+      const latestFulfillmentsMap = new Map();
+
+      fulfillments.forEach((fulfillment) => {
+        fulfillment.line_items.forEach((lineItem) => {
+          const existingFulfillment = latestFulfillmentsMap.get(lineItem.id);
+          if (
+            !existingFulfillment ||
+            new Date(fulfillment?.updated_at) >
+              new Date(existingFulfillment?.updated_at)
+          ) {
+            latestFulfillmentsMap.set(lineItem.id, fulfillment);
+          }
+        });
+      });
+
+      // Return an array of fulfillments with unique latest line items
+      return Array.from(latestFulfillmentsMap.values());
+    }),
+  line_items: z
+    .array(LineItemZod)
+    .transform((items) =>
+      items.filter((item) =>
+        item.properties?.some((prop) => prop.name === "_customerId")
+      )
+    ),
   payment_terms: z
     .object({
       /* ... */
     })
     .nullable(),
-  refunds: z.array(RefundZod),
+  refunds: z
+    .array(RefundZod)
+    .transform((refunds) =>
+      refunds.filter((refund) => refund.refund_line_items.length > 0)
+    ),
   shipping_address: AddressZod.nullable(),
   shipping_lines: z.array(ShippingLineZod),
 });
 
-export type Order = z.infer<typeof OrderZod>;
+export type Order = z.infer<typeof Order>;
