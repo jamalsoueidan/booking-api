@@ -326,7 +326,7 @@ paths:
     $ref: "paths/customer/booking/get/index.yaml"
   /customer/{customerId}/bookings:
     $ref: "paths/customer/booking/list/index.yaml"
-  /customer/{customerId}/orders/{year}/{month}:
+  /customer/{customerId}/orders:
     $ref: "paths/customer/order/list/index.yaml"
   /customer/{customerId}/lineItemId/{lineItemId}:
     $ref: "paths/customer/order/get/index.yaml"

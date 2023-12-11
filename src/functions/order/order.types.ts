@@ -27,6 +27,7 @@ const DiscountCodeZod = z.object({
 });
 
 const AddressZod = z.object({
+  customer_id: z.number().optional(),
   first_name: z.string(),
   address1: z.string(),
   phone: z.string(),
@@ -41,7 +42,9 @@ const AddressZod = z.object({
   longitude: z.number().nullable().optional(),
   name: z.string(),
   country_code: z.string(),
+  country_name: z.string().optional(),
   province_code: z.string().nullable(),
+  default: z.boolean().optional(),
 });
 
 const CustomerZod = z.object({

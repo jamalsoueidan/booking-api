@@ -1,5 +1,7 @@
 type: object
 properties:
+  customer_id:
+    type: number
   first_name:
     type: string
   address1:
@@ -33,6 +35,16 @@ properties:
     type: string
   country_code:
     type: string
+  country_name:
+    type: string
   province_code:
     type: string
-    nullable: true
+  default:
+    type: boolean
+
+required:
+  - first_name
+  - last_name
+  - name
+  - country_code
+  - default

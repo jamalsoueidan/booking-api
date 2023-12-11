@@ -66,6 +66,12 @@ properties:
     type: array
     items:
       $ref: shipping.yaml
+  start:
+    type: string
+  end:
+    type: string
+  title:
+    type: string
 required:
   - id
   - admin_graphql_api_id
@@ -86,3 +92,6 @@ required:
   - line_items
   - refunds
   - shipping_lines
+  - start
+  - end
+  - title

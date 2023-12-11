@@ -10,8 +10,8 @@ export type CustomerOrderControllerListRequest = {
 
 export const CustomerOrderControllerListSchema = z.object({
   customerId: NumberOrStringType,
-  year: NumberOrStringType,
-  month: NumberOrStringType,
+  start: z.string(),
+  end: z.string(),
 });
 
 export type CustomerOrderControllerListResponse = Awaited<

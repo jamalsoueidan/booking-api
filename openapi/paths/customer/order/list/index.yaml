@@ -6,23 +6,23 @@ get:
       required: true
       schema:
         type: string
-    - name: year
-      in: path
-      description: year 2023
+    - name: start
+      in: query
+      description: start of date
       required: true
       schema:
         type: number
-    - name: month
-      in: path
-      description: month 1,2,3,4...
+    - name: end
+      in: query
+      description: end of date
       required: true
       schema:
         type: number
   tags:
     - CustomerOrder
   operationId: customerOrderList
-  summary: GET Get all order for customer in one month
-  description: This endpoint get all orders in one month
+  summary: GET Get all order for customer
+  description: This endpoint get all orders
   responses:
     "200":
       description: "Response"
