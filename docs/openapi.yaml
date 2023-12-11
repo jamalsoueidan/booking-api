@@ -677,6 +677,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CustomerOrderShipping'
+        start:
+          type: string
+        end:
+          type: string
+        title:
+          type: string
       required:
         - id
         - admin_graphql_api_id
@@ -697,6 +703,9 @@ components:
         - line_items
         - refunds
         - shipping_lines
+        - start
+        - end
+        - title
     CustomerOrderMoney:
       type: object
       properties:
@@ -726,6 +735,8 @@ components:
     CustomerOrderAddress:
       type: object
       properties:
+        customer_id:
+          type: number
         first_name:
           type: string
         address1:
@@ -759,9 +770,18 @@ components:
           type: string
         country_code:
           type: string
+        country_name:
+          type: string
         province_code:
           type: string
-          nullable: true
+        default:
+          type: boolean
+      required:
+        - first_name
+        - last_name
+        - name
+        - country_code
+        - default
     CustomerOrderClient:
       type: object
       properties:
@@ -3336,7 +3356,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-  '/customer/{customerId}/orders/{year}/{month}':
+  '/customer/{customerId}/orders':
     get:
       parameters:
         - name: customerId
@@ -3345,23 +3365,23 @@ paths:
           required: true
           schema:
             type: string
-        - name: year
-          in: path
-          description: year 2023
+        - name: start
+          in: query
+          description: start of date
           required: true
           schema:
             type: number
-        - name: month
-          in: path
-          description: 'month 1,2,3,4...'
+        - name: end
+          in: query
+          description: end of date
           required: true
           schema:
             type: number
       tags:
         - CustomerOrder
       operationId: customerOrderList
-      summary: GET Get all order for customer in one month
-      description: This endpoint get all orders in one month
+      summary: GET Get all order for customer
+      description: This endpoint get all orders
       responses:
         '200':
           description: Response
