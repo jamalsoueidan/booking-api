@@ -1,6 +1,6 @@
 post:
   tags:
-    - ShippingCreate
+    - Shipping
   operationId: shippingCreate
   summary: POST create shipping
   requestBody:
