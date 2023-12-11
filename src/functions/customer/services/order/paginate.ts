@@ -16,45 +16,22 @@ export const CustomerOrderServicePaginate = async ({
   const pipeline: PipelineStage[] = [
     {
       $match: {
-        "line_items.properties": {
-          $elemMatch: { name: "_customerId", value: customerId },
-        },
+        "line_items.properties.customerId": customerId,
       },
     },
     { $unwind: "$line_items" },
     {
       $match: {
-        "line_items.properties": {
-          $elemMatch: { name: "_customerId", value: customerId },
-        },
+        "line_items.properties.customerId": customerId,
       },
     },
     {
-      $addFields: {
-        start: {
-          $reduce: {
-            input: "$line_items.properties",
-            initialValue: null,
-            in: {
-              $cond: {
-                if: { $eq: ["$$this.name", "_from"] },
-                then: "$$this.value",
-                else: "$$value",
-              },
-            },
-          },
-        },
-      },
-    },
-    {
-      $sort: { "line_items._from": 1 },
+      $sort: { "line_items.properties.from": 1 },
     },
   ];
 
   const todayStart = new Date();
   todayStart.setUTCHours(0, 0, 0, 0);
-
-  console.log({ $gte: nextCursor || todayStart });
 
   pipeline.push({
     $match: {

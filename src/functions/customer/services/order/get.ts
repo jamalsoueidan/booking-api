@@ -16,9 +16,7 @@ export const CustomerOrderServiceGet = async ({
       $match: {
         $and: [
           {
-            "line_items.properties": {
-              $elemMatch: { name: "_customerId", value: customerId },
-            },
+            "line_items.properties.customerId": customerId,
           },
           {
             line_items: {
@@ -33,9 +31,7 @@ export const CustomerOrderServiceGet = async ({
       $match: {
         $and: [
           {
-            "line_items.properties": {
-              $elemMatch: { name: "_customerId", value: customerId },
-            },
+            "line_items.properties.customerId": customerId,
           },
           {
             "line_items.id": lineItemId,

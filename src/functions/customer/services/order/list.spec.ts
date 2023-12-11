@@ -5,16 +5,14 @@ import { CustomerOrderServiceList } from "./list";
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerOrderServiceList", () => {
-  it("should return orders for customer on specific year/month", async () => {
+  it("should return orders for customer on range of start/end", async () => {
     const dumbData = Order.parse(orderWithfulfillmentAndRefunds);
     const response = await OrderModel.create(dumbData);
 
-    const customerId = response.line_items[0].properties?.find(
-      (p) => p.name === "_customerId"
-    )?.value as number | undefined;
+    const customerId = response.line_items[0].properties?.customerId || 0;
 
     const orders = await CustomerOrderServiceList({
-      customerId: customerId || 0,
+      customerId: customerId,
       start: "2023-11-26T00:00:00+03:00",
       end: "2024-01-07T00:00:00+03:00",
     });
