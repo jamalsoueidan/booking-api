@@ -15,6 +15,6 @@ app.http("customerOrderGet", {
 app.http("customerOrderList", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "customer/{customerId?}/orders/{year?}/{month?}",
+  route: "customer/{customerId?}/orders",
   handler: CustomerOrderControllerList,
 });

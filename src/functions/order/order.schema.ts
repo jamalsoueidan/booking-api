@@ -38,6 +38,7 @@ const DiscountCodeSchema = new Schema(
 
 const AddressSchema = new Schema(
   {
+    customer_id: Number,
     first_name: String,
     address1: String,
     phone: String,
@@ -52,7 +53,9 @@ const AddressSchema = new Schema(
     longitude: Number,
     name: String,
     country_code: String,
+    country_name: String,
     province_code: String,
+    default: Boolean,
   },
   {
     _id: false,

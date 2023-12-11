@@ -9,14 +9,17 @@ import {
 
 export type CustomerOrderServiceListProps = {
   customerId: number;
-  year: number;
-  month: number;
+  start: string;
+  end: string;
 };
 
 export type CustomerOrderServiceListAggregate = Omit<
   Order,
   "line_items" | "refunds" | "fulfillments"
 > & {
+  start: Date;
+  end: Date;
+  title: Date;
   line_items: OrderLineItem;
   fulfillments: Array<Omit<OrderFulfillment, "line_items">>;
   refunds: Array<
@@ -28,11 +31,11 @@ export type CustomerOrderServiceListAggregate = Omit<
 
 export const CustomerOrderServiceList = async ({
   customerId,
-  year,
-  month,
+  start,
+  end,
 }: CustomerOrderServiceListProps) => {
-  const firstDayOfMonth = new Date(Date.UTC(year, month - 1, 1));
-  const lastDayOfMonth = new Date(Date.UTC(year, month, 0));
+  const startDate = new Date(start);
+  const endDate = new Date(end);
 
   return OrderModel.aggregate<CustomerOrderServiceListAggregate>([
     {
@@ -48,8 +51,8 @@ export const CustomerOrderServiceList = async ({
               $elemMatch: {
                 name: "_from",
                 value: {
-                  $gte: firstDayOfMonth,
-                  $lte: lastDayOfMonth,
+                  $gte: startDate,
+                  $lte: endDate,
                 },
               },
             },
@@ -71,8 +74,8 @@ export const CustomerOrderServiceList = async ({
               $elemMatch: {
                 name: "_from",
                 value: {
-                  $gte: firstDayOfMonth,
-                  $lte: lastDayOfMonth,
+                  $gte: startDate,
+                  $lte: endDate,
                 },
               },
             },
@@ -82,7 +85,7 @@ export const CustomerOrderServiceList = async ({
     },
     {
       $addFields: {
-        "line_items._from": {
+        start: {
           $reduce: {
             input: "$line_items.properties",
             initialValue: null,
@@ -95,13 +98,20 @@ export const CustomerOrderServiceList = async ({
             },
           },
         },
-      },
-    },
-    {
-      $sort: { "line_items._from": 1 }, // 1 for ascending order, -1 for descending
-    },
-    {
-      $addFields: {
+        end: {
+          $reduce: {
+            input: "$line_items.properties",
+            initialValue: null,
+            in: {
+              $cond: {
+                if: { $eq: ["$$this.name", "_to"] },
+                then: "$$this.value",
+                else: "$$value",
+              },
+            },
+          },
+        },
+        title: "$line_items.title",
         refunds: {
           $filter: {
             input: "$refunds",
@@ -139,8 +149,14 @@ export const CustomerOrderServiceList = async ({
       },
     },
     {
+      $sort: { start: 1 },
+    },
+    {
       $project: {
         id: 1,
+        start: 1,
+        end: 1,
+        title: 1,
         line_items: 1,
         customer: 1,
         order_number: 1,

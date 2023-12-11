@@ -15,10 +15,10 @@ describe("CustomerOrderServiceList", () => {
 
     const orders = await CustomerOrderServiceList({
       customerId: customerId || 0,
-      year: 2023,
-      month: 12,
+      start: "2023-11-26T00:00:00+03:00",
+      end: "2024-01-07T00:00:00+03:00",
     });
 
-    expect(orders.length).toBe(1);
+    expect(orders.length).toBe(2);
   });
 });
