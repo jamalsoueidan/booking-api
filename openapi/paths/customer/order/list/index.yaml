@@ -11,13 +11,13 @@ get:
       description: start of date
       required: true
       schema:
-        type: number
+        type: string
     - name: end
       in: query
       description: end of date
       required: true
       schema:
-        type: number
+        type: string
   tags:
     - CustomerOrder
   operationId: customerOrderList
