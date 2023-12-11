@@ -20,7 +20,7 @@ app.http("shippingCalculate", {
   handler: ShippingControllerCalculate,
 });
 
-app.http("shippingCreate", {
+app.http("shippingGet", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "shipping/{shippingId}",
