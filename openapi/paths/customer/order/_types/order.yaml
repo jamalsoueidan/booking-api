@@ -2,6 +2,8 @@ type: object
 properties:
   id:
     type: number
+  order_number:
+    type: number
   admin_graphql_api_id:
     type: string
   buyer_accepts_marketing:
@@ -95,3 +97,4 @@ required:
   - start
   - end
   - title
+  - order_number
