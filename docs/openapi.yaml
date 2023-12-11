@@ -613,6 +613,8 @@ components:
       properties:
         id:
           type: number
+        order_number:
+          type: number
         admin_graphql_api_id:
           type: string
         buyer_accepts_marketing:
@@ -706,6 +708,7 @@ components:
         - start
         - end
         - title
+        - order_number
     CustomerOrderMoney:
       type: object
       properties:
