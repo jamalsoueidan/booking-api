@@ -85,43 +85,39 @@ const CustomerZod = z.object({
 
 const propertySchema = z.object({
   name: z.string(),
-  value: z.union([z.string(), z.number(), z.coerce.date()]), // Allow string, number, or date
-  kind: z.string().optional(),
+  value: z.union([z.string(), z.number(), z.coerce.date()]),
 });
 
-const propertiesSchema = z
-  .array(propertySchema)
-  .superRefine((properties, ctx) => {
-    properties.forEach((property, index) => {
-      if (property.name === "_customerId") {
-        const parsedNumber = parseInt(property.value as any);
-        if (isNaN(parsedNumber)) {
-          ctx.addIssue({
-            path: [index, "value"],
-            message: "Value must be a number",
-            code: "custom",
-          });
-        } else {
-          properties[index].value = parsedNumber; // Transform to number
-          properties[index].kind = "CustomerIdProperty";
-        }
-      } else if (property.name === "_from" || property.name === "_to") {
-        const parsedDate = new Date(property.value);
-        if (isNaN(parsedDate.getTime())) {
-          ctx.addIssue({
-            path: [index, "value"],
-            message: "Value must be a valid date string",
-            code: "invalid_date",
-          });
-        } else {
-          properties[index].value = parsedDate; // Transform to date
-          properties[index].kind = "DateProperty";
-        }
-      } else {
-        properties[index].kind = "OtherProperty";
+interface Properties {
+  customerId: number;
+  from: Date;
+  to: Date;
+  locationId?: string;
+  shippingId?: string;
+}
+
+const propertiesSchema = z.array(propertySchema).transform((properties) => {
+  return properties.reduce((acc: Properties, property) => {
+    const keyWithoutUnderscore = property.name.replace(
+      /^_/,
+      ""
+    ) as keyof Properties;
+    if (property.name === "_customerId") {
+      const parsedNumber = parseInt(property.value as any);
+      if (!isNaN(parsedNumber)) {
+        acc["customerId"] = parsedNumber;
       }
-    });
-  });
+    } else if (property.name === "_from" || property.name === "_to") {
+      const parsedDate = new Date(property.value);
+      if (!isNaN(parsedDate.getTime())) {
+        acc[keyWithoutUnderscore] = parsedDate as never;
+      }
+    } else {
+      acc[keyWithoutUnderscore] = property.value as never;
+    }
+    return acc;
+  }, {} as Properties);
+});
 
 const LineItemZod = z.object({
   id: z.number(),
@@ -136,7 +132,7 @@ const LineItemZod = z.object({
   price_set: MoneySetZod,
   product_exists: z.boolean(),
   product_id: z.number().nullable(),
-  properties: propertiesSchema,
+  properties: propertiesSchema.optional(),
   quantity: z.number(),
   requires_shipping: z.boolean(),
   sku: z.string().nullable(),
@@ -170,11 +166,7 @@ const FulfillmentZod = z.object({
   updated_at: z.string(),
   line_items: z
     .array(LineItemZod)
-    .transform((items) =>
-      items.filter((item) =>
-        item.properties.some((prop) => prop.name === "_customerId")
-      )
-    )
+    .transform((items) => items.filter((item) => item.properties?.customerId))
     .transform((items) =>
       items.map((item) => ({
         id: item.id,
@@ -214,9 +206,7 @@ const RefundZod = z.object({
   refund_line_items: z
     .array(RefundLineItemZod)
     .transform((items) =>
-      items.filter((item) =>
-        item.line_item.properties?.some((prop) => prop.name === "_customerId")
-      )
+      items.filter((item) => item.line_item.properties?.customerId)
     )
     .transform((items) =>
       items.map((item) => ({
@@ -344,11 +334,7 @@ export const Order = z.object({
     }),
   line_items: z
     .array(LineItemZod)
-    .transform((items) =>
-      items.filter((item) =>
-        item.properties?.some((prop) => prop.name === "_customerId")
-      )
-    ),
+    .transform((items) => items.filter((item) => item.properties?.customerId)),
   payment_terms: z
     .object({
       /* ... */

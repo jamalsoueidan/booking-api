@@ -26,16 +26,10 @@ export const getOrderObject = ({
       },
       product_exists: true,
       product_id: 8022088745234,
-      properties: [
+      properties: {
         ...generateRandomDateRange(),
-        {
-          name: "_customerId",
-          value: customerId,
-        },
-        { name: "Skønhedsekspert", value: "hana nielsen" },
-        { name: "Tid", value: "mandag, 1. januar  09:15" },
-        { name: "Varighed", value: "1 time(r)" },
-      ],
+        customerId,
+      },
       quantity: 1,
       requires_shipping: false,
       sku: "",
@@ -282,8 +276,8 @@ const generateRandomDateRange = () => {
     randomDate.getTime() + faker.number.int({ min: 30, max: 60 }) * 60000
   );
 
-  return [
-    { name: "_from", value: randomDate.toISOString() },
-    { name: "_to", value: endDate.toISOString() },
-  ];
+  return {
+    from: randomDate,
+    to: endDate,
+  };
 };

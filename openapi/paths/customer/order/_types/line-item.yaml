@@ -27,9 +27,7 @@ properties:
     type: number
     nullable: true
   properties:
-    type: array
-    items:
-      $ref: property.yaml
+    $ref: properties.yaml
   quantity:
     type: number
   requires_shipping:

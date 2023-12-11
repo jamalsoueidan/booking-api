@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
+import { ShippingModel } from "~/functions/shipping/shipping.model";
 import { NotFoundError } from "~/library/handler";
 import { StringOrObjectId } from "~/library/zod";
-import { ShippingModel } from "../shipping.model";
 
 export type ShippingServiceGetProps = {
   shippingId: StringOrObjectId;

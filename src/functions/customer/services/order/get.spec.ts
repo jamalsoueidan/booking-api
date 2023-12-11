@@ -11,12 +11,10 @@ describe("CustomerOrderServiceGet", () => {
 
     const lineItemId = response.line_items[0].id;
 
-    const customerId = response.line_items[0].properties?.find(
-      (p) => p.name === "_customerId"
-    )?.value as number | undefined;
+    const customerId = response.line_items[0].properties?.customerId || 0;
 
     const order = await CustomerOrderServiceGet({
-      customerId: customerId || 0,
+      customerId: customerId,
       lineItemId,
     });
 

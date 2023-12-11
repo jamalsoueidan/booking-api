@@ -1,10 +1,10 @@
 import { app } from "@azure/functions";
 import "module-alias/register";
-import {
-  ShippingControllerCalculate,
-  ShippingControllerCreate,
-  ShippingControllerRates,
-} from "./shipping/controllers";
+
+import { ShippingControllerCalculate } from "./shipping/controllers/calculate";
+import { ShippingControllerCreate } from "./shipping/controllers/create";
+import { ShippingControllerGet } from "./shipping/controllers/get";
+import { ShippingControllerRates } from "./shipping/controllers/rates";
 
 app.http("shippingRates", {
   methods: ["POST"],
@@ -18,6 +18,13 @@ app.http("shippingCalculate", {
   authLevel: "anonymous",
   route: "shipping/calculate",
   handler: ShippingControllerCalculate,
+});
+
+app.http("shippingCreate", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "shipping/{shippingId}",
+  handler: ShippingControllerGet,
 });
 
 app.http("shippingCreate", {

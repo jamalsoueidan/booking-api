@@ -1,6 +1,6 @@
 post:
   tags:
-    - ShippingCalculate
+    - Shipping
   operationId: shippingCalculate
   summary: POST get shipping calculate
   requestBody:

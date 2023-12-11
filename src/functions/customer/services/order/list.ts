@@ -42,19 +42,12 @@ export const CustomerOrderServiceList = async ({
       $match: {
         $and: [
           {
-            "line_items.properties": {
-              $elemMatch: { name: "_customerId", value: customerId },
-            },
+            "line_items.properties.customerId": customerId,
           },
           {
-            "line_items.properties": {
-              $elemMatch: {
-                name: "_from",
-                value: {
-                  $gte: startDate,
-                  $lte: endDate,
-                },
-              },
+            "line_items.properties.from": {
+              $gte: startDate,
+              $lte: endDate,
             },
           },
         ],
@@ -65,19 +58,12 @@ export const CustomerOrderServiceList = async ({
       $match: {
         $and: [
           {
-            "line_items.properties": {
-              $elemMatch: { name: "_customerId", value: customerId },
-            },
+            "line_items.properties.customerId": customerId,
           },
           {
-            "line_items.properties": {
-              $elemMatch: {
-                name: "_from",
-                value: {
-                  $gte: startDate,
-                  $lte: endDate,
-                },
-              },
+            "line_items.properties.from": {
+              $gte: startDate,
+              $lte: endDate,
             },
           },
         ],
@@ -85,32 +71,8 @@ export const CustomerOrderServiceList = async ({
     },
     {
       $addFields: {
-        start: {
-          $reduce: {
-            input: "$line_items.properties",
-            initialValue: null,
-            in: {
-              $cond: {
-                if: { $eq: ["$$this.name", "_from"] },
-                then: "$$this.value",
-                else: "$$value",
-              },
-            },
-          },
-        },
-        end: {
-          $reduce: {
-            input: "$line_items.properties",
-            initialValue: null,
-            in: {
-              $cond: {
-                if: { $eq: ["$$this.name", "_to"] },
-                then: "$$this.value",
-                else: "$$value",
-              },
-            },
-          },
-        },
+        start: "$line_items.properties.from",
+        end: "$line_items.properties.to",
         title: "$line_items.title",
         refunds: {
           $filter: {

@@ -1,0 +1,18 @@
+type: object
+properties:
+  customer_id:
+    type: number
+  from:
+    type: string
+  to:
+    type: string
+  locationId:
+    type: string
+  shippingId:
+    type: string
+
+required:
+  - from
+  - to
+  - customer_id
+  - locationId

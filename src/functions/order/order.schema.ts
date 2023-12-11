@@ -123,7 +123,13 @@ const LineItemSchema = new Schema(
     price_set: PriceSetSchema,
     product_exists: Boolean,
     product_id: Number,
-    properties: [propertySchema],
+    properties: {
+      from: Date,
+      to: Date,
+      customerId: { type: Number, index: true },
+      locationId: String,
+      shippingId: String,
+    },
     quantity: Number,
     requires_shipping: Boolean,
     sku: String,
@@ -142,31 +148,11 @@ const LineItemSchema = new Schema(
   }
 );
 
-const properties =
-  LineItemSchema.path<Schema.Types.DocumentArray>("properties");
+LineItemSchema.index({ id: 1, "properties.customerId": 1 }, { unique: true });
 
-properties.discriminator(
-  "CustomerIdProperty",
-  new Schema(
-    {
-      value: { type: Number, index: true },
-    },
-    { _id: false }
-  )
-);
-
-properties.discriminator(
-  "DateProperty",
-  new Schema({
-    value: { type: Date, index: true },
-  })
-);
-
-properties.discriminator(
-  "OtherProperty",
-  new Schema({
-    value: String,
-  })
+LineItemSchema.index(
+  { "properties.from": 1, "properties.customerId": 1 },
+  { unique: false }
 );
 
 const FulfillmentSchema = new Schema(
