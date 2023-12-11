@@ -251,6 +251,8 @@ components:
       $ref: paths/shipping/create/response.yaml
     ShippingCalculateResponse:
       $ref: paths/shipping/calculate/response.yaml
+    ShippingGetResponse:
+      $ref: paths/shipping/get/response.yaml
 
     # Orchestrators
     UploadBody:
@@ -371,6 +373,8 @@ paths:
     $ref: "./paths/shipping/create/index.yaml"
   /shipping/calculate:
     $ref: "./paths/shipping/calculate/index.yaml"
+  /shipping/{shippingId}:
+    $ref: "./paths/shipping/get/index.yaml"
 
   # Orchestrators
   /orchestrators/upload:

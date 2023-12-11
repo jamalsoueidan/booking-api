@@ -1,0 +1,31 @@
+get:
+  parameters:
+    - name: shippingId
+      in: path
+      required: true
+      schema:
+        type: string
+
+  tags:
+    - Shipping
+  operationId: shippingGet
+  summary: GET Get shipping
+  description: This endpoint gets shipping object
+  responses:
+    "200":
+      description: Response with payload
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+
+    "400":
+      $ref: "../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../responses/not-found.yaml"
+
+  security: []
