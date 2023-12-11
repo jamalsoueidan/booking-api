@@ -112,6 +112,8 @@ components:
       $ref: paths/customer/order/_types/client.yaml
     CustomerOrderDiscount:
       $ref: paths/customer/order/_types/discount.yaml
+    CustomerOrderLineItemProperties:
+      $ref: paths/customer/order/_types/properties.yaml
     CustomerOrderSimpleLineItem:
       $ref: paths/customer/order/_types/simple-line-item.yaml
     CustomerOrderCustomer:
