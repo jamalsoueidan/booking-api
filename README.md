@@ -18,6 +18,33 @@ I'm planning also to use Azure queue storage to handle webhooks data processing.
 
 Assign the correct value to all env values and rename to local.settings.json
 
+## 2. Add Carrier
+
+You have to add carrier service to shopify, so it can calculate location distance.
+
+POST https://{shop}.myshopify.com/admin/api/2022-10/carrier_services.json
+
+```json
+{
+  "carrier_service": {
+    "name": "Beauty Shipping",
+    "callback_url": "https://{apiURL}/api/shipping/rates",
+    "service_discovery": true
+  }
+}
+```
+
+Then you need to add the carrier in the "Shipping and delivery" inside shopify Settings
+https://admin.shopify.com/store/{shopName}/settings
+
+## 3. Add Webhooks
+
+You need to add order update and creation webhooks callback in the notifications.
+https://admin.shopify.com/store/bysistersdk/settings/notifications (scroll bottom)
+
+Create webhook order update: https://{apiUrl}/api/webhooks/order
+Create webhook order creation: https://{apiUrl}/api/webhooks/order
+
 ## OpenAPI fragments and components (openapi/)
 
 These files are part of the OpenAPI definition but not yet bundled together. These individual files contain different parts of the API specification, such as paths, schemas, or security definitions. These components are organized in a modular way, making it easier to maintain and update the API documentation.
