@@ -88,12 +88,12 @@ export const ShippingServiceRates = async (body: ShippingBody) => {
     return {
       rates: [
         {
-          service_name: `Gratis levering`,
+          service_name: `Gratis`,
           service_code: "ETON",
           total_price: 0,
           currency: "DKK",
-          min_delivery_date: onMinDate,
-          max_delivery_date: onMaxDate,
+          //min_delivery_date: onMinDate,
+          //max_delivery_date: onMaxDate,
         },
       ],
     };
@@ -110,8 +110,8 @@ export const ShippingServiceRates = async (body: ShippingBody) => {
   return {
     rates: [
       {
-        service_name: `${shippings.length} skønhedseksperter til din lokation`,
-        description: "Inkludere alle udgifter",
+        service_name: `Udgifter i forbindelse med kørsel`,
+        //description: "Inkludere alle udgifter",
         service_code: "ETON",
         total_price: hasFreeShipping ? 0 : totalPrices * 100,
         currency: "DKK",
