@@ -107,17 +107,28 @@ export const ShippingServiceRates = async (body: ShippingBody) => {
 
   const totalPrices = prices.reduce((total, price) => total + price, 0);
 
+  if (hasFreeShipping) {
+    return {
+      rates: [
+        {
+          service_name: `Demo (udgifter ${totalPrices * 100})`,
+          service_code: "ETON",
+          total_price: 0,
+          currency: "DKK",
+          phone_required: true,
+        },
+      ],
+    };
+  }
+
   return {
     rates: [
       {
         service_name: `Udgifter i forbindelse med kørsel`,
-        //description: "Inkludere alle udgifter",
         service_code: "ETON",
-        total_price: hasFreeShipping ? 0 : totalPrices * 100,
+        total_price: totalPrices * 100,
         currency: "DKK",
         phone_required: true,
-        //min_delivery_date: onMinDate,
-        //max_delivery_date: onMaxDate,
       },
     ],
   };
