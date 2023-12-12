@@ -56,6 +56,7 @@ export type ShippingBody = {
       Behandler: string;
       Varighed: string;
       _shippingId?: string;
+      _freeShipping?: string;
     };
     product_id: number;
     variant_id: number;
@@ -73,6 +74,10 @@ export const ShippingServiceRates = async (body: ShippingBody) => {
 
   const onMinDate = new Date(Date.now() + 86400000).toISOString(); // +1 day
   const onMaxDate = new Date(Date.now() + 2 * 86400000).toISOString(); // +2 days
+
+  const hasFreeShipping = body.items.some(
+    (item) => item.properties?._freeShipping === "true"
+  );
 
   if (!shippingIds.length) {
     return {
@@ -103,7 +108,7 @@ export const ShippingServiceRates = async (body: ShippingBody) => {
         service_name: `${shippings.length} skønhedseksperter til din lokation`,
         description: "Inkludere alle udgifter",
         service_code: "ETON",
-        total_price: totalPrices * 100,
+        total_price: hasFreeShipping ? 0 : totalPrices * 100,
         currency: "DKK",
         phone_required: true,
         //min_delivery_date: onMinDate,
