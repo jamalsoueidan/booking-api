@@ -1,17 +1,20 @@
-import { _ } from "~/library/handler";
+import {
+  HttpRequest,
+  HttpResponseInit,
+  InvocationContext,
+} from "@azure/functions";
+import { ShippingServiceRates } from "../services/rates";
 
-import { ShippingBody, ShippingServiceRates } from "../services/rates";
-
-export type ShippingControllerRatesRequest = {
-  body: ShippingBody;
-};
-
-export type ShippingControllerRatesResponse = Awaited<
-  ReturnType<typeof ShippingServiceRates>
->;
-
-export const ShippingControllerRates = _(
-  async ({ body }: ShippingControllerRatesRequest) => {
-    return ShippingServiceRates(body);
-  }
-);
+export async function ShippingControllerRates(
+  request: HttpRequest,
+  context: InvocationContext
+): Promise<HttpResponseInit> {
+  context.log(
+    `Http function processed request for url "${request.url}" ${request.method}`
+  );
+  const body = await request.json();
+  const jsonBody = await ShippingServiceRates(body as unknown as any);
+  return {
+    jsonBody,
+  };
+}

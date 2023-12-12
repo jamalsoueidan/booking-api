@@ -27,7 +27,6 @@ export async function webhookOrder(
   context: InvocationContext
 ): Promise<HttpResponseInit> {
   const body = await request.json();
-  console.log(JSON.stringify(body));
   context.extraOutputs.set(orderQueueOutput, body);
   return { body: "Created queue item." };
 }
