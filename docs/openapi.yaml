@@ -608,16 +608,7 @@ components:
       required:
         - success
         - payload
-    CustomerOrderWithLineItems:
-      allOf:
-        - $ref: '#/components/schemas/CustomerOrderWithLineItem'
-        - type: object
-          properties:
-            line_items:
-              type: array
-              items:
-                $ref: '#/components/schemas/CustomerOrderLineItem'
-    CustomerOrderWithLineItem:
+    CustomerOrder:
       type: object
       properties:
         id:
@@ -675,8 +666,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CustomerOrderFulfillment'
-        line_items:
-          $ref: '#/components/schemas/CustomerOrderLineItem'
         refunds:
           type: array
           items:
@@ -711,13 +700,32 @@ components:
         - current_total_tax
         - current_total_tax_set
         - fulfillments
-        - line_items
         - refunds
         - shipping_lines
         - start
         - end
         - title
         - order_number
+    CustomerOrdeArrayLineItems:
+      allOf:
+        - $ref: '#/components/schemas/CustomerOrder'
+        - type: object
+          properties:
+            line_items:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerOrderLineItem'
+          required:
+            - line_items
+    CustomerOrderSingleLineItem:
+      allOf:
+        - $ref: '#/components/schemas/CustomerOrder'
+        - type: object
+          properties:
+            line_items:
+              $ref: '#/components/schemas/CustomerOrderLineItem'
+          required:
+            - line_items
     CustomerOrderMoney:
       type: object
       properties:
@@ -1179,7 +1187,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerOrderWithLineItem'
+          $ref: '#/components/schemas/CustomerOrderSingleLineItem'
       required:
         - success
         - payload
@@ -1190,7 +1198,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerOrderWithLineItems'
+          $ref: '#/components/schemas/CustomerOrdeArrayLineItems'
       required:
         - success
         - payload
@@ -1203,7 +1211,7 @@ components:
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerOrderWithLineItem'
+            $ref: '#/components/schemas/CustomerOrderSingleLineItem'
       required:
         - success
         - payload
