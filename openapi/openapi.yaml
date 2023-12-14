@@ -102,10 +102,12 @@ components:
       $ref: paths/customer/booking/list/response.yaml
 
     # Order
-    CustomerOrderWithLineItems:
-      $ref: paths/customer/order/_types/order-many-line-items.yaml
-    CustomerOrderWithLineItem:
-      $ref: paths/customer/order/_types/order-one-line-item.yaml
+    CustomerOrder:
+      $ref: paths/customer/order/_types/order.yaml
+    CustomerOrdeArrayLineItems:
+      $ref: paths/customer/order/_types/order-array-line-items.yaml
+    CustomerOrderSingleLineItem:
+      $ref: paths/customer/order/_types/order-single-line-item.yaml
     CustomerOrderMoney:
       $ref: paths/customer/order/_types/money.yaml
     CustomerOrderAddress:

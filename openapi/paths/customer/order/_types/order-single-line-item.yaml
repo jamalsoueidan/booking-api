@@ -1,0 +1,8 @@
+allOf:
+  - $ref: "./order.yaml"
+  - type: object
+    properties:
+      line_items:
+        $ref: ../_types/line-item.yaml
+    required:
+      - line_items

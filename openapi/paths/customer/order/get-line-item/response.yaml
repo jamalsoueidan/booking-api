@@ -4,7 +4,7 @@ properties:
     type: boolean
     example: true
   payload:
-    $ref: "../_types/order-one-line-item.yaml"
+    $ref: "../_types/order-single-line-item.yaml"
 required:
   - success
   - payload

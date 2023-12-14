@@ -55,8 +55,6 @@ properties:
     type: array
     items:
       $ref: fulfillment.yaml
-  line_items:
-    $ref: line-item.yaml
   refunds:
     type: array
     items:
@@ -91,7 +89,6 @@ required:
   - current_total_tax
   - current_total_tax_set
   - fulfillments
-  - line_items
   - refunds
   - shipping_lines
   - start
