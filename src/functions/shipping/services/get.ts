@@ -7,9 +7,7 @@ export type ShippingServiceGetProps = {
   shippingId: StringOrObjectId;
 };
 
-export const ShippingServiceGet = async ({
-  shippingId,
-}: ShippingServiceGetProps) => {
+export const ShippingServiceGet = ({ shippingId }: ShippingServiceGetProps) => {
   return ShippingModel.findOne(new mongoose.Types.ObjectId(shippingId))
     .orFail(
       new NotFoundError([
