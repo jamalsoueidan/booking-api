@@ -608,7 +608,16 @@ components:
       required:
         - success
         - payload
-    CustomerOrder:
+    CustomerOrderWithLineItems:
+      allOf:
+        - $ref: '#/components/schemas/CustomerOrderWithLineItem'
+        - type: object
+          properties:
+            line_items:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerOrderLineItem'
+    CustomerOrderWithLineItem:
       type: object
       properties:
         id:
@@ -1163,6 +1172,17 @@ components:
         - service
         - status
         - line_items
+    CustomerOrderGetLineItemResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/CustomerOrderWithLineItem'
+      required:
+        - success
+        - payload
     CustomerOrderGetResponse:
       type: object
       properties:
@@ -1170,7 +1190,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerOrder'
+          $ref: '#/components/schemas/CustomerOrderWithLineItems'
       required:
         - success
         - payload
@@ -1183,7 +1203,7 @@ components:
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerOrder'
+            $ref: '#/components/schemas/CustomerOrderWithLineItem'
       required:
         - success
         - payload
@@ -3415,7 +3435,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-  '/customer/{customerId}/lineItemId/{lineItemId}':
+  '/customer/{customerId}/lineItem/{lineItemId}':
     get:
       parameters:
         - name: customerId
@@ -3432,9 +3452,45 @@ paths:
             type: string
       tags:
         - CustomerOrder
-      operationId: customerOrderGet
+      operationId: customerOrderGetLineItem
       summary: GET Get order with lineItem
       description: This endpoint gets order with lineItem object
+      responses:
+        '200':
+          description: Response with payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerOrderGetLineItemResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  '/customer/{customerId}/orders/{orderId}':
+    get:
+      parameters:
+        - name: customerId
+          in: path
+          description: customerId for the customer
+          required: true
+          schema:
+            type: string
+        - name: orderId
+          in: path
+          description: orderId for the order
+          required: true
+          schema:
+            type: string
+      tags:
+        - CustomerOrder
+      operationId: customerOrderGet
+      summary: GET Get order with lineItems array
+      description: This endpoint gets order with lineItems array of objects
       responses:
         '200':
           description: Response with payload
