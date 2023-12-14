@@ -42,7 +42,14 @@ export const CustomerOrderServiceList = async ({
       $match: {
         $and: [
           {
-            "line_items.properties.customerId": customerId,
+            $or: [
+              {
+                "line_items.properties.customerId": customerId,
+              },
+              {
+                "customer.id": customerId,
+              },
+            ],
           },
           {
             "line_items.properties.from": {
@@ -58,7 +65,14 @@ export const CustomerOrderServiceList = async ({
       $match: {
         $and: [
           {
-            "line_items.properties.customerId": customerId,
+            $or: [
+              {
+                "line_items.properties.customerId": customerId,
+              },
+              {
+                "customer.id": customerId,
+              },
+            ],
           },
           {
             "line_items.properties.from": {

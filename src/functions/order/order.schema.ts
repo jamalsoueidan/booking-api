@@ -124,7 +124,10 @@ const LineItemSchema = new Schema(
     product_exists: Boolean,
     product_id: Number,
     properties: {
-      from: Date,
+      from: {
+        type: Date,
+        index: true,
+      },
       to: Date,
       customerId: { type: Number, index: true },
       locationId: String,
@@ -146,13 +149,6 @@ const LineItemSchema = new Schema(
     autoIndex: false,
     _id: false,
   }
-);
-
-LineItemSchema.index({ id: 1, "properties.customerId": 1 }, { unique: true });
-
-LineItemSchema.index(
-  { "properties.from": 1, "properties.customerId": 1 },
-  { unique: false }
 );
 
 const FulfillmentSchema = new Schema(
@@ -343,3 +339,30 @@ export const OrdreMongooseSchema = new Schema<IOrderDocument, IOrderModel>({
   shipping_address: AddressSchema,
   shipping_lines: [ShippingLineSchema],
 });
+
+// orders/get-line-item
+OrdreMongooseSchema.index(
+  { "customer.id": 1, "line_items.id": 1 },
+  { unique: false }
+);
+OrdreMongooseSchema.index(
+  { "line_items.properties.customerId": 1, "line_items.id": 1 },
+  { unique: false }
+);
+
+// orders/get
+OrdreMongooseSchema.index({ "customer.id": 1, id: 1 }, { unique: false });
+OrdreMongooseSchema.index(
+  { "line_items.properties.customerId": 1, id: 1 },
+  { unique: false }
+);
+
+// order/list
+OrdreMongooseSchema.index(
+  { "customer.id": 1, "line_items.properties.from": 1 },
+  { unique: false }
+);
+OrdreMongooseSchema.index(
+  { "line_items.properties.customerId": 1, "line_items.properties.from": 1 },
+  { unique: false }
+);

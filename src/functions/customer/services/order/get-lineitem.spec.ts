@@ -11,10 +11,21 @@ describe("CustomerOrderServiceGetLineItem", () => {
 
     const lineItemId = response.line_items[0].id;
 
+    // both the beauty professional and customer can see the order
+    const ownerCustomerId = response.customer.id;
     const customerId = response.line_items[0].properties?.customerId || 0;
 
-    const order = await CustomerOrderServiceGetLineItem({
+    let order = await CustomerOrderServiceGetLineItem({
       customerId,
+      lineItemId,
+    });
+
+    expect(order.line_items.id).toEqual(lineItemId);
+    expect(order.fulfillments.length).toBe(1);
+    expect(order.refunds.length).toBe(1);
+
+    order = await CustomerOrderServiceGetLineItem({
+      customerId: ownerCustomerId,
       lineItemId,
     });
 

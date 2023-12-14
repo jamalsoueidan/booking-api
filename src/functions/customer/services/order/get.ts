@@ -21,7 +21,14 @@ export const CustomerOrderServiceGet = async ({
       $match: {
         $and: [
           {
-            "customer.id": customerId,
+            $or: [
+              {
+                "line_items.properties.customerId": customerId,
+              },
+              {
+                "customer.id": customerId,
+              },
+            ],
           },
           {
             id: orderId,
