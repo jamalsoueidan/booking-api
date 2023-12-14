@@ -128,15 +128,7 @@ components:
         description:
           type: string
         selectedOptions:
-          type: object
-          properties:
-            name:
-              type: string
-            value:
-              type: string
-          required:
-            - name
-            - value
+          $ref: '#/components/schemas/CustomerProductSelectedOptions'
         price:
           type: object
           properties:
@@ -200,6 +192,16 @@ components:
       enum:
         - weeks
         - months
+    CustomerProductSelectedOptions:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      required:
+        - name
+        - value
     CustomerProductNoticePeriod:
       type: object
       properties:
@@ -1180,6 +1182,26 @@ components:
         - service
         - status
         - line_items
+    CustomerOrderGetLineItem:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/CustomerOrderSingleLineItem'
+        product:
+          type: object
+          properties:
+            selectedOptions:
+              $ref: '#/components/schemas/CustomerProductSelectedOptions'
+          required:
+            - selectedOptions
+        location:
+          $ref: '#/components/schemas/CustomerLocationIsDefault'
+        shipping:
+          $ref: '#/components/schemas/Shipping'
+      required:
+        - order
+        - product
+        - location
     CustomerOrderGetLineItemResponse:
       type: object
       properties:
@@ -1187,7 +1209,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerOrderSingleLineItem'
+          $ref: '#/components/schemas/CustomerOrderGetLineItem'
       required:
         - success
         - payload
