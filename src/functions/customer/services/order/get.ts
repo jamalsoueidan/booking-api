@@ -1,44 +1,35 @@
 import { OrderModel } from "~/functions/order/order.models";
+import { OrderLineItem } from "~/functions/order/order.types";
 import { NotFoundError } from "~/library/handler";
 import { CustomerOrderServiceListAggregate } from "./list";
 
 export type CustomerOrderServiceGetProps = {
   customerId: number;
-  lineItemId: number;
+  orderId: number;
 };
 
 export const CustomerOrderServiceGet = async ({
   customerId,
-  lineItemId,
+  orderId,
 }: CustomerOrderServiceGetProps) => {
-  const orders = await OrderModel.aggregate<CustomerOrderServiceListAggregate>([
+  const orders = await OrderModel.aggregate<
+    Omit<CustomerOrderServiceListAggregate, "line_items"> & {
+      line_items: OrderLineItem[];
+    }
+  >([
     {
       $match: {
         $and: [
           {
-            "line_items.properties.customerId": customerId,
+            "customer.id": customerId,
           },
           {
-            line_items: {
-              $elemMatch: { id: lineItemId },
-            },
+            id: orderId,
           },
         ],
       },
     },
     { $unwind: "$line_items" },
-    {
-      $match: {
-        $and: [
-          {
-            "line_items.properties.customerId": customerId,
-          },
-          {
-            "line_items.id": lineItemId,
-          },
-        ],
-      },
-    },
     {
       $addFields: {
         refunds: {
@@ -78,21 +69,51 @@ export const CustomerOrderServiceGet = async ({
       },
     },
     {
+      $group: {
+        _id: "$id",
+        line_items: { $push: "$line_items" },
+        customer: { $first: "$customer" },
+        orderNumber: { $first: "$order_number" },
+        fulfillmentStatus: { $first: "$fulfillment_status" },
+        financialStatus: { $first: "$financial_status" },
+        createdAt: { $first: "$created_at" },
+        updatedAt: { $first: "$updated_at" },
+        cancelReason: { $first: "$cancel_reason" },
+        cancelledAt: { $first: "$cancelled_at" },
+        note: { $first: "$note" },
+        noteAttributes: { $first: "$note_attributes" },
+        fulfillmentsArray: { $push: "$fulfillments" },
+        refundsArray: { $push: "$refunds" },
+      },
+    },
+    {
       $project: {
-        id: 1,
+        id: "$_id",
         line_items: 1,
         customer: 1,
-        order_number: 1,
-        fulfillment_status: 1,
-        financial_status: 1,
-        created_at: 1,
-        updated_at: 1,
-        cancel_reason: 1,
-        cancelled_at: 1,
+        orderNumber: 1,
+        fulfillmentStatus: 1,
+        financialStatus: 1,
+        createdAt: 1,
+        updatedAt: 1,
+        cancelReason: 1,
+        cancelledAt: 1,
         note: 1,
-        note_attributes: 1,
-        fulfillments: 1,
-        refunds: 1,
+        noteAttributes: 1,
+        fulfillments: {
+          $reduce: {
+            input: "$fulfillmentsArray",
+            initialValue: [],
+            in: { $concatArrays: ["$$value", "$$this"] },
+          },
+        },
+        refunds: {
+          $reduce: {
+            input: "$refundsArray",
+            initialValue: [],
+            in: { $concatArrays: ["$$value", "$$this"] },
+          },
+        },
       },
     },
   ]);

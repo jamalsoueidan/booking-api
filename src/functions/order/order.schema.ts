@@ -67,7 +67,7 @@ const CustomerSchema = new Schema(
     id: {
       type: Number,
       required: true,
-      unique: true,
+      index: true,
     },
     email: String,
     accepts_marketing: Boolean,
