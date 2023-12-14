@@ -102,8 +102,10 @@ components:
       $ref: paths/customer/booking/list/response.yaml
 
     # Order
-    CustomerOrder:
-      $ref: paths/customer/order/_types/order.yaml
+    CustomerOrderWithLineItems:
+      $ref: paths/customer/order/_types/order-many-line-items.yaml
+    CustomerOrderWithLineItem:
+      $ref: paths/customer/order/_types/order-one-line-item.yaml
     CustomerOrderMoney:
       $ref: paths/customer/order/_types/money.yaml
     CustomerOrderAddress:
@@ -126,6 +128,8 @@ components:
       $ref: paths/customer/order/_types/shipping.yaml
     CustomerOrderFulfillment:
       $ref: paths/customer/order/_types/fulfillment.yaml
+    CustomerOrderGetLineItemResponse:
+      $ref: paths/customer/order/get-line-item/response.yaml
     CustomerOrderGetResponse:
       $ref: paths/customer/order/get/response.yaml
     CustomerOrderListResponse:
@@ -332,7 +336,9 @@ paths:
     $ref: "paths/customer/booking/list/index.yaml"
   /customer/{customerId}/orders:
     $ref: "paths/customer/order/list/index.yaml"
-  /customer/{customerId}/lineItemId/{lineItemId}:
+  /customer/{customerId}/lineItem/{lineItemId}:
+    $ref: "paths/customer/order/get-line-item/index.yaml"
+  /customer/{customerId}/orders/{orderId}:
     $ref: "paths/customer/order/get/index.yaml"
 
   # schedule
