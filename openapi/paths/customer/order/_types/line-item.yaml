@@ -25,7 +25,6 @@ properties:
     type: boolean
   product_id:
     type: number
-    nullable: true
   properties:
     $ref: properties.yaml
   quantity:
@@ -67,6 +66,7 @@ required:
   - properties
   - price_set
   - product_exists
+  - product_id
   - quantity
   - requires_shipping
   - taxable
