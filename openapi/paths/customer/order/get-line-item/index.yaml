@@ -6,17 +6,17 @@ get:
       required: true
       schema:
         type: string
-    - name: orderId
+    - name: lineItemId
       in: path
-      description: orderId for the order
+      description: lineItemId for the order
       required: true
       schema:
         type: string
   tags:
     - CustomerOrder
-  operationId: customerOrderGet
-  summary: GET Get order with lineItems array
-  description: This endpoint gets order with lineItems array of objects
+  operationId: customerOrderGetLineItem
+  summary: GET Get order with lineItem
+  description: This endpoint gets order with lineItem object
   responses:
     "200":
       description: Response with payload
