@@ -970,7 +970,6 @@ components:
           type: boolean
         product_id:
           type: number
-          nullable: true
         properties:
           $ref: '#/components/schemas/CustomerOrderLineItemProperties'
         quantity:
@@ -1012,6 +1011,7 @@ components:
         - properties
         - price_set
         - product_exists
+        - product_id
         - quantity
         - requires_shipping
         - taxable
