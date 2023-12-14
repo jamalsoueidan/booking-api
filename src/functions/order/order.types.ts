@@ -92,7 +92,7 @@ interface Properties {
   customerId: number;
   from: Date;
   to: Date;
-  locationId?: string;
+  locationId: string;
   shippingId?: string;
 }
 
@@ -131,7 +131,7 @@ const LineItemZod = z.object({
   price: z.string(),
   price_set: MoneySetZod,
   product_exists: z.boolean(),
-  product_id: z.number().nullable(),
+  product_id: z.number(),
   properties: propertiesSchema.optional(),
   quantity: z.number(),
   requires_shipping: z.boolean(),

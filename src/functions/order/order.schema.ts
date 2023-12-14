@@ -97,13 +97,6 @@ const CustomerSchema = new Schema(
   }
 );
 
-const propertySchema = new Schema(
-  {
-    name: { type: String, required: true, unqiue: true, index: true },
-  },
-  { discriminatorKey: "kind", _id: false }
-);
-
 const LineItemSchema = new Schema(
   {
     id: {
