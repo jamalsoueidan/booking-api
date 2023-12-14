@@ -138,8 +138,7 @@ describe("ShippingServiceRates", () => {
     expect(response).toEqual({
       rates: [
         {
-          service_name: "1 skønhedseksperter til din lokation",
-          description: "Inkludere alle udgifter",
+          service_name: "Udgifter i forbindelse med kørsel",
           service_code: "ETON",
           total_price: 10000,
           currency: "DKK",
@@ -281,8 +280,7 @@ describe("ShippingServiceRates", () => {
     expect(response).toEqual({
       rates: [
         {
-          service_name: "1 skønhedseksperter til din lokation",
-          description: "Inkludere alle udgifter",
+          service_name: "Demo (udgifter 10000)",
           service_code: "ETON",
           total_price: 0,
           currency: "DKK",
