@@ -706,7 +706,7 @@ components:
         - end
         - title
         - order_number
-    CustomerOrdeArrayLineItems:
+    CustomerOrderArrayLineItems:
       allOf:
         - $ref: '#/components/schemas/CustomerOrder'
         - type: object
@@ -1198,7 +1198,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerOrdeArrayLineItems'
+          $ref: '#/components/schemas/CustomerOrderArrayLineItems'
       required:
         - success
         - payload
