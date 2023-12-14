@@ -1,7 +1,8 @@
 import { OrderModel } from "~/functions/order/order.models";
 import { OrderLineItem } from "~/functions/order/order.types";
+import { User } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
-import { CustomerOrderServiceListAggregate } from "./list";
+import { CustomerOrderServiceGetLineItemAggregate } from "./get-lineitem";
 
 export type CustomerOrderServiceGetProps = {
   customerId: number;
@@ -13,8 +14,12 @@ export const CustomerOrderServiceGet = async ({
   orderId,
 }: CustomerOrderServiceGetProps) => {
   const orders = await OrderModel.aggregate<
-    Omit<CustomerOrderServiceListAggregate, "line_items"> & {
-      line_items: OrderLineItem[];
+    Omit<CustomerOrderServiceGetLineItemAggregate, "line_items"> & {
+      line_items: Array<
+        OrderLineItem & {
+          user: Pick<User, "customerId" | "username" | "fullname" | "images">;
+        }
+      >;
     }
   >([
     {
@@ -37,6 +42,36 @@ export const CustomerOrderServiceGet = async ({
       },
     },
     { $unwind: "$line_items" },
+    {
+      $lookup: {
+        from: "User",
+        let: { customerId: "$customerId" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  {
+                    $eq: ["$line_items.properties._customerId", "$$customerId"],
+                  },
+                ],
+              },
+            },
+          },
+          {
+            $project: {
+              customerId: 1,
+              username: 1,
+              createdAt: 1,
+              fullname: 1,
+              shortDescription: 1,
+              "images.profile": "$images.profile",
+            },
+          },
+        ],
+        as: "line_items.user",
+      },
+    },
     {
       $addFields: {
         refunds: {

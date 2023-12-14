@@ -266,7 +266,7 @@ export const orderWithfulfillmentAndRefunds = {
             { name: "_from", value: "2023-12-18T07:00:00.000Z" },
             { name: "_to", value: "2023-12-18T08:15:00.000Z" },
             { name: "_customerId", value: "7106990342471" },
-            { name: "Skønhedsekspert", value: "hana nielsen" },
+            { name: "_locationId", value: "" },
             { name: "Tid", value: "mandag, 18. december  10:00" },
             { name: "Varighed", value: "1 time(r)" },
           ],
