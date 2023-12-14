@@ -104,7 +104,7 @@ components:
     # Order
     CustomerOrder:
       $ref: paths/customer/order/_types/order.yaml
-    CustomerOrdeArrayLineItems:
+    CustomerOrderArrayLineItems:
       $ref: paths/customer/order/_types/order-array-line-items.yaml
     CustomerOrderSingleLineItem:
       $ref: paths/customer/order/_types/order-single-line-item.yaml
