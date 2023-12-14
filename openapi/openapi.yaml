@@ -45,6 +45,8 @@ components:
       $ref: paths/customer/schedule/_types/product-booking-period.yaml
     CustomerProductBookingUnit:
       $ref: paths/customer/schedule/_types/product-booking-unit.yaml
+    CustomerProductSelectedOptions:
+      $ref: paths/customer/schedule/_types/product-selected-options.yaml
     CustomerProductNoticePeriod:
       $ref: paths/customer/schedule/_types/product-notice-period.yaml
     CustomerProductNoticeUnit:
@@ -130,6 +132,8 @@ components:
       $ref: paths/customer/order/_types/shipping.yaml
     CustomerOrderFulfillment:
       $ref: paths/customer/order/_types/fulfillment.yaml
+    CustomerOrderGetLineItem:
+      $ref: paths/customer/order/get-line-item/get-line-item.yaml
     CustomerOrderGetLineItemResponse:
       $ref: paths/customer/order/get-line-item/response.yaml
     CustomerOrderGetResponse:

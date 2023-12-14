@@ -9,15 +9,7 @@ properties:
   description:
     type: string
   selectedOptions:
-    type: object
-    properties:
-      name:
-        type: string
-      value:
-        type: string
-    required:
-      - name
-      - value
+    $ref: "./product-selected-options.yaml"
   price:
     type: object
     properties:
