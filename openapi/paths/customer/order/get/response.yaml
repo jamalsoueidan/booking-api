@@ -7,3 +7,4 @@ properties:
     $ref: get.yaml
 required:
   - success
+  - payload
