@@ -1,5 +1,4 @@
 import { OrderModel } from "~/functions/order/order.models";
-import { NotFoundError } from "~/library/handler";
 import {
   OrderAggregate,
   OrderLineItemsAggreate,
@@ -133,13 +132,7 @@ export const CustomerOrderServiceGet = async ({
   ]);
 
   if (orders.length === 0) {
-    throw new NotFoundError([
-      {
-        code: "custom",
-        message: "ORDER_NOT_FOUND",
-        path: ["lineItemId"],
-      },
-    ]);
+    return null;
   }
 
   return orders[0];

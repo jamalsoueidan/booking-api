@@ -24,8 +24,8 @@ describe("CustomerOrderServiceGet", () => {
       orderId,
     });
 
-    expect(order.line_items.length).toBe(2);
-    expect(order.fulfillments.length).toBe(2);
-    expect(order.refunds.length).toBe(1);
+    expect(order?.line_items.length).toBe(2);
+    expect(order?.fulfillments.length).toBe(2);
+    expect(order?.refunds.length).toBe(1);
   });
 });
