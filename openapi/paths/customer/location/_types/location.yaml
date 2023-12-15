@@ -1,6 +1,6 @@
 type: object
 allOf:
-  - $ref: ./location.yaml
+  - $ref: ./base-location.yaml
   - type: object
     properties:
       _id:
