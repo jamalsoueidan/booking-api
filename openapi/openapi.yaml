@@ -106,18 +106,12 @@ components:
     # Order
     CustomerOrder:
       $ref: paths/customer/order/_types/order.yaml
-    CustomerOrderArrayLineItems:
-      $ref: paths/customer/order/_types/order-array-line-items.yaml
-    CustomerOrderSingleLineItem:
-      $ref: paths/customer/order/_types/order-single-line-item.yaml
     CustomerOrderMoney:
       $ref: paths/customer/order/_types/money.yaml
     CustomerOrderAddress:
       $ref: paths/customer/order/_types/address.yaml
     CustomerOrderClient:
       $ref: paths/customer/order/_types/client.yaml
-    CustomerOrderDiscount:
-      $ref: paths/customer/order/_types/discount.yaml
     CustomerOrderLineItemProperties:
       $ref: paths/customer/order/_types/properties.yaml
     CustomerOrderSimpleLineItem:
@@ -126,6 +120,8 @@ components:
       $ref: paths/customer/order/_types/customer.yaml
     CustomerOrderLineItem:
       $ref: paths/customer/order/_types/line-item.yaml
+    CustomerOrderLineItemLookup:
+      $ref: paths/customer/order/_types/line-item-with-lookup.yaml
     CustomerOrderRefund:
       $ref: paths/customer/order/_types/refund.yaml
     CustomerOrderShipping:
@@ -136,8 +132,12 @@ components:
       $ref: paths/customer/order/get-line-item/get-line-item.yaml
     CustomerOrderGetLineItemResponse:
       $ref: paths/customer/order/get-line-item/response.yaml
+    CustomerOrderGet:
+      $ref: paths/customer/order/get/get.yaml
     CustomerOrderGetResponse:
       $ref: paths/customer/order/get/response.yaml
+    CustomerOrderList:
+      $ref: paths/customer/order/list/list.yaml
     CustomerOrderListResponse:
       $ref: paths/customer/order/list/response.yaml
 
@@ -165,6 +165,8 @@ components:
     CustomerProductListResponse:
       $ref: paths/customer/product/list/response.yaml
 
+    CustomerLocationBase:
+      $ref: paths/customer/location/_types/base-location.yaml
     CustomerLocation:
       $ref: paths/customer/location/_types/location.yaml
     CustomerLocationIsDefault:
@@ -255,6 +257,8 @@ components:
     # Shipping
     Shipping:
       $ref: paths/shipping/_types/shipping.yaml
+    ShippingCostDestination:
+      $ref: paths/shipping/_types/cost-destination.yaml
     ShippingBody:
       $ref: paths/shipping/_types/body.yaml
     ShippingCreateResponse:
