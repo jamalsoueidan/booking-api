@@ -344,7 +344,7 @@ paths:
     $ref: "paths/customer/booking/get/index.yaml"
   /customer/{customerId}/bookings:
     $ref: "paths/customer/booking/list/index.yaml"
-  /customer/{customerId}/orders:
+  /customer/{customerId}/orders-range:
     $ref: "paths/customer/order/list/index.yaml"
   /customer/{customerId}/lineItem/{lineItemId}:
     $ref: "paths/customer/order/get-line-item/index.yaml"
