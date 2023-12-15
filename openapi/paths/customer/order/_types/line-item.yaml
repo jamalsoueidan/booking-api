@@ -44,7 +44,6 @@ properties:
     $ref: money.yaml
   variant_id:
     type: number
-    nullable: true
   variant_inventory_management:
     type: string
     nullable: true
@@ -67,6 +66,7 @@ required:
   - price_set
   - product_exists
   - product_id
+  - variant_id
   - quantity
   - requires_shipping
   - taxable

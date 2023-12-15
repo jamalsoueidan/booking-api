@@ -1,57 +1,42 @@
 type: object
-properties:
-  _id:
-    type: string
-  locationType:
-    type: string
-    enum: [origin, destination]
-  customerId:
-    type: string
-    format: gid
-  originType:
-    type: string
-    enum: [home, commercial]
-  name:
-    type: string
-  fullAddress:
-    type: string
-  geoLocation:
-    type: object
-    required:
-      - type
-      - coordinates
+allOf:
+  - $ref: ./location.yaml
+  - type: object
     properties:
-      type:
+      _id:
         type: string
-        enum: ["Point"]
-      coordinates:
-        type: array
-        items:
-          type: number
-  distanceForFree:
-    type: number
-  distanceHourlyRate:
-    type: number
-  fixedRatePerKm:
-    type: number
-  minDriveDistance:
-    type: number
-  maxDriveDistance:
-    type: number
-  startFee:
-    type: number
+      geoLocation:
+        type: object
+        required:
+          - type
+          - coordinates
+        properties:
+          type:
+            type: string
+            enum: ["Point"]
+          coordinates:
+            type: array
+            items:
+              type: number
+      distanceForFree:
+        type: number
+      distanceHourlyRate:
+        type: number
+      fixedRatePerKm:
+        type: number
+      minDriveDistance:
+        type: number
+      maxDriveDistance:
+        type: number
+      startFee:
+        type: number
 
-required:
-  - _id
-  - locationType
-  - originType
-  - customerId
-  - name
-  - fullAddress
-  - geoLocation
-  - distanceForFree
-  - distanceHourlyRate
-  - fixedRatePerKm
-  - minDriveDistance
-  - maxDriveDistance
-  - startFee
+    required:
+      - _id
+      - geoLocation
+      - distanceForFree
+      - distanceHourlyRate
+      - fixedRatePerKm
+      - minDriveDistance
+      - maxDriveDistance
+      - startFee

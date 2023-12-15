@@ -1,7 +1,17 @@
 import { OrderModel } from "~/functions/order/order.models";
-import { OrderLineItem } from "~/functions/order/order.types";
 import { NotFoundError } from "~/library/handler";
-import { CustomerOrderServiceListAggregate } from "./list";
+import {
+  OrderAggregate,
+  OrderLineItemsAggreate,
+  OrderLookupProperties,
+} from "./_types";
+
+export type CustomerOrderServiceGetAggregate = Omit<
+  OrderAggregate,
+  "line_items"
+> & {
+  line_items: Array<OrderLineItemsAggreate>;
+};
 
 export type CustomerOrderServiceGetProps = {
   customerId: number;
@@ -12,11 +22,7 @@ export const CustomerOrderServiceGet = async ({
   customerId,
   orderId,
 }: CustomerOrderServiceGetProps) => {
-  const orders = await OrderModel.aggregate<
-    Omit<CustomerOrderServiceListAggregate, "line_items"> & {
-      line_items: OrderLineItem[];
-    }
-  >([
+  const orders = await OrderModel.aggregate<CustomerOrderServiceGetAggregate>([
     {
       $match: {
         $and: [
@@ -37,6 +43,7 @@ export const CustomerOrderServiceGet = async ({
       },
     },
     { $unwind: "$line_items" },
+    ...OrderLookupProperties,
     {
       $addFields: {
         refunds: {

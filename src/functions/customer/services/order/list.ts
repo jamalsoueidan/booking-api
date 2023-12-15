@@ -1,11 +1,6 @@
 import { OrderModel } from "~/functions/order/order.models";
-import {
-  Order,
-  OrderFulfillment,
-  OrderLineItem,
-  OrderRefund,
-  OrderRefundLineItem,
-} from "~/functions/order/order.types";
+import { OrderLineItem } from "~/functions/order/order.types";
+import { OrderAggregate } from "./_types";
 
 export type CustomerOrderServiceListProps = {
   customerId: number;
@@ -14,19 +9,13 @@ export type CustomerOrderServiceListProps = {
 };
 
 export type CustomerOrderServiceListAggregate = Omit<
-  Order,
-  "line_items" | "refunds" | "fulfillments"
+  OrderAggregate,
+  "line_items"
 > & {
   start: Date;
   end: Date;
   title: Date;
   line_items: OrderLineItem;
-  fulfillments: Array<Omit<OrderFulfillment, "line_items">>;
-  refunds: Array<
-    Omit<OrderRefund, "refund_line_items"> & {
-      refund_line_items: Array<Omit<OrderRefundLineItem, "line_item">>;
-    }
-  >;
 };
 
 export const CustomerOrderServiceList = async ({

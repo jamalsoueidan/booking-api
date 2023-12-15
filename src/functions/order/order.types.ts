@@ -97,7 +97,7 @@ interface Properties {
 }
 
 const propertiesSchema = z.array(propertySchema).transform((properties) => {
-  return properties.reduce((acc: Properties, property) => {
+  return properties.reduce((acc, property) => {
     const keyWithoutUnderscore = property.name.replace(
       /^_/,
       ""

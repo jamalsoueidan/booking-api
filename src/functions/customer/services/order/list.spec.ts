@@ -1,11 +1,14 @@
 import { OrderModel } from "~/functions/order/order.models";
 import { Order } from "~/functions/order/order.types";
 import { orderWithfulfillmentAndRefunds } from "~/functions/webhook/data-ordre-with-fullfilment-and-refunds";
+import { createUser } from "~/library/jest/helpers";
 import { CustomerOrderServiceList } from "./list";
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerOrderServiceList", () => {
   it("should return orders for customer on range of start/end", async () => {
+    await createUser({ customerId: 7106990342471 });
+
     const dumbData = Order.parse(orderWithfulfillmentAndRefunds);
     const response = await OrderModel.create(dumbData);
 

@@ -1,10 +1,11 @@
 allOf:
-  - $ref: "./order.yaml"
+  - $ref: "../_types/order.yaml"
   - type: object
     properties:
       line_items:
         type: array
         items:
-          $ref: ../_types/line-item.yaml
+          $ref: ../_types/line-item-with-lookup.yaml
+
     required:
       - line_items
