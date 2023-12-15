@@ -1,27 +1,17 @@
 import { OrderModel } from "~/functions/order/order.models";
-import {
-  Order,
-  OrderFulfillment,
-  OrderLineItem,
-  OrderRefund,
-  OrderRefundLineItem,
-} from "~/functions/order/order.types";
-import { User } from "~/functions/user";
+import { ScheduleProduct } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
+import {
+  OrderAggregate,
+  OrderLineItemsAggreate,
+  OrderLookupProperties,
+} from "./_types";
 
 export type CustomerOrderServiceGetLineItemAggregate = Omit<
-  Order,
-  "line_items" | "refunds" | "fulfillments"
+  OrderAggregate,
+  "line_items"
 > & {
-  line_items: OrderLineItem & {
-    user: Pick<User, "customerId" | "username" | "fullname" | "images">;
-  };
-  fulfillments: Array<Omit<OrderFulfillment, "line_items">>;
-  refunds: Array<
-    Omit<OrderRefund, "refund_line_items"> & {
-      refund_line_items: Array<Omit<OrderRefundLineItem, "line_item">>;
-    }
-  >;
+  line_items: OrderLineItemsAggreate & Pick<ScheduleProduct, "selectedOptions">;
 };
 
 export type CustomerOrderServiceGetLineItemProps = {
@@ -76,79 +66,44 @@ export const CustomerOrderServiceGetLineItem = async ({
           ],
         },
       },
+      ...OrderLookupProperties,
+
       {
         $lookup: {
-          from: "User",
-          let: { customerId: "$customerId" },
+          from: "Schedule",
+          let: {
+            productId: "$line_items.product_id",
+            variantId: "$line_items.variant_id",
+          },
           pipeline: [
+            {
+              $unwind: "$products",
+            },
             {
               $match: {
                 $expr: {
                   $and: [
-                    {
-                      $eq: [
-                        "$line_items.properties._customerId",
-                        "$$customerId",
-                      ],
-                    },
+                    { $eq: ["$products.productId", "$$productId"] },
+                    { $eq: ["$products.variantId", "$$variantId"] },
                   ],
                 },
               },
             },
             {
               $project: {
-                customerId: 1,
-                username: 1,
-                createdAt: 1,
-                fullname: 1,
-                shortDescription: 1,
-                "images.profile": "$images.profile",
+                name: "$products.selectedOptions.name",
+                value: "$products.selectedOptions.value",
+                _id: 0,
               },
             },
           ],
-          as: "line_items.user",
+          as: "line_items.selectedOptions",
         },
       },
       {
         $unwind: {
-          path: "$user",
-          preserveNullAndEmptyArrays: true, // Set to false if you always expect a match
-        },
-      },
-      {
-        $lookup: {
-          from: "Location",
-          let: { locationId: "$_id" },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $and: [
-                    {
-                      $eq: [
-                        { $toObjectId: "$line_items.properties.locationId" },
-                        "$$locationId",
-                      ],
-                    },
-                  ],
-                },
-              },
-            },
-            {
-              $project: {
-                name: 1,
-                fullAddress: 1,
-                customerId: 1,
-              },
-            },
-          ],
-          as: "line_items.location",
-        },
-      },
-      {
-        $unwind: {
-          path: "$line_items.location",
-          preserveNullAndEmptyArrays: true, // Set to false if you always expect a match
+          path: "$line_items.selectedOptions",
+          preserveNullAndEmptyArrays: true,
         },
       },
       {
