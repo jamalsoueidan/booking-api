@@ -1204,7 +1204,7 @@ components:
                 - type: object
                   properties:
                     selectedOptions:
-                      $ref: '#/components/schemas/CustomerOrderLineItemLookup/allOf/1/properties/user'
+                      $ref: '#/components/schemas/CustomerProductSelectedOptions'
                   required:
                     - selectedOptions
           required:
