@@ -1,19 +1,15 @@
-type: object
-properties:
-  order:
-    $ref: "../_types/order-single-line-item.yaml"
-  product:
-    type: object
+allOf:
+  - $ref: "../_types/order.yaml"
+  - type: object
     properties:
-      selectedOptions:
-        $ref: ../../schedule/_types/product-selected-options.yaml
+      line_items:
+        allOf:
+          - $ref: ../_types/line-item-with-lookup.yaml
+          - type: object
+            properties:
+              selectedOptions:
+                $ref: ../_types/user.yaml
+            required:
+              - selectedOptions
     required:
-      - selectedOptions
-  location:
-    $ref: ../../location/_types/location-is-default.yaml
-  shipping:
-    $ref: ../../../shipping/_types/shipping.yaml
-required:
-  - order
-  - product
-  - location
+      - line_items

@@ -1,0 +1,22 @@
+type: object
+properties:
+  locationType:
+    type: string
+    enum: [origin, destination]
+  customerId:
+    type: string
+    format: gid
+  originType:
+    type: string
+    enum: [home, commercial]
+  name:
+    type: string
+  fullAddress:
+    type: string
+
+required:
+  - locationType
+  - originType
+  - customerId
+  - name
+  - fullAddress

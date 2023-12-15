@@ -1,0 +1,29 @@
+type: object
+properties:
+  customerId:
+    type: number
+  fullname:
+    type: string
+  username:
+    type: string
+  shortDescription:
+    type: string
+  images:
+    type: object
+    properties:
+      profile:
+        type: object
+        properties:
+          url:
+            type: string
+            format: uri
+          width:
+            type: integer
+          height:
+            type: integer
+required:
+  - customerId
+  - fullname
+  - username
+  - shortDescription
+  - images
