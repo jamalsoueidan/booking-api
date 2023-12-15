@@ -8,7 +8,7 @@ allOf:
           - type: object
             properties:
               selectedOptions:
-                $ref: ../_types/user.yaml
+                $ref: ../../schedule/_types/product-selected-options.yaml
             required:
               - selectedOptions
     required:
