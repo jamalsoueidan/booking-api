@@ -5,10 +5,10 @@ import {
   isWithinInterval,
 } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
-import { Booking, BookingModel } from "~/functions/booking";
 import { LocationTypes } from "~/functions/location";
 
 import { faker } from "@faker-js/faker";
+import { OrderModel } from "~/functions/order/order.models";
 import { WeekDays } from "~/functions/schedule";
 import { ShippingModel } from "~/functions/shipping/shipping.model";
 import { arrayElements, createUser } from "~/library/jest/helpers";
@@ -16,6 +16,7 @@ import {
   createLocation,
   getLocationObject,
 } from "~/library/jest/helpers/location";
+import { getOrderObject } from "~/library/jest/helpers/order";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { UserAvailabilityServiceGenerate } from "./generate";
 
@@ -193,36 +194,12 @@ describe("UserAvailabilityServiceGenerate", () => {
     const targetFromTime = result[0].slots[0].from;
     const targetToTime = result[0].slots[0].to;
 
-    const booking: Booking = {
-      orderId: 56009676557,
-      buyer: {
-        id: 7106990342471,
-        fullName: "jamal soueidan",
-        phone: "+4531317428",
-        email: "jamal@soueidan.com",
-      },
-      lineItems: [
-        {
-          lineItemId: 14551587684679,
-          productId: productIds[0],
-          variantId: 46727191036231,
-          title: "Børneklip (fra 6 år)",
-          priceSet: {
-            amount: "0.00",
-            currency_code: "DKK",
-          },
-          totalDiscountSet: {
-            amount: "0.00",
-            currency_code: "DKK",
-          },
-          from: targetFromTime,
-          to: targetToTime,
-          customerId: 1,
-        },
-      ],
-    };
+    const dumbData = getOrderObject({ customerId, lineItemsTotal: 1 });
+    dumbData.line_items[0].properties!.customerId = customerId;
+    dumbData.line_items[0].properties!.from = targetFromTime;
+    dumbData.line_items[0].properties!.to = targetToTime;
 
-    await BookingModel.create(booking);
+    const response = await OrderModel.create(dumbData);
 
     result = await UserAvailabilityServiceGenerate(
       {

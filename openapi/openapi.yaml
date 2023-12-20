@@ -95,14 +95,6 @@ components:
     CustomerScheduleSlotsUpdateBody:
       $ref: paths/customer/schedule/slots/update/body.yaml
 
-    # Booking
-    CustomerBooking:
-      $ref: paths/customer/booking/_types/booking.yaml
-    CustomerBookingGetResponse:
-      $ref: paths/customer/booking/get/response.yaml
-    CustomerBookingListResponse:
-      $ref: paths/customer/booking/list/response.yaml
-
     # Order
     CustomerOrder:
       $ref: paths/customer/order/_types/order.yaml
@@ -340,10 +332,6 @@ paths:
     $ref: "./paths/customer/product/list-ids/index.yaml"
   /customer/{customerId}/product/{productId}:
     $ref: "paths/customer/product/product.yaml"
-  /customer/{customerId}/booking/{orderId}:
-    $ref: "paths/customer/booking/get/index.yaml"
-  /customer/{customerId}/bookings:
-    $ref: "paths/customer/booking/list/index.yaml"
   /customer/{customerId}/orders-range:
     $ref: "paths/customer/order/list/index.yaml"
   /customer/{customerId}/lineItem/{lineItemId}:
