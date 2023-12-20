@@ -136,7 +136,7 @@ export const generateAvailability = async ({
 
       if (daySlots.length > 0) {
         availability.push({
-          date: startDate,
+          date: daySlots[0].from,
           customer: {
             fullname: schedule.customer.fullname,
             customerId: schedule.customerId,

@@ -5,18 +5,21 @@ export const findStartAndEndDate = (availability: Availability[]) => {
     throw new Error("No availability provided");
   }
 
-  const dates = availability.map((a) => new Date(a.date));
+  const startDates = availability.map((a) => a.slots[0].from);
 
   const startDate = new Date(
     Math.min.apply(
       null,
-      dates.map((date) => date.getTime())
+      startDates.map((date) => date.getTime())
     )
   );
+
+  const endDates = availability.map((a) => a.slots[a.slots.length - 1].to);
+
   const endDate = new Date(
     Math.max.apply(
       null,
-      dates.map((date) => date.getTime())
+      endDates.map((date) => date.getTime())
     )
   );
 
