@@ -189,8 +189,8 @@ export const CustomerOrderServiceShipping = async ({
     ]);
 
   return orders.map((order) => {
+    order.end = order.start;
     order.start = subMinutes(order.start, order.shipping.duration.value);
-    order.end = subMinutes(order.end, order.shipping.duration.value);
     return order;
   });
 };
