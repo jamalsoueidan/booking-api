@@ -38,7 +38,5 @@ describe("CustomerOrderServiceList", () => {
       expect(item).toHaveProperty("shipping");
       expect(item.shipping).toBeDefined();
     });
-
-    console.log(JSON.stringify(orders[0]));
   });
 });
