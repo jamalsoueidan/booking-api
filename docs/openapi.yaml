@@ -1148,6 +1148,44 @@ components:
       required:
         - success
         - payload
+    CustomerOrderShippingLocation:
+      type: object
+      properties:
+        id:
+          type: number
+        order_number:
+          type: number
+        customer:
+          $ref: '#/components/schemas/CustomerOrderCustomer'
+        start:
+          type: string
+        end:
+          type: string
+        title:
+          type: string
+        shipping:
+          $ref: '#/components/schemas/Shipping'
+      required:
+        - id
+        - customer
+        - start
+        - end
+        - title
+        - order_number
+        - shipping
+    CustomerOrderShippingLocationResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerOrderShippingLocation'
+      required:
+        - success
+        - payload
     CustomerProductList:
       type: object
       allOf:
@@ -3298,6 +3336,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CustomerOrderListResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  '/customer/{customerId}/shipping-range':
+    get:
+      parameters:
+        - name: customerId
+          in: path
+          description: customerId for the customer
+          required: true
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: start of date
+          required: true
+          schema:
+            type: string
+        - name: end
+          in: query
+          description: end of date
+          required: true
+          schema:
+            type: string
+      tags:
+        - CustomerOrder
+      operationId: customerOrderShipping
+      summary: GET Get only all orders destinations for customer
+      description: Get all driving information that are included in the orders
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerOrderShippingLocationResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
