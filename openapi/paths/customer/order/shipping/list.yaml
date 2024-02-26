@@ -5,7 +5,7 @@ properties:
   order_number:
     type: number
   customer:
-    $ref: customer.yaml
+    $ref: ../_types/customer.yaml
   start:
     type: string
   end:
@@ -13,7 +13,7 @@ properties:
   title:
     type: string
   shipping:
-    $ref: ../../customer/shipping/_types/shipping.yaml
+    $ref: ../../../shipping/_types/shipping.yaml
 
 required:
   - id
