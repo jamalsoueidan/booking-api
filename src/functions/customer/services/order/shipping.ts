@@ -1,3 +1,4 @@
+import { Location } from "~/functions/location";
 import { OrderModel } from "~/functions/order/order.models";
 import { Shipping } from "~/functions/shipping/shipping.types";
 import { OrderAggregate } from "./_types";
@@ -16,6 +17,7 @@ export type CustomerOrderServiceShippingAggregate = Pick<
   end: Date;
   title: Date;
   shipping: Shipping;
+  location: Location;
 };
 
 export const CustomerOrderServiceShipping = async ({
@@ -30,6 +32,7 @@ export const CustomerOrderServiceShipping = async ({
     {
       $match: {
         $and: [
+          { "line_items.properties.shippingId": { $exists: true } },
           {
             $or: [
               {
@@ -61,6 +64,7 @@ export const CustomerOrderServiceShipping = async ({
     {
       $match: {
         $and: [
+          { "line_items.properties.shippingId": { $exists: true } },
           {
             $or: [
               {

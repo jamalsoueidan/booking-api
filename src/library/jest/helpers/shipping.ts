@@ -27,7 +27,8 @@ const getOriginObject = (props: Partial<Location> = {}): Location => ({
 
 export const createShipping = (filter: Partial<Shipping>) => {
   const shipping = new ShippingModel();
-  shipping.location = filter.location || new mongoose.Types.ObjectId();
+  shipping.location =
+    filter.location?.toString() || new mongoose.Types.ObjectId();
   shipping.origin = getOriginObject({});
   shipping.destination = {
     name: faker.company.buzzPhrase(),
