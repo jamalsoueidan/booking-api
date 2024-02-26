@@ -12,7 +12,7 @@ describe("CustomerOrderServiceGet", () => {
     const user = await createUser({ customerId });
     const location = await createLocation({ customerId });
     const dumbData = Order.parse(orderWithfulfillmentAndRefunds);
-    dumbData.line_items[0].properties!.customerId = customerId;
+    dumbData.line_items[0].properties!.customerId = user.customerId;
     dumbData.line_items[0].properties!.locationId = location._id.toString();
     const response = await OrderModel.create(dumbData);
 
