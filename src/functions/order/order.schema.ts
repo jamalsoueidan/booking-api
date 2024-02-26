@@ -121,7 +121,10 @@ const LineItemSchema = new Schema(
         type: Date,
         index: true,
       },
-      to: Date,
+      to: {
+        type: Date,
+        index: true,
+      },
       customerId: { type: Number, index: true },
       locationId: String,
       shippingId: String,

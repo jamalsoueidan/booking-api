@@ -27,19 +27,19 @@ const getOriginObject = (props: Partial<Location> = {}): Location => ({
 
 export const createShipping = (filter: Partial<Shipping>) => {
   const shipping = new ShippingModel();
-  shipping.location = new mongoose.Types.ObjectId();
+  shipping.location = filter.location || new mongoose.Types.ObjectId();
   shipping.origin = getOriginObject({});
   shipping.destination = {
-    name: faker.word.sample(),
-    fullAddress: faker.word.conjunction(),
+    name: faker.company.buzzPhrase(),
+    fullAddress: faker.location.streetAddress(),
   };
   shipping.duration = {
-    text: "123 km",
-    value: 1,
+    text: "2 hours 59 mins",
+    value: 179.31666666666666,
   };
   shipping.distance = {
-    text: "123 km",
-    value: 1,
+    text: "187 km",
+    value: 186.586,
   };
   shipping.cost = {
     currency: "DKK",
