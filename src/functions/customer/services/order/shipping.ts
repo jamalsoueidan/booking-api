@@ -1,35 +1,38 @@
+import { Location } from "~/functions/location";
 import { OrderModel } from "~/functions/order/order.models";
-import { OrderLineItem } from "~/functions/order/order.types";
+import { Shipping } from "~/functions/shipping/shipping.types";
 import { OrderAggregate } from "./_types";
 
-export type CustomerOrderServiceListProps = {
+export type CustomerOrderServiceShippingProps = {
   customerId: number;
   start: string;
   end: string;
 };
 
-export type CustomerOrderServiceListAggregate = Omit<
+export type CustomerOrderServiceShippingAggregate = Pick<
   OrderAggregate,
-  "line_items"
+  "id" | "customer" | "order_number"
 > & {
   start: Date;
   end: Date;
   title: Date;
-  line_items: OrderLineItem;
+  shipping: Shipping;
+  location: Location;
 };
 
-export const CustomerOrderServiceList = async ({
+export const CustomerOrderServiceShipping = async ({
   customerId,
   start,
   end,
-}: CustomerOrderServiceListProps) => {
+}: CustomerOrderServiceShippingProps) => {
   const startDate = new Date(start);
   const endDate = new Date(end);
 
-  return OrderModel.aggregate<CustomerOrderServiceListAggregate>([
+  return OrderModel.aggregate<CustomerOrderServiceShippingAggregate>([
     {
       $match: {
         $and: [
+          { "line_items.properties.shippingId": { $exists: true } },
           {
             $or: [
               {
@@ -61,6 +64,7 @@ export const CustomerOrderServiceList = async ({
     {
       $match: {
         $and: [
+          { "line_items.properties.shippingId": { $exists: true } },
           {
             $or: [
               {
@@ -93,44 +97,53 @@ export const CustomerOrderServiceList = async ({
         start: "$line_items.properties.from",
         end: "$line_items.properties.to",
         title: "$line_items.title",
-        refunds: {
-          $filter: {
-            input: "$refunds",
-            as: "refund",
-            cond: {
-              $anyElementTrue: {
-                $map: {
-                  input: "$$refund.refund_line_items",
-                  as: "refund_line_item",
-                  in: {
-                    $eq: ["$$refund_line_item.line_item_id", "$line_items.id"],
-                  },
-                },
-              },
-            },
-          },
-        },
-        fulfillments: {
-          $filter: {
-            input: "$fulfillments",
-            as: "fulfillment",
-            cond: {
-              $anyElementTrue: {
-                $map: {
-                  input: "$$fulfillment.line_items",
-                  as: "fulfillment_line_item",
-                  in: {
-                    $eq: ["$$fulfillment_line_item.id", "$line_items.id"],
-                  },
-                },
-              },
-            },
-          },
-        },
       },
     },
     {
-      $sort: { start: 1 },
+      $lookup: {
+        from: "Shipping",
+        let: { shippingId: "$line_items.properties.shippingId" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  {
+                    $eq: ["$_id", { $toObjectId: "$$shippingId" }],
+                  },
+                ],
+              },
+            },
+          },
+          {
+            $project: {
+              destination: 1,
+              duration: 1,
+              distance: 1,
+              cost: 1,
+            },
+          },
+        ],
+        as: "shipping",
+      },
+    },
+    {
+      $unwind: {
+        path: "$shipping",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $group: {
+        _id: "$shipping._id",
+        shipping: { $first: "$shipping" },
+        id: { $first: "$id" },
+        start: { $first: "$start" },
+        end: { $first: "$end" },
+        title: { $first: "$title" },
+        customer: { $first: "$customer" },
+        order_number: { $first: "$order_number" },
+      },
     },
     {
       $project: {
@@ -138,20 +151,13 @@ export const CustomerOrderServiceList = async ({
         start: 1,
         end: 1,
         title: 1,
-        line_items: 1,
         customer: 1,
         order_number: 1,
-        fulfillment_status: 1,
-        financial_status: 1,
-        created_at: 1,
-        updated_at: 1,
-        cancel_reason: 1,
-        cancelled_at: 1,
-        note: 1,
-        note_attributes: 1,
-        fulfillments: 1,
-        refunds: 1,
+        shipping: 1,
       },
+    },
+    {
+      $sort: { start: 1 },
     },
   ]);
 };

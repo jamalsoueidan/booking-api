@@ -132,6 +132,10 @@ components:
       $ref: paths/customer/order/list/list.yaml
     CustomerOrderListResponse:
       $ref: paths/customer/order/list/response.yaml
+    CustomerOrderShippingLocation:
+      $ref: paths/customer/order/shipping/list.yaml
+    CustomerOrderShippingLocationResponse:
+      $ref: paths/customer/order/shipping/response.yaml
 
     # Customer
     CustomerProductList:
@@ -334,6 +338,8 @@ paths:
     $ref: "paths/customer/product/product.yaml"
   /customer/{customerId}/orders-range:
     $ref: "paths/customer/order/list/index.yaml"
+  /customer/{customerId}/shipping-range:
+    $ref: "paths/customer/order/shipping/index.yaml"
   /customer/{customerId}/lineItem/{lineItemId}:
     $ref: "paths/customer/order/get-line-item/index.yaml"
   /customer/{customerId}/orders/{orderId}:

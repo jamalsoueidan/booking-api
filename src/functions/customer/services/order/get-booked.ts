@@ -31,10 +31,18 @@ export const CustomerOrderServiceGetBooked = async ({
             ],
           },
           {
-            "line_items.properties.from": {
-              $gte,
-              $lte,
-            },
+            $and: [
+              {
+                "line_items.properties.from": {
+                  $gte,
+                },
+              },
+              {
+                "line_items.properties.to": {
+                  $lte,
+                },
+              },
+            ],
           },
         ],
       },
@@ -54,10 +62,18 @@ export const CustomerOrderServiceGetBooked = async ({
             ],
           },
           {
-            "line_items.properties.from": {
-              $gte,
-              $lte,
-            },
+            $and: [
+              {
+                "line_items.properties.from": {
+                  $gte,
+                },
+              },
+              {
+                "line_items.properties.to": {
+                  $lte,
+                },
+              },
+            ],
           },
         ],
       },

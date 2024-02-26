@@ -22,7 +22,7 @@ export const ShippingMongooseSchema = new mongoose.Schema<
     },
     origin: {
       /*------------------*/
-      /* we are moving these information from location, in case the user changes them while booking an appointment */
+      /* we are moving these information from location, in case the user changes them or delete them while booking an appointment */
       /*------------------*/
       customerId: {
         type: Number,
