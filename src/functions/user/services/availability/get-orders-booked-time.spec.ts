@@ -1,7 +1,7 @@
 import { addDays, isWithinInterval } from "date-fns";
 import { OrderModel } from "~/functions/order/order.models";
 import { getOrderObject } from "~/library/jest/helpers/order";
-import { CustomerOrderServiceGetBooked } from "./get-booked";
+import { CustomerOrderServiceGetOrdersBookedTimes } from "./get-orders-booked-time";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -24,7 +24,7 @@ describe("CustomerOrderService", () => {
       );
     });
 
-    const orders = await CustomerOrderServiceGetBooked({
+    const orders = await CustomerOrderServiceGetOrdersBookedTimes({
       customerId,
       start,
       end,
