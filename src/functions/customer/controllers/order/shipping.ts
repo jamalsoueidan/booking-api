@@ -14,7 +14,7 @@ export const CustomerOrderControllerShippingSchema = z.object({
   end: z.string(),
 });
 
-export type CustomerOrderControllerListResponse = Awaited<
+export type CustomerOrderControllerGetResponse = Awaited<
   ReturnType<typeof CustomerOrderServiceShipping>
 >;
 
