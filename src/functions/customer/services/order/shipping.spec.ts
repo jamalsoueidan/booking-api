@@ -7,7 +7,7 @@ import { createShipping } from "~/library/jest/helpers/shipping";
 import { CustomerOrderServiceShipping } from "./shipping";
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("CustomerOrderServiceList", () => {
+describe("CustomerOrderServiceShipping", () => {
   it("should return shipping orders for customer on range of start/end", async () => {
     const customerId = 7106990342471;
     const user = await createUser({ customerId: 7106990342471 });

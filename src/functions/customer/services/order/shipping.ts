@@ -1,4 +1,4 @@
-import { subMinutes } from "date-fns";
+import { addMinutes, subMinutes } from "date-fns";
 import { Location } from "~/functions/location";
 import { OrderModel } from "~/functions/order/order.models";
 import { Shipping } from "~/functions/shipping/shipping.types";
@@ -6,8 +6,8 @@ import { OrderAggregate } from "./_types";
 
 export type CustomerOrderServiceShippingProps = {
   customerId: number;
-  start: string;
-  end: string;
+  start: string | Date;
+  end: string | Date;
 };
 
 export type CustomerOrderServiceShippingAggregate = Pick<
@@ -144,6 +144,7 @@ export const CustomerOrderServiceShipping = async ({
             },
             {
               $project: {
+                origin: 1,
                 destination: 1,
                 duration: 1,
                 distance: 1,
@@ -189,8 +190,8 @@ export const CustomerOrderServiceShipping = async ({
     ]);
 
   return orders.map((order) => {
-    order.end = order.start;
     order.start = subMinutes(order.start, order.shipping.duration.value);
+    order.end = addMinutes(order.end, order.shipping.duration.value);
     return order;
   });
 };

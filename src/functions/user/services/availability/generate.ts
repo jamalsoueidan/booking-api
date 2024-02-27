@@ -1,7 +1,6 @@
 import { Types } from "mongoose";
 import { UserScheduleServiceGetWithCustomer } from "~/functions/user/services/schedule/get-with-customer";
 
-import { CustomerOrderServiceGetBooked } from "~/functions/customer/services/order/get-booked";
 import { ScheduleProduct } from "~/functions/schedule";
 import { ShippingServiceGet } from "~/functions/shipping/services/get";
 import { findStartAndEndDate } from "~/library/availability/find-start-end-date-in-availability";
@@ -9,6 +8,8 @@ import { generateAvailability } from "~/library/availability/generate-availabili
 import { removeBookedSlots } from "~/library/availability/remove-booked-slots";
 import { StringOrObjectId } from "~/library/zod";
 import { UserServiceGetCustomerId } from "../user";
+import { CustomerOrderServiceGetOrdersBookedTimes } from "./get-orders-booked-time";
+import { CustomerOrderServiceGetShippingBookedTime } from "./get-shipping-booked-time";
 
 export type UserAvailabilityServiceGenerateProps = {
   username: string;
@@ -47,7 +48,7 @@ export const UserAvailabilityServiceGenerate = async (
     });
   }
 
-  const availability = await generateAvailability({
+  let availability = await generateAvailability({
     schedule,
     shipping,
     fromDate: body.fromDate,
@@ -56,11 +57,19 @@ export const UserAvailabilityServiceGenerate = async (
 
   const date = findStartAndEndDate(availability);
 
-  const booked = await CustomerOrderServiceGetBooked({
+  const booked = await CustomerOrderServiceGetOrdersBookedTimes({
     customerId: user.customerId,
     start: date.startDate,
     end: date.endDate,
   });
 
-  return removeBookedSlots(availability, booked);
+  availability = removeBookedSlots(availability, booked);
+
+  const shippings = await CustomerOrderServiceGetShippingBookedTime({
+    customerId: user.customerId,
+    start: date.startDate,
+    end: date.endDate,
+  });
+
+  return removeBookedSlots(availability, shippings);
 };
