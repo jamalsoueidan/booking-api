@@ -65,7 +65,7 @@ properties:
   shipping_lines:
     type: array
     items:
-      $ref: shipping.yaml
+      $ref: shipping_lines.yaml
   start:
     type: string
   end:

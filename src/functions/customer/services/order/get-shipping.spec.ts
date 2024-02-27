@@ -4,11 +4,11 @@ import { orderWithfulfillmentAndRefunds } from "~/functions/webhook/data-ordre-w
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
 import { createShipping } from "~/library/jest/helpers/shipping";
-import { CustomerOrderServiceShipping } from "./shipping";
+import { CustomerOrderServiceGetShipping } from "./get-shipping";
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerOrderServiceList", () => {
-  it("should return shipping orders for customer on range of start/end", async () => {
+  it("should return one shipping order for customer", async () => {
     const customerId = 7106990342471;
     const user = await createUser({ customerId: 7106990342471 });
     const location = await createLocation({ customerId: user.customerId });
@@ -24,19 +24,11 @@ describe("CustomerOrderServiceList", () => {
 
     await OrderModel.create(dumbData);
 
-    const orders = await CustomerOrderServiceShipping({
+    const order = await CustomerOrderServiceGetShipping({
       customerId: customerId,
-      start: "2023-11-26T00:00:00+03:00",
-      end: "2024-01-07T00:00:00+03:00",
+      id: orderWithfulfillmentAndRefunds.id,
     });
 
-    const shippingIds = orders.map((item) => item.shipping._id.toString());
-    const uniqueShippingIds = new Set(shippingIds);
-    expect(shippingIds.length).toBe(uniqueShippingIds.size);
-
-    orders.forEach((item) => {
-      expect(item).toHaveProperty("shipping");
-      expect(item.shipping).toBeDefined();
-    });
+    expect(order.shipping._id).toEqual(shipping._id);
   });
 });

@@ -116,8 +116,8 @@ components:
       $ref: paths/customer/order/_types/line-item-with-lookup.yaml
     CustomerOrderRefund:
       $ref: paths/customer/order/_types/refund.yaml
-    CustomerOrderShipping:
-      $ref: paths/customer/order/_types/shipping.yaml
+    CustomerOrderShippingLines:
+      $ref: paths/customer/order/_types/shipping_lines.yaml
     CustomerOrderFulfillment:
       $ref: paths/customer/order/_types/fulfillment.yaml
     CustomerOrderGetLineItem:
@@ -132,9 +132,9 @@ components:
       $ref: paths/customer/order/list/list.yaml
     CustomerOrderListResponse:
       $ref: paths/customer/order/list/response.yaml
-    CustomerOrderShippingLocation:
+    CustomerOrderShipping:
       $ref: paths/customer/order/shipping/list.yaml
-    CustomerOrderShippingLocationResponse:
+    CustomerOrderShippingResponse:
       $ref: paths/customer/order/shipping/response.yaml
 
     # Customer

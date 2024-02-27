@@ -1,0 +1,25 @@
+type: object
+properties:
+  id:
+    type: number
+  order_number:
+    type: number
+  customer:
+    $ref: ../_types/customer.yaml
+  start:
+    type: string
+  end:
+    type: string
+  title:
+    type: string
+  shipping:
+    $ref: ../../../shipping/_types/shipping.yaml
+
+required:
+  - id
+  - customer
+  - start
+  - end
+  - title
+  - order_number
+  - shipping
