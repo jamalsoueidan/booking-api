@@ -562,7 +562,7 @@ components:
         shipping_lines:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerOrderShipping'
+            $ref: '#/components/schemas/CustomerOrderShippingLines'
         start:
           type: string
         end:
@@ -985,7 +985,7 @@ components:
         - restock
         - user_id
         - refund_line_items
-    CustomerOrderShipping:
+    CustomerOrderShippingLines:
       type: object
       properties:
         id:
@@ -1148,7 +1148,7 @@ components:
       required:
         - success
         - payload
-    CustomerOrderShippingLocation:
+    CustomerOrderShipping:
       type: object
       properties:
         id:
@@ -1173,7 +1173,7 @@ components:
         - title
         - order_number
         - shipping
-    CustomerOrderShippingLocationResponse:
+    CustomerOrderShippingResponse:
       type: object
       properties:
         success:
@@ -1182,7 +1182,7 @@ components:
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerOrderShippingLocation'
+            $ref: '#/components/schemas/CustomerOrderShipping'
       required:
         - success
         - payload
@@ -3377,7 +3377,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerOrderShippingLocationResponse'
+                $ref: '#/components/schemas/CustomerOrderShippingResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
