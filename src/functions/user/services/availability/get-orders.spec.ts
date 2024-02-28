@@ -21,8 +21,8 @@ describe("CustomerOrderServiceGet", () => {
     });
 
     orders.forEach((order) => {
-      expect(order.from.getTime()).toBeGreaterThanOrEqual(start.getTime());
-      expect(order.to.getTime()).toBeLessThanOrEqual(end.getTime());
+      expect(order.start.getTime()).toBeGreaterThanOrEqual(start.getTime());
+      expect(order.end.getTime()).toBeLessThanOrEqual(end.getTime());
     });
   });
 });

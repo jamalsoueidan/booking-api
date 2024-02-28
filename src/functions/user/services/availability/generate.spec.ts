@@ -1,5 +1,6 @@
 import {
   addDays,
+  addMinutes,
   differenceInMinutes,
   format,
   isWithinInterval,
@@ -18,6 +19,7 @@ import {
 } from "~/library/jest/helpers/location";
 import { getOrderObject } from "~/library/jest/helpers/order";
 import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createShipping } from "~/library/jest/helpers/shipping";
 import { UserAvailabilityServiceGenerate } from "./generate";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -183,23 +185,24 @@ describe("UserAvailabilityServiceGenerate", () => {
       (product) => product.productId
     );
 
+    const fromDate = new Date().toISOString();
     let result = await UserAvailabilityServiceGenerate(
       {
         username: user.username!,
         locationId: locationOrigin._id,
       },
-      { productIds, fromDate: new Date().toISOString() }
+      { productIds, fromDate }
     );
 
     const targetFromTime = result[0].slots[0].from;
-    const targetToTime = result[0].slots[0].to;
+    const targetToTime = addMinutes(targetFromTime, 30);
 
     const dumbData = getOrderObject({ customerId, lineItemsTotal: 1 });
     dumbData.line_items[0].properties!.customerId = customerId;
     dumbData.line_items[0].properties!.from = targetFromTime;
     dumbData.line_items[0].properties!.to = targetToTime;
 
-    const response = await OrderModel.create(dumbData);
+    await OrderModel.create(dumbData);
 
     result = await UserAvailabilityServiceGenerate(
       {
@@ -208,7 +211,72 @@ describe("UserAvailabilityServiceGenerate", () => {
       },
       {
         productIds,
-        fromDate: new Date().toISOString(),
+        fromDate,
+      }
+    );
+
+    const availabilityForDate = result.find(
+      (a) =>
+        a.date.getFullYear() === targetFromTime.getFullYear() &&
+        a.date.getMonth() === targetFromTime.getMonth() &&
+        a.date.getDate() === targetFromTime.getDate()
+    );
+
+    const slotExists = availabilityForDate?.slots.some((slot) =>
+      slot.products.some(
+        (product) =>
+          product.from.getTime() >= targetFromTime.getTime() &&
+          product.to.getTime() <= targetToTime.getTime()
+      )
+    );
+
+    expect(slotExists).toBeFalsy();
+  });
+
+  it("should return available slots and handle shipping time", async () => {
+    const productIds = arrayElements(schedule.products, 2).map(
+      (product) => product.productId
+    );
+
+    const location = await createLocation({ customerId: user.customerId });
+    const shipping = await createShipping({
+      location: location.id,
+      duration: { text: "10 minutes", value: 10 },
+    });
+
+    const fromDate = new Date().toISOString();
+    let result = await UserAvailabilityServiceGenerate(
+      {
+        username: user.username!,
+        locationId: locationOrigin._id,
+      },
+      { productIds, fromDate }
+    );
+
+    const targetFromTime = result[0].slots[0].from;
+    const targetToTime = addMinutes(targetFromTime, 15);
+
+    const dumbData = getOrderObject({ customerId, lineItemsTotal: 2 });
+    dumbData.line_items[0].properties!.customerId = customerId;
+    dumbData.line_items[0].properties!.from = targetFromTime;
+    dumbData.line_items[0].properties!.to = targetToTime;
+    dumbData.line_items[0].properties!.shippingId = shipping._id.toString();
+
+    dumbData.line_items[1].properties!.customerId = customerId;
+    dumbData.line_items[1].properties!.from = targetToTime;
+    dumbData.line_items[1].properties!.to = addMinutes(targetToTime, 30);
+    dumbData.line_items[1].properties!.shippingId = shipping._id.toString();
+
+    const order = await OrderModel.create(dumbData);
+
+    result = await UserAvailabilityServiceGenerate(
+      {
+        username: user.username!,
+        locationId: locationOrigin._id,
+      },
+      {
+        productIds,
+        fromDate,
       }
     );
 

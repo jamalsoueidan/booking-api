@@ -7,8 +7,8 @@ export type UserAvailabilityServiceGetOrdersProps = {
 };
 
 export type UserAvailabilityServiceGetOrdersAggregate = {
-  from: Date;
-  to: Date;
+  start: Date;
+  end: Date;
 };
 
 export const UserAvailabilityServiceGetOrders = async ({
@@ -31,7 +31,7 @@ export const UserAvailabilityServiceGetOrders = async ({
             ],
           },
           {
-            $and: [
+            $or: [
               {
                 "line_items.properties.from": {
                   $gte,
@@ -62,7 +62,7 @@ export const UserAvailabilityServiceGetOrders = async ({
             ],
           },
           {
-            $and: [
+            $or: [
               {
                 "line_items.properties.from": {
                   $gte,
@@ -129,11 +129,6 @@ export const UserAvailabilityServiceGetOrders = async ({
         orderNumber: { $first: "$order_number" },
         fulfillmentsArray: { $push: "$fulfillments" },
         refundsArray: { $push: "$refunds" },
-      },
-    },
-    {
-      $match: {
-        refundsArray: { $size: 0 },
       },
     },
     {
