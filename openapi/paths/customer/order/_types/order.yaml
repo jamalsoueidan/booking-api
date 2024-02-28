@@ -72,6 +72,8 @@ properties:
     type: string
   title:
     type: string
+  shipping:
+    $ref: ../../../shipping/_types/shipping.yaml
 required:
   - id
   - admin_graphql_api_id
