@@ -8,8 +8,7 @@ import { generateAvailability } from "~/library/availability/generate-availabili
 import { removeBookedSlots } from "~/library/availability/remove-booked-slots";
 import { StringOrObjectId } from "~/library/zod";
 import { UserServiceGetCustomerId } from "../user";
-import { CustomerOrderServiceGetOrdersBookedTimes } from "./get-orders-booked-time";
-import { CustomerOrderServiceGetShippingBookedTime } from "./get-shipping-booked-time";
+import { UserAvailabilityServiceGetOrders } from "./get-orders";
 
 export type UserAvailabilityServiceGenerateProps = {
   username: string;
@@ -57,19 +56,11 @@ export const UserAvailabilityServiceGenerate = async (
 
   const date = findStartAndEndDate(availability);
 
-  const booked = await CustomerOrderServiceGetOrdersBookedTimes({
+  const booked = await UserAvailabilityServiceGetOrders({
     customerId: user.customerId,
     start: date.startDate,
     end: date.endDate,
   });
 
-  availability = removeBookedSlots(availability, booked);
-
-  const shippings = await CustomerOrderServiceGetShippingBookedTime({
-    customerId: user.customerId,
-    start: date.startDate,
-    end: date.endDate,
-  });
-
-  return removeBookedSlots(availability, shippings);
+  return removeBookedSlots(availability, booked);
 };
