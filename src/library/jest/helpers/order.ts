@@ -29,6 +29,7 @@ export const getOrderObject = ({
       properties: {
         ...generateRandomDateRange(),
         customerId,
+        groupId: "12",
         locationId: "1",
       },
       quantity: 1,

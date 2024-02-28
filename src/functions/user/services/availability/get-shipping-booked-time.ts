@@ -89,9 +89,15 @@ export const CustomerOrderServiceGetShippingBookedTime = async ({
           },
         },
         {
+          $sort: {
+            "line_items.properties.shippingId": 1,
+            "line_items.properties.from": 1,
+          },
+        },
+        {
           $addFields: {
-            from: "$line_items.properties.from",
-            to: "$line_items.properties.to",
+            shippingId: "$line_items.properties.shippingId",
+            title: "$line_items.title",
             refunds: {
               $filter: {
                 input: "$refunds",
@@ -151,15 +157,12 @@ export const CustomerOrderServiceGetShippingBookedTime = async ({
           },
         },
         {
-          $sort: { start: 1 },
-        },
-        {
           $group: {
             _id: "$shipping._id",
             shipping: { $first: "$shipping" },
             id: { $first: "$id" },
-            from: { $first: "$start" },
-            to: { $first: "$end" },
+            from: { $first: "$line_items.properties.from" },
+            to: { $last: "$line_items.properties.to" },
           },
         },
         {
@@ -167,7 +170,6 @@ export const CustomerOrderServiceGetShippingBookedTime = async ({
             id: 1,
             from: 1,
             to: 1,
-            shipping: 1,
           },
         },
       ]

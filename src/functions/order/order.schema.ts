@@ -126,6 +126,7 @@ const LineItemSchema = new Schema(
         index: true,
       },
       customerId: { type: Number, index: true },
+      groupId: { type: String, index: true },
       locationId: String,
       shippingId: String,
     },

@@ -93,6 +93,7 @@ interface Properties {
   from: Date;
   to: Date;
   locationId: string;
+  groupId: string;
   shippingId?: string;
 }
 
