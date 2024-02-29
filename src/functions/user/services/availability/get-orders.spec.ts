@@ -30,13 +30,6 @@ describe("CustomerOrderServiceGet", () => {
         start: start,
         end: end,
       });
-
-      console.log(
-        order.start,
-        isStartWithinInterval,
-        order.end,
-        isEndWithinInterval
-      );
       expect(isStartWithinInterval || isEndWithinInterval).toBeTruthy();
     });
   });

@@ -40,7 +40,7 @@ describe("LocationServiceGetTravelTime", () => {
     });
 
     expect(response).toEqual({
-      duration: { text: "1 min", value: 1 },
+      duration: { text: "1 min", value: 10 },
       distance: { text: "0.4 km", value: 0.4 },
     });
   });

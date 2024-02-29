@@ -41,11 +41,12 @@ export const LocationServiceGetTravelTime = async (
       const leg = route.legs[0];
       const duration = leg.duration;
       const distance = leg.distance;
+      const minutes = Math.ceil(duration.value / 60) * 10;
 
       return {
         duration: {
           text: duration.text,
-          value: duration.value / 60, // convert from seconds to minutes
+          value: minutes,
         },
         distance: {
           text: distance.text,
