@@ -8,7 +8,7 @@ import { CustomerOrderControllerRange } from "./customer/controllers/order/range
 app.http("customerOrderGet", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "customer/{customerId?}/orders/{orderId?}",
+  route: "customer/{customerId?}/orders/{orderId?}/groupId/{groupId?}",
   handler: CustomerOrderControllerGet,
 });
 
