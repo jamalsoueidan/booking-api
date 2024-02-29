@@ -1107,7 +1107,9 @@ components:
         - type: object
           properties:
             line_items:
-              $ref: '#/components/schemas/CustomerOrderLineItem'
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerOrderLineItem'
           required:
             - line_items
     CustomerBookingRangeResponse:
@@ -3298,8 +3300,8 @@ paths:
           schema:
             type: string
       tags:
-        - CustomerBooking
-      operationId: customerBookingRange
+        - CustomerOrder
+      operationId: customerOrderRange
       summary: GET Get all bookings for customer from orders
       description: This endpoint get all bookings from orders
       responses:
