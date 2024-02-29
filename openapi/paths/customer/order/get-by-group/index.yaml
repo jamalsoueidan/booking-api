@@ -12,11 +12,17 @@ get:
       required: true
       schema:
         type: string
+    - name: groupId
+      in: path
+      description: groupId for the order
+      required: true
+      schema:
+        type: string
   tags:
     - CustomerOrder
-  operationId: customerOrderGet
-  summary: GET Get order with lineItems array
-  description: This endpoint gets order with lineItems array of objects
+  operationId: customerOrderGetByGroup
+  summary: GET Get order with lineItems array for specific groupId
+  description: This endpoint gets order with lineItems array of objects specific for groupId
   responses:
     "200":
       description: Response with payload

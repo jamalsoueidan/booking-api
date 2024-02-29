@@ -1,32 +1,18 @@
-import { Location } from "~/functions/location";
 import { OrderModel } from "~/functions/order/order.models";
-import { Shipping } from "~/functions/shipping/shipping.types";
-import { User } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
-import { CustomerOrderServiceRangeAggregate } from "./range";
+import { CustomerOrderServiceGetAggregate } from "./get";
 
-export type CustomerOrderServiceGetAggregate =
-  CustomerOrderServiceRangeAggregate & {
-    user: Pick<
-      User,
-      "customerId" | "username" | "fullname" | "images" | "shortDescription"
-    >;
-    location: Pick<
-      Location,
-      "name" | "fullAddress" | "locationType" | "originType"
-    >;
-    shipping?: Pick<Shipping, "destination" | "cost" | "distance" | "duration">;
-  };
-
-export type CustomerOrderServiceGetProps = {
+export type CustomerOrderServiceGetByGroupProps = {
   customerId: number;
   orderId: number;
+  groupId: string;
 };
 
-export const CustomerOrderServiceGet = async ({
+export const CustomerOrderServiceGetByGroup = async ({
   customerId,
   orderId,
-}: CustomerOrderServiceGetProps) => {
+  groupId,
+}: CustomerOrderServiceGetByGroupProps) => {
   const orders = await OrderModel.aggregate<CustomerOrderServiceGetAggregate>([
     {
       $match: {
@@ -35,12 +21,18 @@ export const CustomerOrderServiceGet = async ({
             "line_items.properties.customerId": customerId,
           },
           {
+            "line_items.properties.groupId": groupId,
+          },
+          {
             id: orderId,
           },
         ],
       },
     },
     { $unwind: "$line_items" },
+    {
+      $match: { "line_items.properties.groupId": groupId },
+    },
     {
       $addFields: {
         refunds: {
@@ -86,7 +78,7 @@ export const CustomerOrderServiceGet = async ({
     },
     {
       $group: {
-        _id: "$order_number",
+        _id: "$line_items.properties.groupId",
         line_items: { $push: "$line_items" },
         customer: { $first: "$customer" },
         orderNumber: { $first: "$order_number" },

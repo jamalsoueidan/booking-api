@@ -3,10 +3,10 @@ import { Order } from "~/functions/order/order.types";
 import { orderWithfulfillmentAndRefunds } from "~/functions/webhook/data-order-with-fullfilment-and-refunds";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
-import { CustomerOrderServiceGet } from "./get";
+import { CustomerOrderServiceGetByGroup } from "./get-by-group";
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("CustomerOrderServiceGet", () => {
+describe("CustomerOrderServiceGetByGroup", () => {
   it("should return order with the correct lineitems for customer/groupId", async () => {
     const customerId = 7106990342471;
     const groupId = "2332";
@@ -21,13 +21,24 @@ describe("CustomerOrderServiceGet", () => {
     const orderId = response.id;
     const ownerCustomerId = user.customerId;
 
-    let order = await CustomerOrderServiceGet({
+    let order = await CustomerOrderServiceGetByGroup({
       customerId: ownerCustomerId,
       orderId,
+      groupId,
     });
 
-    expect(order.line_items.length).toBe(3);
-    expect(order.fulfillments.length).toBe(3);
+    expect(order.line_items.length).toBe(1);
+    expect(order.fulfillments.length).toBe(1);
     expect(order.refunds.length).toBe(1);
+
+    order = await CustomerOrderServiceGetByGroup({
+      customerId: ownerCustomerId,
+      orderId,
+      groupId: "123",
+    });
+
+    expect(order.line_items.length).toBe(2);
+    expect(order.fulfillments.length).toBe(2);
+    expect(order.refunds.length).toBe(0);
   });
 });
