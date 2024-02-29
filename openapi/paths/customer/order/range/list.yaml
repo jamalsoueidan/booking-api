@@ -3,6 +3,8 @@ allOf:
   - type: object
     properties:
       line_items:
-        $ref: ../_types/line-item.yaml
+        type: array
+        items:
+          $ref: ../_types/line-item.yaml
     required:
       - line_items
