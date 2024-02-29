@@ -1101,7 +1101,7 @@ components:
       required:
         - success
         - payload
-    CustomerBookingRange:
+    CustomerOrderRange:
       allOf:
         - $ref: '#/components/schemas/CustomerOrder'
         - type: object
@@ -1112,7 +1112,7 @@ components:
                 $ref: '#/components/schemas/CustomerOrderLineItem'
           required:
             - line_items
-    CustomerBookingRangeResponse:
+    CustomerOrderRangeResponse:
       type: object
       properties:
         success:
@@ -1121,7 +1121,7 @@ components:
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerBookingRange'
+            $ref: '#/components/schemas/CustomerOrderRange'
       required:
         - success
         - payload
@@ -3310,7 +3310,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerBookingRangeResponse'
+                $ref: '#/components/schemas/CustomerOrderRangeResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
