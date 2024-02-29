@@ -3242,6 +3242,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: groupId
+          in: path
+          description: groupId for the order
+          required: true
+          schema:
+            type: string
       tags:
         - CustomerOrder
       operationId: customerOrderGet
