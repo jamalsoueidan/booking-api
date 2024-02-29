@@ -10,6 +10,7 @@ export type CustomerOrderControllerGetRequest = {
 export const CustomerOrderControllerGetSchema = z.object({
   customerId: NumberOrStringType,
   orderId: NumberOrStringType,
+  groupId: z.string(),
 });
 
 export type CustomerOrderControllerGetResponse = Awaited<
