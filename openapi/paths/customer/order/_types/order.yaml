@@ -72,8 +72,14 @@ properties:
     type: string
   title:
     type: string
+  groupId:
+    type: string
   shipping:
     $ref: ../../../shipping/_types/shipping.yaml
+  line_items:
+    type: array
+    items:
+      $ref: ../_types/line-item.yaml
 required:
   - id
   - admin_graphql_api_id
@@ -93,7 +99,9 @@ required:
   - fulfillments
   - refunds
   - shipping_lines
+  - groupId
   - start
   - end
   - title
   - order_number
+  - line_items

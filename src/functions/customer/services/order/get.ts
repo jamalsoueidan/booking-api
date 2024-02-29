@@ -1,63 +1,43 @@
 import { Location } from "~/functions/location";
 import { OrderModel } from "~/functions/order/order.models";
-import {
-  Order,
-  OrderFulfillment,
-  OrderLineItem,
-  OrderRefund,
-  OrderRefundLineItem,
-} from "~/functions/order/order.types";
 import { Shipping } from "~/functions/shipping/shipping.types";
 import { User } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
+import { CustomerOrderServiceRangeAggregate } from "./range";
 
-export type OrderLineItemsAggreate = OrderLineItem & {
-  user: Pick<
-    User,
-    "customerId" | "username" | "fullname" | "images" | "shortDescription"
-  >;
-  location: Pick<
-    Location,
-    "name" | "fullAddress" | "locationType" | "originType"
-  >;
-  shipping?: Pick<Shipping, "destination" | "cost" | "distance" | "duration">;
-};
-
-export type CustomerOrderServiceGetAggregate = Omit<
-  Order,
-  "line_items" | "refunds" | "fulfillments"
-> & {
-  line_items: Array<OrderLineItemsAggreate>;
-  fulfillments: Array<Omit<OrderFulfillment, "line_items">>;
-  refunds: Array<
-    Omit<OrderRefund, "refund_line_items"> & {
-      refund_line_items: Array<Omit<OrderRefundLineItem, "line_item">>;
-    }
-  >;
-};
+export type CustomerOrderServiceGetAggregate =
+  CustomerOrderServiceRangeAggregate & {
+    user: Pick<
+      User,
+      "customerId" | "username" | "fullname" | "images" | "shortDescription"
+    >;
+    location: Pick<
+      Location,
+      "name" | "fullAddress" | "locationType" | "originType"
+    >;
+    shipping?: Pick<Shipping, "destination" | "cost" | "distance" | "duration">;
+  };
 
 export type CustomerOrderServiceGetProps = {
   customerId: number;
   orderId: number;
+  groupId: string;
 };
 
 export const CustomerOrderServiceGet = async ({
   customerId,
   orderId,
+  groupId,
 }: CustomerOrderServiceGetProps) => {
   const orders = await OrderModel.aggregate<CustomerOrderServiceGetAggregate>([
     {
       $match: {
         $and: [
           {
-            $or: [
-              {
-                "line_items.properties.customerId": customerId,
-              },
-              {
-                "customer.id": customerId,
-              },
-            ],
+            "line_items.properties.customerId": customerId,
+          },
+          {
+            "line_items.properties.groupId": groupId,
           },
           {
             id: orderId,
@@ -67,104 +47,7 @@ export const CustomerOrderServiceGet = async ({
     },
     { $unwind: "$line_items" },
     {
-      $lookup: {
-        from: "User",
-        let: { customerId: "$line_items.properties.customerId" },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $eq: ["$customerId", "$$customerId"],
-              },
-            },
-          },
-          {
-            $project: {
-              customerId: 1,
-              username: 1,
-              createdAt: 1,
-              fullname: 1,
-              shortDescription: 1,
-              "images.profile": "$images.profile",
-            },
-          },
-        ],
-        as: "line_items.user",
-      },
-    },
-    {
-      $unwind: {
-        path: "$line_items.user",
-        preserveNullAndEmptyArrays: true, // Set to false if you always expect a match
-      },
-    },
-    {
-      $lookup: {
-        from: "Location",
-        let: { locationId: "$line_items.properties.locationId" },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $and: [
-                  {
-                    $eq: ["$_id", { $toObjectId: "$$locationId" }],
-                  },
-                ],
-              },
-            },
-          },
-          {
-            $project: {
-              name: 1,
-              fullAddress: 1,
-              originType: 1,
-              locationType: 1,
-            },
-          },
-        ],
-        as: "line_items.location",
-      },
-    },
-    {
-      $unwind: {
-        path: "$line_items.location",
-        preserveNullAndEmptyArrays: true, // Set to false if you always expect a match
-      },
-    },
-    {
-      $lookup: {
-        from: "Shipping",
-        let: { shippingId: "$line_items.properties.shippingId" },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $and: [
-                  {
-                    $eq: ["$_id", { $toObjectId: "$$shippingId" }],
-                  },
-                ],
-              },
-            },
-          },
-          {
-            $project: {
-              destination: 1,
-              duration: 1,
-              distance: 1,
-              cost: 1,
-            },
-          },
-        ],
-        as: "line_items.shipping",
-      },
-    },
-    {
-      $unwind: {
-        path: "$line_items.shipping",
-        preserveNullAndEmptyArrays: true,
-      },
+      $match: { "line_items.properties.groupId": groupId },
     },
     {
       $addFields: {
@@ -205,8 +88,13 @@ export const CustomerOrderServiceGet = async ({
       },
     },
     {
+      $sort: {
+        "line_items.properties.from": 1,
+      },
+    },
+    {
       $group: {
-        _id: "$id",
+        _id: "$line_items.properties.groupId",
         line_items: { $push: "$line_items" },
         customer: { $first: "$customer" },
         orderNumber: { $first: "$order_number" },
@@ -223,8 +111,154 @@ export const CustomerOrderServiceGet = async ({
       },
     },
     {
+      $addFields: {
+        customerId: { $first: "$line_items.properties.customerId" },
+        locationId: { $first: "$line_items.properties.locationId" },
+        shippingId: { $first: "$line_items.properties.shippingId" },
+        groupId: { $first: "$line_items.properties.groupId" },
+        end: { $last: "$line_items.properties.to" },
+        start: { $first: "$line_items.properties.from" },
+      },
+    },
+    {
+      $lookup: {
+        from: "User",
+        let: { customerId: "$customerId" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ["$customerId", "$$customerId"],
+              },
+            },
+          },
+          {
+            $project: {
+              customerId: 1,
+              username: 1,
+              createdAt: 1,
+              fullname: 1,
+              shortDescription: 1,
+              "images.profile": "$images.profile",
+            },
+          },
+        ],
+        as: "user",
+      },
+    },
+    {
+      $unwind: {
+        path: "$user",
+        preserveNullAndEmptyArrays: true, // Set to false if you always expect a match
+      },
+    },
+    {
+      $lookup: {
+        from: "Location",
+        let: { locationId: "$locationId" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  {
+                    $eq: ["$_id", { $toObjectId: "$$locationId" }],
+                  },
+                ],
+              },
+            },
+          },
+          {
+            $project: {
+              name: 1,
+              fullAddress: 1,
+              originType: 1,
+              locationType: 1,
+            },
+          },
+        ],
+        as: "location",
+      },
+    },
+    {
+      $unwind: {
+        path: "$location",
+        preserveNullAndEmptyArrays: true, // Set to false if you always expect a match
+      },
+    },
+    {
+      $lookup: {
+        from: "Shipping",
+        let: { shippingId: "$shippingId" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  {
+                    $eq: ["$_id", { $toObjectId: "$$shippingId" }],
+                  },
+                ],
+              },
+            },
+          },
+          {
+            $project: {
+              origin: 1,
+              destination: 1,
+              duration: 1,
+              distance: 1,
+              cost: 1,
+            },
+          },
+        ],
+        as: "shipping",
+      },
+    },
+    {
+      $unwind: {
+        path: "$shipping",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $addFields: {
+        start: {
+          $cond: {
+            if: { $gt: ["$shipping.duration.value", 0] },
+            then: {
+              $dateSubtract: {
+                startDate: "$start",
+                unit: "minute",
+                amount: { $toInt: "$shipping.duration.value" },
+              },
+            },
+            else: "$start",
+          },
+        },
+        end: {
+          $cond: {
+            if: { $gt: ["$shipping.duration.value", 0] },
+            then: {
+              $dateAdd: {
+                startDate: "$end",
+                unit: "minute",
+                amount: { $toInt: "$shipping.duration.value" },
+              },
+            },
+            else: "$end",
+          },
+        },
+      },
+    },
+    {
       $project: {
         id: "$_id",
+        start: 1,
+        end: 1,
+        shipping: 1,
+        groupId: 1,
+        locationId: 1,
         line_items: 1,
         customer: 1,
         orderNumber: 1,

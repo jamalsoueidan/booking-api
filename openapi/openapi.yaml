@@ -112,8 +112,6 @@ components:
       $ref: paths/customer/order/_types/customer.yaml
     CustomerOrderLineItem:
       $ref: paths/customer/order/_types/line-item.yaml
-    CustomerOrderLineItemLookup:
-      $ref: paths/customer/order/_types/line-item-with-lookup.yaml
     CustomerOrderRefund:
       $ref: paths/customer/order/_types/refund.yaml
     CustomerOrderShippingLines:
@@ -124,8 +122,6 @@ components:
       $ref: paths/customer/order/get/get.yaml
     CustomerOrderGetResponse:
       $ref: paths/customer/order/get/response.yaml
-    CustomerOrderRange:
-      $ref: paths/customer/order/range/list.yaml
     CustomerOrderRangeResponse:
       $ref: paths/customer/order/range/response.yaml
 

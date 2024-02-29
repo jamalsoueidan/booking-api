@@ -7,25 +7,38 @@ import { CustomerOrderServiceGet } from "./get";
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerOrderServiceGet", () => {
-  it("should return order by line-item for customer", async () => {
+  it("should return order with the correct lineitems for customer/groupId", async () => {
     const customerId = 7106990342471;
+    const groupId = "2332";
     const user = await createUser({ customerId });
     const location = await createLocation({ customerId });
     const dumbData = Order.parse(orderWithfulfillmentAndRefunds);
     dumbData.line_items[0].properties!.customerId = user.customerId;
     dumbData.line_items[0].properties!.locationId = location._id.toString();
+    dumbData.line_items[0].properties!.groupId = groupId;
     const response = await OrderModel.create(dumbData);
 
     const orderId = response.id;
-    const ownerCustomerId = response.customer.id;
+    const ownerCustomerId = user.customerId;
 
-    const order = await CustomerOrderServiceGet({
+    let order = await CustomerOrderServiceGet({
       customerId: ownerCustomerId,
       orderId,
+      groupId,
     });
 
-    expect(order.line_items.length).toBe(3);
-    expect(order.fulfillments.length).toBe(3);
+    expect(order.line_items.length).toBe(1);
+    expect(order.fulfillments.length).toBe(1);
     expect(order.refunds.length).toBe(1);
+
+    order = await CustomerOrderServiceGet({
+      customerId: ownerCustomerId,
+      orderId,
+      groupId: "123",
+    });
+
+    expect(order.line_items.length).toBe(2);
+    expect(order.fulfillments.length).toBe(2);
+    expect(order.refunds.length).toBe(0);
   });
 });

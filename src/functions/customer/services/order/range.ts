@@ -20,8 +20,10 @@ export type CustomerOrderServiceRangeAggregate = Omit<
 > & {
   start: Date;
   end: Date;
-  title: Date;
-  line_items: OrderLineItem;
+  groupId: string;
+  shippingId: string;
+  title: string;
+  line_items: OrderLineItem[];
   shipping?: Shipping;
   fulfillments: Array<Omit<OrderFulfillment, "line_items">>;
   refunds: Array<
@@ -170,6 +172,7 @@ export const CustomerOrderServiceRange = async ({
     {
       $addFields: {
         shippingId: { $first: "$line_items.properties.shippingId" },
+        groupId: { $first: "$line_items.properties.groupId" },
         end: { $last: "$line_items.properties.to" },
         start: { $first: "$line_items.properties.from" },
       },
@@ -245,6 +248,7 @@ export const CustomerOrderServiceRange = async ({
         start: 1,
         end: 1,
         shipping: 1,
+        groupId: 1,
         line_items: 1,
         customer: 1,
         orderNumber: 1,

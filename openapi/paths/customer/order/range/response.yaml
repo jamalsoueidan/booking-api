@@ -6,7 +6,7 @@ properties:
   payload:
     type: array
     items:
-      $ref: list.yaml
+      $ref: "../_types/order.yaml"
 required:
   - success
   - payload

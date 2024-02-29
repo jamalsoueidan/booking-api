@@ -2,10 +2,10 @@ allOf:
   - $ref: "../_types/order.yaml"
   - type: object
     properties:
-      line_items:
-        type: array
-        items:
-          $ref: ../_types/line-item-with-lookup.yaml
-
+      user:
+        $ref: ../_types/user.yaml
+      location:
+        $ref: ../../location/_types/base-location.yaml
     required:
-      - line_items
+      - user
+      - location
