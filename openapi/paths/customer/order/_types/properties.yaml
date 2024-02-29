@@ -8,6 +8,8 @@ properties:
     type: string
   locationId:
     type: string
+  groupId:
+    type: string
   shippingId:
     type: string
 
@@ -16,3 +18,4 @@ required:
   - to
   - customer_id
   - locationId
+  - groupId
