@@ -1,6 +1,6 @@
 import { OrderModel } from "~/functions/order/order.models";
 import { Order } from "~/functions/order/order.types";
-import { orderWithfulfillmentAndRefunds } from "~/functions/webhook/data-ordre-with-fullfilment-and-refunds";
+import { orderWithfulfillmentAndRefunds } from "~/functions/webhook/data-order-with-fullfilment-and-refunds";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
 import { CustomerOrderServiceGet } from "./get";
@@ -24,8 +24,8 @@ describe("CustomerOrderServiceGet", () => {
       orderId,
     });
 
-    expect(order.line_items.length).toBe(2);
-    expect(order.fulfillments.length).toBe(2);
+    expect(order.line_items.length).toBe(3);
+    expect(order.fulfillments.length).toBe(3);
     expect(order.refunds.length).toBe(1);
   });
 });

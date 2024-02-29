@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { addMinutes } from "date-fns";
 import { Order } from "~/functions/order/order.types";
 
 export const getOrderObject = ({
@@ -29,6 +30,7 @@ export const getOrderObject = ({
       properties: {
         ...generateRandomDateRange(),
         customerId,
+        groupId: faker.number.int({ min: 1, max: 1000000000 }).toString(),
         locationId: "1",
       },
       quantity: 1,
@@ -273,8 +275,9 @@ const generateRandomDateRange = () => {
   const randomDate = faker.date.between({ from, to });
 
   // Add a random duration between 30 and 60 minutes to the random date
-  const endDate = new Date(
-    randomDate.getTime() + faker.number.int({ min: 30, max: 60 }) * 60000
+  const endDate = addMinutes(
+    randomDate,
+    faker.number.int({ min: 30, max: 60 })
   );
 
   return {

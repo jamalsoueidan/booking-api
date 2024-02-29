@@ -120,22 +120,14 @@ components:
       $ref: paths/customer/order/_types/shipping_lines.yaml
     CustomerOrderFulfillment:
       $ref: paths/customer/order/_types/fulfillment.yaml
-    CustomerOrderGetLineItem:
-      $ref: paths/customer/order/get-line-item/get-line-item.yaml
-    CustomerOrderGetLineItemResponse:
-      $ref: paths/customer/order/get-line-item/response.yaml
     CustomerOrderGet:
       $ref: paths/customer/order/get/get.yaml
     CustomerOrderGetResponse:
       $ref: paths/customer/order/get/response.yaml
-    CustomerOrderList:
-      $ref: paths/customer/order/list/list.yaml
-    CustomerOrderListResponse:
-      $ref: paths/customer/order/list/response.yaml
-    CustomerOrderShipping:
-      $ref: paths/customer/order/shipping/list.yaml
-    CustomerOrderShippingResponse:
-      $ref: paths/customer/order/shipping/response.yaml
+    CustomerBookingRange:
+      $ref: paths/customer/order/range/list.yaml
+    CustomerBookingRangeResponse:
+      $ref: paths/customer/order/range/response.yaml
 
     # Customer
     CustomerProductList:
@@ -336,14 +328,10 @@ paths:
     $ref: "./paths/customer/product/list-ids/index.yaml"
   /customer/{customerId}/product/{productId}:
     $ref: "paths/customer/product/product.yaml"
-  /customer/{customerId}/orders-range:
-    $ref: "paths/customer/order/list/index.yaml"
-  /customer/{customerId}/shipping-range:
-    $ref: "paths/customer/order/shipping/index.yaml"
-  /customer/{customerId}/lineItem/{lineItemId}:
-    $ref: "paths/customer/order/get-line-item/index.yaml"
   /customer/{customerId}/orders/{orderId}:
     $ref: "paths/customer/order/get/index.yaml"
+  /customer/{customerId}/orders-range:
+    $ref: "paths/customer/order/range/index.yaml"
 
   # schedule
   /customer/{customerId}/schedule:

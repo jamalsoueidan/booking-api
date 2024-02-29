@@ -19,10 +19,10 @@ get:
       schema:
         type: string
   tags:
-    - CustomerOrder
-  operationId: customerOrderList
-  summary: GET Get all order for customer
-  description: This endpoint get all orders
+    - CustomerBooking
+  operationId: customerBookingRange
+  summary: GET Get all bookings for customer from orders
+  description: This endpoint get all bookings from orders
   responses:
     "200":
       description: "Response"

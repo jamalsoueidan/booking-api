@@ -34,7 +34,7 @@ export const createShipping = (filter: Partial<Shipping>) => {
     name: faker.company.buzzPhrase(),
     fullAddress: faker.location.streetAddress(),
   };
-  shipping.duration = {
+  shipping.duration = filter.duration || {
     text: "2 hours 59 mins",
     value: 179.31666666666666,
   };

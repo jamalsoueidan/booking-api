@@ -1,7 +1,7 @@
 import { InvocationContext } from "@azure/functions";
 import { createContext } from "~/library/jest/azure";
-import { orderNofulfillment } from "./data-ordre";
-import { orderWithfulfillmentAndRefunds } from "./data-ordre-with-fullfilment-and-refunds";
+import { orderNofulfillment } from "./data-order";
+import { orderWithfulfillmentAndRefunds } from "./data-order-with-fullfilment-and-refunds";
 import { webhookOrderProcess } from "./order";
 
 require("~/library/jest/mongoose/mongodb.jest");

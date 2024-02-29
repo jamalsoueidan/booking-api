@@ -32,12 +32,12 @@ describe("removeBookedSlots", () => {
 
     const bookedSlots = [
       {
-        from: new Date("2023-05-15T10:00:00.000Z"),
-        to: new Date("2023-05-15T11:00:00.000Z"),
+        start: new Date("2023-05-15T10:00:00.000Z"),
+        end: new Date("2023-05-15T11:00:00.000Z"),
       },
       {
-        from: new Date("2023-05-15T17:00:00.000Z"),
-        to: new Date("2023-05-15T18:00:00.000Z"),
+        start: new Date("2023-05-15T17:00:00.000Z"),
+        end: new Date("2023-05-15T18:00:00.000Z"),
       },
     ];
 

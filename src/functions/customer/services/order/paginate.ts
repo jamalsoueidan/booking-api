@@ -1,6 +1,6 @@
 import { PipelineStage } from "mongoose";
 import { OrderModel } from "~/functions/order/order.models";
-import { CustomerOrderServiceListAggregate } from "./list";
+import { CustomerOrderServiceRangeAggregate } from "./range";
 
 export type CustomerOrderServiceListProps = {
   customerId: number;
@@ -109,9 +109,8 @@ export const CustomerOrderServicePaginate = async ({
     }
   );
 
-  const results = await OrderModel.aggregate<CustomerOrderServiceListAggregate>(
-    pipeline
-  );
+  const results =
+    await OrderModel.aggregate<CustomerOrderServiceRangeAggregate>(pipeline);
 
   return {
     results,
