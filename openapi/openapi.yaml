@@ -124,9 +124,9 @@ components:
       $ref: paths/customer/order/get/get.yaml
     CustomerOrderGetResponse:
       $ref: paths/customer/order/get/response.yaml
-    CustomerBookingRange:
+    CustomerOrderRange:
       $ref: paths/customer/order/range/list.yaml
-    CustomerBookingRangeResponse:
+    CustomerOrderRangeResponse:
       $ref: paths/customer/order/range/response.yaml
 
     # Customer
