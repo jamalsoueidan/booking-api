@@ -701,6 +701,8 @@ components:
           type: string
         locationId:
           type: string
+        groupId:
+          type: string
         shippingId:
           type: string
       required:
@@ -708,6 +710,7 @@ components:
         - to
         - customer_id
         - locationId
+        - groupId
     CustomerOrderSimpleLineItem:
       type: object
       properties:
