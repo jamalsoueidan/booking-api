@@ -13,8 +13,8 @@ export type UserAvailabilityServiceGetOrdersAggregate = {
 
 export const UserAvailabilityServiceGetOrders = async ({
   customerId,
-  start: $gte,
-  end: $lte,
+  start,
+  end,
 }: UserAvailabilityServiceGetOrdersProps) => {
   return OrderModel.aggregate<UserAvailabilityServiceGetOrdersAggregate>([
     {
@@ -34,12 +34,14 @@ export const UserAvailabilityServiceGetOrders = async ({
             $or: [
               {
                 "line_items.properties.from": {
-                  $gte,
+                  $gte: start,
+                  $lte: end,
                 },
               },
               {
                 "line_items.properties.to": {
-                  $lte,
+                  $gte: start,
+                  $lte: end,
                 },
               },
             ],
@@ -65,12 +67,14 @@ export const UserAvailabilityServiceGetOrders = async ({
             $or: [
               {
                 "line_items.properties.from": {
-                  $gte,
+                  $gte: start,
+                  $lte: end,
                 },
               },
               {
                 "line_items.properties.to": {
-                  $lte,
+                  $gte: start,
+                  $lte: end,
                 },
               },
             ],
@@ -204,6 +208,7 @@ export const UserAvailabilityServiceGetOrders = async ({
         id: "$_id",
         start: 1,
         end: 1,
+        line_items: 1,
       },
     },
   ]);

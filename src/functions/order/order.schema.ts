@@ -336,30 +336,3 @@ export const OrdreMongooseSchema = new Schema<IOrderDocument, IOrderModel>({
   shipping_address: AddressSchema,
   shipping_lines: [ShippingLineSchema],
 });
-
-// orders/get-line-item
-OrdreMongooseSchema.index(
-  { "customer.id": 1, "line_items.id": 1 },
-  { unique: false }
-);
-OrdreMongooseSchema.index(
-  { "line_items.properties.customerId": 1, "line_items.id": 1 },
-  { unique: false }
-);
-
-// orders/get
-OrdreMongooseSchema.index({ "customer.id": 1, id: 1 }, { unique: false });
-OrdreMongooseSchema.index(
-  { "line_items.properties.customerId": 1, id: 1 },
-  { unique: false }
-);
-
-// order/list
-OrdreMongooseSchema.index(
-  { "customer.id": 1, "line_items.properties.from": 1 },
-  { unique: false }
-);
-OrdreMongooseSchema.index(
-  { "line_items.properties.customerId": 1, "line_items.properties.from": 1 },
-  { unique: false }
-);

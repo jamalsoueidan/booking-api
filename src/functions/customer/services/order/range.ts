@@ -33,11 +33,11 @@ export type CustomerOrderServiceRangeAggregate = Omit<
 
 export const CustomerOrderServiceRange = async ({
   customerId,
-  start,
-  end,
+  start: startDate,
+  end: endDate,
 }: CustomerOrderServiceRangeProps) => {
-  const startDate = new Date(start);
-  const endDate = new Date(end);
+  const start = new Date(startDate);
+  const end = new Date(endDate);
 
   return OrderModel.aggregate<CustomerOrderServiceRangeAggregate>([
     {
@@ -54,15 +54,17 @@ export const CustomerOrderServiceRange = async ({
             ],
           },
           {
-            $and: [
+            $or: [
               {
                 "line_items.properties.from": {
-                  $gte: startDate,
+                  $gte: start,
+                  $lte: end,
                 },
               },
               {
                 "line_items.properties.to": {
-                  $lte: endDate,
+                  $gte: start,
+                  $lte: end,
                 },
               },
             ],
@@ -85,15 +87,17 @@ export const CustomerOrderServiceRange = async ({
             ],
           },
           {
-            $and: [
+            $or: [
               {
                 "line_items.properties.from": {
-                  $gte: startDate,
+                  $gte: start,
+                  $lte: end,
                 },
               },
               {
                 "line_items.properties.to": {
-                  $lte: endDate,
+                  $gte: start,
+                  $lte: end,
                 },
               },
             ],
