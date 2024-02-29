@@ -118,10 +118,12 @@ components:
       $ref: paths/customer/order/_types/shipping_lines.yaml
     CustomerOrderFulfillment:
       $ref: paths/customer/order/_types/fulfillment.yaml
-    CustomerOrderGet:
-      $ref: paths/customer/order/get/get.yaml
+    CustomerOrderWithLookup:
+      $ref: paths/customer/order/_types/order-with-lookup.yaml
     CustomerOrderGetResponse:
       $ref: paths/customer/order/get/response.yaml
+    CustomerOrderGetByGroupIdResponse:
+      $ref: paths/customer/order/get-by-group/response.yaml
     CustomerOrderRangeResponse:
       $ref: paths/customer/order/range/response.yaml
 
@@ -324,7 +326,9 @@ paths:
     $ref: "./paths/customer/product/list-ids/index.yaml"
   /customer/{customerId}/product/{productId}:
     $ref: "paths/customer/product/product.yaml"
-  /customer/{customerId}/orders/{orderId}/groupId/{groupId}:
+  /customer/{customerId}/orders/{orderId}/group/{groupId}:
+    $ref: "paths/customer/order/get-by-group/index.yaml"
+  /customer/{customerId}/orders/{orderId}:
     $ref: "paths/customer/order/get/index.yaml"
   /customer/{customerId}/orders-range:
     $ref: "paths/customer/order/range/index.yaml"

@@ -1,5 +1,5 @@
 allOf:
-  - $ref: "../_types/order.yaml"
+  - $ref: "./order.yaml"
   - type: object
     properties:
       user:
