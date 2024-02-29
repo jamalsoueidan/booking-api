@@ -569,8 +569,14 @@ components:
           type: string
         title:
           type: string
+        groupId:
+          type: string
         shipping:
           $ref: '#/components/schemas/Shipping'
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerOrderLineItem'
       required:
         - id
         - admin_graphql_api_id
@@ -590,10 +596,12 @@ components:
         - fulfillments
         - refunds
         - shipping_lines
+        - groupId
         - start
         - end
         - title
         - order_number
+        - line_items
     CustomerOrderMoney:
       type: object
       properties:
@@ -876,50 +884,6 @@ components:
         - title
         - total_discount
         - total_discount_set
-    CustomerOrderLineItemLookup:
-      allOf:
-        - $ref: '#/components/schemas/CustomerOrderLineItem'
-        - type: object
-          properties:
-            user:
-              type: object
-              properties:
-                customerId:
-                  type: number
-                fullname:
-                  type: string
-                username:
-                  type: string
-                shortDescription:
-                  type: string
-                images:
-                  type: object
-                  properties:
-                    profile:
-                      type: object
-                      properties:
-                        url:
-                          type: string
-                          format: uri
-                        width:
-                          type: integer
-                        height:
-                          type: integer
-              required:
-                - customerId
-                - fullname
-                - username
-                - shortDescription
-                - images
-            location:
-              $ref: '#/components/schemas/CustomerLocationBase'
-            shipping:
-              allOf:
-                - $ref: '#/components/schemas/LocationTravelTime'
-                - $ref: '#/components/schemas/ShippingCostDestination'
-          required:
-            - user
-            - location
     CustomerOrderRefund:
       type: object
       properties:
@@ -1087,12 +1051,41 @@ components:
         - $ref: '#/components/schemas/CustomerOrder'
         - type: object
           properties:
-            line_items:
-              type: array
-              items:
-                $ref: '#/components/schemas/CustomerOrderLineItemLookup'
+            user:
+              type: object
+              properties:
+                customerId:
+                  type: number
+                fullname:
+                  type: string
+                username:
+                  type: string
+                shortDescription:
+                  type: string
+                images:
+                  type: object
+                  properties:
+                    profile:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          format: uri
+                        width:
+                          type: integer
+                        height:
+                          type: integer
+              required:
+                - customerId
+                - fullname
+                - username
+                - shortDescription
+                - images
+            location:
+              $ref: '#/components/schemas/CustomerLocationBase'
           required:
-            - line_items
+            - user
+            - location
     CustomerOrderGetResponse:
       type: object
       properties:
@@ -1104,17 +1097,6 @@ components:
       required:
         - success
         - payload
-    CustomerOrderRange:
-      allOf:
-        - $ref: '#/components/schemas/CustomerOrder'
-        - type: object
-          properties:
-            line_items:
-              type: array
-              items:
-                $ref: '#/components/schemas/CustomerOrderLineItem'
-          required:
-            - line_items
     CustomerOrderRangeResponse:
       type: object
       properties:
@@ -1124,7 +1106,7 @@ components:
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerOrderRange'
+            $ref: '#/components/schemas/CustomerOrder'
       required:
         - success
         - payload
