@@ -1086,7 +1086,7 @@ components:
         - service
         - status
         - line_items
-    CustomerOrderResponse:
+    CustomerOrder:
       allOf:
         - $ref: '#/components/schemas/CustomerBaseOrder'
         - type: object
@@ -1094,10 +1094,10 @@ components:
             line_items:
               type: array
               items:
-                $ref: '#/components/schemas/CustomerOrderLineItemResponse'
+                $ref: '#/components/schemas/CustomerOrderLineItem'
           required:
             - line_items
-    CustomerOrderLineItemResponse:
+    CustomerOrderLineItem:
       allOf:
         - $ref: '#/components/schemas/CustomeBaserOrderLineItem'
         - type: object
@@ -1118,7 +1118,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerOrderResponse'
+          $ref: '#/components/schemas/CustomerOrder'
       required:
         - success
         - payload
