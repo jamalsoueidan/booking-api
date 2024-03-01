@@ -1046,7 +1046,7 @@ components:
         - service
         - status
         - line_items
-    CustomerOrderGet:
+    CustomerOrderWithLookup:
       allOf:
         - $ref: '#/components/schemas/CustomerOrder'
         - type: object
@@ -1093,7 +1093,18 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerOrderGet'
+          $ref: '#/components/schemas/CustomerOrderWithLookup'
+      required:
+        - success
+        - payload
+    CustomerOrderGetByGroupIdResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          $ref: '#/components/schemas/CustomerOrderWithLookup'
       required:
         - success
         - payload
@@ -3227,7 +3238,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-  '/customer/{customerId}/orders/{orderId}':
+  '/customer/{customerId}/orders/{orderId}/group/{groupId}':
     get:
       parameters:
         - name: customerId
@@ -3245,6 +3256,42 @@ paths:
         - name: groupId
           in: path
           description: groupId for the order
+          required: true
+          schema:
+            type: string
+      tags:
+        - CustomerOrder
+      operationId: customerOrderGetByGroup
+      summary: GET Get order with lineItems array for specific groupId
+      description: This endpoint gets order with lineItems array of objects specific for groupId
+      responses:
+        '200':
+          description: Response with payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerOrderGetByGroupIdResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  '/customer/{customerId}/orders/{orderId}':
+    get:
+      parameters:
+        - name: customerId
+          in: path
+          description: customerId for the customer
+          required: true
+          schema:
+            type: string
+        - name: orderId
+          in: path
+          description: orderId for the order
           required: true
           schema:
             type: string
