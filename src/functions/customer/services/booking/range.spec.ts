@@ -6,7 +6,7 @@ import { orderWithShipping } from "~/functions/webhook/data-order-with-shipping"
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
 import { createShipping } from "~/library/jest/helpers/shipping";
-import { CustomerOrderServiceRange } from "./range";
+import { CustomerBookingServiceRange } from "./range";
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerOrderServiceRange", () => {
@@ -18,7 +18,7 @@ describe("CustomerOrderServiceRange", () => {
 
     const customerId = response.line_items[0].properties?.customerId || 0;
 
-    const orders = await CustomerOrderServiceRange({
+    const orders = await CustomerBookingServiceRange({
       customerId: customerId,
       start: "2023-11-26T00:00:00+03:00",
       end: "2024-01-07T00:00:00+03:00",
@@ -44,7 +44,7 @@ describe("CustomerOrderServiceRange", () => {
 
     await OrderModel.create(dumbData);
 
-    const orders = await CustomerOrderServiceRange({
+    const orders = await CustomerBookingServiceRange({
       customerId: customerId,
       start: "2023-11-26T00:00:00+03:00",
       end: "2024-01-07T00:00:00+03:00",

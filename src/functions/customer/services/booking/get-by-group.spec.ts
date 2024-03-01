@@ -3,7 +3,7 @@ import { Order } from "~/functions/order/order.types";
 import { orderWithfulfillmentAndRefunds } from "~/functions/webhook/data-order-with-fullfilment-and-refunds";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
-import { CustomerOrderServiceGetByGroup } from "./get-by-group";
+import { CustomerBookingServiceGetByGroup } from "./get-by-group";
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerOrderServiceGetByGroup", () => {
@@ -21,7 +21,7 @@ describe("CustomerOrderServiceGetByGroup", () => {
     const orderId = response.id;
     const ownerCustomerId = user.customerId;
 
-    let order = await CustomerOrderServiceGetByGroup({
+    let order = await CustomerBookingServiceGetByGroup({
       customerId: ownerCustomerId,
       orderId,
       groupId,
@@ -31,7 +31,7 @@ describe("CustomerOrderServiceGetByGroup", () => {
     expect(order.fulfillments.length).toBe(1);
     expect(order.refunds.length).toBe(1);
 
-    order = await CustomerOrderServiceGetByGroup({
+    order = await CustomerBookingServiceGetByGroup({
       customerId: ownerCustomerId,
       orderId,
       groupId: "123",

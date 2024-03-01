@@ -1,28 +1,38 @@
 import { Location } from "~/functions/location";
 import { OrderModel } from "~/functions/order/order.models";
+import { OrderLineItem } from "~/functions/order/order.types";
 import { Shipping } from "~/functions/shipping/shipping.types";
 import { User } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
-import { CustomerOrderServiceRangeAggregate } from "./range";
+import { CustomerBookingServiceRangeAggregate } from "../booking/range";
 
-export type CustomerOrderServiceGetAggregate =
-  CustomerOrderServiceRangeAggregate & {
-    user: Pick<
-      User,
-      "customerId" | "username" | "fullname" | "images" | "shortDescription"
-    >;
-    location: Pick<
-      Location,
-      "name" | "fullAddress" | "locationType" | "originType"
-    >;
-    shipping?: Pick<Shipping, "destination" | "cost" | "distance" | "duration">;
-  };
+export type CustomLineItems = OrderLineItem & {
+  user: Pick<
+    User,
+    "customerId" | "username" | "fullname" | "images" | "shortDescription"
+  >;
+  location: Pick<
+    Location,
+    "name" | "fullAddress" | "locationType" | "originType"
+  >;
+  shipping?: Shipping;
+};
+
+export type CustomerOrderServiceGetAggregate = Omit<
+  CustomerBookingServiceRangeAggregate,
+  "line_items" | "shipping" | "location"
+> & {
+  line_items: CustomLineItems[];
+};
 
 export type CustomerOrderServiceGetProps = {
   customerId: number;
   orderId: number;
 };
 
+/*
+ The purpose of this method is to render the whole order with all the treatments, not just one groupId.
+*/
 export const CustomerOrderServiceGet = async ({
   customerId,
   orderId,
@@ -32,7 +42,7 @@ export const CustomerOrderServiceGet = async ({
       $match: {
         $and: [
           {
-            "line_items.properties.customerId": customerId,
+            "customer.id": customerId,
           },
           {
             id: orderId,
@@ -81,41 +91,14 @@ export const CustomerOrderServiceGet = async ({
     },
     {
       $sort: {
+        "line_items.properties.groupId": 1,
         "line_items.properties.from": 1,
-      },
-    },
-    {
-      $group: {
-        _id: "$order_number",
-        line_items: { $push: "$line_items" },
-        customer: { $first: "$customer" },
-        orderNumber: { $first: "$order_number" },
-        fulfillmentStatus: { $first: "$fulfillment_status" },
-        financialStatus: { $first: "$financial_status" },
-        createdAt: { $first: "$created_at" },
-        updatedAt: { $first: "$updated_at" },
-        cancelReason: { $first: "$cancel_reason" },
-        cancelledAt: { $first: "$cancelled_at" },
-        note: { $first: "$note" },
-        noteAttributes: { $first: "$note_attributes" },
-        fulfillmentsArray: { $push: "$fulfillments" },
-        refundsArray: { $push: "$refunds" },
-      },
-    },
-    {
-      $addFields: {
-        customerId: { $first: "$line_items.properties.customerId" },
-        locationId: { $first: "$line_items.properties.locationId" },
-        shippingId: { $first: "$line_items.properties.shippingId" },
-        groupId: { $first: "$line_items.properties.groupId" },
-        end: { $last: "$line_items.properties.to" },
-        start: { $first: "$line_items.properties.from" },
       },
     },
     {
       $lookup: {
         from: "User",
-        let: { customerId: "$customerId" },
+        let: { customerId: "$line_items.properties.customerId" },
         pipeline: [
           {
             $match: {
@@ -135,19 +118,19 @@ export const CustomerOrderServiceGet = async ({
             },
           },
         ],
-        as: "user",
+        as: "line_items.user",
       },
     },
     {
       $unwind: {
-        path: "$user",
+        path: "$line_items.user",
         preserveNullAndEmptyArrays: true, // Set to false if you always expect a match
       },
     },
     {
       $lookup: {
         from: "Location",
-        let: { locationId: "$locationId" },
+        let: { locationId: "$line_items.properties.locationId" },
         pipeline: [
           {
             $match: {
@@ -169,19 +152,19 @@ export const CustomerOrderServiceGet = async ({
             },
           },
         ],
-        as: "location",
+        as: "line_items.location",
       },
     },
     {
       $unwind: {
-        path: "$location",
+        path: "$line_items.location",
         preserveNullAndEmptyArrays: true, // Set to false if you always expect a match
       },
     },
     {
       $lookup: {
         from: "Shipping",
-        let: { shippingId: "$shippingId" },
+        let: { shippingId: "$line_items.properties.shippingId" },
         pipeline: [
           {
             $match: {
@@ -204,53 +187,36 @@ export const CustomerOrderServiceGet = async ({
             },
           },
         ],
-        as: "shipping",
+        as: "line_items.shipping",
       },
     },
     {
       $unwind: {
-        path: "$shipping",
+        path: "$line_items.shipping",
         preserveNullAndEmptyArrays: true,
       },
     },
     {
-      $addFields: {
-        start: {
-          $cond: {
-            if: { $gt: ["$shipping.duration.value", 0] },
-            then: {
-              $dateSubtract: {
-                startDate: "$start",
-                unit: "minute",
-                amount: { $toInt: "$shipping.duration.value" },
-              },
-            },
-            else: "$start",
-          },
-        },
-        end: {
-          $cond: {
-            if: { $gt: ["$shipping.duration.value", 0] },
-            then: {
-              $dateAdd: {
-                startDate: "$end",
-                unit: "minute",
-                amount: { $toInt: "$shipping.duration.value" },
-              },
-            },
-            else: "$end",
-          },
-        },
+      $group: {
+        _id: "$order_number",
+        line_items: { $push: "$line_items" },
+        customer: { $first: "$customer" },
+        orderNumber: { $first: "$order_number" },
+        fulfillmentStatus: { $first: "$fulfillment_status" },
+        financialStatus: { $first: "$financial_status" },
+        createdAt: { $first: "$created_at" },
+        updatedAt: { $first: "$updated_at" },
+        cancelReason: { $first: "$cancel_reason" },
+        cancelledAt: { $first: "$cancelled_at" },
+        note: { $first: "$note" },
+        noteAttributes: { $first: "$note_attributes" },
+        fulfillmentsArray: { $push: "$fulfillments" },
+        refundsArray: { $push: "$refunds" },
       },
     },
     {
       $project: {
         id: "$_id",
-        start: 1,
-        end: 1,
-        shipping: 1,
-        groupId: 1,
-        locationId: 1,
         line_items: 1,
         customer: 1,
         orderNumber: 1,

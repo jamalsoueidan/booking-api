@@ -3,6 +3,7 @@ import { Order } from "~/functions/order/order.types";
 import { orderWithfulfillmentAndRefunds } from "~/functions/webhook/data-order-with-fullfilment-and-refunds";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
+import { createShipping } from "~/library/jest/helpers/shipping";
 import { CustomerOrderServiceGet } from "./get";
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -12,17 +13,18 @@ describe("CustomerOrderServiceGet", () => {
     const groupId = "2332";
     const user = await createUser({ customerId });
     const location = await createLocation({ customerId });
+    const shipping = await createShipping({ location: location.id });
     const dumbData = Order.parse(orderWithfulfillmentAndRefunds);
-    dumbData.line_items[0].properties!.customerId = user.customerId;
-    dumbData.line_items[0].properties!.locationId = location._id.toString();
-    dumbData.line_items[0].properties!.groupId = groupId;
+    dumbData.line_items.map((lineItem) => {
+      lineItem.properties!.customerId = user.customerId;
+      lineItem.properties!.locationId = location._id.toString();
+      lineItem.properties!.groupId = groupId;
+    });
     const response = await OrderModel.create(dumbData);
-
     const orderId = response.id;
-    const ownerCustomerId = user.customerId;
 
     let order = await CustomerOrderServiceGet({
-      customerId: ownerCustomerId,
+      customerId: dumbData.customer.id,
       orderId,
     });
 
