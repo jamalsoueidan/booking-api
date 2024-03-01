@@ -120,9 +120,9 @@ components:
       $ref: paths/customer/_types/order/fulfillment.yaml
 
     # Order
-    CustomerOrderResponse:
+    CustomerOrder:
       $ref: paths/customer/order/_types/order.yaml
-    CustomerOrderLineItemResponse:
+    CustomerOrderLineItem:
       $ref: paths/customer/order/_types/line-item.yaml
     CustomerOrderGetResponse:
       $ref: paths/customer/order/get/response.yaml
