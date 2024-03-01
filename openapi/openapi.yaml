@@ -97,7 +97,7 @@ components:
 
     # Base Order
     CustomerBaseOrder:
-      $ref: paths/customer/order/_types/order.yaml
+      $ref: paths/customer/_types/order/base-order.yaml
     CustomerBaseOrderMoney:
       $ref: paths/customer/_types/order/money.yaml
     CustomerBaseOrderAddress:
