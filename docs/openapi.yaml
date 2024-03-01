@@ -495,16 +495,129 @@ components:
       required:
         - slots
     CustomerBaseOrder:
-      allOf:
-        - $ref: '#/components/schemas/CustomerBooking/allOf/0'
-        - type: object
-          properties:
-            line_items:
-              type: array
-              items:
-                $ref: '#/components/schemas/CustomerOrderLineItemResponse'
-          required:
-            - line_items
+      type: object
+      properties:
+        id:
+          type: number
+        order_number:
+          type: number
+        admin_graphql_api_id:
+          type: string
+        buyer_accepts_marketing:
+          type: boolean
+        cancel_reason:
+          type: string
+          nullable: true
+        cancelled_at:
+          type: string
+        client_details:
+          $ref: '#/components/schemas/CustomerBaseOrderClient'
+        closed_at:
+          type: string
+          nullable: true
+        confirmed:
+          type: boolean
+        contact_email:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        currency:
+          type: string
+        current_subtotal_price:
+          type: string
+        current_subtotal_price_set:
+          $ref: '#/components/schemas/CustomerBaseOrderMoney'
+        current_total_additional_fees_set:
+          $ref: '#/components/schemas/CustomerBaseOrderMoney'
+          nullable: true
+        current_total_discounts:
+          type: string
+        current_total_discounts_set:
+          $ref: '#/components/schemas/CustomerBaseOrderMoney'
+        current_total_duties_set:
+          $ref: '#/components/schemas/CustomerBaseOrderMoney'
+          nullable: true
+        current_total_price:
+          type: string
+        current_total_price_set:
+          $ref: '#/components/schemas/CustomerBaseOrderMoney'
+        current_total_tax:
+          type: string
+        current_total_tax_set:
+          $ref: '#/components/schemas/CustomerBaseOrderMoney'
+        customer:
+          $ref: '#/components/schemas/CustomerBaseOrderCustomer'
+        fulfillments:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerBaseOrderFulfillment'
+        refunds:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerBaseOrderRefund'
+        shipping_address:
+          $ref: '#/components/schemas/CustomerBaseOrderAddress'
+          nullable: true
+        shipping_lines:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+              carrier_identifier:
+                type: string
+                nullable: true
+              code:
+                type: string
+                nullable: true
+              discounted_price:
+                type: string
+              discounted_price_set:
+                $ref: '#/components/schemas/CustomerBaseOrderMoney'
+              phone:
+                type: string
+                nullable: true
+              price:
+                type: string
+              price_set:
+                $ref: '#/components/schemas/CustomerBaseOrderMoney'
+              requested_fulfillment_service_id:
+                type: string
+                nullable: true
+              source:
+                type: string
+              title:
+                type: string
+            required:
+              - id
+              - discounted_price
+              - discounted_price_set
+              - price
+              - price_set
+              - source
+              - title
+      required:
+        - id
+        - admin_graphql_api_id
+        - buyer_accepts_marketing
+        - confirmed
+        - created_at
+        - currency
+        - customer
+        - current_subtotal_price
+        - current_subtotal_price_set
+        - current_total_discounts
+        - current_total_discounts_set
+        - current_total_price
+        - current_total_price_set
+        - current_total_tax
+        - current_total_tax_set
+        - fulfillments
+        - refunds
+        - shipping_lines
+        - order_number
     CustomerBaseOrderMoney:
       type: object
       properties:
@@ -974,7 +1087,16 @@ components:
         - status
         - line_items
     CustomerOrderResponse:
-      $ref: '#/components/schemas/CustomerBaseOrder'
+      allOf:
+        - $ref: '#/components/schemas/CustomerBaseOrder'
+        - type: object
+          properties:
+            line_items:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerOrderLineItemResponse'
+          required:
+            - line_items
     CustomerOrderLineItemResponse:
       allOf:
         - $ref: '#/components/schemas/CustomeBaserOrderLineItem'
@@ -996,135 +1118,13 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerBaseOrder'
+          $ref: '#/components/schemas/CustomerOrderResponse'
       required:
         - success
         - payload
     CustomerBooking:
       allOf:
-        - type: object
-          properties:
-            id:
-              type: number
-            order_number:
-              type: number
-            admin_graphql_api_id:
-              type: string
-            buyer_accepts_marketing:
-              type: boolean
-            cancel_reason:
-              type: string
-              nullable: true
-            cancelled_at:
-              type: string
-            client_details:
-              $ref: '#/components/schemas/CustomerBaseOrderClient'
-            closed_at:
-              type: string
-              nullable: true
-            confirmed:
-              type: boolean
-            contact_email:
-              type: string
-              nullable: true
-            created_at:
-              type: string
-            currency:
-              type: string
-            current_subtotal_price:
-              type: string
-            current_subtotal_price_set:
-              $ref: '#/components/schemas/CustomerBaseOrderMoney'
-            current_total_additional_fees_set:
-              $ref: '#/components/schemas/CustomerBaseOrderMoney'
-              nullable: true
-            current_total_discounts:
-              type: string
-            current_total_discounts_set:
-              $ref: '#/components/schemas/CustomerBaseOrderMoney'
-            current_total_duties_set:
-              $ref: '#/components/schemas/CustomerBaseOrderMoney'
-              nullable: true
-            current_total_price:
-              type: string
-            current_total_price_set:
-              $ref: '#/components/schemas/CustomerBaseOrderMoney'
-            current_total_tax:
-              type: string
-            current_total_tax_set:
-              $ref: '#/components/schemas/CustomerBaseOrderMoney'
-            customer:
-              $ref: '#/components/schemas/CustomerBaseOrderCustomer'
-            fulfillments:
-              type: array
-              items:
-                $ref: '#/components/schemas/CustomerBaseOrderFulfillment'
-            refunds:
-              type: array
-              items:
-                $ref: '#/components/schemas/CustomerBaseOrderRefund'
-            shipping_address:
-              $ref: '#/components/schemas/CustomerBaseOrderAddress'
-              nullable: true
-            shipping_lines:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: number
-                  carrier_identifier:
-                    type: string
-                    nullable: true
-                  code:
-                    type: string
-                    nullable: true
-                  discounted_price:
-                    type: string
-                  discounted_price_set:
-                    $ref: '#/components/schemas/CustomerBaseOrderMoney'
-                  phone:
-                    type: string
-                    nullable: true
-                  price:
-                    type: string
-                  price_set:
-                    $ref: '#/components/schemas/CustomerBaseOrderMoney'
-                  requested_fulfillment_service_id:
-                    type: string
-                    nullable: true
-                  source:
-                    type: string
-                  title:
-                    type: string
-                required:
-                  - id
-                  - discounted_price
-                  - discounted_price_set
-                  - price
-                  - price_set
-                  - source
-                  - title
-          required:
-            - id
-            - admin_graphql_api_id
-            - buyer_accepts_marketing
-            - confirmed
-            - created_at
-            - currency
-            - customer
-            - current_subtotal_price
-            - current_subtotal_price_set
-            - current_total_discounts
-            - current_total_discounts_set
-            - current_total_price
-            - current_total_price_set
-            - current_total_tax
-            - current_total_tax_set
-            - fulfillments
-            - refunds
-            - shipping_lines
-            - order_number
+        - $ref: '#/components/schemas/CustomerBaseOrder'
         - type: object
           properties:
             start:
