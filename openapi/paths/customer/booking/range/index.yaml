@@ -19,8 +19,8 @@ get:
       schema:
         type: string
   tags:
-    - CustomerOrder
-  operationId: customerOrderRange
+    - CustomerBooking
+  operationId: customerBookingRange
   summary: GET Get all bookings for customer from orders
   description: This endpoint get all bookings from orders
   responses:

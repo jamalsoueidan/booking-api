@@ -1,0 +1,30 @@
+allOf:
+  - $ref: "../../_types/order/base-order.yaml"
+  - type: object
+    properties:
+      start:
+        type: string
+      end:
+        type: string
+      title:
+        type: string
+      groupId:
+        type: string
+      shipping:
+        $ref: ../../../shipping/_types/shipping.yaml
+      user:
+        $ref: ../../_types/order/user.yaml
+      location:
+        $ref: ../../location/_types/base-location.yaml
+      line_items:
+        type: array
+        items:
+          $ref: ../../_types/order/line-item.yaml
+    required:
+      - user
+      - location
+      - groupId
+      - start
+      - end
+      - title
+      - line_items

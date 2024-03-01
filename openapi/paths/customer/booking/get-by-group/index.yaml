@@ -19,8 +19,8 @@ get:
       schema:
         type: string
   tags:
-    - CustomerOrder
-  operationId: customerOrderGetByGroup
+    - CustomerBooking
+  operationId: customerBookingGetByGroup
   summary: GET Get order with lineItems array for specific groupId
   description: This endpoint gets order with lineItems array of objects specific for groupId
   responses:
