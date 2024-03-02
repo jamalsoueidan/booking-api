@@ -42,7 +42,7 @@ export const CustomerBookingServiceGetByGroup = async ({
     throw new NotFoundError([
       {
         code: "custom",
-        message: "ORDER_NOT_FOUND",
+        message: "BOOKING_NOT_FOUND",
         path: ["lineItemId"],
       },
     ]);
