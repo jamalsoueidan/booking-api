@@ -47,7 +47,8 @@ export const bookingAggregation: PipelineStage[] = [
   },
   {
     $group: {
-      _id: "$line_items.properties.groupId",
+      _id: "$_id",
+      id: { $first: "$id" },
       line_items: { $push: "$line_items" },
       customer: { $first: "$customer" },
       orderNumber: { $first: "$order_number" },
@@ -173,7 +174,7 @@ export const bookingAggregation: PipelineStage[] = [
   },
   {
     $project: {
-      id: "$_id",
+      id: 1,
       start: 1,
       end: 1,
       shipping: 1,
