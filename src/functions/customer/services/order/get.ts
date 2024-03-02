@@ -199,7 +199,8 @@ export const CustomerOrderServiceGet = async ({
     {
       $group: {
         _id: "$order_number",
-        lineItems: { $push: "$line_items" },
+        id: { $first: "$id" },
+        line_items: { $push: "$line_items" },
         customer: { $first: "$customer" },
         order_number: { $first: "$order_number" },
         fulfillment_status: { $first: "$fulfillment_status" },
@@ -217,7 +218,7 @@ export const CustomerOrderServiceGet = async ({
     {
       $project: {
         id: "$_id",
-        lineItems: 1,
+        line_items: 1,
         customer: 1,
         order_number: 1,
         fulfillment_status: 1,
