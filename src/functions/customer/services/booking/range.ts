@@ -50,11 +50,7 @@ export const CustomerBookingServiceRange = async ({
       $match: {
         $and: [
           {
-            $or: [
-              {
-                "line_items.properties.customerId": customerId,
-              },
-            ],
+            "line_items.properties.customerId": customerId,
           },
           {
             $or: [
@@ -80,11 +76,7 @@ export const CustomerBookingServiceRange = async ({
       $match: {
         $and: [
           {
-            $or: [
-              {
-                "line_items.properties.customerId": customerId,
-              },
-            ],
+            "line_items.properties.customerId": customerId,
           },
           {
             $or: [

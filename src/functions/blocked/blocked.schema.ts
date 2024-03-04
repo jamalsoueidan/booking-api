@@ -10,22 +10,19 @@ export interface IBlockedModel extends Model<IBlockedDocument> {}
 export const BlockedMongooseSchema = new mongoose.Schema<
   IBlockedDocument,
   IBlockedModel
->(
-  {
-    customerId: {
-      type: Number,
-      index: true,
-    },
-    start: {
-      index: true,
-      required: true,
-      type: Date,
-    },
-    end: {
-      index: true,
-      required: true,
-      type: Date,
-    },
+>({
+  customerId: {
+    type: Number,
+    index: true,
   },
-  { timestamps: true }
-);
+  start: {
+    index: true,
+    required: true,
+    type: Date,
+  },
+  end: {
+    index: true,
+    required: true,
+    type: Date,
+  },
+});
