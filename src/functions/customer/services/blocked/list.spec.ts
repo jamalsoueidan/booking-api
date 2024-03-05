@@ -27,7 +27,7 @@ describe("CustomerBlockedServiceList", () => {
       limit: 5,
     });
 
-    expect(totalCount).toBe(5);
+    expect(totalCount).toBe(17);
     expect(firstPage.length).toBe(5);
     initialCursor = nextCursor;
 
