@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { CustomerLocationServiceGetAll } from "~/functions/customer/services/location";
 import { _ } from "~/library/handler";
 import { NumberOrStringType, StringOrObjectIdType } from "~/library/zod";
 import { CustomerBlockedServiceList } from "../../services/blocked/list";
@@ -15,7 +14,7 @@ export const CustomerBlockedControllerListSchema = z.object({
 });
 
 export type CustomerBlockedControllerListResponse = Awaited<
-  ReturnType<typeof CustomerLocationServiceGetAll>
+  ReturnType<typeof CustomerBlockedServiceList>
 >;
 
 export const CustomerBlockedControllerList = _(

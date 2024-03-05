@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { BlockedModel } from "~/functions/blocked/blocked.model";
+import { Blocked } from "~/functions/blocked/blocked.types";
 import { StringOrObjectId } from "~/library/zod";
 
 export type CustomerBlockedServiceListProps = {
@@ -35,7 +36,9 @@ export const CustomerBlockedServiceList = async ({
   };
 
   // Query to get the documents
-  const results = await BlockedModel.aggregate([
+  const results = await BlockedModel.aggregate<
+    Blocked & { _id: StringOrObjectId }
+  >([
     matchStage,
     { $sort: { _id: 1 } }, // Ensure results are sorted for consistent pagination
     limitStage,
@@ -45,7 +48,7 @@ export const CustomerBlockedServiceList = async ({
 
   // Calculate nextCursor based on the last document in the results, if any
   const newNextCursor =
-    results.length > 0 ? results[results.length - 1]._id.toString() : null;
+    results.length > 0 ? results[results.length - 1]._id.toString() : undefined;
 
   return {
     results,

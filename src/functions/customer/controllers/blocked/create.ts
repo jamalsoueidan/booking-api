@@ -2,7 +2,6 @@ import { z } from "zod";
 import { BlockDateZodSchema } from "~/functions/blocked/blocked.types";
 import { _ } from "~/library/handler";
 import { CustomerBlockedServiceCreate } from "../../services/blocked/create";
-import { CustomerServiceUpdate } from "../../services/customer";
 
 export type CustomerControllerCreateRequest = {
   query: z.infer<typeof CustomerBlockedControllerQuerySchema>;
@@ -18,7 +17,7 @@ export const CustomerBlockedControllerCreateSchema = BlockDateZodSchema.omit({
 }).strip();
 
 export type CustomerBlockedControllerCreateResponse = Awaited<
-  ReturnType<typeof CustomerServiceUpdate>
+  ReturnType<typeof CustomerBlockedServiceCreate>
 >;
 
 export const CustomerBlockedControllerCreate = _(

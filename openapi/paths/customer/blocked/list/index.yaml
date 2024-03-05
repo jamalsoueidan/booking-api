@@ -1,0 +1,40 @@
+get:
+  parameters:
+    - name: customerId
+      in: path
+      description: The ID of the customerId
+      required: true
+      schema:
+        type: string
+    - name: nextCursor
+      in: query
+      description: paginate
+      required: false
+      schema:
+        type: string
+    - name: limit
+      in: query
+      description: limit counts of documents
+      required: true
+      schema:
+        type: string
+  tags:
+    - CustomerBlocked
+  operationId: customerBlockedList
+  summary: GET Get all blocked documents for customer
+  description: This endpoint get all blocked documents for customer
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+
+  security: []

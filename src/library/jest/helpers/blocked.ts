@@ -7,6 +7,7 @@ export const getBlockedObject = (
 ): Omit<Blocked, "_id"> => ({
   start: faker.date.past(),
   end: faker.date.future(),
+  title: faker.company.name(),
   customerId: 1,
   ...props,
 });

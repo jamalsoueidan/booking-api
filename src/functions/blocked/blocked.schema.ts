@@ -15,6 +15,7 @@ export const BlockedMongooseSchema = new mongoose.Schema<
     type: Number,
     index: true,
   },
+  title: String,
   start: {
     index: true,
     required: true,

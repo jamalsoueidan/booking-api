@@ -14,6 +14,7 @@ describe("CustomerBlockedServiceDestroy", () => {
       customerId: 7106990342471,
       start,
       end,
+      title: "asd",
     });
 
     const blockedDocuments = await CustomerBlockedServiceDestroy({

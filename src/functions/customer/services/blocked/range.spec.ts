@@ -10,17 +10,20 @@ describe("CustomerBlockedServiceRange", () => {
       customerId: 7106990342471,
       start: new Date("2023-11-25"),
       end: new Date("2023-11-27"),
+      title: "asd",
     });
     await createBlocked({
       customerId: 7106990342471,
       start: new Date("2023-12-15"),
       end: new Date("2023-12-20"),
+      title: "asd",
     });
     // outside range
     await createBlocked({
       customerId: 7106990342471,
       start: new Date("2024-01-08"),
       end: new Date("2024-01-10"),
+      title: "asd",
     });
   });
 

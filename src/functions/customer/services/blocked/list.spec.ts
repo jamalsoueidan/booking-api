@@ -10,6 +10,7 @@ describe("CustomerBlockedServiceList", () => {
         customerId: 7106990342471,
         start: new Date(`2023-11-${10 + i}`),
         end: new Date(`2023-11-${11 + i}`),
+        title: "asd",
       });
     }
   });
@@ -17,7 +18,6 @@ describe("CustomerBlockedServiceList", () => {
   it("should return 5 blocked records for customer with correct pagination", async () => {
     const customer = await createUser({ customerId: 7106990342471 });
 
-    let initialCursor = null;
     const {
       results: firstPage,
       totalCount,
@@ -29,7 +29,7 @@ describe("CustomerBlockedServiceList", () => {
 
     expect(totalCount).toBe(17);
     expect(firstPage.length).toBe(5);
-    initialCursor = nextCursor;
+    const initialCursor = nextCursor;
 
     const { results: secondPage } = await CustomerBlockedServiceList({
       customerId: customer.customerId,
