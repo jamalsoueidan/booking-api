@@ -40,14 +40,8 @@ export const CustomerOrderServiceGet = async ({
   const orders = await OrderModel.aggregate<CustomerOrderServiceGetAggregate>([
     {
       $match: {
-        $and: [
-          {
-            "customer.id": customerId,
-          },
-          {
-            id: orderId,
-          },
-        ],
+        "customer.id": customerId,
+        id: orderId,
       },
     },
     { $unwind: "$line_items" },

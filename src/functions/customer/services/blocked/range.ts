@@ -23,25 +23,19 @@ export const CustomerBlockedServiceRange = async ({
   return BlockedModel.aggregate<CustomerBlockedServiceRangeAggregate>([
     {
       $match: {
-        $and: [
+        customerId,
+        $or: [
           {
-            customerId,
+            start: {
+              $gte: start,
+              $lte: end,
+            },
           },
           {
-            $or: [
-              {
-                start: {
-                  $gte: start,
-                  $lte: end,
-                },
-              },
-              {
-                end: {
-                  $gte: start,
-                  $lte: end,
-                },
-              },
-            ],
+            end: {
+              $gte: start,
+              $lte: end,
+            },
           },
         ],
       },

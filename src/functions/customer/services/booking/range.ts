@@ -48,25 +48,19 @@ export const CustomerBookingServiceRange = async ({
   return OrderModel.aggregate<CustomerBookingServiceRangeAggregate>([
     {
       $match: {
-        $and: [
+        "line_items.properties.customerId": customerId,
+        $or: [
           {
-            "line_items.properties.customerId": customerId,
+            "line_items.properties.from": {
+              $gte: start,
+              $lte: end,
+            },
           },
           {
-            $or: [
-              {
-                "line_items.properties.from": {
-                  $gte: start,
-                  $lte: end,
-                },
-              },
-              {
-                "line_items.properties.to": {
-                  $gte: start,
-                  $lte: end,
-                },
-              },
-            ],
+            "line_items.properties.to": {
+              $gte: start,
+              $lte: end,
+            },
           },
         ],
       },
@@ -74,25 +68,19 @@ export const CustomerBookingServiceRange = async ({
     { $unwind: "$line_items" },
     {
       $match: {
-        $and: [
+        "line_items.properties.customerId": customerId,
+        $or: [
           {
-            "line_items.properties.customerId": customerId,
+            "line_items.properties.from": {
+              $gte: start,
+              $lte: end,
+            },
           },
           {
-            $or: [
-              {
-                "line_items.properties.from": {
-                  $gte: start,
-                  $lte: end,
-                },
-              },
-              {
-                "line_items.properties.to": {
-                  $gte: start,
-                  $lte: end,
-                },
-              },
-            ],
+            "line_items.properties.to": {
+              $gte: start,
+              $lte: end,
+            },
           },
         ],
       },

@@ -18,17 +18,9 @@ export const CustomerBookingServiceGetByGroup = async ({
     await OrderModel.aggregate<CustomerBookingServiceRangeAggregate>([
       {
         $match: {
-          $and: [
-            {
-              "line_items.properties.customerId": customerId,
-            },
-            {
-              "line_items.properties.groupId": groupId,
-            },
-            {
-              id: orderId,
-            },
-          ],
+          "line_items.properties.customerId": customerId,
+          "line_items.properties.groupId": groupId,
+          id: orderId,
         },
       },
       { $unwind: "$line_items" },
