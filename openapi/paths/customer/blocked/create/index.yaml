@@ -1,0 +1,37 @@
+parameters:
+  - name: customerId
+    in: path
+    description: The ID of the customerId
+    required: true
+    schema:
+      type: string
+post:
+  tags:
+    - CustomerBlocked
+  operationId: customerBlockedCreate
+  summary: POST Create blocked
+  description: This endpoint create new blocked
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./body.yaml"
+
+  responses:
+    "200":
+      description: Response with blocked payload
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
+
+  security: []

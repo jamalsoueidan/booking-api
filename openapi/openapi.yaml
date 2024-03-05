@@ -127,6 +127,22 @@ components:
     CustomerOrderGetResponse:
       $ref: paths/customer/order/get/response.yaml
 
+    # Blocked
+    CustomerBlocked:
+      $ref: paths/customer/blocked/_types/blocked.yaml
+    CustomerBlockedCreateBody:
+      $ref: paths/customer/blocked/create/body.yaml
+    CustomerBlockedCreateResponse:
+      $ref: paths/customer/blocked/create/response.yaml
+    CustomerBlockedDestroyResponse:
+      $ref: paths/customer/blocked/destroy/response.yaml
+    CustomerBlockedList:
+      $ref: paths/customer/blocked/list/list.yaml
+    CustomerBlockedListResponse:
+      $ref: paths/customer/blocked/list/response.yaml
+    CustomerBlockedRangeResponse:
+      $ref: paths/customer/blocked/range/response.yaml
+
     # Booking
     CustomerBooking:
       $ref: paths/customer/booking/_types/booking.yaml
@@ -389,3 +405,13 @@ paths:
   # Orchestrators
   /orchestrators/upload:
     $ref: "./paths/orchestrators/upload/index.yaml"
+
+  # blocked
+  /customer/{customerId}/blocked:
+    $ref: "./paths/customer/blocked/create/index.yaml"
+  /customer/{customerId}/blocked/({blockedId}):
+    $ref: "./paths/customer/blocked/destroy/index.yaml"
+  /customer/{customerId}/blocked/list:
+    $ref: "./paths/customer/blocked/list/index.yaml"
+  /customer/{customerId}/blocked/range:
+    $ref: paths/customer/blocked/range/index.yaml

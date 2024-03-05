@@ -1,0 +1,34 @@
+delete:
+  parameters:
+    - name: customerId
+      in: path
+      description: The ID of the customerId
+      required: true
+      schema:
+        type: string
+    - name: blockedId
+      in: path
+      description: The ID of the blockedId to be destroyed
+      required: true
+      schema:
+        type: string
+  tags:
+    - CustomerBlocked
+  operationId: customerBlockedDestroy
+  summary: DEL destroy blocked
+  description: This endpoint destroy blocked for customer
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+
+  security: []

@@ -1,0 +1,13 @@
+type: object
+properties:
+  nextCursor:
+    type: string
+  totalCount:
+    type: boolean
+  results:
+    type: array
+    items:
+      $ref: ../_types/blocked.yaml
+required:
+  - totalCount
+  - results
