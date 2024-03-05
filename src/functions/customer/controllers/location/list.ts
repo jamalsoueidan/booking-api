@@ -4,10 +4,10 @@ import { LocationZodSchema } from "~/functions/location/location.types";
 import { _ } from "~/library/handler";
 
 export type CustomerLocationControllerGetAllRequest = {
-  query: z.infer<typeof LocationServiceGetAllQuerySchema>;
+  query: z.infer<typeof CustomerLocationControllerGetAllQuerySchema>;
 };
 
-export const LocationServiceGetAllQuerySchema = z.object({
+export const CustomerLocationControllerGetAllQuerySchema = z.object({
   customerId: LocationZodSchema.shape.customerId,
 });
 
@@ -17,7 +17,8 @@ export type CustomerLocationControllerGetAllResponse = Awaited<
 
 export const CustomerLocationControllerGetAll = _(
   ({ query }: CustomerLocationControllerGetAllRequest) => {
-    const validateData = LocationServiceGetAllQuerySchema.parse(query);
+    const validateData =
+      CustomerLocationControllerGetAllQuerySchema.parse(query);
     return CustomerLocationServiceGetAll(validateData);
   }
 );
