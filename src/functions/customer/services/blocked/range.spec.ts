@@ -30,7 +30,7 @@ describe("CustomerBlockedServiceRange", () => {
   it("should return blockeds for customer", async () => {
     const customer = await createUser({ customerId: 7106990342471 });
 
-    const start = new Date("2023-11-26T00:00:00+03:00");
+    const start = new Date("2022-11-26T00:00:00+03:00");
     const end = new Date("2024-01-07T00:00:00+03:00");
     const blockedDocuments = await CustomerBlockedServiceRange({
       customerId: customer.customerId,

@@ -5,6 +5,7 @@ import { app } from "@azure/functions";
 import { CustomerBlockedControllerCreate } from "./customer/controllers/blocked/create";
 import { CustomerBlockedControlleDestroy } from "./customer/controllers/blocked/destroy";
 import { CustomerBlockedControllerList } from "./customer/controllers/blocked/list";
+import { CustomerBlockedControllerRange } from "./customer/controllers/blocked/range";
 
 app.http("customerBlockedDestroy", {
   methods: ["DELETE"],
@@ -31,5 +32,5 @@ app.http("customerBlockedRange", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/blocked/range",
-  handler: CustomerBlockedControllerList,
+  handler: CustomerBlockedControllerRange,
 });
