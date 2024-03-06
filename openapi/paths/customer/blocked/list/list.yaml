@@ -3,7 +3,7 @@ properties:
   nextCursor:
     type: string
   totalCount:
-    type: boolean
+    type: number
   results:
     type: array
     items:

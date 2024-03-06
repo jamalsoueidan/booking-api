@@ -8,7 +8,6 @@ properties:
     type: string
   note:
     type: string
-    nullable: true
   order_id:
     type: number
   processed_at:

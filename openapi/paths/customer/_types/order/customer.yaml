@@ -4,7 +4,6 @@ properties:
     type: number
   email:
     type: string
-    nullable: true
   accepts_marketing:
     type: boolean
   created_at:
@@ -19,20 +18,16 @@ properties:
     type: string
   note:
     type: string
-    nullable: true
   verified_email:
     type: boolean
   multipass_identifier:
     type: string
-    nullable: true
   tax_exempt:
     type: boolean
   phone:
     type: string
-    nullable: true
   email_marketing_consent:
     type: boolean
-    nullable: true
   sms_marketing_consent:
     type: object
     properties:
@@ -44,7 +39,6 @@ properties:
         type: string
       consent_collected_from:
         type: string
-    nullable: true
   tags:
     type: string
   currency:
@@ -53,7 +47,6 @@ properties:
     type: string
   marketing_opt_in_level:
     type: string
-    nullable: true
   tax_exemptions:
     type: array
     items:

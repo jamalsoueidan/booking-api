@@ -10,7 +10,6 @@ properties:
     type: string
   fulfillment_status:
     type: string
-    nullable: true
   gift_card:
     type: boolean
   grams:
@@ -33,7 +32,6 @@ properties:
     type: boolean
   sku:
     type: string
-    nullable: true
   taxable:
     type: boolean
   title:
@@ -46,13 +44,10 @@ properties:
     type: number
   variant_inventory_management:
     type: string
-    nullable: true
   variant_title:
     type: string
-    nullable: true
   vendor:
     type: string
-    nullable: true
 required:
   - id
   - admin_graphql_api_id

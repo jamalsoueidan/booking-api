@@ -16,22 +16,18 @@ properties:
     type: string
   shipment_status:
     type: string
-    nullable: true
   status:
     type: string
   tracking_company:
     type: string
-    nullable: true
   tracking_number:
     type: string
-    nullable: true
   tracking_numbers:
     type: array
     items:
       type: string
   tracking_url:
     type: string
-    nullable: true
   tracking_urls:
     type: array
     items:

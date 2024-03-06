@@ -4,24 +4,20 @@ properties:
     type: number
   carrier_identifier:
     type: string
-    nullable: true
   code:
     type: string
-    nullable: true
   discounted_price:
     type: string
   discounted_price_set:
     $ref: money.yaml
   phone:
     type: string
-    nullable: true
   price:
     type: string
   price_set:
     $ref: money.yaml
   requested_fulfillment_service_id:
     type: string
-    nullable: true
   source:
     type: string
   title:

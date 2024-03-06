@@ -14,23 +14,18 @@ properties:
     type: string
   province:
     type: string
-    nullable: true
   country:
     type: string
   last_name:
     type: string
   address2:
     type: string
-    nullable: true
   company:
     type: string
-    nullable: true
   latitude:
     type: number
-    nullable: true
   longitude:
     type: number
-    nullable: true
   name:
     type: string
   country_code:

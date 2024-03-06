@@ -10,19 +10,16 @@ properties:
     type: boolean
   cancel_reason:
     type: string
-    nullable: true
   cancelled_at:
     type: string
   client_details:
     $ref: client.yaml
   closed_at:
     type: string
-    nullable: true
   confirmed:
     type: boolean
   contact_email:
     type: string
-    nullable: true
   created_at:
     type: string
   currency:
