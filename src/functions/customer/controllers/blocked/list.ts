@@ -9,8 +9,8 @@ export type CustomerBlockedControllerListRequest = {
 
 export const CustomerBlockedControllerListSchema = z.object({
   customerId: NumberOrStringType,
-  limit: NumberOrStringType,
-  nextCursor: StringOrObjectIdType,
+  limit: NumberOrStringType.optional(),
+  nextCursor: StringOrObjectIdType.optional(),
 });
 
 export type CustomerBlockedControllerListResponse = Awaited<
