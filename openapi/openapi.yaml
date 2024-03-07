@@ -410,7 +410,7 @@ paths:
   # blocked
   /customer/{customerId}/blocked:
     $ref: "./paths/customer/blocked/create/index.yaml"
-  /customer/{customerId}/blocked/({blockedId}):
+  /customer/{customerId}/blocked/{blockedId}:
     $ref: "./paths/customer/blocked/destroy/index.yaml"
   /customer/{customerId}/blocked/list:
     $ref: "./paths/customer/blocked/list/index.yaml"
