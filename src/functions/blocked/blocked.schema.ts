@@ -26,4 +26,8 @@ export const BlockedMongooseSchema = new mongoose.Schema<
     required: true,
     type: Date,
   },
+  type: {
+    type: String,
+    default: "blocked",
+  },
 });

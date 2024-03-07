@@ -19,6 +19,6 @@ export type CustomerBlockedControllerDestroyResponse = Awaited<
 export const CustomerBlockedControlleDestroy = _(
   ({ query }: CustomerBlockedControllerDestroyRequest) => {
     const validateBody = CustomerBlockedControllerDestroySchema.parse(query);
-    return CustomerBlockedServiceDestroy(query);
+    return CustomerBlockedServiceDestroy(validateBody);
   }
 );

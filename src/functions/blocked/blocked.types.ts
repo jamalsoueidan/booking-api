@@ -6,6 +6,7 @@ export const BlockDateZodSchema = z.object({
   end: z.coerce.date(),
   start: z.coerce.date(),
   title: z.string(),
+  type: z.string().optional(),
 });
 
 export type Blocked = z.infer<typeof BlockDateZodSchema>;
