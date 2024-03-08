@@ -154,11 +154,19 @@ const LineItemSchema = new Schema(
 
 LineItemSchema.index({
   id: 1,
-  "properties.from": 1,
-  "properties.to": 1,
-  "properties.customerId": 1,
-  "properties.groupId": 1,
-});
+})
+  .index({
+    "properties.from": 1,
+  })
+  .index({
+    "properties.to": 1,
+  })
+  .index({
+    "properties.customerId": 1,
+  })
+  .index({
+    "properties.groupId": 1,
+  });
 
 const FulfillmentSchema = new Schema(
   {
@@ -199,6 +207,9 @@ const FulfillmentSchema = new Schema(
 
 FulfillmentSchema.index({
   id: 1,
+});
+
+FulfillmentSchema.index({
   "line_items.id": 1,
 });
 
@@ -233,6 +244,9 @@ const RefundLineItemSchema = new Schema(
 
 RefundLineItemSchema.index({
   id: 1,
+});
+
+RefundLineItemSchema.index({
   line_item_id: 1,
 });
 
