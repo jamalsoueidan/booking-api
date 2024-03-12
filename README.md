@@ -39,11 +39,17 @@ https://admin.shopify.com/store/{shopName}/settings
 
 ## 3. Add Webhooks
 
-You need to add order update and creation webhooks callback in the notifications.
-https://admin.shopify.com/store/bysistersdk/settings/notifications (scroll bottom)
+You need to create webhooks callback in the notifications.
+https://admin.shopify.com/store/bysistersdk/settings/notifications (scroll bottom on notification page, click webhooks)
 
-Create webhook order update: https://{apiUrl}/api/webhooks/order
-Create webhook order creation: https://{apiUrl}/api/webhooks/order
+_Order update:_
+https://{apiUrl}/api/webhooks/order
+
+_Crder creation:_
+https://{apiUrl}/api/webhooks/order
+
+_Product update:_
+https://{apiUrl}/api/webhooks/product
 
 ## OpenAPI fragments and components (openapi/)
 
