@@ -105,3 +105,4 @@ app/lib/api/model
 app/lib/api/*.ts
 app/lib/zod
 admin-2023-10.schema.json
+admin.types.d.ts
