@@ -104,3 +104,4 @@ __azurite_db*__.json
 app/lib/api/model
 app/lib/api/*.ts
 app/lib/zod
+admin-2023-10.schema.json
