@@ -1,13 +1,13 @@
-import { CustomerProductServiceUpsert } from "~/functions/customer/services/product/upsert";
-import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { TimeUnit } from "~/functions/schedule";
-import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { UserProductServiceGet } from "./get";
+import { CustomerScheduleServiceCreate } from "../schedule/create";
+import { CustomerProductServiceDestroy } from "./destroy";
+import { CustomerProductServiceUpsert } from "./upsert";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("UserProductsService", () => {
+describe("CustomerProductServiceDestroy", () => {
+  const customerId = 123;
   const name = "Test Schedule";
   const productId = 1000;
   const newProduct = getProductObject({
@@ -25,15 +25,13 @@ describe("UserProductsService", () => {
     locations: [],
   });
 
-  it("should find a product", async () => {
-    const user = await createUser({ customerId: 134 });
-
+  it("should remove an existing product from the schedule", async () => {
     const newSchedule = await CustomerScheduleServiceCreate({
       name,
-      customerId: user.customerId,
+      customerId,
     });
 
-    const updatedSchedule = await CustomerProductServiceUpsert(
+    await CustomerProductServiceUpsert(
       {
         customerId: newSchedule.customerId,
         productId,
@@ -41,11 +39,11 @@ describe("UserProductsService", () => {
       { ...newProduct, scheduleId: newSchedule._id }
     );
 
-    const foundProduct = await UserProductServiceGet({
-      username: user.username || "",
-      productHandle: newProduct.productHandle,
+    const updatedSchedule = await CustomerProductServiceDestroy({
+      customerId: newSchedule.customerId,
+      productId,
     });
 
-    expect(foundProduct).toMatchObject({ productId });
+    expect(updatedSchedule?.modifiedCount).toBe(1);
   });
 });
