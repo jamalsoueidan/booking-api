@@ -3,6 +3,7 @@ import { InvocationContext } from "@azure/functions";
 import { telemetryClient } from "~/library/application-insight";
 import { connect } from "~/library/mongoose";
 import { shopifyAdmin } from "~/library/shopify";
+import { ProductVariantCreateMutation } from "~/types/admin.generated";
 import { ProductUpdateSchema } from "./types";
 import { ProductWebHookGetUnusedVariantIds } from "./unused";
 
@@ -17,7 +18,7 @@ export async function webhookProductProcess(
       product,
     });
 
-    const response = await shopifyAdmin.query({
+    const { body } = await shopifyAdmin.query<ProductVariantCreateMutation>({
       data: {
         query: MUTATION_DESTROY_VARIANTS,
         variables: {
@@ -29,7 +30,13 @@ export async function webhookProductProcess(
       },
     });
 
-    console.log(response);
+    if (!body.productVariantCreate?.product) {
+      context.error(
+        "webhook product error",
+        body.productVariantCreate?.userErrors
+      );
+    }
+
     context.log("webhook product success");
   } catch (exception: unknown) {
     console.log(exception);

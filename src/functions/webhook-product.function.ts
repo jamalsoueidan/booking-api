@@ -8,10 +8,8 @@ import {
   InvocationContext,
   output,
 } from "@azure/functions";
-import {
-  productUpdateSchema,
-  webhookProductProcess,
-} from "./webhook/product/product";
+import { webhookProductProcess } from "./webhook/product/product";
+import { productUpdateSchema } from "./webhook/product/types";
 
 export const productQueueName = "webhook-product";
 export const productQueueOutput = output.storageQueue({
