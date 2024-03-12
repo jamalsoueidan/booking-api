@@ -36,6 +36,7 @@ jobs:
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
           npm install
+          npm run generate-types --if-present
           npm run build --if-present
           popd
 
