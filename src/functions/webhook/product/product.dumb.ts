@@ -1,8 +1,7 @@
-import { z } from "zod";
-import { productUpdateSchema } from "./product";
+import { ProductUpdateSchema } from "./types";
 
-export const productDumbData: z.infer<typeof productUpdateSchema> = {
-  admin_graphql_api_id: "gid://shopify/Product/8022088646930",
+export const productDumbData: ProductUpdateSchema = {
+  admin_graphql_api_id: "gid://shopify/Product/802208864693",
   handle: "borneklip-fra-6-ar",
   id: 8022088646930,
   title: "Børneklip (fra 6 år)",

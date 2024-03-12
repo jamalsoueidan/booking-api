@@ -1,21 +1,10 @@
 import { InvocationContext } from "@azure/functions";
-import { z } from "zod";
 
 import { telemetryClient } from "~/library/application-insight";
 import { connect } from "~/library/mongoose";
-
-export const variantSchema = z.object({
-  admin_graphql_api_id: z.string(),
-  id: z.number(),
-});
-
-export const productUpdateSchema = z.object({
-  admin_graphql_api_id: z.string(),
-  handle: z.string(),
-  id: z.number(),
-  title: z.string(),
-  variants: z.array(variantSchema),
-});
+import { shopifyAdmin } from "~/library/shopify";
+import { ProductUpdateSchema } from "./types";
+import { ProductWebHookGetUnusedVariantIds } from "./unused";
 
 export async function webhookProductProcess(
   queueItem: unknown,
@@ -23,9 +12,27 @@ export async function webhookProductProcess(
 ) {
   try {
     await connect();
-    console.log(queueItem);
+    const product = queueItem as ProductUpdateSchema;
+    const unusedVariantIds = await ProductWebHookGetUnusedVariantIds({
+      product,
+    });
+
+    const response = await shopifyAdmin.query({
+      data: {
+        query: MUTATION_DESTROY_VARIANTS,
+        variables: {
+          productId: product.admin_graphql_api_id,
+          variantsIds: unusedVariantIds.map(
+            (l) => `gid://shopify/ProductVariant/${l}`
+          ),
+        },
+      },
+    });
+
+    console.log(response);
     context.log("webhook product success");
   } catch (exception: unknown) {
+    console.log(exception);
     telemetryClient.trackException({
       exception: exception as Error,
     });
@@ -35,3 +42,19 @@ export async function webhookProductProcess(
     );
   }
 }
+
+const MUTATION_DESTROY_VARIANTS = `#graphql
+  mutation productVariantsBulkDelete($productId: ID!, $variantsIds: [ID!]!) {
+    productVariantsBulkDelete(productId: $productId, variantsIds: $variantsIds) {
+      product {
+        id
+        title
+      }
+      userErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+` as const;
