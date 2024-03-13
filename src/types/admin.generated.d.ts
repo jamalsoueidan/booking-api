@@ -3,16 +3,6 @@
 /* eslint-disable */
 import * as AdminTypes from './admin.types';
 
-export type ProductVariantCreateMutationVariables = AdminTypes.Exact<{
-  input: AdminTypes.ProductVariantInput;
-}>;
-
-
-export type ProductVariantCreateMutation = { productVariantCreate?: AdminTypes.Maybe<{ product?: AdminTypes.Maybe<Pick<AdminTypes.Product, 'id' | 'title'>>, productVariant?: AdminTypes.Maybe<(
-      Pick<AdminTypes.ProductVariant, 'createdAt' | 'displayName' | 'id' | 'inventoryPolicy' | 'inventoryQuantity' | 'price' | 'title'>
-      & { product: Pick<AdminTypes.Product, 'id'> }
-    )>, userErrors: Array<Pick<AdminTypes.UserError, 'field' | 'message'>> }> };
-
 export type FileCreateMutationVariables = AdminTypes.Exact<{
   files: Array<AdminTypes.FileCreateInput> | AdminTypes.FileCreateInput;
 }>;
@@ -37,6 +27,13 @@ export type StagedUploadsCreateMutation = { stagedUploadsCreate?: AdminTypes.May
       & { parameters: Array<Pick<AdminTypes.StagedUploadParameter, 'name' | 'value'>> }
     )>>, userErrors: Array<Pick<AdminTypes.UserError, 'field' | 'message'>> }> };
 
+export type ProductVariantCreateMutationVariables = AdminTypes.Exact<{
+  input: AdminTypes.ProductVariantInput;
+}>;
+
+
+export type ProductVariantCreateMutation = { productVariantCreate?: AdminTypes.Maybe<{ productVariant?: AdminTypes.Maybe<Pick<AdminTypes.ProductVariant, 'id' | 'title'>>, userErrors: Array<Pick<AdminTypes.UserError, 'field' | 'message'>> }> };
+
 export type ProductVariantsBulkDeleteMutationVariables = AdminTypes.Exact<{
   productId: AdminTypes.Scalars['ID']['input'];
   variantsIds: Array<AdminTypes.Scalars['ID']['input']> | AdminTypes.Scalars['ID']['input'];
@@ -50,9 +47,9 @@ interface GeneratedQueryTypes {
 }
 
 interface GeneratedMutationTypes {
-  "#graphql\n  mutation productVariantCreate($input: ProductVariantInput!) {\n    productVariantCreate(input: $input) {\n      product {\n        id\n        title\n      }\n      productVariant {\n        createdAt\n        displayName\n        id\n        inventoryPolicy\n        inventoryQuantity\n        price\n        product {\n          id\n        }\n        title\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: ProductVariantCreateMutation, variables: ProductVariantCreateMutationVariables},
   "#graphql\n  mutation fileCreate($files: [FileCreateInput!]!) {\n    fileCreate(files: $files) {\n      files {\n        fileStatus\n        alt\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: FileCreateMutation, variables: FileCreateMutationVariables},
   "#graphql\n  mutation stagedUploadsCreate($input: [StagedUploadInput!]!) {\n    stagedUploadsCreate(input: $input) {\n      stagedTargets {\n        resourceUrl\n        url\n        parameters {\n          name\n          value\n        }\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: StagedUploadsCreateMutation, variables: StagedUploadsCreateMutationVariables},
+  "#graphql\n  mutation productVariantCreate($input: ProductVariantInput!) {\n    productVariantCreate(input: $input) {\n      productVariant {\n        id\n        title\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: ProductVariantCreateMutation, variables: ProductVariantCreateMutationVariables},
   "#graphql\n  mutation productVariantsBulkDelete($productId: ID!, $variantsIds: [ID!]!) {\n    productVariantsBulkDelete(productId: $productId, variantsIds: $variantsIds) {\n      product {\n        id\n        title\n      }\n      userErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n": {return: ProductVariantsBulkDeleteMutation, variables: ProductVariantsBulkDeleteMutationVariables},
 }
 declare module '@shopify/admin-api-client' {
