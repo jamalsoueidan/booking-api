@@ -1,5 +1,4 @@
 import { shopifyAdmin } from "~/library/shopify";
-import { ProductVariantCreateMutation } from "~/types/admin.generated";
 
 export type CustomerProductServiceCreateVariantProps = {
   productId: number;
@@ -10,30 +9,29 @@ export type CustomerProductServiceCreateVariantProps = {
 export const CustomerProductServiceCreateVariant = async (
   props: CustomerProductServiceCreateVariantProps
 ) => {
-  const { body } = await shopifyAdmin.query<{
-    data: ProductVariantCreateMutation;
-  }>({
-    data: {
-      query: CREATE_VARIANT,
-      variables: {
-        input: {
-          price: props.price,
-          compareAtPrice: props.compareAtPrice,
-          productId: `gid://shopify/Product/${props.productId}`,
-          inventoryItem: {
-            tracked: false,
-          },
-          options: `Artist ${props.price}.${props.compareAtPrice}`,
+  const { data } = await shopifyAdmin.request(CREATE_VARIANT, {
+    variables: {
+      input: {
+        price: props.price,
+        compareAtPrice: props.compareAtPrice,
+        productId: `gid://shopify/Product/${props.productId}`,
+        inventoryItem: {
+          tracked: false,
         },
+        options: [`Artist ${props.price}.${props.compareAtPrice}`],
       },
     },
   });
 
-  if (body.data.productVariantCreate?.userErrors) {
-    throw new Error(body.data.productVariantCreate.userErrors[0].message);
+  if (
+    data &&
+    data.productVariantCreate &&
+    data.productVariantCreate?.userErrors.length > 0
+  ) {
+    throw new Error(data.productVariantCreate.userErrors[0].message);
   }
 
-  return body.data.productVariantCreate?.productVariant;
+  return data?.productVariantCreate?.productVariant;
 };
 
 const CREATE_VARIANT = `#graphql

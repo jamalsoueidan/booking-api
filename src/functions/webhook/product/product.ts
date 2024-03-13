@@ -3,7 +3,6 @@ import { InvocationContext } from "@azure/functions";
 import { telemetryClient } from "~/library/application-insight";
 import { connect } from "~/library/mongoose";
 import { shopifyAdmin } from "~/library/shopify";
-import { ProductVariantsBulkDeleteMutation } from "~/types/admin.generated";
 import { ProductUpdateSchema } from "./types";
 import { ProductWebHookGetUnusedVariantIds } from "./unused";
 
@@ -18,24 +17,19 @@ export async function webhookProductProcess(
       product,
     });
 
-    const { body } = await shopifyAdmin.query<{
-      data: ProductVariantsBulkDeleteMutation;
-    }>({
-      data: {
-        query: MUTATION_DESTROY_VARIANTS,
-        variables: {
-          productId: product.admin_graphql_api_id,
-          variantsIds: unusedVariantIds.map(
-            (l) => `gid://shopify/ProductVariant/${l}`
-          ),
-        },
+    const { data } = await shopifyAdmin.request(MUTATION_DESTROY_VARIANTS, {
+      variables: {
+        productId: product.admin_graphql_api_id,
+        variantsIds: unusedVariantIds.map(
+          (l) => `gid://shopify/ProductVariant/${l}`
+        ),
       },
     });
 
-    if (!body.data.productVariantsBulkDelete?.product) {
+    if (!data?.productVariantsBulkDelete?.product) {
       context.error(
         "webhook product error",
-        body.data.productVariantsBulkDelete?.userErrors
+        data?.productVariantsBulkDelete?.userErrors
       );
     }
 
