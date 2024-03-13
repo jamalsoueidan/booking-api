@@ -66,30 +66,3 @@ const UPLOAD_CREATE = `#graphql
     }
   }
 `;
-
-type UploadMutationResponse = {
-  data: {
-    stagedUploadsCreate: {
-      stagedTargets: Array<{
-        resourceUrl: string;
-        url: string;
-        parameters: Array<{
-          name: string;
-          value: string;
-        }>;
-      }>;
-      userErrors: Array<any>;
-    };
-  };
-  extensions: {
-    cost: {
-      requestedQueryCost: number;
-      actualQueryCost: number;
-      throttleStatus: {
-        maximumAvailable: number;
-        currentlyAvailable: number;
-        restoreRate: number;
-      };
-    };
-  };
-};
