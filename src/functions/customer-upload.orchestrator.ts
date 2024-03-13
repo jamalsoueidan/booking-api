@@ -11,8 +11,7 @@ import { z } from "zod";
 import { connect } from "~/library/mongoose";
 import { shopifyAdmin } from "~/library/shopify";
 import { NumberOrStringType } from "~/library/zod";
-import { FileGetQuery } from "~/types/admin.generated";
-import { FileContentType } from "~/types/admin.types";
+import { type FileGetQuery } from "~/types/admin.generated";
 import { CustomerUploadControllerResourceURL } from "./customer/controllers/upload/resource-url";
 import { UserModel } from "./user";
 
@@ -109,7 +108,7 @@ async function fileCreate(input: Body) {
     variables: {
       files: {
         alt: getFilenameFromUrl(input.resourceUrl),
-        contentType: FileContentType.Image,
+        contentType: "IMAGE" as any,
         originalSource: input.resourceUrl,
       },
     },

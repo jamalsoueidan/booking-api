@@ -19,26 +19,32 @@ export type CustomerUploadControllerResourceURLResponse = Awaited<
 
 export const CustomerUploadControllerResourceURL = _(
   async ({ query }: CustomerUploadControllerResourceURLRequest) => {
-    const data = CustomerUploadControllerResourceURLQuerySchema.parse(query);
-    const response = await shopifyAdmin.query<UploadMutationResponse>({
-      data: {
-        query: UPLOAD_CREATE,
-        variables: {
-          input: [
-            {
-              resource: "IMAGE",
-              filename: `${
-                data.customerId
-              }_customer_profile_${new Date().getTime()}.jpg`,
-              mimeType: "image/jpeg",
-              httpMethod: "POST",
-            },
-          ],
-        },
+    const validateData =
+      CustomerUploadControllerResourceURLQuerySchema.parse(query);
+    const { data } = await shopifyAdmin.request(UPLOAD_CREATE, {
+      variables: {
+        input: [
+          {
+            resource: "IMAGE" as any,
+            filename: `${
+              validateData.customerId
+            }_customer_profile_${new Date().getTime()}.jpg`,
+            mimeType: "image/jpeg",
+            httpMethod: "POST" as any,
+          },
+        ],
       },
     });
 
-    return response.body.data.stagedUploadsCreate.stagedTargets[0];
+    if (
+      !data ||
+      !data.stagedUploadsCreate ||
+      !data?.stagedUploadsCreate?.stagedTargets
+    ) {
+      throw new Error("something went wrong with uploading image");
+    }
+
+    return data?.stagedUploadsCreate?.stagedTargets[0];
   }
 );
 

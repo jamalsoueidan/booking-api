@@ -28,7 +28,7 @@ export const CustomerProductServiceCreateVariant = async (
     data.productVariantCreate &&
     data.productVariantCreate?.userErrors.length > 0
   ) {
-    throw new Error(data.productVariantCreate.userErrors[0].message);
+    throw data.productVariantCreate.userErrors[0];
   }
 
   return data?.productVariantCreate?.productVariant;
