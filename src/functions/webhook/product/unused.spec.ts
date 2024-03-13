@@ -76,10 +76,12 @@ describe("webhookUpdateProcess", () => {
     let unusedVariantIds = await ProductWebHookGetUnusedVariantIds({
       product: productDumbData,
     });
+
     const variantIdsToCheck = [
       productDumbData.variants[0].id,
       productDumbData.variants[1].id,
     ];
+
     variantIdsToCheck.forEach((id) => {
       expect(unusedVariantIds).not.toContain(id);
     });

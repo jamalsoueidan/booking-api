@@ -18,29 +18,5 @@ export const productDumbData: ProductUpdateSchema = {
       admin_graphql_api_id: "gid://shopify/ProductVariant/46718525964615",
       id: 46718525964615,
     },
-    {
-      admin_graphql_api_id: "gid://shopify/ProductVariant/46727191036231",
-      id: 46727191036231,
-    },
-    {
-      admin_graphql_api_id: "gid://shopify/ProductVariant/49207559356743",
-      id: 49207559356743,
-    },
-    {
-      admin_graphql_api_id: "gid://shopify/ProductVariant/49210092323143",
-      id: 49210092323143,
-    },
-    {
-      admin_graphql_api_id: "gid://shopify/ProductVariant/49216099909959",
-      id: 49216099909959,
-    },
-    {
-      admin_graphql_api_id: "gid://shopify/ProductVariant/49216108167495",
-      id: 49216108167495,
-    },
-    {
-      admin_graphql_api_id: "gid://shopify/ProductVariant/49221362712903",
-      id: 49221362712903,
-    },
   ],
 };

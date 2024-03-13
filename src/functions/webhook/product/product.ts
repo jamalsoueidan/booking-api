@@ -5,20 +5,27 @@ import { ProductWebHookGetUnusedVariantIds } from "./unused";
 
 export async function updateVariantsHandler(product: ProductUpdateSchema) {
   await connect();
-  const unusedVariantIds = await ProductWebHookGetUnusedVariantIds({
+  let unusedVariantIds = await ProductWebHookGetUnusedVariantIds({
     product,
   });
 
-  const { data } = await shopifyAdmin.request(MUTATION_DESTROY_VARIANTS, {
-    variables: {
-      productId: product.admin_graphql_api_id,
-      variantsIds: unusedVariantIds.map(
-        (l) => `gid://shopify/ProductVariant/${l}`
-      ),
-    },
-  });
+  if (product.variants.length === unusedVariantIds.length) {
+    unusedVariantIds = unusedVariantIds.slice(0, -1);
+  }
 
-  return data;
+  if (unusedVariantIds.length > 0) {
+    const { data } = await shopifyAdmin.request(MUTATION_DESTROY_VARIANTS, {
+      variables: {
+        productId: product.admin_graphql_api_id,
+        variantsIds: unusedVariantIds.map(
+          (l) => `gid://shopify/ProductVariant/${l}`
+        ),
+      },
+    });
+    return data;
+  }
+
+  return undefined;
 }
 
 const MUTATION_DESTROY_VARIANTS = `#graphql
