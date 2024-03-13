@@ -370,6 +370,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CustomerProductSelectedOptions'
+      required:
+        - id
+        - title
+        - selectedOptions
     CustomerScheduleDestroy:
       type: object
       properties:
