@@ -5,40 +5,76 @@ import {
   HttpRequest,
   HttpResponseInit,
   InvocationContext,
-  output,
 } from "@azure/functions";
-import { webhookProductProcess } from "./webhook/product/product";
+import * as df from "durable-functions";
+import { updateVariantsHandler } from "./webhook/product/product";
 import { productUpdateSchema } from "./webhook/product/types";
 
-export const productQueueName = "webhook-product";
-export const productQueueOutput = output.storageQueue({
-  queueName: productQueueName,
-  connection: "QueueStorage",
+df.app.activity("updateVariants", {
+  handler: updateVariantsHandler,
 });
 
-app.storageQueue("webhookProductUpdateProcess", {
-  queueName: productQueueName,
-  connection: "QueueStorage",
-  handler: webhookProductProcess,
-});
+df.app.orchestration(
+  "processProductVariant",
+  function* (context: df.OrchestrationContext) {
+    const input = context.df.getInput();
+    // Wait for 2 minutes
+    // We delay the call so that our webhook doesn't delete the variant the customer just created.
+    const dueTime = new Date(new Date().getTime() + 2 * 60000);
+    yield context.df.createTimer(dueTime);
+
+    const data: Awaited<ReturnType<typeof updateVariantsHandler>> =
+      yield context.df.callActivity("updateVariants", input);
+
+    if (!data?.productVariantsBulkDelete?.product) {
+      context.error(
+        "orchestration process product error",
+        data?.productVariantsBulkDelete?.userErrors
+      );
+    }
+  }
+);
+
+const instanceId = "processProductVariantID";
 
 export async function webhookProduct(
   request: HttpRequest,
   context: InvocationContext
 ): Promise<HttpResponseInit> {
+  const client = df.getClient(context);
+  let status;
+  try {
+    status = await client.getStatus(instanceId);
+  } catch (error) {
+    console.log(`Error checking status for ${instanceId}: ${error}`);
+  }
+
+  if (
+    status &&
+    (status.runtimeStatus === "Running" || status.runtimeStatus === "Pending")
+  ) {
+    // An instance is already running, no action needed
+    context.log(`Instance ${instanceId} is already running.`);
+    return { body: "An instance is already running." };
+  }
   const body = await request.json();
   const parser = productUpdateSchema.safeParse(body);
   if (parser.success) {
-    context.extraOutputs.set(productQueueOutput, parser.data);
-    context.log(`Started storageQueue with ID = '${productQueueName}'.`);
+    await client.startNew("processProductVariant", {
+      instanceId,
+      input: body,
+    });
+    context.log(`Started orchestration with ID = '${instanceId}'.`);
+    return client.createCheckStatusResponse(request, instanceId);
   }
-  return { body: "Created queue item." };
+
+  return { body: "starts" };
 }
 
 app.http("webhookProductUpdate", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "webhooks/product",
-  extraOutputs: [productQueueOutput],
+  extraInputs: [df.input.durableClient()],
   handler: webhookProduct,
 });
