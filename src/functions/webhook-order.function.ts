@@ -1,4 +1,3 @@
-import "@shopify/shopify-api/adapters/node";
 import "module-alias/register";
 
 import {

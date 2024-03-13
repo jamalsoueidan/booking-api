@@ -21,7 +21,7 @@ export const getUserObject = (
   isBusiness: true,
   images: {
     profile: {
-      url: faker.internet.avatar(),
+      url: faker.image.avatar(),
     },
   },
   speaks: [faker.location.countryCode()],
