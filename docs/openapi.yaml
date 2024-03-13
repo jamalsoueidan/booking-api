@@ -353,9 +353,9 @@ components:
       type: object
       properties:
         price:
-          type: string
+          type: number
         compareAtPrice:
-          type: string
+          type: number
       required:
         - price
         - compareAtPrice
