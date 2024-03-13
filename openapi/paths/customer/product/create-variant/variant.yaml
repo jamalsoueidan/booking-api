@@ -8,3 +8,7 @@ properties:
     type: array
     items:
       $ref: ../../schedule/_types/product-selected-options.yaml
+required:
+  - id
+  - title
+  - selectedOptions
