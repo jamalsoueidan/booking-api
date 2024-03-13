@@ -1,9 +1,9 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { CustomerProductServiceUpsert } from "~/functions/customer/services/product";
 import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 
 import { TimeUnit } from "~/functions/schedule";
 
+import { CustomerProductServiceUpsert } from "~/functions/customer/services/product/upsert";
 import {
   HttpSuccessResponse,
   createContext,

@@ -1,13 +1,13 @@
-import { CustomerProductServiceUpsert } from "~/functions/customer/services/product/upsert";
-import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { TimeUnit } from "~/functions/schedule";
-import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { UserProductServiceGet } from "./get";
+import { CustomerScheduleServiceCreate } from "../schedule/create";
+import { CustomerProductServiceGet } from "./get";
+import { CustomerProductServiceUpsert } from "./upsert";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("UserProductsService", () => {
+describe("CustomerProductsService", () => {
+  const customerId = 123;
   const name = "Test Schedule";
   const productId = 1000;
   const newProduct = getProductObject({
@@ -26,11 +26,9 @@ describe("UserProductsService", () => {
   });
 
   it("should find a product", async () => {
-    const user = await createUser({ customerId: 134 });
-
     const newSchedule = await CustomerScheduleServiceCreate({
       name,
-      customerId: user.customerId,
+      customerId,
     });
 
     const updatedSchedule = await CustomerProductServiceUpsert(
@@ -41,9 +39,9 @@ describe("UserProductsService", () => {
       { ...newProduct, scheduleId: newSchedule._id }
     );
 
-    const foundProduct = await UserProductServiceGet({
-      username: user.username || "",
-      productHandle: newProduct.productHandle,
+    const foundProduct = await CustomerProductServiceGet({
+      customerId: newSchedule.customerId,
+      productId,
     });
 
     expect(foundProduct).toMatchObject({ productId });

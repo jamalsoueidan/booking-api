@@ -22,7 +22,7 @@ import {
   UserServiceLocationsSetDefault,
 } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
-import { CustomerProductServiceRemoveLocationFromAll } from "./product";
+import { CustomerProductServiceRemoveLocationFromAll } from "./product/remove-location-from-all";
 
 export const CustomerLocationServiceCreate = async (
   body: LocationServiceCreateProps

@@ -1,0 +1,10 @@
+type: object
+properties:
+  price:
+    type: string
+  compareAtPrice:
+    type: string
+
+required:
+  - price
+  - compareAtPrice

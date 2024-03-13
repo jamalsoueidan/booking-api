@@ -2,7 +2,7 @@ import { z } from "zod";
 import { _ } from "~/library/handler";
 
 import { UserZodSchema } from "~/functions/user";
-import { CustomerProductsServiceListIds } from "../../services/product";
+import { CustomerProductsServiceListIds } from "../../services/product/list-ids";
 
 export type CustomerProductsControllerListIdsRequest = {
   query: z.infer<typeof CustomerProductsControllerListIdsSchema>;

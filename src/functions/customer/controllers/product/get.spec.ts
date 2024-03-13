@@ -8,7 +8,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { CustomerProductServiceUpsert } from "../../services/product";
+import { CustomerProductServiceUpsert } from "../../services/product/upsert";
 import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
   CustomerProductControllerGet,

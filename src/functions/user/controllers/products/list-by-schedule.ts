@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
 
-import { CustomerProductsServiceList } from "~/functions/customer/services/product";
+import { CustomerProductsServiceList } from "~/functions/customer/services/product/list";
 import { UserServiceGetCustomerId } from "~/functions/user";
 
 export type UserProductsControllerListByScheduleRequest = {

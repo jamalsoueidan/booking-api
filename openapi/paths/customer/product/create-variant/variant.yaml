@@ -1,0 +1,10 @@
+type: object
+properties:
+  id:
+    type: number
+  title:
+    type: string
+  selectedOptions:
+    type: array
+    items:
+      $ref: ../../schedule/_types/product-selected-options.yaml

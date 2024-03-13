@@ -11,6 +11,7 @@ import { z } from "zod";
 import { connect } from "~/library/mongoose";
 import { shopifyAdmin } from "~/library/shopify";
 import { NumberOrStringType } from "~/library/zod";
+import { type FileGetQuery } from "~/types/admin.generated";
 import { CustomerUploadControllerResourceURL } from "./customer/controllers/upload/resource-url";
 import { UserModel } from "./user";
 
@@ -41,7 +42,7 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
 
   const maxRetries = 5;
   let attemptCount = 0;
-  let fileUploaded: PreviewImage | undefined;
+  let fileUploaded: FileGetQuery["files"]["nodes"][number] | undefined;
 
   while (!fileUploaded && attemptCount < maxRetries) {
     // Wait for 5 seconds before each new attempt
@@ -53,7 +54,7 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
     // Check if data is available from Shopify
     const response: Awaited<ReturnType<typeof fileGet>> =
       yield context.df.callActivity("fileGet", body);
-    if (response.files.nodes.length > 0) {
+    if (response && response.files.nodes.length > 0) {
       fileUploaded = response.files.nodes[0];
     }
 
@@ -63,7 +64,7 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
   if (fileUploaded) {
     return yield context.df.callActivity("updateCustomer", {
       customerId: body.customerId,
-      image: fileUploaded.preview.image,
+      image: fileUploaded.preview?.image,
     });
   }
 
@@ -74,9 +75,13 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
   };
 });
 
+type Node = FileGetQuery["files"]["nodes"][number];
+type PreviewType = NonNullable<Node["preview"]>;
+type ImageType = NonNullable<PreviewType["image"]>;
+
 type updateCustomer = {
   customerId: number;
-  image: PreviewImage["preview"]["image"];
+  image: ImageType;
 };
 
 df.app.activity("updateCustomer", {
@@ -99,20 +104,17 @@ df.app.activity("updateCustomer", {
 });
 
 async function fileCreate(input: Body) {
-  const response = await shopifyAdmin.query<FileCreateQuery>({
-    data: {
-      query: FILE_CREATE,
-      variables: {
-        files: {
-          alt: getFilenameFromUrl(input.resourceUrl),
-          contentType: "IMAGE",
-          originalSource: input.resourceUrl,
-        },
+  const { data } = await shopifyAdmin.request(FILE_CREATE, {
+    variables: {
+      files: {
+        alt: getFilenameFromUrl(input.resourceUrl),
+        contentType: "IMAGE" as any,
+        originalSource: input.resourceUrl,
       },
     },
   });
 
-  return response.body.data;
+  return data;
 }
 
 df.app.activity("fileCreate", {
@@ -120,16 +122,13 @@ df.app.activity("fileCreate", {
 });
 
 async function fileGet(input: Body) {
-  const fileGet = await shopifyAdmin.query<FileGetQuery>({
-    data: {
-      query: FILE_GET,
-      variables: {
-        query: getFilenameFromUrl(input.resourceUrl),
-      },
+  const { data } = await shopifyAdmin.request(FILE_GET, {
+    variables: {
+      query: getFilenameFromUrl(input.resourceUrl) || "",
     },
   });
 
-  return fileGet.body.data;
+  return data;
 }
 
 df.app.activity("fileGet", {
@@ -180,29 +179,6 @@ const FILE_CREATE = `#graphql
   }
 ` as const;
 
-type FileCreateQuery = {
-  data: {
-    fileCreate: {
-      files: Array<{
-        fileStatus: string;
-        alt: string;
-      }>;
-      userErrors: Array<any>;
-    };
-  };
-  extensions: {
-    cost: {
-      requestedQueryCost: number;
-      actualQueryCost: number;
-      throttleStatus: {
-        maximumAvailable: number;
-        currentlyAvailable: number;
-        restoreRate: number;
-      };
-    };
-  };
-};
-
 const FILE_GET = `#graphql
   query FileGet($query: String!) {
     files(first: 10, sortKey: UPDATED_AT, reverse: true, query: $query) {
@@ -218,32 +194,3 @@ const FILE_GET = `#graphql
     }
   }
 ` as const;
-
-type PreviewImage = {
-  preview: {
-    image: {
-      url: string;
-      width: number;
-      height: number;
-    };
-  };
-};
-
-type FileGetQuery = {
-  data: {
-    files: {
-      nodes: Array<PreviewImage>;
-    };
-  };
-  extensions: {
-    cost: {
-      requestedQueryCost: number;
-      actualQueryCost: number;
-      throttleStatus: {
-        maximumAvailable: number;
-        currentlyAvailable: number;
-        restoreRate: number;
-      };
-    };
-  };
-};
