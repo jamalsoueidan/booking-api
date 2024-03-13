@@ -8,7 +8,10 @@ import {
 } from "@azure/functions";
 import * as df from "durable-functions";
 import { updateVariantsHandler } from "./webhook/product/product";
-import { productUpdateSchema } from "./webhook/product/types";
+import {
+  ProductUpdateSchema,
+  productUpdateSchema,
+} from "./webhook/product/types";
 
 df.app.activity("updateVariants", {
   handler: updateVariantsHandler,
@@ -35,31 +38,36 @@ df.app.orchestration(
   }
 );
 
-const instanceId = "processProductVariantID";
-
 export async function webhookProduct(
   request: HttpRequest,
   context: InvocationContext
 ): Promise<HttpResponseInit> {
-  const client = df.getClient(context);
-  let status;
-  try {
-    status = await client.getStatus(instanceId);
-  } catch (error) {
-    console.log(`Error checking status for ${instanceId}: ${error}`);
-  }
-
-  if (
-    status &&
-    (status.runtimeStatus === "Running" || status.runtimeStatus === "Pending")
-  ) {
-    // An instance is already running, no action needed
-    context.log(`Instance ${instanceId} is already running.`);
-    return { body: "An instance is already running." };
-  }
-  const body = await request.json();
+  const body = (await request.json()) as ProductUpdateSchema;
   const parser = productUpdateSchema.safeParse(body);
   if (parser.success) {
+    const instanceId = `processProductVariantID-${body.handle}`;
+    const client = df.getClient(context);
+    let status;
+
+    try {
+      status = await client.getStatus(instanceId);
+    } catch (error) {
+      context.log(`Error checking status for ${instanceId}: ${error}`);
+    }
+
+    if (
+      status &&
+      (status.runtimeStatus === "Running" || status.runtimeStatus === "Pending")
+    ) {
+      // Instance is already running, attempt to terminate it
+      await client.terminate(
+        instanceId,
+        "Starting a new instance due to update."
+      );
+      context.log(`Terminated existing instance ${instanceId}.`);
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+    }
+
     await client.startNew("processProductVariant", {
       instanceId,
       input: body,
@@ -67,7 +75,6 @@ export async function webhookProduct(
     context.log(`Started orchestration with ID = '${instanceId}'.`);
     return client.createCheckStatusResponse(request, instanceId);
   }
-
   return { body: "starts" };
 }
 
