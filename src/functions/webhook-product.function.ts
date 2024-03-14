@@ -7,14 +7,14 @@ import {
   InvocationContext,
 } from "@azure/functions";
 import * as df from "durable-functions";
-import { updateVariantsHandler } from "./webhook/product/product";
+import { deleteVariantsHandler } from "./webhook/product/product";
 import {
   ProductUpdateSchema,
   productUpdateSchema,
 } from "./webhook/product/types";
 
 df.app.activity("updateVariants", {
-  handler: updateVariantsHandler,
+  handler: deleteVariantsHandler,
 });
 
 df.app.orchestration(
@@ -26,7 +26,7 @@ df.app.orchestration(
     const dueTime = new Date(new Date().getTime() + 2 * 60000);
     yield context.df.createTimer(dueTime);
 
-    const data: Awaited<ReturnType<typeof updateVariantsHandler>> =
+    const data: Awaited<ReturnType<typeof deleteVariantsHandler>> =
       yield context.df.callActivity("updateVariants", input);
 
     if (!data?.productVariantsBulkDelete?.product) {

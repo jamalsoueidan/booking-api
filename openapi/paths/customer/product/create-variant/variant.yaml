@@ -1,5 +1,15 @@
 type: object
 properties:
+  product:
+    type: object
+    properties:
+      id:
+        type: number
+      handle:
+        type: string
+    required:
+      - id
+      - handle
   id:
     type: number
   title:
@@ -8,7 +18,14 @@ properties:
     type: array
     items:
       $ref: ../../schedule/_types/product-selected-options.yaml
+  price:
+    type: string
+  compareAtPrice:
+    type: string
 required:
+  - product
   - id
   - title
   - selectedOptions
+  - price
+  - compareAtPrice

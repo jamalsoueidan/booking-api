@@ -18,6 +18,7 @@ export const CustomerProductServiceCreateVariant = async (
         inventoryItem: {
           tracked: false,
         },
+        taxable: true,
         options: [`Artist ${props.price}.${props.compareAtPrice}`],
       },
     },
@@ -38,12 +39,18 @@ const CREATE_VARIANT = `#graphql
   mutation productVariantCreate($input: ProductVariantInput!) {
     productVariantCreate(input: $input) {
       productVariant {
+        product {
+          id
+          handle
+        }
         id
         title
         selectedOptions {
           name
           value
         }
+        price
+        compareAtPrice
       }
       userErrors {
         field

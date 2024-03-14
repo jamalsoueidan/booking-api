@@ -3,7 +3,7 @@ import { shopifyAdmin } from "~/library/shopify";
 import { ProductUpdateSchema } from "./types";
 import { ProductWebHookGetUnusedVariantIds } from "./unused";
 
-export async function updateVariantsHandler(product: ProductUpdateSchema) {
+export async function deleteVariantsHandler(product: ProductUpdateSchema) {
   await connect();
   let unusedVariantIds = await ProductWebHookGetUnusedVariantIds({
     product,
