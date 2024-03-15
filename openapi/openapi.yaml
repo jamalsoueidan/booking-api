@@ -364,7 +364,7 @@ paths:
   /customer/{customerId}/orders/{orderId}:
     $ref: "paths/customer/order/get/index.yaml"
 
-  # schedule
+  # Schedule
   /customer/{customerId}/schedule:
     $ref: "./paths/customer/schedule/create/index.yaml"
   /customer/{customerId}/schedules:
@@ -375,7 +375,7 @@ paths:
   /customer/{customerId}/schedule/{scheduleId}/slots:
     $ref: "paths/customer/schedule/slots/update/index.yaml"
 
-  # meta
+  # Meta
   /meta/professions:
     $ref: "./paths/meta/professions/index.yaml"
   /meta/specialties:
