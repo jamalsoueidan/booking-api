@@ -1,9 +1,5 @@
 import { z } from "zod";
-import {
-  BooleanOrStringType,
-  GidFormat,
-  NumberOrStringType,
-} from "~/library/zod";
+import { GidFormat, NumberOrStringType } from "~/library/zod";
 
 export enum Professions {
   MAKEUP_ARTIST = "makeup_artist",
@@ -90,14 +86,6 @@ export const UserZodSchema = z.object({
         .optional(),
     })
     .optional(),
-  locations: z
-    .array(
-      z.object({
-        location: z.string(),
-        isDefault: BooleanOrStringType,
-      })
-    )
-    .optional(),
   speaks: z.array(z.string()).optional(),
   fullname: z.string(),
   active: z.boolean(),
@@ -109,7 +97,3 @@ export type User = z.infer<typeof UserZodSchema>;
 
 type ArrayElement<ArrayType extends readonly unknown[]> =
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
-
-export type UserLocations = ArrayElement<
-  NonNullable<z.infer<typeof UserZodSchema.shape.locations>>
->;
