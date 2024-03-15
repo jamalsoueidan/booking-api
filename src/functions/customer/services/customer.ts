@@ -80,6 +80,7 @@ export const CustomerServiceStatus = async ({
   const user = await UserModel.findOne({ customerId });
   if (user) {
     const schedule = await ScheduleModel.count({ customerId });
+    const locations = await ScheduleModel.count({ customerId });
     const services = await ScheduleModel.count({
       customerId,
       "products.0": { $exists: true },
@@ -91,7 +92,7 @@ export const CustomerServiceStatus = async ({
 
     return {
       profile: aboutMe && shortDescription && professions,
-      locations: user.locations && user.locations?.length > 0,
+      locations: locations > 0,
       schedules: schedule > 0,
       services: services > 0,
       profileImage: user.images?.profile?.url !== undefined,

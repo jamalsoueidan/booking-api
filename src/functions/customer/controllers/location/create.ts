@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { LocationZodSchema } from "~/functions/location/location.types";
-import { LocationServiceCreate } from "~/functions/location/services/create";
 
 import { _ } from "~/library/handler";
+import { CustomerLocationServiceCreate } from "../../services/location/create";
 
 export type CustomerLocationControllerCreateRequest = {
   query: z.infer<typeof CustomerLocationControllerCreateQuerySchema>;
@@ -19,7 +19,7 @@ export const CustomerLocationControllerCreateQuerySchema = z.object({
 });
 
 export type CustomerLocationControllerCreateResponse = Awaited<
-  ReturnType<typeof LocationServiceCreate>
+  ReturnType<typeof CustomerLocationServiceCreate>
 >;
 
 export const CustomerLocationControllerCreate = _(
@@ -29,7 +29,7 @@ export const CustomerLocationControllerCreate = _(
 
     const validateBody = CustomerLocationControllerCreateBodySchema.parse(body);
 
-    return LocationServiceCreate({
+    return CustomerLocationServiceCreate({
       ...validateData,
       ...validateBody,
     });
