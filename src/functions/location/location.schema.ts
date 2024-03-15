@@ -1,9 +1,5 @@
 import mongoose, { Document, Model } from "mongoose";
-import {
-  Location,
-  LocationOriginTypes,
-  LocationTypes,
-} from "../location.types";
+import { Location, LocationOriginTypes, LocationTypes } from "./location.types";
 
 export interface ILocation extends Location {
   geoLocation: {
@@ -22,6 +18,7 @@ export const LocationMongooseSchema = new mongoose.Schema<
   Model<ILocationDocument>
 >(
   {
+    isDefault: { type: Boolean, default: false },
     locationType: {
       type: String,
       enum: [LocationTypes.DESTINATION, LocationTypes.ORIGIN],
@@ -84,6 +81,10 @@ export const LocationMongooseSchema = new mongoose.Schema<
     handle: {
       type: String,
       unique: true,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
     },
   },
   { timestamps: true }
