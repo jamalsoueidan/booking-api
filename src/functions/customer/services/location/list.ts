@@ -7,5 +7,5 @@ export type CustomerLocationServiceListProps = {
 export const CustomerLocationServiceList = (
   props: CustomerLocationServiceListProps
 ) => {
-  return LocationModel.find(props);
+  return LocationModel.find({ customerId: props.customerId, deletedAt: null });
 };

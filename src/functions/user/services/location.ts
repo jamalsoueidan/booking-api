@@ -14,6 +14,7 @@ export const UserLocationServiceGetOne = async ({
   return LocationModel.findOne({
     _id: locationId.toString(),
     customerId: user.customerId,
+    deletedAt: null,
   }).orFail(
     new NotFoundError([
       {
