@@ -3,22 +3,13 @@ import "module-alias/register";
 import { app } from "@azure/functions";
 
 import {
-  CustomerLocationControllerAdd,
   CustomerLocationControllerCreate,
   CustomerLocationControllerGetAll,
-  CustomerLocationControllerGetAllOrigins,
   CustomerLocationControllerGetOne,
   CustomerLocationControllerRemove,
   CustomerLocationControllerSetDefault,
   CustomerLocationControllerUpdate,
 } from "./customer/controllers/location";
-
-app.http("customerLocationGetAllOrigins", {
-  methods: ["GET"],
-  authLevel: "anonymous",
-  route: "customer/{customerId}/locations/get-all-origins",
-  handler: CustomerLocationControllerGetAllOrigins,
-});
 
 app.http("customerLocationList", {
   methods: ["GET"],
@@ -46,13 +37,6 @@ app.http("customerLocationCreate", {
   authLevel: "anonymous",
   route: "customer/{customerId}/locations",
   handler: CustomerLocationControllerCreate,
-});
-
-app.http("customerLocationAdd", {
-  methods: ["POST"],
-  authLevel: "anonymous",
-  route: "customer/{customerId}/location/{locationId}",
-  handler: CustomerLocationControllerAdd,
 });
 
 app.http("customerLocationRemove", {

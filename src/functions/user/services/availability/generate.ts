@@ -62,5 +62,12 @@ export const UserAvailabilityServiceGenerate = async (
     end: date.endDate,
   });
 
+  /*
+   * TODO:
+   * find customerId if he bought any treatments and block time
+   * find blocked/vacations and block time
+   * cart booking time?
+   */
+
   return removeBookedSlots(availability, booked);
 };

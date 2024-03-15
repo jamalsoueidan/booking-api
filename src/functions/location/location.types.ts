@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { GidFormat, NumberOrStringType } from "~/library/zod";
+import {
+  BooleanOrStringType,
+  GidFormat,
+  NumberOrStringType,
+} from "~/library/zod";
 
 export enum LocationTypes {
   ORIGIN = "origin",
@@ -11,6 +15,7 @@ export enum LocationOriginTypes {
   COMMERCIAL = "commercial",
 }
 export const LocationZodSchema = z.object({
+  isDefault: BooleanOrStringType,
   locationType: z.nativeEnum(LocationTypes),
   customerId: GidFormat,
   name: z.string(),
@@ -22,6 +27,7 @@ export const LocationZodSchema = z.object({
   minDriveDistance: NumberOrStringType,
   maxDriveDistance: NumberOrStringType,
   startFee: NumberOrStringType,
+  deletedAt: z.coerce.date().optional(),
 });
 
 export type Location = z.infer<typeof LocationZodSchema>;

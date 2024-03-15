@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { LocationZodSchema } from "~/functions/location/location.types";
-import { LocationServiceUpdate } from "~/functions/location/services/update";
 
 import { _ } from "~/library/handler";
 import { StringOrObjectIdType } from "~/library/zod";
+import { CustomerLocationServiceUpdate } from "../../services/location/update";
 
 // should be PATCH and UPSERT
 export type CustomerLocationControllerUpdateRequest = {
@@ -23,7 +23,7 @@ export const CustomerLocationControllerUpdateQuerySchema = z.object({
 });
 
 export type CustomerLocationControllerUpdateResponse = Awaited<
-  ReturnType<typeof LocationServiceUpdate>
+  ReturnType<typeof CustomerLocationServiceUpdate>
 >;
 
 export const CustomerLocationControllerUpdate = _(
@@ -33,6 +33,6 @@ export const CustomerLocationControllerUpdate = _(
     const validateBody =
       CustomerLocationControllerUpdateBodySchema.parse(body) || {};
 
-    return LocationServiceUpdate(validateData, validateBody);
+    return CustomerLocationServiceUpdate(validateData, validateBody);
   }
 );

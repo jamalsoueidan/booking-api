@@ -188,8 +188,6 @@ components:
       $ref: paths/customer/location/_types/location.yaml
     CustomerLocationIsDefault:
       $ref: paths/customer/location/_types/location-is-default.yaml
-    CustomerLocationGetAllOriginsRepsonse:
-      $ref: paths/customer/location/get-all-origins/response.yaml
     CustomerLocationCreateBody:
       $ref: paths/customer/location/create/body.yaml
     CustomerLocationCreateResponse:
@@ -202,8 +200,6 @@ components:
       $ref: paths/customer/location/update/body.yaml
     CustomerLocationUpdateResponse:
       $ref: paths/customer/location/update/response.yaml
-    CustomerLocationAddResponse:
-      $ref: paths/customer/location/add/response.yaml
     CustomerLocationRemoveResponse:
       $ref: paths/customer/location/remove/response.yaml
     CustomerLocationSetDefaultResponse:
@@ -268,8 +264,6 @@ components:
       $ref: paths/location/get-coordinates/response.yaml
     LocationGetTravelTimeResponse:
       $ref: paths/location/get-travel-time/response.yaml
-    LocationValidateAddressResponse:
-      $ref: paths/location/validate-address/response.yaml
 
     # Shipping
     Shipping:
@@ -388,8 +382,6 @@ paths:
     $ref: "./paths/meta/specialties/index.yaml"
 
   # locations
-  /customer/{customerId}/locations/get-all-origins:
-    $ref: "./paths/customer/location/get-all-origins/index.yaml"
   /customer/{customerId}/location/{locationId}/setDefault:
     $ref: "./paths/customer/location/set-default/index.yaml"
   /customer/{customerId}/location/{locationId}:
@@ -398,8 +390,6 @@ paths:
     $ref: "./paths/customer/location/create-list.yaml"
   /location/get-coordinates:
     $ref: "./paths/location/get-coordinates/index.yaml"
-  /location/validate-address:
-    $ref: "./paths/location/validate-address/index.yaml"
   /location/get-travel-time:
     $ref: "./paths/location/get-travel-time/index.yaml"
 

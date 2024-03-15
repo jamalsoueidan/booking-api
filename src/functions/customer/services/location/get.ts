@@ -1,23 +1,24 @@
 import { LocationModel } from "~/functions/location";
+
 import { NotFoundError } from "~/library/handler";
 import { StringOrObjectId } from "~/library/zod";
-import { UserServiceGet } from "./user";
 
-export const UserLocationServiceGetOne = async ({
-  username,
-  locationId,
-}: {
-  username: string;
+export type CustomerLocationServiceGetProps = {
   locationId: StringOrObjectId;
-}) => {
-  const user = await UserServiceGet({ username });
+  customerId: number;
+};
+
+export const CustomerLocationServiceGet = async (
+  props: CustomerLocationServiceGetProps
+) => {
   return LocationModel.findOne({
-    _id: locationId.toString(),
-    customerId: user.customerId,
+    _id: props.locationId,
+    customerId: props.customerId,
+    deletedAt: null,
   }).orFail(
     new NotFoundError([
       {
-        path: ["locationId", "username"],
+        path: ["locationId", "customerId"],
         message: "LOCATION_NOT_FOUND_IN_USER",
         code: "custom",
       },
