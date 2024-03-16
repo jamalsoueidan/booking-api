@@ -1,4 +1,4 @@
-import { add, isSameDay } from "date-fns";
+import { add, endOfMonth, isSameDay } from "date-fns";
 import {
   Schedule,
   ScheduleProductBookingPeriod,
@@ -65,31 +65,11 @@ describe("generateEndDate", () => {
     const expected = add(startDate, {
       [bookingPeriod.unit]: bookingPeriod.value,
     });
+
     expect(isSameDay(result, expected)).toBe(true);
   });
 
-  it("should not extend availability beyond the booking period", () => {
-    const startDate = new Date();
-    const bookingPeriod: ScheduleProductBookingPeriod = {
-      unit: TimeUnit.WEEKS,
-      value: 14,
-    };
-    const schedule: Pick<Schedule, "slots" | "products"> = {
-      slots: [{ day: "monday", intervals: [] }],
-      products: [],
-    };
-    const result = generateEndDate({
-      schedule,
-      startDate,
-      bookingPeriod,
-    });
-    const expected = add(startDate, {
-      [bookingPeriod.unit]: bookingPeriod.value,
-    });
-    expect(isSameDay(result, expected)).toBe(true);
-  });
-
-  it("should limit availability to 14 slots when booking period is larger", () => {
+  it("should limit availability to end of month when booking period is larger", () => {
     const startDate = new Date();
     const bookingPeriod: ScheduleProductBookingPeriod = {
       unit: TimeUnit.MONTHS,
@@ -106,8 +86,7 @@ describe("generateEndDate", () => {
       bookingPeriod,
     });
 
-    // Calculate the expected end date based on the number of slots and the frequency of slots
-    const expected = add(startDate, { weeks: 14 }); // The function should limit the end date to 14 weeks, not the booking period
+    const expected = endOfMonth(startDate); // The function should limit the end date to end of month, not the booking period
     expect(isSameDay(result, expected)).toBe(true);
   });
 });
