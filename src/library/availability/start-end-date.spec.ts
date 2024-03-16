@@ -58,7 +58,6 @@ describe("generateEndDate", () => {
       products: [],
     };
     const result = generateEndDate({
-      schedule,
       startDate,
       bookingPeriod,
     });
@@ -81,7 +80,6 @@ describe("generateEndDate", () => {
       products: [],
     };
     const result = generateEndDate({
-      schedule,
       startDate,
       bookingPeriod,
     });

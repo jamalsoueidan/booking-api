@@ -42,7 +42,6 @@ export const generateAvailability = async ({
 
   let startDate = generateStartDate({ fromDate, noticePeriod });
   let endDate = generateEndDate({
-    schedule,
     startDate,
     bookingPeriod,
   });
