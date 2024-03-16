@@ -77,5 +77,7 @@ export const UserAvailabilityServiceGenerate = async (
    * cart booking time?
    */
 
-  return removeBookedSlots(availability, blocked);
+  availability = removeBookedSlots(availability, blocked);
+
+  return availability.filter(({ slots }) => slots.length > 0);
 };
