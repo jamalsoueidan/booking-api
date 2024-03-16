@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import { UserScheduleServiceGetWithCustomer } from "~/functions/user/services/schedule/get-with-customer";
 
+import { CustomerBlockedServiceRange } from "~/functions/customer/services/blocked/range";
 import { ScheduleProduct } from "~/functions/schedule";
 import { ShippingServiceGet } from "~/functions/shipping/services/get";
 import { findStartAndEndDate } from "~/library/availability/find-start-end-date-in-availability";
@@ -56,7 +57,15 @@ export const UserAvailabilityServiceGenerate = async (
 
   const date = findStartAndEndDate(availability);
 
-  const booked = await UserAvailabilityServiceGetOrders({
+  const orders = await UserAvailabilityServiceGetOrders({
+    customerId: user.customerId,
+    start: date.startDate,
+    end: date.endDate,
+  });
+
+  availability = removeBookedSlots(availability, orders);
+
+  const blocked = await CustomerBlockedServiceRange({
     customerId: user.customerId,
     start: date.startDate,
     end: date.endDate,
@@ -64,10 +73,9 @@ export const UserAvailabilityServiceGenerate = async (
 
   /*
    * TODO:
-   * find customerId if he bought any treatments and block time
-   * find blocked/vacations and block time
+   * find customerId if he bought any treatments and block time OUT
    * cart booking time?
    */
 
-  return removeBookedSlots(availability, booked);
+  return removeBookedSlots(availability, blocked);
 };
