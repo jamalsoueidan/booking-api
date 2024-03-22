@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
-
-import { UserServiceGet } from "../../services/user";
+import { UserServiceGet } from "../../services/user/get";
 
 export type UserControllerGetRequest = {
   query: z.infer<typeof UserServiceGetSchema>;

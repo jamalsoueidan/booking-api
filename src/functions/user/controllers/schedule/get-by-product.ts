@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { _ } from "~/library/handler";
 import { UserScheduleServiceGetByProductId as UserScheduleServiceGetByProduct } from "../../services/schedule/get-by-product";
-import { UserServiceGetCustomerId } from "../../services/user";
+import { UserServiceGetCustomerId } from "../../services/user/get-customer-id";
 
 export type UserScheduleControllerGetByProductRequest = {
   query: z.infer<typeof UserScheduleControllerGetByProductQuerySchema>;

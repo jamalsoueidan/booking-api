@@ -2,7 +2,7 @@ import { _ } from "~/library/handler";
 
 import { z } from "zod";
 import { NumberOrStringType } from "~/library/zod";
-import { UserServiceList } from "../../services/user";
+import { UserServiceList } from "../../services/user/list";
 
 export type UserControllerListRequest = {
   query: z.infer<typeof UserControllerListSchema>;
@@ -17,6 +17,7 @@ export const UserControllerListSchema = z.object({
   nextCursor: z.string().optional(),
   limit: NumberOrStringType.optional(),
   profession: z.string().optional(),
+  specialties: z.array(z.string()).optional(),
   sortOrder: z.nativeEnum(SortOrder).optional(),
 });
 
@@ -27,6 +28,6 @@ export type UserControllerListResponse = Awaited<
 export const UserControllerList = _(
   async ({ query }: UserControllerListRequest) => {
     const validateData = UserControllerListSchema.parse(query);
-    return await UserServiceList(validateData);
+    return UserServiceList(validateData);
   }
 );

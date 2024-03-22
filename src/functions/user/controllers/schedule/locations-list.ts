@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { _ } from "~/library/handler";
 import { UserScheduleServiceLocationsList } from "../../services/schedule/locations-list";
-import { UserServiceGet } from "../../services/user";
+import { UserServiceGet } from "../../services/user/get";
 
 export type UserScheduleControllerLocationsListRequest = {
   query: z.infer<typeof UserScheduleControllerLocationsListQuerySchema>;
