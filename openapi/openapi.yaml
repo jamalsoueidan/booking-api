@@ -236,6 +236,8 @@ components:
       $ref: paths/user/list/response.yaml
     UsersProfessionsResponse:
       $ref: paths/user/professions/response.yaml
+    UsersSpecialtiesResponse:
+      $ref: paths/user/specialties/response.yaml
 
     # UserAvailability
     UserAvailabilitySlot:
@@ -326,6 +328,8 @@ paths:
     $ref: "./paths/user/schedule/get-by-location/index.yaml"
   /users/professions:
     $ref: "./paths/user/professions/index.yaml"
+  /users/specialties:
+    $ref: "./paths/user/specialties/index.yaml"
   /user/{username}/availability/{locationId}/generate:
     $ref: "paths/user/availability/generate/index.yaml"
   /user/{username}/availability/{locationId}/get:
