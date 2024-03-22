@@ -1,7 +1,7 @@
 import { LocationModel } from "~/functions/location";
 import { NotFoundError } from "~/library/handler";
 import { StringOrObjectId } from "~/library/zod";
-import { UserServiceGet } from "./user";
+import { UserServiceGet } from "./user/get";
 
 export const UserLocationServiceGetOne = async ({
   username,

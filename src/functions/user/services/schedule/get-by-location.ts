@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 import { ILocationDocument, Location } from "~/functions/location";
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
-import { UserServiceGetCustomerId } from "~/functions/user";
+
 import { NotFoundError } from "~/library/handler";
 import { StringOrObjectId } from "~/library/zod";
+import { UserServiceGetCustomerId } from "../user/get-customer-id";
 
 export type UserScheduleServiceGetByLocationProps = {
   username: string;
