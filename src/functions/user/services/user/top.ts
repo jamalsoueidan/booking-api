@@ -44,6 +44,7 @@ export const UserServiceTop = async ({
         totalUsers: { $sum: 1 },
       },
     },
+    { $sort: { _id: 1 } },
     {
       $project: {
         _id: 0,
