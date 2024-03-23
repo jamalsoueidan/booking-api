@@ -2059,7 +2059,11 @@ components:
     UserTop:
       type: object
       properties:
+        customerId:
+          type: number
         username:
+          type: string
+        fullname:
           type: string
         aboutMe:
           type: string
@@ -2067,11 +2071,26 @@ components:
           type: string
         professions:
           type: string
+        images:
+          type: object
+          properties:
+            profile:
+              type: object
+              properties:
+                url:
+                  type: string
+                  format: uri
+                width:
+                  type: integer
+                height:
+                  type: integer
       required:
+        - customerId
         - username
-        - aboutMe
+        - fullname
         - shortDescription
         - professions
+        - images
     UsersTopResponse:
       type: object
       properties:
