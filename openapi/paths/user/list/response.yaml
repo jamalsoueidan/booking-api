@@ -12,8 +12,11 @@ properties:
         type: array
         items:
           $ref: "../_types/user.yaml"
+      total:
+        type: number
     required:
       - results
+      - total
 
 required:
   - success
