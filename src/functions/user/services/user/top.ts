@@ -29,10 +29,12 @@ export const UserServiceTop = async ({
     },
     {
       $project: {
+        customerId: 1,
         username: 1,
         shortDescription: 1,
         fullname: 1,
         professions: 1,
+        images: 1,
       },
     },
     {
