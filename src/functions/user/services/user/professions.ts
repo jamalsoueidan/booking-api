@@ -9,12 +9,13 @@ export const UserServiceProfessions = async () => {
         count: { $sum: 1 },
       },
     },
+    { $sort: { _id: 1 } },
   ]);
 
-  const professionCountFormatted: Record<string, number> = {};
+  const professions: Record<string, number> = {};
   for (const profession of professionCount) {
-    professionCountFormatted[profession._id] = profession.count;
+    professions[profession._id] = profession.count;
   }
 
-  return professionCountFormatted;
+  return professions;
 };
