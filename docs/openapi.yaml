@@ -2056,6 +2056,48 @@ components:
       required:
         - success
         - payload
+    UserTop:
+      type: object
+      properties:
+        username:
+          type: string
+        aboutMe:
+          type: string
+        shortDescription:
+          type: string
+        professions:
+          type: string
+      required:
+        - username
+        - aboutMe
+        - shortDescription
+        - professions
+    UsersTopResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            type: object
+            properties:
+              totalUsers:
+                type: string
+              profession:
+                type: string
+              users:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserTop'
+            required:
+              - totalUsers
+              - profession
+              - users
+      required:
+        - success
+        - payload
     UserAvailabilitySlot:
       type: object
       properties:
@@ -2949,6 +2991,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserScheduleGetByLocationResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  /users/top:
+    parameters:
+      - name: limit
+        in: query
+        description: limit items (default 5)
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: page
+        schema:
+          type: string
+    get:
+      tags:
+        - User
+      operationId: usersTop
+      summary: GET Get all users grouped by professions
+      description: This endpoint get all users group by professions
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersTopResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
