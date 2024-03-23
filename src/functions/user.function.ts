@@ -4,6 +4,7 @@ import { app } from "@azure/functions";
 import { UserControllerGet } from "./user/controllers/user/get";
 import { UserControllerList } from "./user/controllers/user/list";
 import { UserControllerProfessions } from "./user/controllers/user/professions";
+import { UserControllerSpecialties } from "./user/controllers/user/specialties";
 import { UserControllerUsernameTaken } from "./user/controllers/user/username-taken";
 
 app.http("userGet", {
@@ -32,4 +33,11 @@ app.http("usersProfessions", {
   authLevel: "anonymous",
   route: "users/professions",
   handler: UserControllerProfessions,
+});
+
+app.http("usersSpecialties", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "users/specialties",
+  handler: UserControllerSpecialties,
 });

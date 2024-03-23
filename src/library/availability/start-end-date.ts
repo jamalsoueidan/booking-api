@@ -33,15 +33,16 @@ export type generateEndDateProps = {
   bookingPeriod: ScheduleProductBookingPeriod;
 };
 
-// Function to generate the end date
 export const generateEndDate = ({
   startDate,
   bookingPeriod,
 }: generateEndDateProps) => {
-  const end = add(new Date(), { [bookingPeriod.unit]: bookingPeriod.value });
+  const endDateAllowed = add(new Date(), {
+    [bookingPeriod.unit]: bookingPeriod.value,
+  });
   const endMonth = endOfMonth(startDate);
-  if (isAfter(endMonth, end)) {
-    return end;
+  if (isAfter(endMonth, endDateAllowed)) {
+    return endDateAllowed;
   }
   return endMonth;
 };

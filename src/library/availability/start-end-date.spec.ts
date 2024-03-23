@@ -1,6 +1,5 @@
 import { add, endOfMonth, isSameDay } from "date-fns";
 import {
-  Schedule,
   ScheduleProductBookingPeriod,
   ScheduleProductNoticePeriod,
   TimeUnit,
@@ -43,31 +42,39 @@ describe("generateStartDate", () => {
   });
 });
 
+const OriginalDate = Date;
 describe("generateEndDate", () => {
+  beforeAll(() => {
+    jest
+      .spyOn(global, "Date")
+      .mockImplementation(() => new OriginalDate("2023-01-01T00:00:00Z"));
+  });
+
   it("should return the booking period end date when it is more than the minimum availability period", () => {
-    const startDate = new Date();
+    const startDate = new OriginalDate("2023-02-02T00:00:00Z");
     const bookingPeriod: ScheduleProductBookingPeriod = {
       unit: TimeUnit.WEEKS,
       value: 2,
     };
-    const schedule: Pick<Schedule, "slots" | "products"> = {
-      slots: [
-        { day: "monday", intervals: [] },
-        { day: "tuesday", intervals: [] },
-      ],
-      products: [],
-    };
+
     const result = generateEndDate({
       startDate,
       bookingPeriod,
     });
+
     const expected = add(startDate, {
       [bookingPeriod.unit]: bookingPeriod.value,
     });
 
     expect(isSameDay(result, expected)).toBe(true);
   });
+  afterAll(() => {
+    // Restore the original implementation
+    jest.restoreAllMocks();
+  });
+});
 
+describe("generateEndDate", () => {
   it("should limit availability to end of month when booking period is larger", () => {
     const startDate = new Date();
     const bookingPeriod: ScheduleProductBookingPeriod = {
@@ -75,10 +82,6 @@ describe("generateEndDate", () => {
       value: 4, // large booking period
     };
 
-    const schedule: Pick<Schedule, "slots" | "products"> = {
-      slots: [{ day: "monday", intervals: [] }], // only one slot per week
-      products: [],
-    };
     const result = generateEndDate({
       startDate,
       bookingPeriod,

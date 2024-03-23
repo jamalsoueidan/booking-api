@@ -1,6 +1,6 @@
 import { ScheduleModel } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
-import { UserServiceGetCustomerId } from "../user";
+import { UserServiceGetCustomerId } from "../user/get-customer-id";
 
 export type UserProductServiceGetFilter = {
   username: string;
