@@ -17,6 +17,14 @@ export const BooleanOrStringType = z
   })
   .optional();
 
+export const CommaSeparatedArray = z.string().transform((value) => {
+  if (value.includes(",")) {
+    // Split the string by commas and trim whitespace from each item
+    return value.split(",").map((item) => item.trim());
+  }
+  return [value];
+});
+
 export const GidFormat = z
   .union([z.number(), z.string()])
   .refine(

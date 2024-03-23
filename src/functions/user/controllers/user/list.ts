@@ -1,7 +1,7 @@
 import { _ } from "~/library/handler";
 
 import { z } from "zod";
-import { NumberOrStringType } from "~/library/zod";
+import { CommaSeparatedArray, NumberOrStringType } from "~/library/zod";
 import { UserServiceList } from "../../services/user/list";
 
 export type UserControllerListRequest = {
@@ -17,7 +17,7 @@ export const UserControllerListSchema = z.object({
   nextCursor: z.string().optional(),
   limit: NumberOrStringType.optional(),
   profession: z.string().optional(),
-  specialties: z.array(z.string()).optional(),
+  specialties: CommaSeparatedArray.optional(),
   sortOrder: z.nativeEnum(SortOrder).optional(),
 });
 
