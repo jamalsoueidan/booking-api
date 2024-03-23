@@ -28,7 +28,7 @@ export const UserServiceList = async ({
 
   // Filter by specialties, if provided
   if (specialties && specialties.length > 0) {
-    query = { ...query, specialties: { $all: specialties } };
+    query = { ...query, specialties: { $in: specialties } };
   }
 
   const sortParam = sortOrder === "asc" ? 1 : -1; // 1 for 'asc', -1 for 'desc'
