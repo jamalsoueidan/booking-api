@@ -2980,6 +2980,12 @@ paths:
       security: []
   /users/specialties:
     get:
+      parameters:
+        - name: profession
+          in: query
+          description: profession
+          schema:
+            type: string
       tags:
         - User
       operationId: usersSpecialties
