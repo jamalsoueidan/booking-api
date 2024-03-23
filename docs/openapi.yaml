@@ -2022,8 +2022,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/User'
+            total:
+              type: number
           required:
             - results
+            - total
       required:
         - success
         - payload
