@@ -1,0 +1,26 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  payload:
+    type: array
+    items:
+      type: object
+      properties:
+        totalUsers:
+          type: string
+        profession:
+          type: string
+        users:
+          type: array
+          items:
+            $ref: "./user-top.yaml"
+      required:
+        - totalUsers
+        - profession
+        - users
+
+required:
+  - success
+  - payload

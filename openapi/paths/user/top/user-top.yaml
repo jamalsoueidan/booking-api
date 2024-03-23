@@ -1,0 +1,15 @@
+type: object
+properties:
+  username:
+    type: string
+  aboutMe:
+    type: string
+  shortDescription:
+    type: string
+  professions:
+    type: string
+required:
+  - username
+  - aboutMe
+  - shortDescription
+  - professions
