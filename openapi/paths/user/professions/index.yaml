@@ -3,7 +3,7 @@ get:
     - User
   operationId: usersProfessions
   summary: GET Get all users professions with total count
-  description: This endpoint get all users
+  description: This endpoint get all users professions
   responses:
     "200":
       description: "Response"

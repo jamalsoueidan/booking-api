@@ -9,7 +9,7 @@ get:
     - User
   operationId: usersSpecialties
   summary: GET Get all users specialties with total count
-  description: This endpoint get all users
+  description: This endpoint get all users specialties
   responses:
     "200":
       description: "Response"
