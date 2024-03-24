@@ -1,3 +1,4 @@
+import { LocationModel } from "~/functions/location";
 import { ScheduleModel } from "~/functions/schedule";
 import { User, UserModel } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
@@ -80,7 +81,7 @@ export const CustomerServiceStatus = async ({
   const user = await UserModel.findOne({ customerId });
   if (user) {
     const schedule = await ScheduleModel.count({ customerId });
-    const locations = await ScheduleModel.count({ customerId });
+    const locations = await LocationModel.count({ customerId });
     const services = await ScheduleModel.count({
       customerId,
       "products.0": { $exists: true },
