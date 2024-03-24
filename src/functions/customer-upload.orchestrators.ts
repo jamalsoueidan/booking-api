@@ -24,7 +24,7 @@ df.app.activity("fileGet", {
   handler: fileGetHandler,
 });
 
-df.app.activity("updateCustomerHandler", {
+df.app.activity("updateCustomer", {
   handler: updateCustomerHandler,
 });
 
@@ -37,7 +37,7 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
     return { sucess: false, error: zodParse.error };
   }
 
-  yield context.df.callActivity("fileCreate", body);
+  yield context.df.callActivity("fileCreate", zodParse.data);
 
   const maxRetries = 5;
   let attemptCount = 0;
@@ -61,8 +61,9 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
   }
 
   if (fileUploaded) {
+    context.info(`Data for ${body.customerId} not available after retries.`);
     return yield context.df.callActivity("updateCustomer", {
-      customerId: body.customerId,
+      customerId: zodParse.data.customerId,
       image: fileUploaded.preview?.image,
     });
   }
@@ -81,16 +82,13 @@ const uploadOrchestrator: HttpHandler = async (
   const client = df.getClient(context);
   const body: unknown = await request.json();
 
-  const instanceId: string = await client.startNew(
-    request.params.orchestratorName,
-    { input: body }
-  );
+  const instanceId: string = await client.startNew("upload", { input: body });
 
   context.log(`Started orchestration with ID = '${instanceId}'.`);
   return client.createCheckStatusResponse(request, instanceId);
 };
 
-app.http("orchestratorsHttpStart", {
+app.http("orchestratorUpload", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "orchestrators/upload",
