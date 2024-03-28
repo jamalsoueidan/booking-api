@@ -32,8 +32,8 @@ export type PayoutAccountDetails = z.infer<
 
 export const PayoutAccountZodSchema = z.object({
   customerId: z.number(),
-  payoutType: z.nativeEnum(PayoutAccountType).optional(),
-  payoutDetails: PayoutAccountDetailsZodSchema.optional(),
+  payoutType: z.nativeEnum(PayoutAccountType),
+  payoutDetails: PayoutAccountDetailsZodSchema,
 });
 
 export type PayoutAccount = z.infer<typeof PayoutAccountZodSchema>;
