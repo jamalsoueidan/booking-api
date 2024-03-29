@@ -1,0 +1,12 @@
+type: object
+properties:
+  payoutType:
+    $ref: ../_types/payout-account-type.yaml
+  payoutDetails:
+    oneOf:
+      - $ref: ../_types/payout-account-mobile-pay.yaml
+      - $ref: ../_types/payout-account-bank-account.yaml
+
+required:
+  - payoutType
+  - payoutDetails

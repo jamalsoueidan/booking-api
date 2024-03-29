@@ -1,0 +1,17 @@
+type: object
+properties:
+  customerId:
+    oneOf:
+      - type: string
+      - type: integer
+  payoutType:
+    $ref: payout-account-type.yaml
+  payoutDetails:
+    oneOf:
+      - $ref: payout-account-mobile-pay.yaml
+      - $ref: payout-account-bank-account.yaml
+
+required:
+  - customerId
+  - payoutType
+  - payoutDetails

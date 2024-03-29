@@ -7,7 +7,6 @@ describe("CustomerPayoutAccountServiceDestroy", () => {
     const payoutAccount = await createPayoutAccount();
 
     const payoutAccountDocument = await CustomerPayoutAccountServiceDestroy({
-      payoutAccountId: payoutAccount.id,
       customerId: payoutAccount.customerId,
     });
 

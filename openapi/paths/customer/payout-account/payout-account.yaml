@@ -1,0 +1,6 @@
+post:
+  $ref: "./create/index.yaml#/post"
+get:
+  $ref: "./get/index.yaml#/get"
+delete:
+  $ref: "./destroy/index.yaml#/delete"

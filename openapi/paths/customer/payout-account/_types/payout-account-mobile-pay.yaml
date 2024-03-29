@@ -1,0 +1,8 @@
+type: object
+properties:
+  phoneNumber:
+    oneOf:
+      - type: string
+      - type: integer
+required:
+  - phoneNumber
