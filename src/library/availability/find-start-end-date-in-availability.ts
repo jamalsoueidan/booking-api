@@ -1,10 +1,6 @@
 import { Availability } from "~/functions/availability";
 
 export const findStartAndEndDate = (availability: Availability[]) => {
-  if (!availability || availability.length === 0) {
-    throw new Error("No availability provided");
-  }
-
   const startDates = availability.map((a) => a.slots[0].from);
 
   const startDate = new Date(

@@ -56,6 +56,10 @@ export const UserAvailabilityServiceGenerate = async (
     toDate: body.toDate,
   });
 
+  if (availability.length === 0) {
+    return availability;
+  }
+
   const date = findStartAndEndDate(availability);
 
   const orders = await UserAvailabilityServiceGetOrders({

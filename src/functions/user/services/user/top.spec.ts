@@ -35,8 +35,8 @@ describe("UserServiceTop", () => {
     }
 
     const firstPage = await UserServiceTop({ limit: 5 });
-    console.log(JSON.stringify(firstPage));
+    //console.log(JSON.stringify(firstPage));
     const secondPage = await UserServiceTop({ limit: 5, page: 2 });
-    console.log(JSON.stringify(secondPage));
+    //console.log(JSON.stringify(secondPage));
   });
 });
