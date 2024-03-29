@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { NumberOrStringType } from "~/library/zod";
 
 export enum PayoutAccountType {
   MOBILE_PAY = "MOBILE_PAY",
@@ -14,7 +15,7 @@ export const PayoutAccountBankZodSchema = z.object({
 export type PayoutAccountBank = z.infer<typeof PayoutAccountBankZodSchema>;
 
 export const PayoutAccountMobilePayZodSchema = z.object({
-  phoneNumber: z.number(),
+  phoneNumber: NumberOrStringType,
 });
 
 export type PayoutAccountMobilePay = z.infer<
@@ -31,7 +32,7 @@ export type PayoutAccountDetails = z.infer<
 >;
 
 export const PayoutAccountZodSchema = z.object({
-  customerId: z.number(),
+  customerId: NumberOrStringType,
   payoutType: z.nativeEnum(PayoutAccountType),
   payoutDetails: PayoutAccountDetailsZodSchema,
 });
