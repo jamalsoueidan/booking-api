@@ -46,11 +46,6 @@ export const generateAvailability = async ({
     bookingPeriod,
   });
 
-  if (fromDate && toDate) {
-    startDate = new Date(fromDate);
-    endDate = new Date(toDate);
-  }
-
   const availability: Availability[] = [];
 
   while (isBefore(startDate, endDate)) {
