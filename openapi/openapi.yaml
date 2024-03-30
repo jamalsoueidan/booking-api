@@ -313,58 +313,19 @@ components:
     ProductsGetUsersByVariant:
       $ref: paths/products/get-users-by-variant/user.yaml
 paths:
-  # Products
-  /products/get-users-image:
-    $ref: "./paths/products/get-users-image/index.yaml"
-  /products/get-users-by-variant:
-    $ref: "./paths/products/get-users-by-variant/index.yaml"
-
-  # User
-  /user/{username}/username-taken:
-    $ref: "./paths/user/username-taken/index.yaml"
-  /user/{username}:
-    $ref: "./paths/user/user.yaml"
-  /user/{username}/products/{productHandle}:
-    $ref: "./paths/user/products/get/index.yaml"
-  /user/{username}/products:
-    $ref: "./paths/user/products/list-by-schedule/index.yaml"
-  /user/{username}/product/{productHandle}/location/{locationId}:
-    $ref: "./paths/user/products/list-by-location/index.yaml"
-  /user/{username}/products/location/{locationId}:
-    $ref: "./paths/user/products/get-products/index.yaml"
-  /user/{username}/schedule/get-by-product-id/{productHandle}:
-    $ref: paths/user/schedule/get-by-product/index.yaml
-  /user/{username}/schedules/locations:
-    $ref: "./paths/user/schedule/list/index.yaml"
-  /user/{username}/location/{locationId}:
-    $ref: "./paths/user/location/get/index.yaml"
-  /user/{username}/schedule/{scheduleId}/location/{locationId}:
-    $ref: "./paths/user/schedule/get-by-location/index.yaml"
-  /users/top:
-    $ref: "./paths/user/top/index.yaml"
-  /users/professions:
-    $ref: "./paths/user/professions/index.yaml"
-  /users/specialties:
-    $ref: "./paths/user/specialties/index.yaml"
-  /user/{username}/availability/{locationId}/generate:
-    $ref: "paths/user/availability/generate/index.yaml"
-  /user/{username}/availability/{locationId}/get:
-    $ref: "paths/user/availability/get/index.yaml"
-
-  /users:
-    $ref: "./paths/user/list/index.yaml"
-
-  # Customer
-  /customer/{customerId}/upload/resource-url:
-    $ref: paths/customer/upload/resource-url/index.yaml
-  /customer/{customerId}:
-    $ref: "./paths/customer/customer.yaml"
-  /customer/{customerId}/status:
-    $ref: "./paths/customer/status/index.yaml"
+  # Customer Creation and General Information
   /customer:
     $ref: "./paths/customer/create/index.yaml"
+  /customer/{customerId}:
+    $ref: "./paths/customer/customer.yaml"
+
+  # Customer Status and Business Verification
+  /customer/{customerId}/status:
+    $ref: "./paths/customer/status/index.yaml"
   /customer/{customerId}/isBusiness:
     $ref: "./paths/customer/is-business/index.yaml"
+
+  # Customer Product Management
   /customer/{customerId}/products:
     $ref: "./paths/customer/product/list/index.yaml"
   /customer/{customerId}/products/ids:
@@ -374,58 +335,23 @@ paths:
   /customer/{customerId}/product/{productId}/create-variant:
     $ref: "paths/customer/product/create-variant/index.yaml"
 
-  # Orders
-  /customer/{customerId}/bookings/{orderId}/group/{groupId}:
-    $ref: "paths/customer/booking/get-by-group/index.yaml"
-  /customer/{customerId}/bookings/range:
-    $ref: "paths/customer/booking/range/index.yaml"
-
-  # Booking
-  /customer/{customerId}/orders/{orderId}:
-    $ref: "paths/customer/order/get/index.yaml"
-
-  # Schedule
-  /customer/{customerId}/schedule:
-    $ref: "./paths/customer/schedule/create/index.yaml"
-  /customer/{customerId}/schedules:
-    $ref: "./paths/customer/schedule/list/index.yaml"
-  /customer/{customerId}/schedule/{scheduleId}:
-    $ref: "./paths/customer/schedule/schedule.yaml"
-
-  /customer/{customerId}/schedule/{scheduleId}/slots:
-    $ref: "paths/customer/schedule/slots/update/index.yaml"
-
-  # Meta
-  /meta/professions:
-    $ref: "./paths/meta/professions/index.yaml"
-  /meta/specialties:
-    $ref: "./paths/meta/specialties/index.yaml"
-
-  # locations
-  /customer/{customerId}/location/{locationId}/setDefault:
-    $ref: "./paths/customer/location/set-default/index.yaml"
+  # Customer Location Management
   /customer/{customerId}/location/{locationId}:
     $ref: "./paths/customer/location/get-delete-update-add.yaml"
+  /customer/{customerId}/location/{locationId}/setDefault:
+    $ref: "./paths/customer/location/set-default/index.yaml"
   /customer/{customerId}/locations:
     $ref: "./paths/customer/location/create-list.yaml"
-  /location/get-coordinates:
-    $ref: "./paths/location/get-coordinates/index.yaml"
-  /location/get-travel-time:
-    $ref: "./paths/location/get-travel-time/index.yaml"
 
-  # shipping
-  /shipping/create:
-    $ref: "./paths/shipping/create/index.yaml"
-  /shipping/calculate:
-    $ref: "./paths/shipping/calculate/index.yaml"
-  /shipping/{shippingId}:
-    $ref: "./paths/shipping/get/index.yaml"
+  # Customer Resource Upload
+  /customer/{customerId}/upload/resource-url:
+    $ref: "paths/customer/upload/resource-url/index.yaml"
 
-  # Orchestrators
-  /orchestrators/upload:
-    $ref: "./paths/orchestrators/upload/index.yaml"
+  # Customer Payout Account Management
+  /customer/{customerId}/payout-account:
+    $ref: "./paths/customer/payout-account/payout-account.yaml"
 
-  # blocked
+  # Customer Blocking Management
   /customer/{customerId}/blocked:
     $ref: "./paths/customer/blocked/create/index.yaml"
   /customer/{customerId}/blocked/{blockedId}:
@@ -433,8 +359,96 @@ paths:
   /customer/{customerId}/blocked/list:
     $ref: "./paths/customer/blocked/list/index.yaml"
   /customer/{customerId}/blocked/range:
-    $ref: paths/customer/blocked/range/index.yaml
+    $ref: "paths/customer/blocked/range/index.yaml"
 
-  # blocked
-  /customer/{customerId}/payout-account:
-    $ref: "./paths/customer/payout-account/payout-account.yaml"
+  # Customer Schedule Management
+  /customer/{customerId}/schedule:
+    $ref: "./paths/customer/schedule/create/index.yaml"
+  /customer/{customerId}/schedules:
+    $ref: "./paths/customer/schedule/list/index.yaml"
+  /customer/{customerId}/schedule/{scheduleId}:
+    $ref: "./paths/customer/schedule/schedule.yaml"
+  /customer/{customerId}/schedule/{scheduleId}/slots:
+    $ref: "paths/customer/schedule/slots/update/index.yaml"
+
+  # Customer Orders and Booking Management
+  /customer/{customerId}/bookings/{orderId}/group/{groupId}:
+    $ref: "paths/customer/booking/get-by-group/index.yaml"
+  /customer/{customerId}/bookings/range:
+    $ref: "paths/customer/booking/range/index.yaml"
+  /customer/{customerId}/orders/{orderId}:
+    $ref: "paths/customer/order/get/index.yaml"
+
+  # User Profile and Authentication
+  /user/{username}:
+    $ref: "./paths/user/user.yaml"
+  /user/{username}/username-taken:
+    $ref: "./paths/user/username-taken/index.yaml"
+
+  # User Product Management
+  /user/{username}/products:
+    $ref: "./paths/user/products/list-by-schedule/index.yaml"
+  /user/{username}/products/{productHandle}:
+    $ref: "./paths/user/products/get/index.yaml"
+  /user/{username}/products/location/{locationId}:
+    $ref: "./paths/user/products/get-products/index.yaml"
+  /user/{username}/product/{productHandle}/location/{locationId}:
+    $ref: "./paths/user/products/list-by-location/index.yaml"
+
+  # User Schedule and Booking
+  /user/{username}/schedule/get-by-product-id/{productHandle}:
+    $ref: "paths/user/schedule/get-by-product/index.yaml"
+  /user/{username}/schedule/{scheduleId}/location/{locationId}:
+    $ref: "./paths/user/schedule/get-by-location/index.yaml"
+  /user/{username}/schedules/locations:
+    $ref: "./paths/user/schedule/list/index.yaml"
+
+  # User Location Management
+  /user/{username}/location/{locationId}:
+    $ref: "./paths/user/location/get/index.yaml"
+
+  # User Availability Management
+  /user/{username}/availability/{locationId}/generate:
+    $ref: "paths/user/availability/generate/index.yaml"
+  /user/{username}/availability/{locationId}/get:
+    $ref: "paths/user/availability/get/index.yaml"
+
+  # General User Endpoints
+  /users:
+    $ref: "./paths/user/list/index.yaml"
+  /users/professions:
+    $ref: "./paths/user/professions/index.yaml"
+  /users/specialties:
+    $ref: "./paths/user/specialties/index.yaml"
+  /users/top:
+    $ref: "./paths/user/top/index.yaml"
+
+  # Product-related endpoints
+  /products/get-users-image:
+    $ref: "./paths/products/get-users-image/index.yaml"
+  /products/get-users-by-variant:
+    $ref: "./paths/products/get-users-by-variant/index.yaml"
+
+  # Meta information endpoints
+  /meta/professions:
+    $ref: "./paths/meta/professions/index.yaml"
+  /meta/specialties:
+    $ref: "./paths/meta/specialties/index.yaml"
+
+  # Location services endpoints
+  /location/get-coordinates:
+    $ref: "./paths/location/get-coordinates/index.yaml"
+  /location/get-travel-time:
+    $ref: "./paths/location/get-travel-time/index.yaml"
+
+  # Shipping-related endpoints
+  /shipping/create:
+    $ref: "./paths/shipping/create/index.yaml"
+  /shipping/calculate:
+    $ref: "./paths/shipping/calculate/index.yaml"
+  /shipping/{shippingId}:
+    $ref: "./paths/shipping/get/index.yaml"
+
+  # Orchestrator-related endpoints
+  /orchestrators/upload:
+    $ref: "./paths/orchestrators/upload/index.yaml"
