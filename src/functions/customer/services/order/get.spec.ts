@@ -1,6 +1,6 @@
 import { OrderModel } from "~/functions/order/order.models";
 import { Order } from "~/functions/order/order.types";
-import { orderWithfulfillmentAndRefunds } from "~/functions/webhook/data-order-with-fullfilment-and-refunds";
+import { orderWithoutShipping } from "~/functions/webhook/data-order-with-without-shipping";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
 import { createShipping } from "~/library/jest/helpers/shipping";
@@ -14,7 +14,7 @@ describe("CustomerOrderServiceGet", () => {
     const user = await createUser({ customerId });
     const location = await createLocation({ customerId });
     const shipping = await createShipping({ location: location.id });
-    const dumbData = Order.parse(orderWithfulfillmentAndRefunds);
+    const dumbData = Order.parse(orderWithoutShipping);
     dumbData.line_items.map((lineItem) => {
       lineItem.properties!.customerId = user.customerId;
       lineItem.properties!.locationId = location._id.toString();
