@@ -15,6 +15,22 @@ export async function webhookOrderProcess(
 
     context.log("webhook order success");
 
+    // preserve the properties for each line-item from the first time the order was created
+    const existingOrder = await OrderModel.findOne({ id: order.id });
+    if (existingOrder) {
+      order.line_items = order.line_items.map((newItem) => {
+        const existingItem = existingOrder.line_items.find(
+          (eItem) => eItem.id === newItem.id
+        );
+
+        if (existingItem) {
+          newItem.properties = existingItem.properties;
+        }
+
+        return newItem;
+      });
+    }
+
     return OrderModel.findOneAndUpdate({ id: order.id }, order, {
       new: true,
       upsert: true,
