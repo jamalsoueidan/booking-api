@@ -83,44 +83,6 @@ export const UserAvailabilityServiceGetOrders = async ({
       },
     },
     {
-      $addFields: {
-        refunds: {
-          $filter: {
-            input: "$refunds",
-            as: "refund",
-            cond: {
-              $anyElementTrue: {
-                $map: {
-                  input: "$$refund.refund_line_items",
-                  as: "refund_line_item",
-                  in: {
-                    $eq: ["$$refund_line_item.line_item_id", "$line_items.id"],
-                  },
-                },
-              },
-            },
-          },
-        },
-        fulfillments: {
-          $filter: {
-            input: "$fulfillments",
-            as: "fulfillment",
-            cond: {
-              $anyElementTrue: {
-                $map: {
-                  input: "$$fulfillment.line_items",
-                  as: "fulfillment_line_item",
-                  in: {
-                    $eq: ["$$fulfillment_line_item.id", "$line_items.id"],
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-    {
       $sort: {
         "line_items.properties.groupId": 1,
         "line_items.properties.from": 1,
@@ -131,8 +93,6 @@ export const UserAvailabilityServiceGetOrders = async ({
         _id: "$line_items.properties.groupId",
         line_items: { $push: "$line_items" },
         orderNumber: { $first: "$order_number" },
-        fulfillmentsArray: { $push: "$fulfillments" },
-        refundsArray: { $push: "$refunds" },
       },
     },
     {

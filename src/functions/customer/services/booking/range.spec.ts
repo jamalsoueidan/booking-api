@@ -1,8 +1,8 @@
 import { addMinutes, subMinutes } from "date-fns";
 import { OrderModel } from "~/functions/order/order.models";
 import { Order } from "~/functions/order/order.types";
-import { orderWithfulfillmentAndRefunds } from "~/functions/webhook/data-order-with-fullfilment-and-refunds";
 import { orderWithShipping } from "~/functions/webhook/data-order-with-shipping";
+import { orderWithoutShipping } from "~/functions/webhook/data-order-with-without-shipping";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
 import { createShipping } from "~/library/jest/helpers/shipping";
@@ -13,7 +13,7 @@ describe("CustomerOrderServiceRange", () => {
   it("should return orders for customer on range of start/end", async () => {
     await createUser({ customerId: 7106990342471 });
 
-    const dumbData = Order.parse(orderWithfulfillmentAndRefunds);
+    const dumbData = Order.parse(orderWithoutShipping);
     const response = await OrderModel.create(dumbData);
 
     const customerId = response.line_items[0].properties?.customerId || 0;

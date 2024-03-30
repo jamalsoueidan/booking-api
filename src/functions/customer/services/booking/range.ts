@@ -1,11 +1,6 @@
 import { Location } from "~/functions/location";
 import { OrderModel } from "~/functions/order/order.models";
-import {
-  Order,
-  OrderFulfillment,
-  OrderRefund,
-  OrderRefundLineItem,
-} from "~/functions/order/order.types";
+import { Order } from "~/functions/order/order.types";
 import { Shipping } from "~/functions/shipping/shipping.types";
 import { bookingAggregation } from "./aggregation";
 
@@ -15,10 +10,7 @@ export type CustomerBookingServiceRangeProps = {
   end: string;
 };
 
-export type CustomerBookingServiceRangeAggregate = Omit<
-  Order,
-  "refunds" | "fulfillments"
-> & {
+export type CustomerBookingServiceRangeAggregate = Order & {
   start: Date;
   end: Date;
   groupId: string;
@@ -28,12 +20,6 @@ export type CustomerBookingServiceRangeAggregate = Omit<
   location: Pick<
     Location,
     "name" | "fullAddress" | "locationType" | "originType"
-  >;
-  fulfillments: Array<Omit<OrderFulfillment, "line_items">>;
-  refunds: Array<
-    Omit<OrderRefund, "refund_line_items"> & {
-      refund_line_items: Array<Omit<OrderRefundLineItem, "line_item">>;
-    }
   >;
 };
 

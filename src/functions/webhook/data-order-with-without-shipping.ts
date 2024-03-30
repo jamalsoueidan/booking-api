@@ -1,4 +1,4 @@
-export const orderWithfulfillmentAndRefunds = {
+export const orderWithoutShipping = {
   id: 5874046992711,
   admin_graphql_api_id: "gid://shopify/Order/5874046992711",
   app_id: 31210962945,
