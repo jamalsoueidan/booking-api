@@ -122,7 +122,7 @@ const propertiesSchema = z.array(propertySchema).transform((properties) => {
 const LineItemZod = z.object({
   id: z.number(),
   admin_graphql_api_id: z.string(),
-  current_quantity: z.number(),
+  current_quantity: z.number().optional(),
   fulfillable_quantity: z.number(),
   fulfillment_service: z.string(),
   fulfillment_status: z.string().nullable(),

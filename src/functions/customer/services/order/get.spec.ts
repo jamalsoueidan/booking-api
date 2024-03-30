@@ -19,6 +19,7 @@ describe("CustomerOrderServiceGet", () => {
       lineItem.properties!.customerId = user.customerId;
       lineItem.properties!.locationId = location._id.toString();
       lineItem.properties!.groupId = groupId;
+      return lineItem;
     });
     const response = await OrderModel.create(dumbData);
     const orderId = response.id;
