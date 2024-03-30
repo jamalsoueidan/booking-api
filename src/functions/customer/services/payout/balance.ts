@@ -1,5 +1,4 @@
 import { OrderModel } from "~/functions/order/order.models";
-import { PayoutModel } from "~/functions/payout";
 
 export type CustomerPayoutServiceBalanceProps = {
   customerId: number;
@@ -8,11 +7,7 @@ export type CustomerPayoutServiceBalanceProps = {
 export const CustomerPayoutServiceBalance = async ({
   customerId,
 }: CustomerPayoutServiceBalanceProps) => {
-  const payout = await PayoutModel.findOne({
-    customerId,
-  }).sort({ createdAt: -1 });
-
-  return OrderModel.aggregate([
+  const aggregationResult = await OrderModel.aggregate([
     {
       $match: {
         "line_items.properties.customerId": customerId,
@@ -20,60 +15,51 @@ export const CustomerPayoutServiceBalance = async ({
     },
     { $unwind: "$line_items" },
     {
+      $lookup: {
+        from: "PayoutLog",
+        let: {
+          lineItemId: "$line_items.id",
+          customerId: "$line_items.properties.customerId",
+        },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$lineItemId", "$$lineItemId"] },
+                  { $eq: ["$customerId", "$$customerId"] },
+                ],
+              },
+            },
+          },
+        ],
+        as: "payoutLog",
+      },
+    },
+    {
       $match: {
         "line_items.properties.customerId": customerId,
+        "line_items.current_quantity": 1,
+        "line_items.fulfillable_quantity": 0,
+        "line_items.fulfillment_status": "fulfilled",
       },
     },
     {
-      $addFields: {
-        refunds: {
-          $filter: {
-            input: "$refunds",
-            as: "refund",
-            cond: {
-              $anyElementTrue: {
-                $map: {
-                  input: "$$refund.refund_line_items",
-                  as: "refund_line_item",
-                  in: {
-                    $eq: ["$$refund_line_item.line_item_id", "$line_items.id"],
-                  },
-                },
-              },
-            },
-          },
-        },
-        fulfillments: {
-          $filter: {
-            input: "$fulfillments",
-            as: "fulfillment",
-            cond: {
-              $anyElementTrue: {
-                $map: {
-                  input: "$$fulfillment.line_items",
-                  as: "fulfillment_line_item",
-                  in: {
-                    $eq: ["$$fulfillment_line_item.id", "$line_items.id"],
-                  },
-                },
-              },
-            },
-          },
-        },
+      $match: {
+        payoutLog: { $size: 0 },
       },
     },
     {
-      $project: {
-        id: 1,
-        order_number: 1,
-        line_items: 1,
-        fulfillment_status: 1,
-        financial_status: 1,
-        created_at: 1,
-        updated_at: 1,
-        fulfillments: 1,
-        refunds: 1,
+      $group: {
+        _id: null,
+        totalBalancePrice: { $sum: { $toDouble: "$line_items.price" } },
       },
     },
   ]);
+
+  if (aggregationResult.length === 0) {
+    return 0; // No matching documents, so return 0
+  } else {
+    return aggregationResult[0].totalBalancePrice; // Return the calculated total
+  }
 };
