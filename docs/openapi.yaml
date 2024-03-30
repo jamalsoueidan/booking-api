@@ -3269,6 +3269,7 @@ paths:
                     example: true
                   payload:
                     $ref: '#/components/schemas/CustomerPayoutAccount'
+                    nullable: true
                 required:
                   - success
                   - payload
