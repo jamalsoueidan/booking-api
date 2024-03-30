@@ -168,113 +168,6 @@ LineItemSchema.index({
     "properties.groupId": 1,
   });
 
-const FulfillmentSchema = new Schema(
-  {
-    id: {
-      type: Number,
-      required: true,
-      unique: true,
-    },
-    admin_graphql_api_id: String,
-    created_at: Date,
-    location_id: Number,
-    name: String,
-    order_id: Number,
-    service: String,
-    shipment_status: String,
-    status: String,
-    tracking_company: String,
-    tracking_number: String,
-    tracking_numbers: [String],
-    tracking_url: String,
-    tracking_urls: [String],
-    updated_at: Date,
-    line_items: [
-      {
-        id: {
-          type: Number,
-          index: true,
-        },
-        name: String,
-      },
-    ],
-  },
-  {
-    autoIndex: false,
-    _id: false,
-  }
-);
-
-FulfillmentSchema.index({
-  id: 1,
-});
-
-FulfillmentSchema.index({
-  "line_items.id": 1,
-});
-
-const RefundLineItemSchema = new Schema(
-  {
-    id: {
-      type: Number,
-      required: true,
-      unique: true,
-    },
-    line_item_id: {
-      type: Number,
-      index: true,
-    },
-    location_id: Number,
-    quantity: Number,
-    restock_type: String,
-    subtotal: String,
-    subtotal_set: PriceSetSchema,
-    total_tax: String,
-    total_tax_set: PriceSetSchema,
-    line_item: {
-      id: Number,
-      name: String,
-    },
-  },
-  {
-    autoIndex: false,
-    _id: false,
-  }
-);
-
-RefundLineItemSchema.index({
-  id: 1,
-});
-
-RefundLineItemSchema.index({
-  line_item_id: 1,
-});
-
-const RefundSchema = new Schema(
-  {
-    id: {
-      type: Number,
-      required: true,
-      unique: true,
-    },
-    admin_graphql_api_id: String,
-    created_at: Date,
-    note: String,
-    order_id: Number,
-    processed_at: Date,
-    restock: Boolean,
-    total_duties_set: PriceSetSchema,
-    user_id: Number,
-    refund_line_items: [RefundLineItemSchema],
-  },
-  {
-    autoIndex: false,
-    _id: false,
-  }
-);
-
-RefundSchema.index({ id: 1 });
-
 const ShippingLineSchema = new Schema(
   {
     id: {
@@ -367,10 +260,8 @@ export const OrdreMongooseSchema = new Schema<IOrderDocument, IOrderModel>({
   billing_address: AddressSchema,
   customer: CustomerSchema,
   discount_applications: [{}],
-  fulfillments: [FulfillmentSchema],
   line_items: [LineItemSchema],
   payment_terms: {},
-  refunds: [RefundSchema],
   shipping_address: AddressSchema,
   shipping_lines: [ShippingLineSchema],
 });

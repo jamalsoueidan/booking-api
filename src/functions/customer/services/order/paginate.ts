@@ -52,44 +52,6 @@ export const CustomerOrderServicePaginate = async ({
       $limit: limit,
     },
     {
-      $addFields: {
-        refunds: {
-          $filter: {
-            input: "$refunds",
-            as: "refund",
-            cond: {
-              $anyElementTrue: {
-                $map: {
-                  input: "$$refund.refund_line_items",
-                  as: "refund_line_item",
-                  in: {
-                    $eq: ["$$refund_line_item.line_item_id", "$line_items.id"],
-                  },
-                },
-              },
-            },
-          },
-        },
-        fulfillments: {
-          $filter: {
-            input: "$fulfillments",
-            as: "fulfillment",
-            cond: {
-              $anyElementTrue: {
-                $map: {
-                  input: "$$fulfillment.line_items",
-                  as: "fulfillment_line_item",
-                  in: {
-                    $eq: ["$$fulfillment_line_item.id", "$line_items.id"],
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-    {
       $project: {
         id: 1,
         line_items: 1,
@@ -103,8 +65,6 @@ export const CustomerOrderServicePaginate = async ({
         cancelled_at: 1,
         note: 1,
         note_attributes: 1,
-        fulfillments: 1,
-        refunds: 1,
       },
     }
   );

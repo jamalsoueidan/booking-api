@@ -29,7 +29,5 @@ describe("CustomerOrderServiceGet", () => {
     });
 
     expect(order.line_items.length).toBe(3);
-    expect(order.fulfillments.length).toBe(3);
-    expect(order.refunds.length).toBe(1);
   });
 });

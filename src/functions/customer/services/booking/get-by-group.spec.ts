@@ -28,8 +28,6 @@ describe("CustomerOrderServiceGetByGroup", () => {
     });
 
     expect(order.line_items.length).toBe(1);
-    expect(order.fulfillments.length).toBe(1);
-    expect(order.refunds.length).toBe(1);
 
     order = await CustomerBookingServiceGetByGroup({
       customerId: ownerCustomerId,
@@ -38,7 +36,5 @@ describe("CustomerOrderServiceGetByGroup", () => {
     });
 
     expect(order.line_items.length).toBe(2);
-    expect(order.fulfillments.length).toBe(2);
-    expect(order.refunds.length).toBe(0);
   });
 });

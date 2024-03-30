@@ -2,44 +2,6 @@ import { PipelineStage } from "mongoose";
 
 export const bookingAggregation: PipelineStage[] = [
   {
-    $addFields: {
-      refunds: {
-        $filter: {
-          input: "$refunds",
-          as: "refund",
-          cond: {
-            $anyElementTrue: {
-              $map: {
-                input: "$$refund.refund_line_items",
-                as: "refund_line_item",
-                in: {
-                  $eq: ["$$refund_line_item.line_item_id", "$line_items.id"],
-                },
-              },
-            },
-          },
-        },
-      },
-      fulfillments: {
-        $filter: {
-          input: "$fulfillments",
-          as: "fulfillment",
-          cond: {
-            $anyElementTrue: {
-              $map: {
-                input: "$$fulfillment.line_items",
-                as: "fulfillment_line_item",
-                in: {
-                  $eq: ["$$fulfillment_line_item.id", "$line_items.id"],
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-  {
     $sort: {
       "line_items.properties.groupId": 1,
       "line_items.properties.from": 1,
@@ -60,8 +22,6 @@ export const bookingAggregation: PipelineStage[] = [
       cancelled_at: { $first: "$cancelled_at" },
       note: { $first: "$note" },
       note_attributes: { $first: "$note_attributes" },
-      fulfillmentsArray: { $push: "$fulfillments" },
-      refundsArray: { $push: "$refunds" },
     },
   },
   {
@@ -192,20 +152,6 @@ export const bookingAggregation: PipelineStage[] = [
       cancelled_at: 1,
       note: 1,
       note_attributes: 1,
-      fulfillments: {
-        $reduce: {
-          input: "$fulfillmentsArray",
-          initialValue: [],
-          in: { $concatArrays: ["$$value", "$$this"] },
-        },
-      },
-      refunds: {
-        $reduce: {
-          input: "$refundsArray",
-          initialValue: [],
-          in: { $concatArrays: ["$$value", "$$this"] },
-        },
-      },
     },
   },
 ];
