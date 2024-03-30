@@ -11,7 +11,9 @@ app.http("webhook", {
   authLevel: "anonymous",
   route: "webhooks",
   handler: async (request: HttpRequest, context: InvocationContext) => {
-    console.log(await request.json());
+    const response = await request.json();
+    console.log(response);
+    console.log(JSON.stringify(response));
     return { body: "test" };
   },
 });
