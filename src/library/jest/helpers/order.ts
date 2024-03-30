@@ -14,6 +14,7 @@ export const getOrderObject = ({
     .map(() => ({
       id: faker.number.int({ min: 1, max: 1000000000 }),
       admin_graphql_api_id: "gid://shopify/LineItem/15174509101383",
+      current_quantity: 0,
       fulfillable_quantity: 1,
       fulfillment_service: "manual",
       fulfillment_status: null,
