@@ -11,10 +11,10 @@ describe("CustomerPayoutAccountServiceGet", () => {
       customerId: payoutAccount.customerId,
     });
 
-    expect(payoutAccountDocument.customerId).toEqual(payoutAccount.customerId);
-    expect(payoutAccountDocument.payoutDetails).toEqual(
+    expect(payoutAccountDocument?.customerId).toEqual(payoutAccount.customerId);
+    expect(payoutAccountDocument?.payoutDetails).toEqual(
       payoutAccount.payoutDetails
     );
-    expect(payoutAccountDocument.payoutType).toEqual(payoutAccount.payoutType);
+    expect(payoutAccountDocument?.payoutType).toEqual(payoutAccount.payoutType);
   });
 });
