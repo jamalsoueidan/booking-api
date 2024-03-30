@@ -50,7 +50,7 @@ const AddressZod = z.object({
 const CustomerZod = z.object({
   id: z.number(),
   email: z.string().nullable(),
-  accepts_marketing: z.boolean(),
+  accepts_marketing: z.boolean().optional(),
   created_at: z.coerce.date(),
   updated_at: z.coerce.date(),
   first_name: z.string(),
@@ -76,11 +76,10 @@ const CustomerZod = z.object({
     .nullable(),
   tags: z.string(),
   currency: z.string(),
-  accepts_marketing_updated_at: z.string(),
-  marketing_opt_in_level: z.string().nullable(),
+  accepts_marketing_updated_at: z.string().optional(),
+  marketing_opt_in_level: z.string().optional(),
   tax_exemptions: z.array(z.string()),
   admin_graphql_api_id: z.string(),
-  default_address: AddressZod.nullable(),
 });
 
 const propertySchema = z.object({
@@ -123,6 +122,7 @@ const propertiesSchema = z.array(propertySchema).transform((properties) => {
 const LineItemZod = z.object({
   id: z.number(),
   admin_graphql_api_id: z.string(),
+  current_quantity: z.number().optional(),
   fulfillable_quantity: z.number(),
   fulfillment_service: z.string(),
   fulfillment_status: z.string().nullable(),
@@ -169,7 +169,6 @@ export const Order = z.object({
   buyer_accepts_marketing: z.boolean(),
   cancel_reason: z.string().nullable(),
   cancelled_at: z.string().nullable(),
-  client_details: ClientDetailsZod,
   closed_at: z.string().nullable(),
   confirmed: z.boolean(),
   contact_email: z.string().nullable(),
@@ -201,7 +200,7 @@ export const Order = z.object({
   phone: z.string().nullable(),
   po_number: z.string().nullable(),
   presentment_currency: z.string(),
-  processed_at: z.string(),
+  processed_at: z.string().nullable(),
   source_identifier: z.string().nullable(),
   subtotal_price: z.string(),
   subtotal_price_set: MoneySetZod,

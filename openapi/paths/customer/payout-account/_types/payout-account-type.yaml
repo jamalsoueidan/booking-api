@@ -1,0 +1,4 @@
+type: string
+enum:
+  - MOBILE_PAY
+  - BANK_ACCOUNT

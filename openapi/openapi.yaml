@@ -37,6 +37,16 @@ components:
     CustomerUploadResourceURLResponse:
       $ref: paths/customer/upload/resource-url/response.yaml
 
+    # Payout Account
+    CustomerPayoutAccount:
+      $ref: paths/customer/payout-account/_types/payout-account.yaml
+    CustomerPayoutAccountType:
+      $ref: paths/customer/payout-account/_types/payout-account-type.yaml
+    CustomerPayoutMobilePay:
+      $ref: paths/customer/payout-account/_types/payout-account-mobile-pay.yaml
+    CustomerPayoutBankAccount:
+      $ref: paths/customer/payout-account/_types/payout-account-bank-account.yaml
+
     # Product
     CustomerProductBase:
       $ref: paths/customer/schedule/_types/base-product.yaml
@@ -424,3 +434,7 @@ paths:
     $ref: "./paths/customer/blocked/list/index.yaml"
   /customer/{customerId}/blocked/range:
     $ref: paths/customer/blocked/range/index.yaml
+
+  # blocked
+  /customer/{customerId}/payout-account:
+    $ref: "./paths/customer/payout-account/payout-account.yaml"

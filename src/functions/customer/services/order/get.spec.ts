@@ -15,10 +15,11 @@ describe("CustomerOrderServiceGet", () => {
     const location = await createLocation({ customerId });
     const shipping = await createShipping({ location: location.id });
     const dumbData = Order.parse(orderWithoutShipping);
-    dumbData.line_items.map((lineItem) => {
+    dumbData.line_items = dumbData.line_items.map((lineItem) => {
       lineItem.properties!.customerId = user.customerId;
       lineItem.properties!.locationId = location._id.toString();
       lineItem.properties!.groupId = groupId;
+      return lineItem;
     });
     const response = await OrderModel.create(dumbData);
     const orderId = response.id;

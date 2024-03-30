@@ -34,7 +34,6 @@
     "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
     "mongoose": "^7.6.10",
-    "npm": "^10.5.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {

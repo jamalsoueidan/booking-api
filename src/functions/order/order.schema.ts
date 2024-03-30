@@ -89,7 +89,6 @@ const CustomerSchema = new Schema(
     marketing_opt_in_level: String,
     tax_exemptions: [String],
     admin_graphql_api_id: String,
-    default_address: AddressSchema,
   },
   {
     autoIndex: false,
@@ -110,6 +109,7 @@ const LineItemSchema = new Schema(
       index: true,
     },
     admin_graphql_api_id: String,
+    current_quantity: Number,
     fulfillable_quantity: Number,
     fulfillment_service: String,
     fulfillment_status: String,

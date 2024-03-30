@@ -1,0 +1,28 @@
+delete:
+  parameters:
+    - name: customerId
+      in: path
+      description: The ID of the customerId
+      required: true
+      schema:
+        type: string
+  tags:
+    - CustomerPayoutAccount
+  operationId: customerPayoutAccountDestroy
+  summary: DEL destroy payout account
+  description: This endpoint destroy payout account for customer
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+
+  security: []

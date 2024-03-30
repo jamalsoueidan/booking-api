@@ -1,0 +1,37 @@
+post:
+  parameters:
+    - name: customerId
+      in: path
+      description: The ID of the customerId
+      required: true
+      schema:
+        type: string
+  tags:
+    - CustomerPayoutAccount
+  operationId: customerPayoutAccountCreate
+  summary: POST Create payout account
+  description: This endpoint create new payout account
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./body.yaml"
+
+  responses:
+    "200":
+      description: Response with payout account payload
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
+
+  security: []

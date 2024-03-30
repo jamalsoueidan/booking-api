@@ -1,0 +1,12 @@
+type: object
+properties:
+  bankName:
+    type: string
+  regNum:
+    type: integer
+  accountNum:
+    type: integer
+required:
+  - bankName
+  - regNum
+  - accountNum
