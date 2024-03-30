@@ -42,9 +42,9 @@ export const _ =
           );
         }
 
-        if (response) {
-          return { jsonBody: { payload: response, success: true } };
-        }
+        //if (response) {
+        return { jsonBody: { payload: response, success: true } };
+        //}
       }
     } catch (err: unknown) {
       context.error("Error: ", JSON.stringify(err));
