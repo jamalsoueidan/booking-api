@@ -63,6 +63,8 @@ export const NumberOrStringType = z
     typeof value === "string" ? parseInt(value, 10) : value
   );
 
+export type NumberOrString = z.infer<typeof NumberOrStringType>;
+
 export const isValidObjectId = (value: any): value is string =>
   mongoose.Types.ObjectId.isValid(value);
 
