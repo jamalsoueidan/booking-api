@@ -30,22 +30,43 @@ describe("UserAvailabilityServiceGenerate", () => {
   let schedule: Awaited<ReturnType<typeof createSchedule>>;
   let locationOrigin: Awaited<ReturnType<typeof createLocation>>;
   let locationDestination: Awaited<ReturnType<typeof createLocation>>;
+  let days: WeekDays[] = [];
 
-  const todayInUTC = utcToZonedTime(new Date(), "Etc/UTC");
+  beforeAll(() => {
+    jest
+      .useFakeTimers({
+        doNotFake: [
+          "nextTick",
+          "setImmediate",
+          "clearImmediate",
+          "setInterval",
+          "clearInterval",
+          "setTimeout",
+          "clearTimeout",
+        ],
+      })
+      .setSystemTime(new Date("2022-02-15"));
+  });
 
-  const nextDayInUTC = format(
-    addDays(todayInUTC, 1),
-    "iiii"
-  ).toLowerCase() as WeekDays;
-
-  const dayAfterNextInUTC = format(
-    addDays(todayInUTC, 2),
-    "iiii"
-  ).toLowerCase() as WeekDays;
-
-  const days = [nextDayInUTC];
+  afterAll(() => {
+    jest.useRealTimers(); // Go back to real timers
+  });
 
   beforeEach(async () => {
+    const todayInUTC = new Date();
+
+    const nextDayInUTC = format(
+      addDays(todayInUTC, 1),
+      "iiii"
+    ).toLowerCase() as WeekDays;
+
+    const dayAfterNextInUTC = format(
+      addDays(todayInUTC, 2),
+      "iiii"
+    ).toLowerCase() as WeekDays;
+
+    days = [nextDayInUTC];
+
     user = await createUser({ customerId });
 
     locationOrigin = await createLocation({
