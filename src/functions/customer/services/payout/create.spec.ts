@@ -3,6 +3,7 @@ import { Order } from "~/functions/order/order.types";
 
 import { faker } from "@faker-js/faker";
 import { PayoutLogModel } from "~/functions/payout-log";
+import { IShippingDocument } from "~/functions/shipping/shipping.schema";
 import { createPayoutAccount } from "~/library/jest/helpers/payout-account";
 import { createShipping } from "~/library/jest/helpers/shipping";
 import {
@@ -15,9 +16,10 @@ require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerPayoutServiceCreate", () => {
   const customerId = 7106990342471;
+  let shipping: IShippingDocument;
 
   beforeEach(async () => {
-    const shipping = await createShipping({ origin: { customerId } });
+    shipping = await createShipping({ origin: { customerId } });
     dummyDataBalance.id = faker.number.int({ min: 1000000, max: 100000000 });
     dummyDataBalance.line_items = dummyDataBalance.line_items.map(
       (lineItem) => {
@@ -55,8 +57,9 @@ describe("CustomerPayoutServiceCreate", () => {
         accumulator + parseFloat(line_items.price),
       0
     );
+
     const response = await CustomerPayoutServiceCreate({ customerId });
-    expect(response.amount).toBe(totalAmount);
+    expect(response.amount).toBe(totalAmount + shipping.cost.value);
 
     const payoutLogs = await PayoutLogModel.find({ payout: response._id });
 

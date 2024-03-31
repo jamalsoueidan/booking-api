@@ -43,15 +43,30 @@ export const CustomerPayoutServiceCreate = async ({
     ]);
   }
 
-  const totalAmount = lineItems.reduce(
+  const totalLineItems = lineItems.reduce(
     (accumulator, { line_items }) => accumulator + parseFloat(line_items.price),
+    0
+  );
+
+  const shippings = lineItems
+    .filter((lineItem) => lineItem.shipping)
+    .map(({ shipping }) => shipping);
+
+  let uniqueShippings = Array.from(
+    new Map(
+      shippings.map((shipping) => [shipping._id.toString(), shipping])
+    ).values()
+  );
+
+  const totalShippingAmount = uniqueShippings.reduce(
+    (accumulator, { cost }) => accumulator + cost.value,
     0
   );
 
   const payout = new PayoutModel({
     customerId,
     date: new Date(),
-    amount: totalAmount,
+    amount: totalLineItems + totalShippingAmount,
     currencyCode: "DKK",
     status: PayoutStatus.PENDING,
     payoutType: account.payoutType,
