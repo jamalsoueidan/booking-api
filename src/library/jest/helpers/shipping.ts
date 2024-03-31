@@ -12,7 +12,7 @@ export const DEFAULT_GROUP = "all";
 
 const getOriginObject = (props: Partial<Location> = {}): Location => ({
   name: faker.person.firstName(),
-  customerId: faker.number.int({ min: 1, max: 100000 }),
+  customerId: props.customerId || faker.number.int({ min: 1, max: 100000 }),
   locationType: LocationTypes.ORIGIN,
   originType: LocationOriginTypes.COMMERCIAL,
   fullAddress: faker.location.streetAddress(),
@@ -25,11 +25,13 @@ const getOriginObject = (props: Partial<Location> = {}): Location => ({
   ...props,
 });
 
-export const createShipping = (filter: Partial<Shipping>) => {
+export const createShipping = (
+  filter: Partial<Omit<Shipping, "origin">> & { origin?: Partial<Location> }
+) => {
   const shipping = new ShippingModel();
   shipping.location =
     filter.location?.toString() || new mongoose.Types.ObjectId();
-  shipping.origin = getOriginObject({});
+  shipping.origin = getOriginObject(filter.origin || {});
   shipping.destination = {
     name: faker.company.buzzPhrase(),
     fullAddress: faker.location.streetAddress(),

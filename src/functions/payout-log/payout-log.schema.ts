@@ -1,8 +1,8 @@
 import mongoose, { Document, Model } from "mongoose";
-import { PayoutLog } from "./payout-log.types";
+import { PayoutLog, PayoutLogReferenceType } from "./payout-log.types";
 
 export interface IPayoutLog extends Omit<PayoutLog, "_id"> {
-  updatedAt: Date;
+  createdAt: Date;
 }
 
 export interface IPayoutLogDocument extends IPayoutLog, Document {}
@@ -16,11 +16,15 @@ export const PayoutLogMongooseSchema = new mongoose.Schema<
       type: Number,
       required: true,
     },
-    lineItemId: {
-      type: Number,
+    referenceType: {
+      type: String,
+      required: true,
+      enum: [PayoutLogReferenceType.LINE_ITEM, PayoutLogReferenceType.SHIPPING],
+    },
+    referenceId: {
+      type: mongoose.Schema.Types.Mixed,
       required: true,
       unique: true,
-      index: true,
     },
     payout: {
       type: mongoose.Schema.Types.ObjectId,
@@ -32,6 +36,8 @@ export const PayoutLogMongooseSchema = new mongoose.Schema<
 );
 
 PayoutLogMongooseSchema.index(
-  { customerId: 1, lineItemId: 1 },
+  { customerId: 1, referenceType: 1, referenceId: 1 },
   { unique: true }
 );
+
+PayoutLogMongooseSchema.index({ customerId: 1, payout: 1 }, { unique: false });

@@ -1,0 +1,14 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  payload:
+    type: array
+    items:
+      oneOf:
+        - $ref: "../../_types/order/line-item.yaml"
+        - $ref: ../../../shipping/_types/shipping.yaml
+required:
+  - success
+  - payload

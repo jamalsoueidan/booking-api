@@ -20,7 +20,6 @@ export type UserAvailabilityServiceGenerateProps = {
 export type UserAvailabilityServiceGenerateBody = {
   productIds: Array<ScheduleProduct["productId"]>;
   fromDate: string;
-  toDate?: string;
   shippingId?: string | Types.ObjectId;
 };
 
@@ -53,7 +52,6 @@ export const UserAvailabilityServiceGenerate = async (
     schedule,
     shipping,
     fromDate: body.fromDate,
-    toDate: body.toDate,
   });
 
   if (availability.length === 0) {

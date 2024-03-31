@@ -33,12 +33,12 @@ describe("UserServiceList", () => {
 
     const firstPage = await UserServiceList({ limit: 10 });
     expect(firstPage.results.length).toBe(10);
-    expect(firstPage.total).toBe(25);
+    expect(firstPage.totalCount).toBe(25);
 
     const professions = await UserServiceProfessions();
     for (const profession in professions) {
       const result = await UserServiceList({ limit: 10, profession });
-      expect(result.total).toBe(professions[profession]);
+      expect(result.totalCount).toBe(professions[profession]);
 
       const specialties = await UserServiceSpecialties({
         profession,
@@ -49,7 +49,7 @@ describe("UserServiceList", () => {
           profession,
           specialties: [specialty],
         });
-        expect(result.total).toBe(specialties[specialty]);
+        expect(result.totalCount).toBe(specialties[specialty]);
       }
     }
   });

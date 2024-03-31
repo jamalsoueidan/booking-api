@@ -59,6 +59,26 @@ describe("generateAvailability", () => {
     },
   };
 
+  beforeAll(() => {
+    jest
+      .useFakeTimers({
+        doNotFake: [
+          "nextTick",
+          "setImmediate",
+          "clearImmediate",
+          "setInterval",
+          "clearInterval",
+          "setTimeout",
+          "clearTimeout",
+        ],
+      })
+      .setSystemTime(new Date("2022-02-15"));
+  });
+
+  afterAll(() => {
+    jest.useRealTimers(); // Go back to real timers
+  });
+
   beforeEach(() =>
     UserModel.create({
       customerId,

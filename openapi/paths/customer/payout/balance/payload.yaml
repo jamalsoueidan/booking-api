@@ -1,0 +1,12 @@
+type: object
+properties:
+  totalAmount:
+    type: number
+  totalLineItems:
+    type: number
+  totalShippingAmount:
+    type: number
+required:
+  - totalAmount
+  - totalLineItems
+  - totalShippingAmount

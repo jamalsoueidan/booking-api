@@ -1,0 +1,31 @@
+get:
+  parameters:
+    - name: customerId
+      in: path
+      description: The ID of the customerId
+      required: true
+      schema:
+        type: string
+  tags:
+    - CustomerPayout
+  operationId: customerPayoutBalance
+  summary: GET get payout balance
+  description: This endpoint get payout balance
+
+  responses:
+    "200":
+      description: Response with payout balance payload
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
+
+  security: []

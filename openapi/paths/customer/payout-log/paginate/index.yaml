@@ -1,0 +1,53 @@
+get:
+  parameters:
+    - name: customerId
+      in: path
+      description: The ID of the customerId
+      required: true
+      schema:
+        type: string
+    - name: payoutId
+      in: path
+      description: The ID of the payoutId
+      required: true
+      schema:
+        type: string
+    - name: page
+      in: query
+      description: The page number
+      required: true
+      schema:
+        type: string
+    - name: sortOrder
+      in: query
+      description: The sort order either asc eller desc = default desc
+      schema:
+        type: string
+    - name: limit
+      in: query
+      description: The limit = default to 10
+      schema:
+        type: string
+  tags:
+    - CustomerPayoutLog
+  operationId: customerPayoutLogPaginate
+  summary: GET get all payout logs for specific payout using paginate
+  description: This endpoint get all payout logs for specific payout
+
+  responses:
+    "200":
+      description: Response with payouts payload
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
+
+  security: []
