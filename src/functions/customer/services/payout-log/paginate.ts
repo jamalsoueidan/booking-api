@@ -7,39 +7,37 @@ import {
 } from "~/functions/payout-log";
 import { ShippingModel } from "~/functions/shipping/shipping.model";
 
-export type CustomerServicePayoutLogListProps = {
-  nextCursor?: Date | string;
+export type CustomerServicePayoutLogPaginateProps = {
+  page: number;
+  customerId: number;
+  payoutId: number;
   limit?: number;
   sortOrder?: "asc" | "desc";
-  filter: { customerId: number; payoutId: number };
 };
 
-export const CustomerServicePayoutLogList = async ({
-  nextCursor,
-  limit,
+export const CustomerServicePayoutLogPaginate = async ({
+  page = 1,
+  limit = 10,
   sortOrder = "desc",
-  filter,
-}: CustomerServicePayoutLogListProps) => {
+  customerId,
+  payoutId,
+}: CustomerServicePayoutLogPaginateProps) => {
   let query: FilterQuery<IPayoutLogDocument> = {
-    customerId: filter.customerId,
-    payout: filter.payoutId,
+    customerId,
+    payout: payoutId,
   };
 
   const sortParam = sortOrder === "asc" ? 1 : -1;
-
-  if (nextCursor) {
-    query = {
-      ...query,
-      createdAt: sortParam === 1 ? { $gt: nextCursor } : { $lt: nextCursor },
-    };
-  }
-  const maxLimit = limit || 10;
+  const skipDocuments = (page - 1) * limit;
 
   const totalCount = await PayoutLogModel.countDocuments(query);
+  const totalPages = Math.ceil(totalCount / limit);
+
   const logs = await PayoutLogModel.aggregate([
     { $match: query },
     { $sort: { createdAt: sortParam } },
-    { $limit: maxLimit },
+    { $skip: skipDocuments },
+    { $limit: limit },
     {
       $facet: {
         LineItem: [
@@ -51,7 +49,7 @@ export const CustomerServicePayoutLogList = async ({
               pipeline: [
                 {
                   $match: {
-                    "line_items.properties.customerId": filter.customerId,
+                    "line_items.properties.customerId": customerId,
                   },
                 },
                 { $unwind: "$line_items" },
@@ -108,8 +106,8 @@ export const CustomerServicePayoutLogList = async ({
 
   return {
     results: logs,
-    nextCursor:
-      logs.length >= maxLimit ? logs[logs.length - 1].createdAt : undefined,
+    currentPage: page,
+    totalPages,
     totalCount,
   };
 };

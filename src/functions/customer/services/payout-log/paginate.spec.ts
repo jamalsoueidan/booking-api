@@ -7,7 +7,7 @@ import { createShipping } from "~/library/jest/helpers/shipping";
 
 import { CustomerPayoutServiceCreate } from "../payout/create";
 import { dummyDataBalance } from "../payout/fixtures/dummydata.balance";
-import { CustomerServicePayoutLogList } from "./list";
+import { CustomerServicePayoutLogPaginate } from "./paginate";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -46,8 +46,10 @@ describe("CustomerServicePayoutLogList", () => {
   it("should get payout with line-items", async () => {
     const payout = await CustomerPayoutServiceCreate({ customerId });
 
-    const response = await CustomerServicePayoutLogList({
-      filter: { customerId, payoutId: payout._id },
+    const response = await CustomerServicePayoutLogPaginate({
+      page: 1,
+      customerId,
+      payoutId: payout._id,
     });
 
     expect(response.results.length).toBe(3);
