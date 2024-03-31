@@ -6,6 +6,12 @@ get:
       required: true
       schema:
         type: string
+    - name: payoutId
+      in: path
+      description: The ID of the payoutId
+      required: true
+      schema:
+        type: string
     - name: page
       in: query
       description: The page number
@@ -23,10 +29,10 @@ get:
       schema:
         type: string
   tags:
-    - CustomerPayout
-  operationId: customerPayoutPaginate
-  summary: GET get all payouts using paginate
-  description: This endpoint get all payouts
+    - CustomerPayoutLog
+  operationId: customerPayoutLogPaginate
+  summary: GET get all payout logs for specific payout using paginate
+  description: This endpoint get all payout logs for specific payout
 
   responses:
     "200":

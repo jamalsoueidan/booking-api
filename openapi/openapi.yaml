@@ -42,6 +42,16 @@ components:
       $ref: paths/customer/payout-account/_types/payout-account.yaml
     CustomerPayoutAccountType:
       $ref: paths/customer/payout-account/_types/payout-account-type.yaml
+    CustomerPayoutAccountCreateBody:
+      $ref: paths/customer/payout-account/create/body.yaml
+    CustomerPayoutAccountCreateResponse:
+      $ref: paths/customer/payout-account/create/response.yaml
+    CustomerPayoutAccountDestroy:
+      $ref: paths/customer/payout-account/destroy/destroy.yaml
+    CustomerPayoutAccountDestroyResponse:
+      $ref: paths/customer/payout-account/destroy/response.yaml
+    CustomerPayoutAccountGetResponse:
+      $ref: paths/customer/payout-account/get/response.yaml
     CustomerPayoutMobilePay:
       $ref: paths/customer/payout-account/_types/payout-account-mobile-pay.yaml
     CustomerPayoutBankAccount:
@@ -171,6 +181,10 @@ components:
       $ref: paths/customer/payout/get/response.yaml
     CustomerPayoutPaginateResponse:
       $ref: paths/customer/payout/paginate/response.yaml
+
+    # Payout Log
+    CustomerPayoutLogResponse:
+      $ref: paths/customer/payout-log/paginate/response.yaml
 
     # Booking
     CustomerBooking:
@@ -366,6 +380,10 @@ paths:
     $ref: "./paths/customer/payout/balance/index.yaml"
   /customer/{customerId}/payout/{payoutId}:
     $ref: "./paths/customer/payout/get/index.yaml"
+
+  # Customer Payout Log Management
+  /customer/{customerId}/payout-log/{payoutId}:
+    $ref: "./paths/customer/payout-log/paginate/index.yaml"
 
   # Customer Payout Account Management
   /customer/{customerId}/payout-account:
