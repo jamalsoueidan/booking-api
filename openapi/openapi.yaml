@@ -160,6 +160,18 @@ components:
     CustomerBlockedRangeResponse:
       $ref: paths/customer/blocked/range/response.yaml
 
+    # Payout
+    CustomerPayout:
+      $ref: paths/customer/payout/_types/payout.yaml
+    CustomerPayoutBalancePayload:
+      $ref: paths/customer/payout/balance/payload.yaml
+    CustomerPayoutBalanceResponse:
+      $ref: paths/customer/payout/balance/response.yaml
+    CustomerPayoutGetResponse:
+      $ref: paths/customer/payout/get/response.yaml
+    CustomerPayoutPaginateResponse:
+      $ref: paths/customer/payout/paginate/response.yaml
+
     # Booking
     CustomerBooking:
       $ref: paths/customer/booking/_types/booking.yaml
@@ -346,6 +358,14 @@ paths:
   # Customer Orders Management
   /customer/{customerId}/orders/{orderId}:
     $ref: "paths/customer/order/get/index.yaml"
+
+  # Customer Payout Management
+  /customer/{customerId}/payout:
+    $ref: "./paths/customer/payout/paginate/index.yaml"
+  /customer/{customerId}/payout/balance:
+    $ref: "./paths/customer/payout/balance/index.yaml"
+  /customer/{customerId}/payout/{payoutId}:
+    $ref: "./paths/customer/payout/get/index.yaml"
 
   # Customer Payout Account Management
   /customer/{customerId}/payout-account:

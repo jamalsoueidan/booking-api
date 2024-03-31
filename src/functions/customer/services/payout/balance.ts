@@ -31,5 +31,9 @@ export const CustomerPayoutServiceBalance = async ({
     0
   );
 
-  return totalLineItems + totalShippingAmount;
+  return {
+    totalAmount: totalLineItems + totalShippingAmount,
+    totalLineItems,
+    totalShippingAmount,
+  };
 };

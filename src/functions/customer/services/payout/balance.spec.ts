@@ -32,7 +32,7 @@ describe("CustomerPayoutServiceBalance", () => {
     const dumbData = Order.parse(dummyDataBalance);
     await OrderModel.create(dumbData);
     const response = await CustomerPayoutServiceBalance({ customerId });
-    expect(response).toBeGreaterThan(180);
+    expect(response.totalAmount).toBeGreaterThan(180);
   });
 
   it("should not repay shipping if already paid out", async () => {
@@ -60,7 +60,7 @@ describe("CustomerPayoutServiceBalance", () => {
     const dumbData = Order.parse(dummyDataBalance);
     await OrderModel.create(dumbData);
     const response = await CustomerPayoutServiceBalance({ customerId });
-    expect(response).toBe(180);
+    expect(response.totalAmount).toBe(180);
   });
 
   it("should exclude balance that have been paid out", async () => {
@@ -75,7 +75,7 @@ describe("CustomerPayoutServiceBalance", () => {
     });
 
     const response = await CustomerPayoutServiceBalance({ customerId });
-    expect(response).toBe(0);
+    expect(response.totalAmount).toBe(0);
   });
 
   it("should calculate all items that are fulfilled and not yet paid out", async () => {
@@ -97,11 +97,11 @@ describe("CustomerPayoutServiceBalance", () => {
     });
 
     const response = await CustomerPayoutServiceBalance({ customerId });
-    expect(response).toBeGreaterThan(300);
+    expect(response.totalAmount).toBeGreaterThan(300);
   });
 
   it("should return zero balance when orders is empty", async () => {
     const response = await CustomerPayoutServiceBalance({ customerId: 0 });
-    expect(response).toBe(0);
+    expect(response.totalAmount).toBe(0);
   });
 });

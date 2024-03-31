@@ -4,9 +4,7 @@ properties:
     type: boolean
     example: true
   payload:
-    allOf:
-      - $ref: "../_types/payout-account.yaml"
-        nullable: true
+    $ref: "../_types/payout.yaml"
 required:
   - success
   - payload

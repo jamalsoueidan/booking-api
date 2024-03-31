@@ -1,0 +1,31 @@
+type: object
+properties:
+  customerId:
+    type: number
+  date:
+    type: string
+    format: date-time
+  amount:
+    type: number
+    format: double
+  currencyCode:
+    type: string
+    example: "DKK"
+  status:
+    type: string
+    enum:
+      - "Pending"
+      - "Processed"
+      - "Failed"
+  payoutType:
+    $ref: ../../payout-account/_types/payout-account-type.yaml
+  payoutDetails:
+    oneOf:
+      - $ref: ../../payout-account/_types/payout-account-mobile-pay.yaml
+      - $ref: ../../payout-account/_types/payout-account-bank-account.yaml
+required:
+  - customerId
+  - date
+  - amount
+  - currencyCode
+  - status

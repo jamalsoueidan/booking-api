@@ -6,7 +6,7 @@ import { createPayout } from "~/library/jest/helpers/payout";
 import { createPayoutAccount } from "~/library/jest/helpers/payout-account";
 import { createShipping } from "~/library/jest/helpers/shipping";
 import { dummyDataBalance } from "./fixtures/dummydata.balance";
-import { CustomerPayoutServiceList } from "./list";
+import { CustomerPayoutServicePaginate } from "./paginate";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -65,17 +65,17 @@ describe("CustomerPayoutServiceList", () => {
       payoutType: account.payoutType,
     });
 
-    let result = await CustomerPayoutServiceList({
+    let result = await CustomerPayoutServicePaginate({
       limit: 2,
-      filter: { customerId },
+      customerId,
     });
     expect(result.totalPages).toBe(2);
     expect(result.hasNextPage).toBeTruthy();
 
-    result = await CustomerPayoutServiceList({
+    result = await CustomerPayoutServicePaginate({
       limit: 2,
       page: 2,
-      filter: { customerId },
+      customerId,
     });
     expect(result.currentPage).toBe(2);
     expect(result.hasNextPage).toBeFalsy();
