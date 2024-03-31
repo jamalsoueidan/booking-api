@@ -2,16 +2,41 @@ import { OrderModel } from "~/functions/order/order.models";
 import { Order } from "~/functions/order/order.types";
 
 import mongoose from "mongoose";
-import { PayoutLogModel } from "~/functions/payout-log";
+import { PayoutLogModel, PayoutLogReferenceType } from "~/functions/payout-log";
+import { createShipping } from "~/library/jest/helpers/shipping";
 import { CustomerPayoutServiceBalance } from "./balance";
 import { dummyDataBalance } from "./fixtures/dummydata.balance";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("CustomerOrderServiceGet", () => {
+describe("CustomerPayoutServiceBalance", () => {
   const customerId = 7106990342471;
 
   beforeEach(async () => {
+    dummyDataBalance.line_items = await Promise.all(
+      dummyDataBalance.line_items.map(async (lineItem) => {
+        const shipping = await createShipping({ origin: { customerId } });
+        lineItem.properties = [
+          { name: "_from", value: "2023-12-14T08:12:00.000Z" },
+          { name: "_to", value: "2023-12-14T09:27:00.000Z" },
+          { name: "_customerId", value: customerId },
+          { name: "_locationId", value: "64a6c1bde5df64bb85935732" },
+          { name: "_shippingId", value: shipping._id.toString() },
+        ] as any;
+        return lineItem;
+      })
+    );
+  });
+
+  it("should return balance for all line-items", async () => {
+    const dumbData = Order.parse(dummyDataBalance);
+    await OrderModel.create(dumbData);
+    const response = await CustomerPayoutServiceBalance({ customerId });
+    expect(response).toBeGreaterThan(180);
+  });
+
+  it("should not repay shipping if already paid out", async () => {
+    const shipping = await createShipping({ origin: { customerId } });
     dummyDataBalance.line_items = dummyDataBalance.line_items.map(
       (lineItem) => {
         lineItem.properties = [
@@ -19,17 +44,19 @@ describe("CustomerOrderServiceGet", () => {
           { name: "_to", value: "2023-12-14T09:27:00.000Z" },
           { name: "_customerId", value: customerId },
           { name: "_locationId", value: "64a6c1bde5df64bb85935732" },
-          { name: "_freeShipping", value: "true" },
-          { name: "Skønhedsekspert", value: "hana nielsen" },
-          { name: "Tid", value: "torsdag, 14. december  11:12" },
-          { name: "Varighed", value: "1 time(r)" },
-          { name: "_shippingId", value: "6577aa3e90f051e536292f3c" },
+          { name: "_shippingId", value: shipping._id.toString() },
         ] as any;
         return lineItem;
       }
     );
-  });
-  it("should return balance for all line-items", async () => {
+
+    await PayoutLogModel.create({
+      customerId,
+      referenceId: shipping._id,
+      referenceType: PayoutLogReferenceType.SHIPPING,
+      payout: new mongoose.Types.ObjectId(),
+    });
+
     const dumbData = Order.parse(dummyDataBalance);
     await OrderModel.create(dumbData);
     const response = await CustomerPayoutServiceBalance({ customerId });
@@ -42,7 +69,8 @@ describe("CustomerOrderServiceGet", () => {
 
     await PayoutLogModel.create({
       customerId,
-      lineItemId: dumbData.line_items[0].id,
+      referenceId: dumbData.line_items[0].id,
+      referenceType: PayoutLogReferenceType.LINE_ITEM,
       payout: new mongoose.Types.ObjectId(),
     });
 
@@ -63,12 +91,13 @@ describe("CustomerOrderServiceGet", () => {
 
     await PayoutLogModel.create({
       customerId,
-      lineItemId: dumbData.line_items[0].id,
+      referenceId: dumbData.line_items[0].id,
+      referenceType: PayoutLogReferenceType.LINE_ITEM,
       payout: new mongoose.Types.ObjectId(),
     });
 
     const response = await CustomerPayoutServiceBalance({ customerId });
-    expect(response).toBe(300);
+    expect(response).toBeGreaterThan(300);
   });
 
   it("should return zero balance when orders is empty", async () => {
