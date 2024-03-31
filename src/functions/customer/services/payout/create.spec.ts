@@ -2,13 +2,13 @@ import { OrderModel } from "~/functions/order/order.models";
 import { Order } from "~/functions/order/order.types";
 
 import { faker } from "@faker-js/faker";
-import { PayoutLogModel } from "~/functions/payout-log";
+import { PayoutLogModel, PayoutLogReferenceType } from "~/functions/payout-log";
 import { IShippingDocument } from "~/functions/shipping/shipping.schema";
 import { createPayoutAccount } from "~/library/jest/helpers/payout-account";
 import { createShipping } from "~/library/jest/helpers/shipping";
 import {
   CustomerPayoutServiceCreate,
-  CustomerPayoutServiceCreateGetLineItemsFulfilled,
+  CustomerPayoutServiceGetLineItemsFulfilled,
 } from "./create";
 import { dummyDataBalance } from "./fixtures/dummydata.balance";
 
@@ -48,7 +48,7 @@ describe("CustomerPayoutServiceCreate", () => {
   });
 
   it("should create payout and payoutlog", async () => {
-    const lineItems = await CustomerPayoutServiceCreateGetLineItemsFulfilled({
+    const lineItems = await CustomerPayoutServiceGetLineItemsFulfilled({
       customerId,
     });
 
@@ -68,7 +68,16 @@ describe("CustomerPayoutServiceCreate", () => {
       payoutLogs.some((payoutLog) => payoutLog.referenceId === lineItemId)
     );
     expect(everyLineItemHasPayoutLog).toBe(true);
-    expect(payoutLogs.length).toBe(lineItems.length);
+
+    const shippingLogCount = await PayoutLogModel.countDocuments({
+      referenceType: PayoutLogReferenceType.SHIPPING,
+    });
+    const lineItemLogCount = await PayoutLogModel.countDocuments({
+      referenceType: PayoutLogReferenceType.LINE_ITEM,
+    });
+
+    expect(lineItemLogCount).toBe(lineItems.length);
+    expect(shippingLogCount).toBe(1);
   });
 
   it("should not create another payout when there is no line-items fulfilled left", async () => {

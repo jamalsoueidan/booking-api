@@ -1,12 +1,8 @@
-import { Shipping } from "app/lib/api/model";
 import { OrderModel } from "~/functions/order/order.models";
 import { OrderLineItem } from "~/functions/order/order.types";
 import { PayoutModel, PayoutStatus } from "~/functions/payout";
-import {
-  PayoutLog,
-  PayoutLogModel,
-  PayoutLogReferenceType,
-} from "~/functions/payout-log";
+import { PayoutLogModel, PayoutLogReferenceType } from "~/functions/payout-log";
+import { Shipping } from "~/functions/shipping/shipping.types";
 import { NotFoundError } from "~/library/handler";
 import { CustomerPayoutAccountServiceGet } from "../payout-account/get";
 import { lineItemAggregation, shippingAggregation } from "./aggregation";
@@ -18,7 +14,7 @@ export type CustomerPayoutServiceCreateProps = {
 export const CustomerPayoutServiceCreate = async ({
   customerId,
 }: CustomerPayoutServiceCreateProps) => {
-  const lineItems = await CustomerPayoutServiceCreateGetLineItemsFulfilled({
+  const lineItems = await CustomerPayoutServiceGetLineItemsFulfilled({
     customerId,
   });
 
@@ -73,22 +69,28 @@ export const CustomerPayoutServiceCreate = async ({
     payoutDetails: account.payoutDetails,
   });
 
-  await PayoutLogModel.insertMany(
-    lineItems.map(
-      (lineItem) =>
-        ({
-          customerId,
-          referenceId: lineItem.line_items.id,
-          referenceType: PayoutLogReferenceType.LINE_ITEM,
-          payout: payout._id,
-        } as PayoutLog)
-    )
-  );
+  PayoutLogModel.insertMany(
+    uniqueShippings.map((shipping) => ({
+      customerId,
+      referenceId: shipping._id,
+      referenceType: PayoutLogReferenceType.SHIPPING,
+      payout: payout._id,
+    }))
+  ).catch((error) => console.error("Error inserting shipping logs:", error)); //<< needs to send to application inisight
+
+  PayoutLogModel.insertMany(
+    lineItems.map((lineItem) => ({
+      customerId,
+      referenceId: lineItem.line_items.id,
+      referenceType: PayoutLogReferenceType.LINE_ITEM,
+      payout: payout._id,
+    }))
+  ).catch((error) => console.error("Error inserting line item logs:", error)); //<< needs to send to application inisight
 
   return payout.save();
 };
 
-export const CustomerPayoutServiceCreateGetLineItemsFulfilled = async ({
+export const CustomerPayoutServiceGetLineItemsFulfilled = async ({
   customerId,
 }: CustomerPayoutServiceCreateProps) => {
   return OrderModel.aggregate<{

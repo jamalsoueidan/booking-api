@@ -1,5 +1,6 @@
 import { PipelineStage } from "mongoose";
 import { PayoutLogModel, PayoutLogReferenceType } from "~/functions/payout-log";
+import { ShippingModel } from "~/functions/shipping/shipping.model";
 
 export const lineItemAggregation = ({ customerId }: { customerId: number }) => [
   {
@@ -52,7 +53,7 @@ export const lineItemAggregation = ({ customerId }: { customerId: number }) => [
 export const shippingAggregation: PipelineStage[] = [
   {
     $lookup: {
-      from: "Shipping",
+      from: ShippingModel.collection.name,
       let: { shippingId: "$line_items.properties.shippingId" },
       pipeline: [
         {

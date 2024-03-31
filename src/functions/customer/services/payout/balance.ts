@@ -1,5 +1,4 @@
-import { OrderModel } from "~/functions/order/order.models";
-import { lineItemAggregation, shippingAggregation } from "./aggregation";
+import { CustomerPayoutServiceGetLineItemsFulfilled } from "./create";
 
 export type CustomerPayoutServiceBalanceProps = {
   customerId: number;
@@ -8,31 +7,29 @@ export type CustomerPayoutServiceBalanceProps = {
 export const CustomerPayoutServiceBalance = async ({
   customerId,
 }: CustomerPayoutServiceBalanceProps) => {
-  const aggregationResult = await OrderModel.aggregate([
-    ...lineItemAggregation({ customerId }),
-    ...shippingAggregation,
-    {
-      $group: {
-        _id: null,
-        totalBalancePrice: {
-          $sum: {
-            $add: [
-              { $toDouble: "$line_items.price" },
-              {
-                $toDouble: {
-                  $ifNull: ["$shipping.cost.value", 0],
-                },
-              },
-            ],
-          },
-        },
-      },
-    },
-  ]);
+  const lineItems = await CustomerPayoutServiceGetLineItemsFulfilled({
+    customerId,
+  });
 
-  if (aggregationResult.length === 0) {
-    return 0;
-  } else {
-    return aggregationResult[0].totalBalancePrice;
-  }
+  const totalLineItems = lineItems.reduce(
+    (accumulator, { line_items }) => accumulator + parseFloat(line_items.price),
+    0
+  );
+
+  const shippings = lineItems
+    .filter((lineItem) => lineItem.shipping)
+    .map(({ shipping }) => shipping);
+
+  let uniqueShippings = Array.from(
+    new Map(
+      shippings.map((shipping) => [shipping._id.toString(), shipping])
+    ).values()
+  );
+
+  const totalShippingAmount = uniqueShippings.reduce(
+    (accumulator, { cost }) => accumulator + cost.value,
+    0
+  );
+
+  return totalLineItems + totalShippingAmount;
 };
