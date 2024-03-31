@@ -9,7 +9,7 @@ export enum PayoutLogReferenceType {
 export const PayoutLogZodSchema = z.object({
   customerId: NumberOrStringType,
   referenceType: z.nativeEnum(PayoutLogReferenceType),
-  referenceId: NumberOrStringType,
+  referenceId: z.union([NumberOrStringType, ObjectIdType]),
   payout: ObjectIdType,
 });
 

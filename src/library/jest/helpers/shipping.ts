@@ -26,7 +26,7 @@ const getOriginObject = (props: Partial<Location> = {}): Location => ({
 });
 
 export const createShipping = (
-  filter: Partial<Omit<Shipping, "origin">> & { origin: Partial<Location> }
+  filter: Partial<Omit<Shipping, "origin">> & { origin?: Partial<Location> }
 ) => {
   const shipping = new ShippingModel();
   shipping.location =
