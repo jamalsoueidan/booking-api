@@ -11,14 +11,10 @@ export const CustomerPayoutServiceGet = async ({
   customerId,
   payoutId,
 }: CustomerPayoutServiceGetProps) => {
-  return PayoutModel.findOne([
-    {
-      $match: {
-        _id: payoutId,
-        customerId,
-      },
-    },
-  ]).orFail(
+  return PayoutModel.findOne({
+    _id: payoutId,
+    customerId,
+  }).orFail(
     new NotFoundError([
       {
         path: ["customerId", "payoutId"],

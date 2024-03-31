@@ -110,6 +110,6 @@ export const CustomerServicePayoutLogList = async ({
     results: logs,
     nextCursor:
       logs.length >= maxLimit ? logs[logs.length - 1].createdAt : undefined,
-    total: totalCount,
+    totalCount,
   };
 };

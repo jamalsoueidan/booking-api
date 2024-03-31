@@ -12,7 +12,7 @@ properties:
         type: array
         items:
           $ref: "../_types/user.yaml"
-      total:
+      totalCount:
         type: number
     required:
       - results

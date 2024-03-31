@@ -37,6 +37,6 @@ export const CustomerPayoutServiceList = async ({
   return {
     results,
     nextCursor: hasNextPage ? results[results.length - 1].createdAt : undefined,
-    total: totalCount,
+    totalCount,
   };
 };

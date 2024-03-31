@@ -69,7 +69,7 @@ describe("CustomerPayoutServiceList", () => {
       filter: { customerId },
     });
     expect(result.nextCursor).not.toBeDefined();
-    expect(result.total).toBe(4);
+    expect(result.totalCount).toBe(4);
 
     result = await CustomerPayoutServiceList({
       limit: 2,

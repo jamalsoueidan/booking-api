@@ -32,27 +32,22 @@ export const CustomerBlockedServiceList = async ({
   };
 
   const limitStage = {
-    $limit: limit,
+    $limit: limit + 1,
   };
 
-  // Query to get the documents
-  const results = await BlockedModel.aggregate<
+  const blocked = await BlockedModel.aggregate<
     Blocked & { _id: StringOrObjectId }
-  >([
-    matchStage,
-    { $sort: { _id: 1 } }, // Ensure results are sorted for consistent pagination
-    limitStage,
-  ]);
+  >([matchStage, { $sort: { _id: 1 } }, limitStage]);
 
   const totalCount = await BlockedModel.countDocuments({ customerId });
-
-  // Calculate nextCursor based on the last document in the results, if any
-  const newNextCursor =
-    results.length > 0 ? results[results.length - 1]._id.toString() : undefined;
+  const hasNextPage = blocked.length > limit;
+  const results = hasNextPage ? blocked.slice(0, -1) : blocked;
 
   return {
     results,
+    nextCursor: hasNextPage
+      ? results[results.length - 1]._id.toString()
+      : undefined,
     totalCount,
-    nextCursor: newNextCursor,
   };
 };

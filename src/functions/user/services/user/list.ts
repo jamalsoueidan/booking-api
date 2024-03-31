@@ -40,16 +40,18 @@ export const UserServiceList = async ({
     };
   }
 
-  const totalCount = await UserModel.countDocuments(query);
   const l = limit || 10;
   const users = await UserModel.find(query)
     .sort({ createdAt: sortParam })
-    .limit(l);
+    .limit(l + 1);
+
+  const totalCount = await UserModel.countDocuments(query);
+  const hasNextPage = users.length > l;
+  const results = hasNextPage ? users.slice(0, -1) : users;
 
   return {
-    results: users,
-    nextCursor:
-      users.length >= l ? users[users.length - 1].createdAt : undefined,
-    total: totalCount,
+    results,
+    nextCursor: hasNextPage ? results[results.length - 1].createdAt : undefined,
+    totalCount,
   };
 };
