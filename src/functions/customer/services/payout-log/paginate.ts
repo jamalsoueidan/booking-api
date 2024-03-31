@@ -1,27 +1,31 @@
 import { FilterQuery } from "mongoose";
 import { OrderModel } from "~/functions/order/order.models";
+import { OrderLineItem } from "~/functions/order/order.types";
 import {
   IPayoutLogDocument,
+  PayoutLog,
   PayoutLogModel,
   PayoutLogReferenceType,
 } from "~/functions/payout-log";
 import { ShippingModel } from "~/functions/shipping/shipping.model";
+import { Shipping } from "~/functions/shipping/shipping.types";
+import { StringOrObjectId } from "~/library/zod";
 
-export type CustomerServicePayoutLogPaginateProps = {
+export type CustomerPayoutLogServicePaginateProps = {
   page: number;
   customerId: number;
-  payoutId: number;
+  payoutId: StringOrObjectId;
   limit?: number;
   sortOrder?: "asc" | "desc";
 };
 
-export const CustomerServicePayoutLogPaginate = async ({
+export const CustomerPayoutLogServicePaginate = async ({
   page = 1,
   limit = 10,
   sortOrder = "desc",
   customerId,
   payoutId,
-}: CustomerServicePayoutLogPaginateProps) => {
+}: CustomerPayoutLogServicePaginateProps) => {
   let query: FilterQuery<IPayoutLogDocument> = {
     customerId,
     payout: payoutId,
@@ -33,7 +37,9 @@ export const CustomerServicePayoutLogPaginate = async ({
   const totalCount = await PayoutLogModel.countDocuments(query);
   const totalPages = Math.ceil(totalCount / limit);
 
-  const logs = await PayoutLogModel.aggregate([
+  const logs = await PayoutLogModel.aggregate<
+    PayoutLog & { referenceDocument: OrderLineItem | Shipping }
+  >([
     { $match: query },
     { $sort: { createdAt: sortParam } },
     { $skip: skipDocuments },
@@ -61,7 +67,7 @@ export const CustomerServicePayoutLogPaginate = async ({
                 { $project: { line_item: "$line_items", _id: 0 } },
                 { $limit: 1 },
               ],
-              as: "relatedDocument",
+              as: "referenceDocument",
             },
           },
         ],
@@ -72,7 +78,7 @@ export const CustomerServicePayoutLogPaginate = async ({
               from: ShippingModel.collection.name,
               localField: "referenceId",
               foreignField: "_id",
-              as: "relatedDocument",
+              as: "referenceDocument",
             },
           },
         ],
@@ -87,17 +93,17 @@ export const CustomerServicePayoutLogPaginate = async ({
     { $replaceRoot: { newRoot: "$results" } },
     {
       $unwind: {
-        path: "$relatedDocument",
+        path: "$referenceDocument",
         preserveNullAndEmptyArrays: true,
       },
     },
     {
       $addFields: {
-        relatedDocument: {
+        referenceDocument: {
           $cond: {
             if: { $eq: ["$referenceType", PayoutLogReferenceType.LINE_ITEM] },
-            then: "$relatedDocument.line_item",
-            else: "$relatedDocument",
+            then: "$referenceDocument.line_item",
+            else: "$referenceDocument",
           },
         },
       },
