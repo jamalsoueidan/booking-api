@@ -66,22 +66,18 @@ describe("CustomerPayoutServiceList", () => {
     });
 
     let result = await CustomerPayoutServiceList({
-      filter: { customerId },
-    });
-    expect(result.nextCursor).not.toBeDefined();
-    expect(result.totalCount).toBe(4);
-
-    result = await CustomerPayoutServiceList({
       limit: 2,
       filter: { customerId },
     });
-    expect(result.nextCursor).toBeDefined();
+    expect(result.totalPages).toBe(2);
+    expect(result.hasNextPage).toBeTruthy();
 
     result = await CustomerPayoutServiceList({
       limit: 2,
-      nextCursor: result.nextCursor,
+      page: 2,
       filter: { customerId },
     });
-    expect(result.nextCursor).not.toBeDefined();
+    expect(result.currentPage).toBe(2);
+    expect(result.hasNextPage).toBeFalsy();
   });
 });
