@@ -374,15 +374,15 @@ paths:
     $ref: "paths/customer/order/get/index.yaml"
 
   # Customer Payout Management
-  /customer/{customerId}/payout:
+  /customer/{customerId}/payouts/paginate:
     $ref: "./paths/customer/payout/paginate/index.yaml"
-  /customer/{customerId}/payout/balance:
+  /customer/{customerId}/payouts/balance:
     $ref: "./paths/customer/payout/balance/index.yaml"
   /customer/{customerId}/payout/{payoutId}:
     $ref: "./paths/customer/payout/get/index.yaml"
 
   # Customer Payout Log Management
-  /customer/{customerId}/payout-log/{payoutId}:
+  /customer/{customerId}/payout-logs/{payoutId}/paginate:
     $ref: "./paths/customer/payout-log/paginate/index.yaml"
 
   # Customer Payout Account Management

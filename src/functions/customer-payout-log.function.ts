@@ -7,6 +7,6 @@ import { CustomerPayoutLogControllerPaginate } from "./customer/controllers/payo
 app.http("customerPayoutLogPaginate", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "customer/{customerId?}/payout-log/{payoutId}",
+  route: "customer/{customerId?}/payout-logs/{payoutId}/paginate",
   handler: CustomerPayoutLogControllerPaginate,
 });
