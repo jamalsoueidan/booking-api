@@ -1450,15 +1450,46 @@ components:
       required:
         - success
         - payload
+    CustomerPayoutLogType:
+      type: string
+      enum:
+        - Shipping
+        - LineItem
+    CustomerPayoutLog:
+      type: object
+      properties:
+        _id:
+          type: string
+        customerId:
+          type: number
+        referenceType:
+          $ref: '#/components/schemas/CustomerPayoutLogType'
+        referenceId:
+          type: string
+        payout:
+          type: string
+          format: objectId
+        createdAt:
+          type: string
+        referenceDocument:
+          oneOf:
+            - $ref: '#/components/schemas/CustomeBaserOrderLineItem'
+            - $ref: '#/components/schemas/Shipping'
+      required:
+        - _id
+        - customerId
+        - referenceType
+        - referenceId
+        - referenceDocument
+        - payout
+        - createdAt
     CustomerPayoutLogPayload:
       type: object
       properties:
         results:
           type: array
           items:
-            oneOf:
-              - $ref: '#/components/schemas/CustomeBaserOrderLineItem'
-              - $ref: '#/components/schemas/Shipping'
+            $ref: '#/components/schemas/CustomerPayoutLog'
         currentPage:
           type: number
         totalPages:
