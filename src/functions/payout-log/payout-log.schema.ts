@@ -31,6 +31,7 @@ export const PayoutLogMongooseSchema = new mongoose.Schema<
       required: true,
       index: true,
     },
+    orderCreatedAt: Date,
     payout: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

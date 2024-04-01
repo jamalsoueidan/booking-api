@@ -11,6 +11,7 @@ export const PayoutLogZodSchema = z.object({
   referenceType: z.nativeEnum(PayoutLogReferenceType),
   referenceId: z.union([NumberOrStringType, ObjectIdType]),
   orderId: z.number(),
+  orderCreatedAt: z.number().optional(),
   payout: ObjectIdType,
 });
 

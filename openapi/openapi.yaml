@@ -187,8 +187,6 @@ components:
       $ref: paths/customer/payout/create/response.yaml
 
     # Payout Log
-    CustomerPayoutLogLineItem:
-      $ref: paths/customer/payout-log/_types/line-item.yaml
     CustomerPayoutLogType:
       $ref: paths/customer/payout-log/_types/payout-log-type.yaml
     CustomerPayoutLog:

@@ -66,14 +66,7 @@ export const CustomerPayoutLogServicePaginate = async ({
                 },
                 {
                   $project: {
-                    line_item: {
-                      $mergeObjects: [
-                        "$line_items",
-                        {
-                          created_at: "$created_at",
-                        },
-                      ],
-                    },
+                    line_item: "$line_items",
                     _id: 0,
                   },
                 },

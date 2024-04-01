@@ -6,6 +6,8 @@ properties:
     type: number
   orderId:
     type: number
+  orderCreatedAt:
+    type: string
   referenceType:
     $ref: "../_types/payout-log-type.yaml"
   referenceId:
@@ -17,7 +19,7 @@ properties:
     type: string
   referenceDocument:
     oneOf:
-      - $ref: "line-item.yaml"
+      - $ref: "../../_types/order/line-item.yaml"
       - $ref: ../../../shipping/_types/shipping.yaml
 required:
   - _id

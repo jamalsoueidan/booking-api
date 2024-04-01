@@ -1,7 +1,11 @@
 import { OrderModel } from "~/functions/order/order.models";
 import { OrderLineItem } from "~/functions/order/order.types";
 import { PayoutModel, PayoutStatus } from "~/functions/payout";
-import { PayoutLogModel, PayoutLogReferenceType } from "~/functions/payout-log";
+import {
+  PayoutLog,
+  PayoutLogModel,
+  PayoutLogReferenceType,
+} from "~/functions/payout-log";
 import { Shipping } from "~/functions/shipping/shipping.types";
 import { NotFoundError } from "~/library/handler";
 import { CustomerPayoutAccountServiceGet } from "../payout-account/get";
@@ -46,8 +50,9 @@ export const CustomerPayoutServiceCreate = async ({
 
   const shippings = orders
     .filter((lineItem) => lineItem.shipping)
-    .map(({ id, shipping }) => ({
+    .map(({ id, created_at, shipping }) => ({
       id,
+      created_at,
       shipping,
     }));
 
@@ -73,23 +78,31 @@ export const CustomerPayoutServiceCreate = async ({
   });
 
   PayoutLogModel.insertMany(
-    uniqueShippings.map((shipping) => ({
-      customerId,
-      referenceId: shipping.shipping._id,
-      orderId: shipping.id,
-      referenceType: PayoutLogReferenceType.SHIPPING,
-      payout: payout._id,
-    }))
+    uniqueShippings.map(
+      (shipping) =>
+        ({
+          customerId,
+          referenceId: shipping.shipping._id,
+          orderId: shipping.id,
+          orderCreatedAt: shipping.created_at,
+          referenceType: PayoutLogReferenceType.SHIPPING,
+          payout: payout._id,
+        } as PayoutLog)
+    )
   ).catch((error) => console.error("Error inserting shipping logs:", error)); //<< needs to send to application inisight
 
   PayoutLogModel.insertMany(
-    orders.map((lineItem) => ({
-      customerId,
-      orderId: lineItem.id,
-      referenceId: lineItem.line_items.id,
-      referenceType: PayoutLogReferenceType.LINE_ITEM,
-      payout: payout._id,
-    }))
+    orders.map(
+      (lineItem) =>
+        ({
+          customerId,
+          orderId: lineItem.id,
+          orderCreatedAt: lineItem.created_at,
+          referenceId: lineItem.line_items.id,
+          referenceType: PayoutLogReferenceType.LINE_ITEM,
+          payout: payout._id,
+        } as PayoutLog)
+    )
   ).catch((error) => console.error("Error inserting line item logs:", error)); //<< needs to send to application inisight
 
   return payout.save();

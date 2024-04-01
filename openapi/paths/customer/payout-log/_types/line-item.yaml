@@ -1,9 +1,0 @@
-type: object
-allOf:
-  - $ref: "../../_types/order/line-item.yaml"
-  - type: object
-    properties:
-      created_at:
-        type: string
-    required:
-      - created_at
