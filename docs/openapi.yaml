@@ -3340,7 +3340,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-  '/customer/{customerId}/payout':
+  '/customer/{customerId}/payouts/paginate':
     get:
       parameters:
         - name: customerId
@@ -3386,7 +3386,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-  '/customer/{customerId}/payout/balance':
+  '/customer/{customerId}/payouts/balance':
     get:
       parameters:
         - name: customerId
@@ -3452,7 +3452,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-  '/customer/{customerId}/payout-log/{payoutId}':
+  '/customer/{customerId}/payout-logs/{payoutId}/paginate':
     get:
       parameters:
         - name: customerId
