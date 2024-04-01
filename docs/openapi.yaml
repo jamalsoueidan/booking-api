@@ -1462,6 +1462,10 @@ components:
           type: string
         customerId:
           type: number
+        orderId:
+          type: number
+        orderCreatedAt:
+          type: string
         referenceType:
           $ref: '#/components/schemas/CustomerPayoutLogType'
         referenceId:
@@ -1478,6 +1482,8 @@ components:
       required:
         - _id
         - customerId
+        - orderId
+        - orderCreatedAt
         - referenceType
         - referenceId
         - referenceDocument
