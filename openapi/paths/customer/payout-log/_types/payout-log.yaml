@@ -25,6 +25,7 @@ required:
   - _id
   - customerId
   - orderId
+  - orderCreatedAt
   - referenceType
   - referenceId
   - referenceDocument
