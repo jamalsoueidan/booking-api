@@ -183,6 +183,8 @@ components:
       $ref: paths/customer/payout/paginate/payload.yaml
     CustomerPayoutPaginateResponse:
       $ref: paths/customer/payout/paginate/response.yaml
+    CustomerPayoutCreateResponse:
+      $ref: paths/customer/payout/create/response.yaml
 
     # Payout Log
     CustomerPayoutLogPayload:
@@ -384,6 +386,8 @@ paths:
     $ref: "./paths/customer/payout/balance/index.yaml"
   /customer/{customerId}/payout/{payoutId}:
     $ref: "./paths/customer/payout/get/index.yaml"
+  /customer/{customerId}/payout/create:
+    $ref: "./paths/customer/payout/create/index.yaml"
 
   # Customer Payout Log Management
   /customer/{customerId}/payout-logs/{payoutId}/paginate:

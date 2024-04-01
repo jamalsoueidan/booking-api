@@ -1,7 +1,7 @@
 type: object
 properties:
-  customerId:
-    type: number
+  _id:
+    type: string
   date:
     type: string
     format: date-time
