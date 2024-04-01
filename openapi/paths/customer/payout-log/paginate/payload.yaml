@@ -1,0 +1,22 @@
+type: object
+properties:
+  results:
+    type: array
+    items:
+      oneOf:
+        - $ref: "../../_types/order/line-item.yaml"
+        - $ref: ../../../shipping/_types/shipping.yaml
+  currentPage:
+    type: number
+  totalPages:
+    type: number
+  hasNextPage:
+    type: boolean
+  totalCount:
+    type: number
+required:
+  - results
+  - currentPage
+  - totalPages
+  - hasNextPage
+  - totalCount

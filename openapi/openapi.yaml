@@ -179,10 +179,14 @@ components:
       $ref: paths/customer/payout/balance/response.yaml
     CustomerPayoutGetResponse:
       $ref: paths/customer/payout/get/response.yaml
+    CustomerPayoutPaginatePayload:
+      $ref: paths/customer/payout/paginate/payload.yaml
     CustomerPayoutPaginateResponse:
       $ref: paths/customer/payout/paginate/response.yaml
 
     # Payout Log
+    CustomerPayoutLogPayload:
+      $ref: paths/customer/payout-log/paginate/payload.yaml
     CustomerPayoutLogResponse:
       $ref: paths/customer/payout-log/paginate/response.yaml
 
