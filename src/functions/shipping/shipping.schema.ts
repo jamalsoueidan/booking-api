@@ -2,7 +2,6 @@ import mongoose, { Document, Model } from "mongoose";
 import { Shipping } from "./shipping.types";
 
 export interface IShipping extends Omit<Shipping, "_id"> {
-  expireAt: Date;
   createdAt: Date;
   updatedAt: Date;
 }

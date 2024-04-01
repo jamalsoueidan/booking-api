@@ -10,7 +10,13 @@ allOf:
         type: string
       origin:
         $ref: ../../customer/location/_types/location.yaml
+      created_at:
+        type: string
+      updated_at:
+        type: string
     required:
       - _id
       - location
       - origin
+      - created_at
+      - updated_at
