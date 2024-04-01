@@ -1408,6 +1408,27 @@ components:
       required:
         - success
         - payload
+    CustomerPayoutPaginatePayload:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerPayout'
+        currentPage:
+          type: number
+        totalPages:
+          type: number
+        hasNextPage:
+          type: boolean
+        totalCount:
+          type: number
+      required:
+        - results
+        - currentPage
+        - totalPages
+        - hasNextPage
+        - totalCount
     CustomerPayoutPaginateResponse:
       type: object
       properties:
@@ -1415,12 +1436,33 @@ components:
           type: boolean
           example: true
         payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerPayout'
+          $ref: '#/components/schemas/CustomerPayoutPaginatePayload'
       required:
         - success
         - payload
+    CustomerPayoutLogPayload:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/CustomeBaserOrderLineItem'
+              - $ref: '#/components/schemas/Shipping'
+        currentPage:
+          type: number
+        totalPages:
+          type: number
+        hasNextPage:
+          type: boolean
+        totalCount:
+          type: number
+      required:
+        - results
+        - currentPage
+        - totalPages
+        - hasNextPage
+        - totalCount
     CustomerPayoutLogResponse:
       type: object
       properties:
@@ -1428,11 +1470,7 @@ components:
           type: boolean
           example: true
         payload:
-          type: array
-          items:
-            oneOf:
-              - $ref: '#/components/schemas/CustomeBaserOrderLineItem'
-              - $ref: '#/components/schemas/Shipping'
+          $ref: '#/components/schemas/CustomerPayoutLogPayload'
       required:
         - success
         - payload
