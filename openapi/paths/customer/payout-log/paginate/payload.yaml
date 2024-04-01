@@ -3,9 +3,7 @@ properties:
   results:
     type: array
     items:
-      oneOf:
-        - $ref: "../../_types/order/line-item.yaml"
-        - $ref: ../../../shipping/_types/shipping.yaml
+      $ref: "../_types/payout-log.yaml"
   currentPage:
     type: number
   totalPages:

@@ -1,0 +1,27 @@
+type: object
+properties:
+  _id:
+    type: string
+  customerId:
+    type: number
+  referenceType:
+    $ref: "../_types/payout-log-type.yaml"
+  referenceId:
+    type: string
+  payout:
+    type: string
+    format: objectId
+  createdAt:
+    type: string
+  referenceDocument:
+    oneOf:
+      - $ref: "../../_types/order/line-item.yaml"
+      - $ref: ../../../shipping/_types/shipping.yaml
+required:
+  - _id
+  - customerId
+  - referenceType
+  - referenceId
+  - referenceDocument
+  - payout
+  - createdAt
