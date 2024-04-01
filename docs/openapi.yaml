@@ -1348,7 +1348,6 @@ components:
           type: string
         date:
           type: string
-          format: date-time
         amount:
           type: number
           format: double
