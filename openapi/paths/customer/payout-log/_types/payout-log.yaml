@@ -4,6 +4,8 @@ properties:
     type: string
   customerId:
     type: number
+  orderId:
+    type: number
   referenceType:
     $ref: "../_types/payout-log-type.yaml"
   referenceId:
@@ -15,11 +17,12 @@ properties:
     type: string
   referenceDocument:
     oneOf:
-      - $ref: "../../_types/order/line-item.yaml"
+      - $ref: "line-item.yaml"
       - $ref: ../../../shipping/_types/shipping.yaml
 required:
   - _id
   - customerId
+  - orderId
   - referenceType
   - referenceId
   - referenceDocument

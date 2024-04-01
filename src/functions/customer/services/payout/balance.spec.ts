@@ -53,6 +53,7 @@ describe("CustomerPayoutServiceBalance", () => {
     await PayoutLogModel.create({
       customerId,
       referenceId: shipping._id,
+      orderId: dummyDataBalance.id,
       referenceType: PayoutLogReferenceType.SHIPPING,
       payout: new mongoose.Types.ObjectId(),
     });
@@ -70,6 +71,7 @@ describe("CustomerPayoutServiceBalance", () => {
     await PayoutLogModel.create({
       customerId,
       referenceId: dumbData.line_items[0].id,
+      orderId: dumbData.id,
       referenceType: PayoutLogReferenceType.LINE_ITEM,
       payout: new mongoose.Types.ObjectId(),
     });
@@ -92,6 +94,7 @@ describe("CustomerPayoutServiceBalance", () => {
     await PayoutLogModel.create({
       customerId,
       referenceId: dumbData.line_items[0].id,
+      orderId: dumbData.id,
       referenceType: PayoutLogReferenceType.LINE_ITEM,
       payout: new mongoose.Types.ObjectId(),
     });
