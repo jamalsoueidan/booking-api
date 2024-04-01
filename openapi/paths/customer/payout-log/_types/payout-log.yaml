@@ -4,6 +4,10 @@ properties:
     type: string
   customerId:
     type: number
+  orderId:
+    type: number
+  orderCreatedAt:
+    type: string
   referenceType:
     $ref: "../_types/payout-log-type.yaml"
   referenceId:
@@ -20,6 +24,8 @@ properties:
 required:
   - _id
   - customerId
+  - orderId
+  - orderCreatedAt
   - referenceType
   - referenceId
   - referenceDocument

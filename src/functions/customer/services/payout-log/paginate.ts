@@ -64,7 +64,12 @@ export const CustomerPayoutLogServicePaginate = async ({
                     $expr: { $eq: ["$line_items.id", "$$lineItemId"] },
                   },
                 },
-                { $project: { line_item: "$line_items", _id: 0 } },
+                {
+                  $project: {
+                    line_item: "$line_items",
+                    _id: 0,
+                  },
+                },
                 { $limit: 1 },
               ],
               as: "referenceDocument",
