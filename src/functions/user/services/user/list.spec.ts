@@ -14,7 +14,7 @@ describe("UserServiceList", () => {
     const limit = 10;
 
     for (let customerId = 0; customerId < totalCount; customerId++) {
-      await createUser(
+      const user = await createUser(
         { customerId },
         {
           active: true,

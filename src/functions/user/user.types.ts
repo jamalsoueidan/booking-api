@@ -91,7 +91,7 @@ export const UserZodSchema = z.object({
   active: z.boolean(),
   email: z.string(),
   phone: z.string().optional(),
-  createdAt: z.string().optional(),
+  createdAt: z.date().optional(),
 });
 
 export type User = z.infer<typeof UserZodSchema>;

@@ -67,12 +67,13 @@ export const UserServiceList = async (
                 $match: {
                   createdAt:
                     sortOrder === "asc"
-                      ? { $gt: nextCursor }
-                      : { $lt: nextCursor },
+                      ? { $gt: new Date(nextCursor) }
+                      : { $lt: new Date(nextCursor) },
                 },
               },
             ]
           : []),
+
         { $limit: limit + 1 },
       ],
       totalCount: [{ $count: "count" }],
@@ -87,7 +88,7 @@ export const UserServiceList = async (
   const results = users[0].results;
   const totalCount = users[0].totalCount[0] ? users[0].totalCount[0].count : 0;
 
-  const hasNextPage = totalCount > limit;
+  const hasNextPage = results.length > limit;
   const paginatedResults = hasNextPage ? results.slice(0, -1) : results;
 
   return {
