@@ -20,6 +20,8 @@ export const LocationZodSchema = z.object({
   customerId: GidFormat,
   name: z.string(),
   fullAddress: z.string(),
+  city: z.string(),
+  country: z.string(),
   originType: z.nativeEnum(LocationOriginTypes),
   distanceForFree: NumberOrStringType,
   distanceHourlyRate: NumberOrStringType,

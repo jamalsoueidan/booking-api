@@ -1,7 +1,7 @@
 import { _ } from "~/library/handler";
 
 import { z } from "zod";
-import { UserServiceSpecialties } from "../../services/user/specialties";
+import { UserServiceSpecialties } from "../../services/user/filters/specialties";
 
 export type UserControllerSpecialtiesRequest = {
   query: z.infer<typeof UserControllerSpecialtiesSchema>;

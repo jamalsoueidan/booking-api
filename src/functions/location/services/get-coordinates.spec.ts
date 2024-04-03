@@ -16,6 +16,9 @@ const getCoordinatesData: ForsyningResponse = [
       adgangspunkt: {
         koordinater: [10.12961271, 56.15563438],
       },
+      kommune: {
+        navn: "Aarhus",
+      },
     },
   },
 ];

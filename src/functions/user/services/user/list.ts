@@ -1,57 +1,100 @@
-import { FilterQuery } from "mongoose";
+import { PipelineStage } from "mongoose";
+import { Location, LocationModel } from "~/functions/location";
+
 import { UserModel } from "../../user.model";
-import { IUserDocument } from "../../user.schema";
+import { User } from "../../user.types";
 
 export type UserServiceListProps = {
   nextCursor?: Date | string;
-  limit?: number;
-  profession?: string;
-  specialties?: string[];
+  limit: number;
+  filters?: {
+    profession?: string;
+    specialties?: string[];
+    location?: {
+      city: string;
+    };
+  };
   sortOrder?: "asc" | "desc";
 };
 
-export const UserServiceList = async ({
-  nextCursor,
-  limit,
-  profession,
-  specialties,
-  sortOrder = "desc",
-}: UserServiceListProps = {}) => {
-  let query: FilterQuery<IUserDocument> = { active: true, isBusiness: true };
+export const UserServiceList = async (
+  { nextCursor, limit, filters, sortOrder = "desc" }: UserServiceListProps = {
+    limit: 10,
+  }
+) => {
+  const pipeline: PipelineStage[] = [
+    { $match: { active: true, isBusiness: true } },
+  ];
 
-  if (profession) {
-    query = {
-      ...query,
-      professions: { $in: [profession] },
-    };
+  if (filters?.profession) {
+    pipeline.push({
+      $match: { professions: { $in: [filters.profession] } },
+    });
   }
 
-  // Filter by specialties, if provided
-  if (specialties && specialties.length > 0) {
-    query = { ...query, specialties: { $in: specialties } };
+  if (filters?.specialties && filters?.specialties.length > 0) {
+    pipeline.push({ $match: { specialties: { $in: filters?.specialties } } });
   }
 
-  const sortParam = sortOrder === "asc" ? 1 : -1; // 1 for 'asc', -1 for 'desc'
+  if (filters?.location) {
+    pipeline.push({
+      $lookup: {
+        from: LocationModel.collection.name,
+        localField: "customerId",
+        foreignField: "customerId",
+        as: "locations",
+      },
+    });
 
-  if (nextCursor) {
-    query = {
-      ...query,
-      createdAt: sortParam === 1 ? { $gt: nextCursor } : { $lt: nextCursor },
-    };
+    pipeline.push({
+      $unwind: "$locations",
+    });
+
+    pipeline.push({
+      $match: {
+        "locations.city": filters.location.city,
+      },
+    });
   }
 
-  const l = limit || 10;
-  const users = await UserModel.find(query)
-    .sort({ createdAt: sortParam })
-    .limit(l + 1);
+  pipeline.push({
+    $facet: {
+      results: [
+        { $sort: { createdAt: sortOrder === "asc" ? 1 : -1 } },
+        ...(nextCursor
+          ? [
+              {
+                $match: {
+                  createdAt:
+                    sortOrder === "asc"
+                      ? { $gt: nextCursor }
+                      : { $lt: nextCursor },
+                },
+              },
+            ]
+          : []),
+        { $limit: limit + 1 },
+      ],
+      totalCount: [{ $count: "count" }],
+    },
+  });
 
-  const totalCount = await UserModel.countDocuments(query);
-  const hasNextPage = users.length > l;
-  const results = hasNextPage ? users.slice(0, -1) : users;
+  const users = await UserModel.aggregate<{
+    results: Array<User & { locations: Location }>;
+    totalCount: Array<{ count: number } | undefined>;
+  }>(pipeline);
+
+  const results = users[0].results;
+  const totalCount = users[0].totalCount[0] ? users[0].totalCount[0].count : 0;
+
+  const hasNextPage = totalCount > limit;
+  const paginatedResults = hasNextPage ? results.slice(0, -1) : results;
 
   return {
-    results,
-    nextCursor: hasNextPage ? results[results.length - 1].createdAt : undefined,
+    results: paginatedResults,
+    nextCursor: hasNextPage
+      ? paginatedResults[paginatedResults.length - 1].createdAt
+      : undefined,
     totalCount,
   };
 };

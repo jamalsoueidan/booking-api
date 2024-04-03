@@ -48,6 +48,15 @@ export const LocationMongooseSchema = new mongoose.Schema<
       type: String,
       required: true,
     },
+    city: {
+      type: String,
+      required: true,
+      index: true,
+    },
+    country: {
+      type: String,
+      required: true,
+    },
     originType: {
       type: String,
       enum: [LocationOriginTypes.HOME, LocationOriginTypes.COMMERCIAL],
