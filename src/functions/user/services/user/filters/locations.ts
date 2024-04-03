@@ -28,14 +28,14 @@ export const UserServiceFilterLocations = async ({
     {
       $group: {
         _id: null,
-        cities: {
+        keys: {
           $push: { k: "$_id", v: "$count" },
         },
       },
     },
     {
       $replaceRoot: {
-        newRoot: { $arrayToObject: "$cities" },
+        newRoot: { $arrayToObject: "$keys" },
       },
     },
   ]);

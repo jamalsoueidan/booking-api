@@ -24,6 +24,7 @@ describe("UserServiceFiltersSpecialties", () => {
     const result = await UserServiceFiltersSpecialties({
       profession: Professions.MAKEUP_ARTIST,
     });
+    console.log(JSON.stringify(result));
 
     for (const key in result) {
       expect(typeof result[key]).toBe("number");

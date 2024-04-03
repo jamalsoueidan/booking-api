@@ -7,8 +7,6 @@ export const UserServiceFiltersSpecialties = async ({
 }) => {
   const result = await UserModel.aggregate([
     { $match: { professions: profession } },
-    { $unwind: "$professions" },
-    { $match: { professions: profession } },
     { $unwind: "$specialties" },
     {
       $group: {
@@ -19,14 +17,14 @@ export const UserServiceFiltersSpecialties = async ({
     {
       $group: {
         _id: null,
-        cities: {
+        keys: {
           $push: { k: "$_id", v: "$count" },
         },
       },
     },
     {
       $replaceRoot: {
-        newRoot: { $arrayToObject: "$cities" },
+        newRoot: { $arrayToObject: "$keys" },
       },
     },
   ]);
