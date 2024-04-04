@@ -2332,6 +2332,16 @@ components:
       required:
         - success
         - payload
+    UsersProfessionsPayload:
+      type: object
+      properties:
+        profession:
+          type: string
+        count:
+          type: number
+      required:
+        - profession
+        - count
     UsersProfessionsResponse:
       type: object
       properties:
@@ -2339,9 +2349,9 @@ components:
           type: boolean
           example: true
         payload:
-          type: object
-          additionalProperties:
-            type: number
+          type: array
+          items:
+            $ref: '#/components/schemas/UsersProfessionsPayload'
       required:
         - success
         - payload
