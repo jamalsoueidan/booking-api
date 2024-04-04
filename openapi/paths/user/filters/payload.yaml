@@ -1,0 +1,43 @@
+type: object
+properties:
+  locations:
+    type: array
+    items:
+      type: object
+      properties:
+        city:
+          type: string
+        locationType:
+          type: string
+          enum: [ORIGIN, DESTINATION]
+        count:
+          type: integer
+  availableDays:
+    type: array
+    items:
+      type: object
+      properties:
+        day:
+          type: string
+        count:
+          type: integer
+  productDetails:
+    type: array
+    items:
+      type: object
+      properties:
+        productHandle:
+          type: string
+        productId:
+          type: string
+        count:
+          type: integer
+  specialties:
+    type: array
+    items:
+      type: object
+      properties:
+        speciality:
+          type: string
+        count:
+          type: integer

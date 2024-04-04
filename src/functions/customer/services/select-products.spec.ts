@@ -1,4 +1,9 @@
-import { Schedule, ScheduleModel, TimeUnit } from "~/functions/schedule";
+import {
+  Schedule,
+  ScheduleModel,
+  SlotWeekDays,
+  TimeUnit,
+} from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { compareSchedule, mergeIntervals } from "./select-products";
 
@@ -11,7 +16,7 @@ describe("MultiAvailability", () => {
     customerId,
     slots: [
       {
-        day: "friday",
+        day: SlotWeekDays.FRIDAY,
         intervals: [
           {
             from: "08:00",
@@ -63,7 +68,7 @@ describe("MultiAvailability", () => {
     customerId,
     slots: [
       {
-        day: "friday",
+        day: SlotWeekDays.FRIDAY,
         intervals: [
           {
             from: "12:00",
@@ -72,7 +77,7 @@ describe("MultiAvailability", () => {
         ],
       },
       {
-        day: "saturday",
+        day: SlotWeekDays.SATURDAY,
         intervals: [
           {
             from: "15:00",
@@ -120,7 +125,7 @@ describe("MultiAvailability", () => {
     customerId,
     slots: [
       {
-        day: "friday",
+        day: SlotWeekDays.FRIDAY,
         intervals: [
           {
             from: "15:00",
@@ -153,7 +158,7 @@ describe("MultiAvailability", () => {
     customerId,
     slots: [
       {
-        day: "saturday",
+        day: SlotWeekDays.SATURDAY,
         intervals: [
           {
             from: "17:00",

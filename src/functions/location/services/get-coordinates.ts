@@ -11,6 +11,9 @@ export type ForsyningResponse = Array<{
     adgangspunkt: {
       koordinater: Array<number>;
     };
+    kommune: {
+      navn: string;
+    };
   };
 }>;
 
@@ -40,6 +43,8 @@ export const LocationServiceGetCoordinates = async (
 
       return {
         fullAddress: firstAddress.adressebetegnelse,
+        city: firstAddress.adgangsadresse.kommune.navn,
+        country: "Denmark",
         latitude,
         longitude,
       };

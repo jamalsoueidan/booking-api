@@ -19,22 +19,28 @@ describe("UserControllerList", () => {
 
   it("Should be able to get all users", async () => {
     for (let customerId = 0; customerId < 25; customerId++) {
-      await createUser({ customerId }, { active: true, isBusiness: true });
+      const user = await createUser(
+        { customerId },
+        { active: true, isBusiness: true }
+      );
     }
 
     let request = await createHttpRequest<UserControllerListRequest>({
       query: { limit: 10 },
+      body: {},
     });
     let res: HttpSuccessResponse<UserControllerListResponse> =
       await UserControllerList(request, context);
 
     expect(res.jsonBody?.payload.results.length).toBe(10);
+    expect(res.jsonBody?.payload.totalCount).toBe(25);
 
     request = await createHttpRequest<UserControllerListRequest>({
       query: {
         nextCursor: res.jsonBody?.payload.nextCursor?.toJSON(),
         limit: 10,
       },
+      body: {},
     });
     res = await UserControllerList(request, context);
 
@@ -45,6 +51,7 @@ describe("UserControllerList", () => {
         nextCursor: res.jsonBody?.payload.nextCursor?.toJSON(),
         limit: 10,
       },
+      body: {},
     });
     res = await UserControllerList(request, context);
 

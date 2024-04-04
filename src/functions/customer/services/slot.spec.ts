@@ -1,4 +1,4 @@
-import { ScheduleModel } from "~/functions/schedule";
+import { ScheduleModel, SlotWeekDays } from "~/functions/schedule";
 import {
   CustomerScheduleSlotServiceUpdate,
   CustomerScheduleSlotServiceUpdateBody,
@@ -23,7 +23,7 @@ describe("CustomerScheduleSlotService", () => {
 
     const newSlot: CustomerScheduleSlotServiceUpdateBody = [
       {
-        day: "tuesday",
+        day: SlotWeekDays.TUESDAY,
         intervals: [
           {
             from: "10:00",
@@ -47,7 +47,7 @@ describe("CustomerScheduleSlotService", () => {
     const updatedSlot: CustomerScheduleSlotServiceUpdateBody = [
       ...newSlot,
       {
-        day: "wednesday",
+        day: SlotWeekDays.WEDNESDAY,
         intervals: [
           {
             from: "10:00",
@@ -106,7 +106,7 @@ describe("CustomerScheduleSlotService", () => {
 
     const duplicateDaySlot: CustomerScheduleSlotServiceUpdateBody = [
       {
-        day: "monday",
+        day: SlotWeekDays.MONDAY,
         intervals: [
           {
             from: "10:00",
@@ -115,7 +115,7 @@ describe("CustomerScheduleSlotService", () => {
         ],
       },
       {
-        day: "monday",
+        day: SlotWeekDays.MONDAY,
         intervals: [
           {
             from: "14:00",
@@ -141,7 +141,7 @@ describe("CustomerScheduleSlotService", () => {
 
     const overlappingIntervalsSlot: CustomerScheduleSlotServiceUpdateBody = [
       {
-        day: "thursday",
+        day: SlotWeekDays.THURSDAY,
         intervals: [
           {
             from: "10:00",

@@ -2,7 +2,7 @@ import { addDays, format, isEqual } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import { LocationTypes } from "~/functions/location";
 
-import { WeekDays } from "~/functions/schedule";
+import { SlotWeekDays } from "~/functions/schedule";
 import { arrayElements, createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
 import { createSchedule } from "~/library/jest/helpers/schedule";
@@ -44,7 +44,7 @@ describe("UserAvailabilityServiceGet", () => {
     const nextDayInUTC = format(
       addDays(todayInUTC, 1),
       "iiii"
-    ).toLowerCase() as WeekDays;
+    ).toLowerCase() as SlotWeekDays;
 
     const days = [nextDayInUTC];
 

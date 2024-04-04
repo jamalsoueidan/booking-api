@@ -10,7 +10,7 @@ import { LocationTypes } from "~/functions/location";
 
 import { faker } from "@faker-js/faker";
 import { OrderModel } from "~/functions/order/order.models";
-import { WeekDays } from "~/functions/schedule";
+import { SlotWeekDays } from "~/functions/schedule";
 import { ShippingModel } from "~/functions/shipping/shipping.model";
 import { arrayElements, createUser } from "~/library/jest/helpers";
 import {
@@ -30,7 +30,7 @@ describe("UserAvailabilityServiceGenerate", () => {
   let schedule: Awaited<ReturnType<typeof createSchedule>>;
   let locationOrigin: Awaited<ReturnType<typeof createLocation>>;
   let locationDestination: Awaited<ReturnType<typeof createLocation>>;
-  let days: WeekDays[] = [];
+  let days: SlotWeekDays[] = [];
 
   beforeAll(() => {
     jest
@@ -58,12 +58,12 @@ describe("UserAvailabilityServiceGenerate", () => {
     const nextDayInUTC = format(
       addDays(todayInUTC, 1),
       "iiii"
-    ).toLowerCase() as WeekDays;
+    ).toLowerCase() as SlotWeekDays;
 
     const dayAfterNextInUTC = format(
       addDays(todayInUTC, 2),
       "iiii"
-    ).toLowerCase() as WeekDays;
+    ).toLowerCase() as SlotWeekDays;
 
     days = [nextDayInUTC];
 

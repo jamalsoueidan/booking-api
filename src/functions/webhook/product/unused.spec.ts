@@ -1,5 +1,5 @@
 import { InvocationContext } from "@azure/functions";
-import { Schedule, ScheduleModel } from "~/functions/schedule";
+import { Schedule, ScheduleModel, SlotWeekDays } from "~/functions/schedule";
 import { createContext } from "~/library/jest/azure";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { productDumbData } from "./product.dumb";
@@ -20,7 +20,7 @@ describe("webhookUpdateProcess", () => {
     customerId: 1,
     slots: [
       {
-        day: "monday",
+        day: SlotWeekDays.MONDAY,
         intervals: [
           {
             from: "15:00",
@@ -46,7 +46,7 @@ describe("webhookUpdateProcess", () => {
     customerId: 2,
     slots: [
       {
-        day: "saturday",
+        day: SlotWeekDays.SATURDAY,
         intervals: [
           {
             from: "17:00",

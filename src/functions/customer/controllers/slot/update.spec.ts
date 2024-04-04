@@ -6,6 +6,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
+import { SlotWeekDays } from "~/functions/schedule";
 import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
   CustomerScheduleSlotControllerUpdate,
@@ -33,7 +34,7 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
       {
         slots: [
           {
-            day: "wednesday",
+            day: SlotWeekDays.WEDNESDAY,
             intervals: [
               {
                 from: "10:00",
@@ -70,7 +71,7 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
       {
         slots: [
           {
-            day: "wednesday",
+            day: SlotWeekDays.WEDNESDAY,
             intervals: [
               {
                 from: "10:00",
@@ -79,7 +80,7 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
             ],
           },
           {
-            day: "wednesday",
+            day: SlotWeekDays.WEDNESDAY,
             intervals: [
               {
                 from: "08:00",
@@ -118,7 +119,7 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
       {
         slots: [
           {
-            day: "wednesday",
+            day: SlotWeekDays.WEDNESDAY,
             intervals: [
               {
                 from: "14:00",
@@ -157,7 +158,7 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
       {
         slots: [
           {
-            day: "wednesday",
+            day: SlotWeekDays.WEDNESDAY,
             intervals: [
               {
                 from: "12:00",

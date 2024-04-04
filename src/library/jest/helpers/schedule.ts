@@ -4,7 +4,7 @@ import {
   ScheduleModel,
   ScheduleProductLocation,
   ScheduleSlotInterval,
-  WeekDays,
+  SlotWeekDays,
 } from "~/functions/schedule";
 import { getProductObject } from "./product";
 
@@ -12,7 +12,7 @@ export const DEFAULT_GROUP = "all";
 
 export type Choices = {
   totalProducts: number;
-  days: WeekDays[];
+  days: SlotWeekDays[];
   locations: ScheduleProductLocation[];
   interval?: ScheduleSlotInterval;
 };
@@ -51,6 +51,5 @@ export const createSchedule = (
   choices: Choices
 ) => {
   const schedule = new ScheduleModel(getScheduleObject(props, choices));
-
   return schedule.save();
 };

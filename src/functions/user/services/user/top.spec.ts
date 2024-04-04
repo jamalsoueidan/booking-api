@@ -1,14 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { createUser } from "~/library/jest/helpers";
+import { pickMultipleItems } from "~/library/jest/utils/utils";
 import { Professions } from "../../user.types";
 import { UserServiceTop } from "./top";
 
 require("~/library/jest/mongoose/mongodb.jest");
-
-export const pickMultipleItems = (array: string[], count: number) => {
-  const shuffled = array.sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, count);
-};
 
 describe("UserServiceTop", () => {
   it("Should get all users with professions", async () => {

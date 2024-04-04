@@ -16,6 +16,9 @@ const getCoordinatesData: ForsyningResponse = [
       adgangspunkt: {
         koordinater: [10.12961271, 56.15563438],
       },
+      kommune: {
+        navn: "Aarhus",
+      },
     },
   },
 ];
@@ -30,10 +33,12 @@ describe("LocationServiceGetCoordinates", () => {
       fullAddress: "Sigridsvej 45 1th, 8220 Brabrand",
     });
 
-    expect(response).toEqual({
-      fullAddress: "Sigridsvej 45, 1. th, 8220 Brabrand",
-      latitude: 56.15563438,
-      longitude: 10.12961271,
-    });
+    expect(response).toEqual(
+      expect.objectContaining({
+        fullAddress: "Sigridsvej 45, 1. th, 8220 Brabrand",
+        latitude: 56.15563438,
+        longitude: 10.12961271,
+      })
+    );
   });
 });

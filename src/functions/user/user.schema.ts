@@ -1,7 +1,7 @@
 import mongoose, { Document, Model } from "mongoose";
 import { User } from "./user.types";
 
-export interface IUser extends Omit<User, "_id"> {
+export interface IUser extends Omit<User, "_id" | "createdAt" | "updatedAt"> {
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,13 +23,16 @@ export const UserMongooseSchema = new mongoose.Schema<
     },
     professions: {
       type: [String],
+      index: true,
     },
     isBusiness: {
       type: Boolean,
       default: false,
+      index: true,
     },
     specialties: {
       type: [String],
+      index: true,
     },
     yearsExperience: Number,
     username: {
@@ -56,7 +59,7 @@ export const UserMongooseSchema = new mongoose.Schema<
     aboutMe: String,
     gender: String,
     shortDescription: String,
-    active: { type: Boolean, default: false },
+    active: { type: Boolean, default: false, index: true },
     images: {
       profile: {
         url: String,

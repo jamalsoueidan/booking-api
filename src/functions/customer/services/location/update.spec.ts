@@ -14,6 +14,8 @@ type LocationServiceGetCoordinatesMock = jest.Mock<
     longitude: number;
     latitude: number;
     fullAddress: string;
+    city: string;
+    country: string;
   }>
 >;
 
@@ -34,6 +36,8 @@ describe("CustomerLocationServiceUpdate", () => {
       longitude: 10.12961271,
       latitude: 56.15563438,
       fullAddress: "Sigridsvej 45, 1. th, 8220 Brabrand",
+      city: "Aarhus",
+      country: "Denmark",
     });
 
     const update = await CustomerLocationServiceUpdate(

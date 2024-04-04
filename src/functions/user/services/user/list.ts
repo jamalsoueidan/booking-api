@@ -1,57 +1,142 @@
-import { FilterQuery } from "mongoose";
+import { PipelineStage } from "mongoose";
+import { Location, LocationModel } from "~/functions/location";
+
+import { ScheduleModel, ScheduleSlot } from "~/functions/schedule";
 import { UserModel } from "../../user.model";
-import { IUserDocument } from "../../user.schema";
+import { User } from "../../user.types";
 
 export type UserServiceListProps = {
   nextCursor?: Date | string;
-  limit?: number;
-  profession?: string;
-  specialties?: string[];
+  limit: number;
+  filters?: {
+    profession?: string;
+    specialties?: string[];
+    location?: Pick<Location, "city" | "locationType">;
+    days?: Array<ScheduleSlot["day"]>;
+  };
   sortOrder?: "asc" | "desc";
 };
 
-export const UserServiceList = async ({
-  nextCursor,
-  limit,
-  profession,
-  specialties,
-  sortOrder = "desc",
-}: UserServiceListProps = {}) => {
-  let query: FilterQuery<IUserDocument> = { active: true, isBusiness: true };
+export const UserServiceList = async (
+  { nextCursor, limit, filters, sortOrder = "desc" }: UserServiceListProps = {
+    limit: 10,
+  }
+) => {
+  const pipeline: PipelineStage[] = [
+    { $match: { active: true, isBusiness: true } },
+  ];
 
-  if (profession) {
-    query = {
-      ...query,
-      professions: { $in: [profession] },
-    };
+  if (filters?.profession) {
+    pipeline.push({
+      $match: { professions: { $in: [filters.profession] } },
+    });
   }
 
-  // Filter by specialties, if provided
-  if (specialties && specialties.length > 0) {
-    query = { ...query, specialties: { $in: specialties } };
+  if (filters?.specialties && filters?.specialties.length > 0) {
+    pipeline.push({ $match: { specialties: { $in: filters?.specialties } } });
   }
 
-  const sortParam = sortOrder === "asc" ? 1 : -1; // 1 for 'asc', -1 for 'desc'
+  if (filters?.location) {
+    pipeline.push({
+      $lookup: {
+        from: LocationModel.collection.name,
+        localField: "customerId",
+        foreignField: "customerId",
+        as: "locations",
+      },
+    });
 
-  if (nextCursor) {
-    query = {
-      ...query,
-      createdAt: sortParam === 1 ? { $gt: nextCursor } : { $lt: nextCursor },
-    };
+    pipeline.push({
+      $unwind: "$locations",
+    });
+
+    pipeline.push({
+      $match: {
+        "locations.city": filters.location.city,
+        "locations.locationType": filters.location.locationType,
+      },
+    });
   }
 
-  const l = limit || 10;
-  const users = await UserModel.find(query)
-    .sort({ createdAt: sortParam })
-    .limit(l + 1);
+  if (filters?.days && filters?.days.length > 0) {
+    pipeline.push({
+      $lookup: {
+        from: ScheduleModel.collection.name,
+        localField: "customerId",
+        foreignField: "customerId",
+        as: "schedules",
+      },
+    });
 
-  const totalCount = await UserModel.countDocuments(query);
-  const hasNextPage = users.length > l;
-  const results = hasNextPage ? users.slice(0, -1) : users;
+    pipeline.push({
+      $match: {
+        "schedules.slots.day": { $in: filters.days },
+      },
+    });
+
+    pipeline.push({
+      $match: {
+        schedules: { $elemMatch: { slots: { $not: { $size: 0 } } } },
+      },
+    });
+  }
+
+  pipeline.push({
+    $project: {
+      _id: "$_id",
+      name: 1,
+      username: 1,
+      fullname: 1,
+      social: 1,
+      specialties: 1,
+      shortDescription: 1,
+      images: 1,
+      speaks: 1,
+      createdAt: 1,
+      "locations.city": 1,
+      "locations.country": 1,
+    },
+  });
+
+  pipeline.push({
+    $facet: {
+      results: [
+        { $sort: { createdAt: sortOrder === "asc" ? 1 : -1 } },
+        ...(nextCursor
+          ? [
+              {
+                $match: {
+                  createdAt:
+                    sortOrder === "asc"
+                      ? { $gt: new Date(nextCursor) }
+                      : { $lt: new Date(nextCursor) },
+                },
+              },
+            ]
+          : []),
+
+        { $limit: limit + 1 },
+      ],
+      totalCount: [{ $count: "count" }],
+    },
+  });
+
+  const users = await UserModel.aggregate<{
+    results: Array<User & { locations: Pick<Location, "city" | "country"> }>;
+    totalCount: Array<{ count: number } | undefined>;
+  }>(pipeline);
+
+  const results = users[0].results;
+  const totalCount = users[0].totalCount[0] ? users[0].totalCount[0].count : 0;
+
+  const hasNextPage = results.length > limit;
+  const paginatedResults = hasNextPage ? results.slice(0, -1) : results;
 
   return {
-    results,
-    nextCursor: hasNextPage ? results[results.length - 1].createdAt : undefined,
+    results: paginatedResults,
+    nextCursor: hasNextPage
+      ? paginatedResults[paginatedResults.length - 1].createdAt
+      : undefined,
     totalCount,
   };
 };

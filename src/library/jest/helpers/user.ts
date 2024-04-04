@@ -1,13 +1,24 @@
 import { faker } from "@faker-js/faker";
 import { CustomerServiceCreate } from "~/functions/customer/services/customer";
-import { User } from "~/functions/user";
+import { Professions, User } from "~/functions/user";
 
 export const DEFAULT_GROUP = "all";
+
+function pickRandomProfessionsOneOrMore(): Professions[] {
+  const professionsArray = Object.values(Professions);
+  const shuffled = faker.helpers.shuffle(professionsArray);
+  const pickCount = faker.number.int({
+    min: 1,
+    max: professionsArray.length,
+  });
+  return shuffled.slice(0, pickCount);
+}
 
 export const getUserObject = (
   props: Partial<User> = {}
 ): Omit<User, "_id"> => ({
   email: faker.internet.email(),
+  professions: pickRandomProfessionsOneOrMore(),
   username: faker.internet.userName().toLowerCase(),
   fullname: faker.person.fullName(),
   social: {

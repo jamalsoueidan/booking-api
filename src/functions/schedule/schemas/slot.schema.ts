@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 import { BadError } from "~/library/handler";
-import { ScheduleSlot, ScheduleSlotInterval } from "../schedule.types";
+import {
+  ScheduleSlot,
+  ScheduleSlotInterval,
+  SlotWeekDays,
+} from "../schedule.types";
 
 export const IntervalSchema = new mongoose.Schema<ScheduleSlotInterval>(
   {
@@ -17,13 +21,13 @@ export const SlotSchema = new mongoose.Schema<ScheduleSlot>(
     day: {
       type: String,
       enum: [
-        "monday",
-        "tuesday",
-        "wednesday",
-        "thursday",
-        "friday",
-        "saturday",
-        "sunday",
+        SlotWeekDays.MONDAY,
+        SlotWeekDays.TUESDAY,
+        SlotWeekDays.WEDNESDAY,
+        SlotWeekDays.THURSDAY,
+        SlotWeekDays.FRIDAY,
+        SlotWeekDays.SATURDAY,
+        SlotWeekDays.SUNDAY,
       ],
       index: true,
     },
