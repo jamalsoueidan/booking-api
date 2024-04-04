@@ -24,7 +24,7 @@ app.http("userUsernameTaken", {
 });
 
 app.http("usersList", {
-  methods: ["GET"],
+  methods: ["POST"],
   authLevel: "anonymous",
   route: "users",
   handler: UserControllerList,

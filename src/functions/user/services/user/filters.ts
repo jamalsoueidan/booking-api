@@ -12,7 +12,7 @@ type UserAggregationResult = {
     day: string;
     count: number;
   }>;
-  productDetails: Array<{
+  products: Array<{
     productHandle: string;
     productId: string;
     count: number;
