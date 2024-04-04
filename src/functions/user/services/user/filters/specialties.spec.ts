@@ -21,24 +21,21 @@ describe("UserServiceFiltersSpecialties", () => {
       );
     }
 
-    const result = await UserServiceFiltersSpecialties({
+    const results = await UserServiceFiltersSpecialties({
       profession: Professions.MAKEUP_ARTIST,
     });
-
-    for (const key in result) {
-      expect(typeof result[key]).toBe("number");
-    }
 
     const users = await UserServiceList({
       limit: 5,
       filters: {
         profession: Professions.MAKEUP_ARTIST,
-        specialties: ["a"],
+        specialties: [results[0].speciality],
       },
     });
 
     const allHaveSpecialtyA = users.results.every(
-      (user) => user.specialties && user.specialties.includes("a")
+      (user) =>
+        user.specialties && user.specialties.includes(results[0].speciality)
     );
 
     expect(allHaveSpecialtyA).toBeTruthy();

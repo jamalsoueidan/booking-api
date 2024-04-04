@@ -15,7 +15,7 @@ describe("UserServiceLocations", () => {
     await UserModel.createIndexes();
     await LocationModel.createIndexes();
   });
-  it("Should get group and count professions by all users", async () => {
+  it("should be able to find users by locations", async () => {
     const cities = [
       faker.location.city(),
       faker.location.city(),
