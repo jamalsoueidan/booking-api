@@ -27,8 +27,8 @@ describe("UserServiceProfessions", () => {
     }
 
     const result = await UserServiceProfessions();
-    for (const key in result) {
-      expect(typeof result[key]).toBe("number");
-    }
+    result.map((item) => {
+      expect(item.count).toBe("number");
+    });
   });
 });

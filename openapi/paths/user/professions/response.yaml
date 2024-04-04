@@ -4,10 +4,9 @@ properties:
     type: boolean
     example: true
   payload:
-    type: object
-    additionalProperties:
-      type: number
-
+    type: array
+    items:
+      $ref: payload.yaml
 required:
   - success
   - payload

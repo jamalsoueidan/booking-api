@@ -1,7 +1,7 @@
 import { UserModel } from "../../user.model";
 
 export const UserServiceProfessions = async () => {
-  const professionCount = await UserModel.aggregate([
+  return UserModel.aggregate<{ profession: string; count: number }>([
     { $unwind: "$professions" },
     {
       $group: {
@@ -9,13 +9,12 @@ export const UserServiceProfessions = async () => {
         count: { $sum: 1 },
       },
     },
-    { $sort: { _id: 1 } },
+    {
+      $project: {
+        _id: 0,
+        profession: "$_id",
+        count: "$count",
+      },
+    },
   ]);
-
-  const professions: Record<string, number> = {};
-  for (const profession of professionCount) {
-    professions[profession._id] = profession.count;
-  }
-
-  return professions;
 };

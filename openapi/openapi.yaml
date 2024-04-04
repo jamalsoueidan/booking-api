@@ -282,6 +282,8 @@ components:
       $ref: paths/user/list/body.yaml
     UsersListResponse:
       $ref: paths/user/list/response.yaml
+    UsersProfessionsPayload:
+      $ref: paths/user/professions/payload.yaml
     UsersProfessionsResponse:
       $ref: paths/user/professions/response.yaml
     UsersFiltersPayload:

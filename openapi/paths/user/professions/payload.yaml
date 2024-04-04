@@ -1,0 +1,9 @@
+type: object
+properties:
+  profession:
+    type: string
+  count:
+    type: number
+required:
+  - profession
+  - count
