@@ -10,6 +10,7 @@ post:
       description: limit items (default 10)
       schema:
         type: string
+        default: 10
     - name: sortOrder
       in: query
       description: asc or desc
