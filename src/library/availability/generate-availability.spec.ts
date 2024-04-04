@@ -1,5 +1,6 @@
 import { isEqual } from "date-fns";
 import { format, utcToZonedTime } from "date-fns-tz";
+import { SlotWeekDays } from "~/functions/schedule";
 import { UserModel } from "~/functions/user/user.model";
 import { getProductObject } from "../jest/helpers/product";
 import {
@@ -17,7 +18,7 @@ describe("generateAvailability", () => {
     customerId: 1,
     slots: [
       {
-        day: "thursday",
+        day: SlotWeekDays.THURSDAY,
         intervals: [
           {
             from: "08:00",
@@ -26,7 +27,7 @@ describe("generateAvailability", () => {
         ],
       },
       {
-        day: "friday",
+        day: SlotWeekDays.FRIDAY,
         intervals: [
           {
             from: "12:00",
@@ -35,7 +36,7 @@ describe("generateAvailability", () => {
         ],
       },
       {
-        day: "saturday",
+        day: SlotWeekDays.SATURDAY,
         intervals: [
           {
             from: "12:00",
@@ -44,7 +45,7 @@ describe("generateAvailability", () => {
         ],
       },
       {
-        day: "sunday",
+        day: SlotWeekDays.SUNDAY,
         intervals: [
           {
             from: "12:00",
