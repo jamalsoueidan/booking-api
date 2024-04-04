@@ -88,10 +88,13 @@ export const UserServiceList = async (
       username: 1,
       fullname: 1,
       social: 1,
+      specialties: 1,
       shortDescription: 1,
       images: 1,
       speaks: 1,
       createdAt: 1,
+      "locations.city": 1,
+      "locations.country": 1,
     },
   });
 
@@ -119,7 +122,7 @@ export const UserServiceList = async (
   });
 
   const users = await UserModel.aggregate<{
-    results: Array<User & { locations: Location }>;
+    results: Array<User & { locations: Pick<Location, "city" | "country"> }>;
     totalCount: Array<{ count: number } | undefined>;
   }>(pipeline);
 
