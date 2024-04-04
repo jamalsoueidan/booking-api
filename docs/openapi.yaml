@@ -5052,7 +5052,6 @@ paths:
       summary: POST Get all users
       description: This endpoint get all users
       requestBody:
-        required: true
         content:
           application/json:
             schema:
