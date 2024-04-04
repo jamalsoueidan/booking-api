@@ -10,8 +10,8 @@ export const UserServiceTop = async ({
 }) => {
   const professions = await UserServiceProfessions();
 
-  const professionsArray = Object.entries(professions).map(([name, count]) => ({
-    name,
+  const professionsArray = professions.map(({ profession, count }) => ({
+    profession,
     count,
   }));
 
@@ -21,11 +21,15 @@ export const UserServiceTop = async ({
 
   return UserModel.aggregate([
     {
-      $match: { professions: { $in: paginatedProfessions.map((p) => p.name) } },
+      $match: {
+        professions: { $in: paginatedProfessions.map((p) => p.profession) },
+      },
     },
     { $unwind: "$professions" },
     {
-      $match: { professions: { $in: paginatedProfessions.map((p) => p.name) } },
+      $match: {
+        professions: { $in: paginatedProfessions.map((p) => p.profession) },
+      },
     },
     {
       $project: {
