@@ -85,6 +85,7 @@ export const UserServiceList = async (
     $project: {
       _id: "$_id",
       name: 1,
+      customerId: 1,
       username: 1,
       fullname: 1,
       specialties: 1,
