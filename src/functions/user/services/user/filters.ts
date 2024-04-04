@@ -131,6 +131,7 @@ export const UserServiceFilters = async ({
   profession?: string;
 }) => {
   const results = await UserModel.aggregate<UserAggregationResult>([
+    { $match: { active: true, isBusiness: true } },
     ...(profession
       ? [
           {

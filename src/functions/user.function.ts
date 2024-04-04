@@ -3,7 +3,6 @@ import "module-alias/register";
 import { app } from "@azure/functions";
 import { UserControllerFilters } from "./user/controllers/user/filters";
 import { UserControllerGet } from "./user/controllers/user/get";
-import { UserControllerList } from "./user/controllers/user/list";
 import { UserControllerProfessions } from "./user/controllers/user/professions";
 import { UserControllerSearch } from "./user/controllers/user/search";
 import { UserControllerTop } from "./user/controllers/user/top";
@@ -21,13 +20,6 @@ app.http("userUsernameTaken", {
   authLevel: "anonymous",
   route: "user/{username}/username-taken",
   handler: UserControllerUsernameTaken,
-});
-
-app.http("usersList", {
-  methods: ["POST"],
-  authLevel: "anonymous",
-  route: "users/list",
-  handler: UserControllerList,
 });
 
 app.http("usersTop", {
@@ -52,7 +44,7 @@ app.http("usersFilters", {
 });
 
 app.http("usersSearch", {
-  methods: ["GET"],
+  methods: ["POST"],
   authLevel: "anonymous",
   route: "users/search",
   handler: UserControllerSearch,

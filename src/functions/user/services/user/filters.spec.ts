@@ -8,7 +8,7 @@ import { createSchedule } from "~/library/jest/helpers/schedule";
 import { pickMultipleItems } from "~/library/jest/utils/utils";
 import { Professions } from "../../user.types";
 import { UserServiceFilters } from "./filters";
-import { UserServiceList } from "./list";
+import { UserServiceSearch } from "./search";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -49,7 +49,7 @@ describe("UserServiceFilters", () => {
     });
 
     const pickLocation = results.locations[0];
-    const users = await UserServiceList({
+    const users = await UserServiceSearch({
       limit: 5,
       filters: {
         profession: Professions.MAKEUP_ARTIST,
@@ -83,7 +83,7 @@ describe("UserServiceFilters", () => {
     });
 
     const pickSpecialty = results.specialties[0];
-    const users = await UserServiceList({
+    const users = await UserServiceSearch({
       limit: 5,
       filters: {
         profession: Professions.MAKEUP_ARTIST,

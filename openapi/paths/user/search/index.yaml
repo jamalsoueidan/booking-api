@@ -1,15 +1,30 @@
-get:
+post:
   parameters:
-    - name: search
+    - name: nextCursor
       in: query
+      description: nextCursor
       schema:
         type: string
-      required: true
+    - name: limit
+      in: query
+      description: limit items (default 10)
+      schema:
+        type: string
+    - name: sortOrder
+      in: query
+      description: asc or desc
+      schema:
+        type: string
   tags:
     - Users
   operationId: usersSearch
-  summary: GET Get all users using search by username or fullname
-  description: This endpoint get all users
+  summary: POST Post search for users
+  description: This endpoint search for users
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: body.yaml
   responses:
     "200":
       description: "Response"

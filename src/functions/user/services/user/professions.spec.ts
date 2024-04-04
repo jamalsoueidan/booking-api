@@ -28,7 +28,7 @@ describe("UserServiceProfessions", () => {
 
     const result = await UserServiceProfessions();
     result.map((item) => {
-      expect(item.count).toBe("number");
+      expect(item.count).toBeGreaterThan(0);
     });
   });
 });

@@ -4,9 +4,19 @@ properties:
     type: boolean
     example: true
   payload:
-    type: array
-    items:
-      $ref: "../_types/user.yaml"
+    type: object
+    properties:
+      nextCursor:
+        type: string
+      results:
+        type: array
+        items:
+          $ref: "../_types/user.yaml"
+      totalCount:
+        type: number
+    required:
+      - results
+      - total
 
 required:
   - success
