@@ -1,10 +1,11 @@
 import "module-alias/register";
 
 import { app } from "@azure/functions";
+import { UserControllerFilters } from "./user/controllers/user/filters";
 import { UserControllerGet } from "./user/controllers/user/get";
 import { UserControllerList } from "./user/controllers/user/list";
 import { UserControllerProfessions } from "./user/controllers/user/professions";
-import { UserControllerSpecialties } from "./user/controllers/user/specialties";
+import { UserControllerSearch } from "./user/controllers/user/search";
 import { UserControllerTop } from "./user/controllers/user/top";
 import { UserControllerUsernameTaken } from "./user/controllers/user/username-taken";
 
@@ -43,9 +44,16 @@ app.http("usersProfessions", {
   handler: UserControllerProfessions,
 });
 
-app.http("usersSpecialties", {
+app.http("usersFilters", {
   methods: ["GET"],
   authLevel: "anonymous",
-  route: "users/specialties",
-  handler: UserControllerSpecialties,
+  route: "users/filters",
+  handler: UserControllerFilters,
+});
+
+app.http("usersFilters", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "users/search",
+  handler: UserControllerSearch,
 });

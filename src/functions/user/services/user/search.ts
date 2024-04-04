@@ -1,11 +1,7 @@
 import { User } from "~/functions/user/user.types";
-import { UserModel } from "../../../user.model";
+import { UserModel } from "../../user.model";
 
-export const UserServiceFilterSearch = async ({
-  search,
-}: {
-  search: string;
-}) => {
+export const UserServiceSearch = async ({ search }: { search: string }) => {
   return UserModel.aggregate<
     Pick<User, "_id" | "images" | "username" | "fullname" | "shortDescription">
   >([

@@ -1,6 +1,6 @@
 import { createUser } from "~/library/jest/helpers";
 
-import { UserServiceFilterSearch } from "./search";
+import { UserServiceSearch } from "./search";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -20,7 +20,7 @@ describe("UserServiceFilterSearch", () => {
     if (user) {
       //by username
       let search = user.username.substring(0, 5);
-      let results = await UserServiceFilterSearch({
+      let results = await UserServiceSearch({
         search,
       });
 
@@ -32,7 +32,7 @@ describe("UserServiceFilterSearch", () => {
 
       //by fullname
       search = user.fullname.substring(0, 5);
-      results = await UserServiceFilterSearch({
+      results = await UserServiceSearch({
         search,
       });
 
