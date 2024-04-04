@@ -2,6 +2,7 @@ import { _ } from "~/library/handler";
 
 import { z } from "zod";
 import { LocationZodSchema } from "~/functions/location";
+import { SlotWeekDays } from "~/functions/schedule";
 import { CommaSeparatedArray, NumberOrStringType } from "~/library/zod";
 import { UserServiceList } from "../../services/user/list";
 import { Professions } from "../../user.types";
@@ -29,6 +30,7 @@ export const UserControllerListBodySchema = z.object({
     city: true,
     locationType: true,
   }).optional(),
+  days: z.array(z.nativeEnum(SlotWeekDays)).optional(),
 });
 
 export type UserControllerListResponse = Awaited<

@@ -1,7 +1,7 @@
 import { PipelineStage } from "mongoose";
 import { Location, LocationModel } from "~/functions/location";
 
-import { ScheduleModel, WeekDays } from "~/functions/schedule";
+import { ScheduleModel, ScheduleSlot } from "~/functions/schedule";
 import { UserModel } from "../../user.model";
 import { User } from "../../user.types";
 
@@ -12,7 +12,7 @@ export type UserServiceListProps = {
     profession?: string;
     specialties?: string[];
     location?: Pick<Location, "city" | "locationType">;
-    days?: WeekDays[];
+    days?: Array<ScheduleSlot["day"]>;
   };
   sortOrder?: "asc" | "desc";
 };

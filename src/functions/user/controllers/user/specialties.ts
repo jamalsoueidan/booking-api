@@ -1,7 +1,7 @@
 import { _ } from "~/library/handler";
 
 import { z } from "zod";
-import { UserServiceSpecialties } from "../../services/user/filters/specialties";
+import { UserServiceFiltersSpecialties } from "../../services/user/filters/specialties";
 
 export type UserControllerSpecialtiesRequest = {
   query: z.infer<typeof UserControllerSpecialtiesSchema>;
@@ -12,12 +12,12 @@ export const UserControllerSpecialtiesSchema = z.object({
 });
 
 export type UserControllerSpecialtiesResponse = Awaited<
-  ReturnType<typeof UserServiceSpecialties>
+  ReturnType<typeof UserServiceFiltersSpecialties>
 >;
 
 export const UserControllerSpecialties = _(
   async ({ query }: UserControllerSpecialtiesRequest) => {
     const validateData = UserControllerSpecialtiesSchema.parse(query);
-    return UserServiceSpecialties(validateData);
+    return UserServiceFiltersSpecialties(validateData);
   }
 );

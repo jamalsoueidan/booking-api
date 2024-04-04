@@ -1,5 +1,10 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { Schedule, ScheduleModel, TimeUnit } from "~/functions/schedule";
+import {
+  Schedule,
+  ScheduleModel,
+  SlotWeekDays,
+  TimeUnit,
+} from "~/functions/schedule";
 import {
   HttpSuccessResponse,
   createContext,
@@ -26,7 +31,7 @@ describe("UserAvailabilityControllerGenerate", () => {
     customerId,
     slots: [
       {
-        day: "friday",
+        day: SlotWeekDays.FRIDAY,
         intervals: [
           {
             from: "08:00",

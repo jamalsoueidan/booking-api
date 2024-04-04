@@ -13,14 +13,15 @@ export enum TimeUnit {
   MONTHS = "months",
 }
 
-export type WeekDays =
-  | "monday"
-  | "tuesday"
-  | "wednesday"
-  | "thursday"
-  | "friday"
-  | "saturday"
-  | "sunday";
+export enum SlotWeekDays {
+  MONDAY = "monday",
+  TUESDAY = "tuesday",
+  WEDNESDAY = "wednesday",
+  THURSDAY = "thursday",
+  FRIDAY = "friday",
+  SATURDAY = "saturday",
+  SUNDAY = "sunday",
+}
 
 const BookingPeriodZodSchema = z.object({
   value: NumberOrStringType,
@@ -139,15 +140,7 @@ const ScheduleSlotIntervalArraySchema = z
   );
 
 export const ScheduleSlotZodSchema = z.object({
-  day: z.enum([
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ]),
+  day: z.nativeEnum(SlotWeekDays),
   intervals: ScheduleSlotIntervalArraySchema,
 });
 

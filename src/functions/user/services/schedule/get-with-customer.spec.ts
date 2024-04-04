@@ -1,3 +1,4 @@
+import { SlotWeekDays } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
 import { arrayElements, createUser } from "~/library/jest/helpers";
 import { createSchedule } from "~/library/jest/helpers/schedule";
@@ -19,7 +20,7 @@ describe("UserScheduleServiceGetWithCustomer", () => {
       },
       {
         totalProducts: 3,
-        days: ["monday", "tuesday"],
+        days: [SlotWeekDays.MONDAY, SlotWeekDays.TUESDAY],
         locations: [],
       }
     );
@@ -43,7 +44,7 @@ describe("UserScheduleServiceGetWithCustomer", () => {
       },
       {
         totalProducts: 3,
-        days: ["wednesday", "thursday"],
+        days: [SlotWeekDays.WEDNESDAY, SlotWeekDays.THURSDAY],
         locations: [],
       }
     );

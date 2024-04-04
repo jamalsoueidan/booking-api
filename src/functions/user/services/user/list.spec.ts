@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { Location, LocationTypes } from "~/functions/location";
+import { SlotWeekDays } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
 import { createSchedule } from "~/library/jest/helpers/schedule";
@@ -32,7 +33,12 @@ describe("UserServiceList", () => {
       await createSchedule(
         { customerId },
         {
-          days: [faker.helpers.arrayElement(["monday", "friday"])],
+          days: [
+            faker.helpers.arrayElement([
+              SlotWeekDays.MONDAY,
+              SlotWeekDays.FRIDAY,
+            ]),
+          ],
           totalProducts: 1,
           locations: [],
         }
@@ -70,22 +76,22 @@ describe("UserServiceList", () => {
         profession,
       });
 
-      for (const specialty in specialties) {
+      specialties.forEach(async (specialty) => {
         const result = await UserServiceList({
           limit: 10,
           filters: {
             profession,
-            specialties: [specialty],
+            specialties: [specialty.speciality],
           },
         });
-        expect(result.totalCount).toBe(specialties[specialty]);
-      }
+        expect(result.totalCount).toBe(specialty.count);
+      });
     }
 
     const result = await UserServiceList({
       limit: 10,
       filters: {
-        days: ["monday"],
+        days: [SlotWeekDays.MONDAY],
         location: {
           city: location!.city,
           locationType: location!.locationType,
