@@ -1,0 +1,20 @@
+type: object
+properties:
+  profession:
+    type: string
+  specialties:
+    type: string
+  location:
+    type: object
+    properties:
+      city:
+        type: string
+      locationType:
+        type: string
+    required:
+      - city
+      - locationType
+  days:
+    type: array
+    items:
+      type: string

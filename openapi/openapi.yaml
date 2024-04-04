@@ -278,12 +278,18 @@ components:
       $ref: paths/user/schedule/get-by-product/response.yaml
     UserGetResponse:
       $ref: paths/user/get/response.yaml
+    UsersListBody:
+      $ref: paths/user/list/body.yaml
     UsersListResponse:
       $ref: paths/user/list/response.yaml
     UsersProfessionsResponse:
       $ref: paths/user/professions/response.yaml
-    UsersSpecialtiesResponse:
-      $ref: paths/user/specialties/response.yaml
+    UsersFiltersPayload:
+      $ref: paths/user/filters/payload.yaml
+    UsersFiltersResponse:
+      $ref: paths/user/filters/response.yaml
+    UsersSearchResponse:
+      $ref: paths/user/search/response.yaml
     UserTop:
       $ref: paths/user/top/user-top.yaml
     UsersTopResponse:
@@ -496,11 +502,13 @@ paths:
     $ref: "./paths/user/schedule/list/index.yaml"
 
   # User General Endpoints
-  /users:
+  /users/list:
     $ref: "./paths/user/list/index.yaml"
   /users/professions:
     $ref: "./paths/user/professions/index.yaml"
-  /users/specialties:
-    $ref: "./paths/user/specialties/index.yaml"
+  /users/filters:
+    $ref: "./paths/user/filters/index.yaml"
+  /users/search:
+    $ref: "./paths/user/search/index.yaml"
   /users/top:
     $ref: "./paths/user/top/index.yaml"

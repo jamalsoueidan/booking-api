@@ -1,15 +1,15 @@
 get:
   parameters:
-    - name: profession
+    - name: search
       in: query
-      description: profession
       schema:
         type: string
+      required: true
   tags:
     - User
-  operationId: usersSpecialties
-  summary: GET Get all users specialties with total count
-  description: This endpoint get all users specialties
+  operationId: usersSearch
+  summary: GET Get all users using search by username or fullname
+  description: This endpoint get all users
   responses:
     "200":
       description: "Response"
