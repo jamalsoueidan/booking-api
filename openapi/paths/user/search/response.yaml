@@ -16,7 +16,7 @@ properties:
         type: number
     required:
       - results
-      - total
+      - totalCount
 
 required:
   - success

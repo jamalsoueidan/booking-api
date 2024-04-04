@@ -15,6 +15,9 @@ post:
       description: asc or desc
       schema:
         type: string
+        enum:
+          - asc
+          - desc
   tags:
     - Users
   operationId: usersSearch
