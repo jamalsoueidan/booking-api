@@ -51,7 +51,7 @@ app.http("usersFilters", {
   handler: UserControllerFilters,
 });
 
-app.http("usersFilters", {
+app.http("usersSearch", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "users/search",
