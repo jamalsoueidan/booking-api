@@ -12,6 +12,10 @@ properties:
           enum: [ORIGIN, DESTINATION]
         count:
           type: integer
+      required:
+        - city
+        - locationType
+        - count
   availableDays:
     type: array
     items:
@@ -21,6 +25,9 @@ properties:
           type: string
         count:
           type: integer
+      required:
+        - day
+        - count
   productDetails:
     type: array
     items:
@@ -32,6 +39,10 @@ properties:
           type: string
         count:
           type: integer
+      required:
+        - productHandle
+        - productId
+        - count
   specialties:
     type: array
     items:
@@ -41,3 +52,11 @@ properties:
           type: string
         count:
           type: integer
+      required:
+        - speciality
+        - count
+required:
+  - locations
+  - availableDays
+  - productDetails
+  - specialties
