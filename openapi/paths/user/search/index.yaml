@@ -6,7 +6,7 @@ get:
         type: string
       required: true
   tags:
-    - User
+    - Users
   operationId: usersSearch
   summary: GET Get all users using search by username or fullname
   description: This endpoint get all users

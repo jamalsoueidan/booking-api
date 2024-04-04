@@ -1,6 +1,6 @@
 get:
   tags:
-    - User
+    - Users
   operationId: usersProfessions
   summary: GET Get all users professions with total count
   description: This endpoint get all users professions

@@ -6,7 +6,7 @@ get:
       schema:
         type: string
   tags:
-    - User
+    - Users
   operationId: usersFilters
   summary: GET Get all users-filters
   description: This endpoint get all users-filters

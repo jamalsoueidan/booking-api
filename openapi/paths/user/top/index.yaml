@@ -11,7 +11,7 @@ parameters:
       type: string
 get:
   tags:
-    - User
+    - Users
   operationId: usersTop
   summary: GET Get all users grouped by professions
   description: This endpoint get all users group by professions

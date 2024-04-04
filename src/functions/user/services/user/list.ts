@@ -87,7 +87,6 @@ export const UserServiceList = async (
       name: 1,
       username: 1,
       fullname: 1,
-      social: 1,
       specialties: 1,
       shortDescription: 1,
       images: 1,

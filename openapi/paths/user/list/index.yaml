@@ -1,22 +1,22 @@
+parameters:
+  - name: nextCursor
+    in: query
+    description: nextCursor
+    schema:
+      type: string
+  - name: limit
+    in: query
+    description: limit items (default 10)
+    schema:
+      type: string
+  - name: sortOrder
+    in: query
+    description: asc or desc
+    schema:
+      type: string
 post:
-  parameters:
-    - name: nextCursor
-      in: query
-      description: nextCursor
-      schema:
-        type: string
-    - name: limit
-      in: query
-      description: limit items (default 10)
-      schema:
-        type: string
-    - name: sortOrder
-      in: query
-      description: asc or desc
-      schema:
-        type: string
   tags:
-    - User
+    - Users
   operationId: usersList
   summary: POST Get all users
   description: This endpoint get all users
