@@ -1,12 +1,16 @@
 import { ScheduleModel } from "~/functions/schedule";
 import { UserModel } from "../../../user.model";
 
-export const UserServiceFilterDays = async ({
+export const UserServiceFilterProducts = async ({
   profession,
 }: {
   profession: string;
 }) => {
-  return UserModel.aggregate<{ day: string; count: number }>([
+  return UserModel.aggregate<{
+    productHandle: string;
+    productId: string;
+    count: string;
+  }>([
     { $match: { professions: profession } },
     {
       $lookup: {
@@ -17,10 +21,13 @@ export const UserServiceFilterDays = async ({
       },
     },
     { $unwind: "$schedules" },
-    { $unwind: "$schedules.slots" },
+    { $unwind: "$schedules.products" },
     {
       $group: {
-        _id: "$schedules.slots.day",
+        _id: {
+          productHandle: "$schedules.products.productHandle",
+          productId: "$schedules.products.productId",
+        },
         count: { $sum: 1 },
       },
     },
@@ -28,7 +35,8 @@ export const UserServiceFilterDays = async ({
     {
       $project: {
         _id: 0,
-        day: "$_id",
+        productHandle: "$_id.productHandle",
+        productId: "$_id.productId",
         count: "$count",
       },
     },
