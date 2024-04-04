@@ -17,21 +17,26 @@ enum SortOrder {
   DESC = "desc",
 }
 
-export const UserControllerListQuerySchema = z.object({
-  nextCursor: z.string().optional(),
-  limit: NumberOrStringType.optional(),
-  sortOrder: z.nativeEnum(SortOrder).optional(),
-});
+export const UserControllerListQuerySchema = z
+  .object({
+    nextCursor: z.string().optional(),
+    limit: NumberOrStringType.optional(),
+    sortOrder: z.nativeEnum(SortOrder).optional(),
+  })
+  .strip();
 
-export const UserControllerListBodySchema = z.object({
-  profession: z.nativeEnum(Professions).optional(),
-  specialties: CommaSeparatedArray.optional(),
-  location: LocationZodSchema.pick({
-    city: true,
-    locationType: true,
-  }).optional(),
-  days: z.array(z.nativeEnum(SlotWeekDays)).optional(),
-});
+export const UserControllerListBodySchema = z
+  .object({
+    profession: z.nativeEnum(Professions).optional(),
+    specialties: CommaSeparatedArray.optional(),
+    location: LocationZodSchema.pick({
+      city: true,
+      locationType: true,
+    }).optional(),
+    days: z.array(z.nativeEnum(SlotWeekDays)).optional(),
+  })
+  .strip()
+  .optional();
 
 export type UserControllerListResponse = Awaited<
   ReturnType<typeof UserServiceList>
