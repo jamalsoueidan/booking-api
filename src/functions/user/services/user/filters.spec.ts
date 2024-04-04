@@ -168,6 +168,6 @@ describe("UserServiceFilters", () => {
       profession: Professions.LASH,
     });
 
-    console.log(JSON.stringify(results));
+    expect(results).toBeDefined();
   });
 });
