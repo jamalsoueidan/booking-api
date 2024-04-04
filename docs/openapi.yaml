@@ -2288,6 +2288,27 @@ components:
       required:
         - success
         - payload
+    UsersListBody:
+      type: object
+      properties:
+        profession:
+          type: string
+        specialties:
+          type: string
+        location:
+          type: object
+          properties:
+            city:
+              type: string
+            locationType:
+              type: string
+          required:
+            - city
+            - locationType
+        days:
+          type: array
+          items:
+            type: string
     UsersListResponse:
       type: object
       properties:
@@ -2324,16 +2345,73 @@ components:
       required:
         - success
         - payload
-    UsersSpecialtiesResponse:
+    UsersFiltersPayload:
+      type: object
+      properties:
+        locations:
+          type: array
+          items:
+            type: object
+            properties:
+              city:
+                type: string
+              locationType:
+                type: string
+                enum:
+                  - ORIGIN
+                  - DESTINATION
+              count:
+                type: integer
+        availableDays:
+          type: array
+          items:
+            type: object
+            properties:
+              day:
+                type: string
+              count:
+                type: integer
+        productDetails:
+          type: array
+          items:
+            type: object
+            properties:
+              productHandle:
+                type: string
+              productId:
+                type: string
+              count:
+                type: integer
+        specialties:
+          type: array
+          items:
+            type: object
+            properties:
+              speciality:
+                type: string
+              count:
+                type: integer
+    UsersFiltersResponse:
       type: object
       properties:
         success:
           type: boolean
           example: true
         payload:
-          type: object
-          additionalProperties:
-            type: number
+          $ref: '#/components/schemas/UsersFiltersPayload'
+      required:
+        - success
+        - payload
+    UsersSearchResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
       required:
         - success
         - payload
@@ -4921,41 +4999,35 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
       security: []
-  /users:
-    parameters:
-      - name: nextCursor
-        in: query
-        description: nextCursor
-        schema:
-          type: string
-      - name: limit
-        in: query
-        description: limit items (default 10)
-        schema:
-          type: string
-      - name: profession
-        in: query
-        description: profession
-        schema:
-          type: string
-      - name: specialties
-        in: query
-        description: specialties
-        schema:
-          type: array
-          items:
+  /users/list:
+    post:
+      parameters:
+        - name: nextCursor
+          in: query
+          description: nextCursor
+          schema:
             type: string
-      - name: sortOrder
-        in: query
-        description: asc or desc
-        schema:
-          type: string
-    get:
+        - name: limit
+          in: query
+          description: limit items (default 10)
+          schema:
+            type: string
+        - name: sortOrder
+          in: query
+          description: asc or desc
+          schema:
+            type: string
       tags:
         - User
       operationId: usersList
-      summary: GET Get all users
+      summary: POST Get all users
       description: This endpoint get all users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersListBody'
       responses:
         '200':
           description: Response
@@ -4995,7 +5067,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
-  /users/specialties:
+  /users/filters:
     get:
       parameters:
         - name: profession
@@ -5005,16 +5077,45 @@ paths:
             type: string
       tags:
         - User
-      operationId: usersSpecialties
-      summary: GET Get all users specialties with total count
-      description: This endpoint get all users specialties
+      operationId: usersFilters
+      summary: GET Get all users-filters
+      description: This endpoint get all users-filters
       responses:
         '200':
           description: Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UsersSpecialtiesResponse'
+                $ref: '#/components/schemas/UsersFiltersResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+      security: []
+  /users/search:
+    get:
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+          required: true
+      tags:
+        - User
+      operationId: usersSearch
+      summary: GET Get all users using search by username or fullname
+      description: This endpoint get all users
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersSearchResponse'
         '400':
           $ref: '#/components/responses/BadResponse'
         '401':
