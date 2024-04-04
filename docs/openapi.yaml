@@ -5029,25 +5029,25 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
       security: []
   /users/list:
+    parameters:
+      - name: nextCursor
+        in: query
+        description: nextCursor
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: limit items (default 10)
+        schema:
+          type: string
+      - name: sortOrder
+        in: query
+        description: asc or desc
+        schema:
+          type: string
     post:
-      parameters:
-        - name: nextCursor
-          in: query
-          description: nextCursor
-          schema:
-            type: string
-        - name: limit
-          in: query
-          description: limit items (default 10)
-          schema:
-            type: string
-        - name: sortOrder
-          in: query
-          description: asc or desc
-          schema:
-            type: string
       tags:
-        - User
+        - Users
       operationId: usersList
       summary: POST Get all users
       description: This endpoint get all users
@@ -5076,7 +5076,7 @@ paths:
   /users/professions:
     get:
       tags:
-        - User
+        - Users
       operationId: usersProfessions
       summary: GET Get all users professions with total count
       description: This endpoint get all users professions
@@ -5105,7 +5105,7 @@ paths:
           schema:
             type: string
       tags:
-        - User
+        - Users
       operationId: usersFilters
       summary: GET Get all users-filters
       description: This endpoint get all users-filters
@@ -5134,7 +5134,7 @@ paths:
             type: string
           required: true
       tags:
-        - User
+        - Users
       operationId: usersSearch
       summary: GET Get all users using search by username or fullname
       description: This endpoint get all users
@@ -5168,7 +5168,7 @@ paths:
           type: string
     get:
       tags:
-        - User
+        - Users
       operationId: usersTop
       summary: GET Get all users grouped by professions
       description: This endpoint get all users group by professions
