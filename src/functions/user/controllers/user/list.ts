@@ -1,6 +1,7 @@
 import { _ } from "~/library/handler";
 
 import { z } from "zod";
+import { LocationZodSchema } from "~/functions/location";
 import { CommaSeparatedArray, NumberOrStringType } from "~/library/zod";
 import { UserServiceList } from "../../services/user/list";
 import { Professions } from "../../user.types";
@@ -24,11 +25,10 @@ export const UserControllerListQuerySchema = z.object({
 export const UserControllerListBodySchema = z.object({
   profession: z.nativeEnum(Professions).optional(),
   specialties: CommaSeparatedArray.optional(),
-  location: z
-    .object({
-      city: z.string(),
-    })
-    .optional(),
+  location: LocationZodSchema.pick({
+    city: true,
+    locationType: true,
+  }).optional(),
 });
 
 export type UserControllerListResponse = Awaited<

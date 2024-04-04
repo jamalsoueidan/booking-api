@@ -1,6 +1,7 @@
 import { PipelineStage } from "mongoose";
 import { Location, LocationModel } from "~/functions/location";
 
+import { ScheduleModel, WeekDays } from "~/functions/schedule";
 import { UserModel } from "../../user.model";
 import { User } from "../../user.types";
 
@@ -10,9 +11,8 @@ export type UserServiceListProps = {
   filters?: {
     profession?: string;
     specialties?: string[];
-    location?: {
-      city: string;
-    };
+    location?: Pick<Location, "city" | "locationType">;
+    days?: WeekDays[];
   };
   sortOrder?: "asc" | "desc";
 };
@@ -53,9 +53,47 @@ export const UserServiceList = async (
     pipeline.push({
       $match: {
         "locations.city": filters.location.city,
+        "locations.locationType": filters.location.locationType,
       },
     });
   }
+
+  if (filters?.days && filters?.days.length > 0) {
+    pipeline.push({
+      $lookup: {
+        from: ScheduleModel.collection.name,
+        localField: "customerId",
+        foreignField: "customerId",
+        as: "schedules",
+      },
+    });
+
+    pipeline.push({
+      $match: {
+        "schedules.slots.day": { $in: filters.days },
+      },
+    });
+
+    pipeline.push({
+      $match: {
+        schedules: { $elemMatch: { slots: { $not: { $size: 0 } } } },
+      },
+    });
+  }
+
+  pipeline.push({
+    $project: {
+      _id: "$_id",
+      name: 1,
+      username: 1,
+      fullname: 1,
+      social: 1,
+      shortDescription: 1,
+      images: 1,
+      speaks: 1,
+      createdAt: 1,
+    },
+  });
 
   pipeline.push({
     $facet: {

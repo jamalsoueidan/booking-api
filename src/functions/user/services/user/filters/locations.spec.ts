@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { LocationModel } from "~/functions/location";
+import { LocationModel, LocationTypes } from "~/functions/location";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
 import { pickMultipleItems } from "~/library/jest/utils/utils";
@@ -26,7 +26,9 @@ describe("UserServiceLocations", () => {
       await createLocation({
         customerId,
         city: faker.helpers.arrayElement(cities),
+        locationType: faker.helpers.arrayElement(Object.values(LocationTypes)),
       });
+
       await createUser(
         { customerId },
         {
@@ -38,28 +40,25 @@ describe("UserServiceLocations", () => {
       );
     }
 
-    const result = await UserServiceFilterLocations({
+    const results = await UserServiceFilterLocations({
       profession: Professions.LASH,
     });
 
-    for (const key in result) {
-      expect(typeof result[key]).toBe("number");
-    }
-
-    const results = await UserServiceList({
+    const users = await UserServiceList({
       limit: 5,
       filters: {
         profession: Professions.MAKEUP_ARTIST,
         specialties: ["a"],
         location: {
-          city: cities[0],
+          city: results[0].city,
+          locationType: results[0].locationType,
         },
       },
     });
 
-    const allHaveSpecialtyA = results.results.every(
-      (user) => user.locations && user.locations.city === cities[0]
-    );
+    const allHaveSpecialtyA = users.results.every((user) => {
+      return user.locations && user.locations.city === results[0].city;
+    });
 
     expect(allHaveSpecialtyA).toBeTruthy();
   });

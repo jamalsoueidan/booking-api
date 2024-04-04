@@ -51,6 +51,5 @@ export const createSchedule = (
   choices: Choices
 ) => {
   const schedule = new ScheduleModel(getScheduleObject(props, choices));
-
   return schedule.save();
 };

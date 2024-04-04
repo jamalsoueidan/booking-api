@@ -1,4 +1,4 @@
-import { LocationModel } from "~/functions/location";
+import { LocationModel, LocationTypes } from "~/functions/location";
 import { UserModel } from "../../../user.model";
 
 export const UserServiceFilterLocations = async ({
@@ -6,7 +6,11 @@ export const UserServiceFilterLocations = async ({
 }: {
   profession: string;
 }) => {
-  const result = await UserModel.aggregate([
+  return UserModel.aggregate<{
+    city: string;
+    locationType: LocationTypes;
+    count: number;
+  }>([
     { $match: { professions: profession } },
     {
       $lookup: {
@@ -16,29 +20,23 @@ export const UserServiceFilterLocations = async ({
         as: "locations",
       },
     },
-    {
-      $unwind: "$locations",
-    },
+    { $unwind: "$locations" },
     {
       $group: {
-        _id: "$locations.city",
+        _id: {
+          city: "$locations.city",
+          locationType: "$locations.locationType",
+        },
         count: { $sum: 1 },
       },
     },
     {
-      $group: {
-        _id: null,
-        keys: {
-          $push: { k: "$_id", v: "$count" },
-        },
-      },
-    },
-    {
-      $replaceRoot: {
-        newRoot: { $arrayToObject: "$keys" },
+      $project: {
+        _id: 0,
+        city: "$_id.city",
+        locationType: "$_id.locationType",
+        count: "$count",
       },
     },
   ]);
-
-  return result[0];
 };
