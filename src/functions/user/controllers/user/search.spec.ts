@@ -6,14 +6,14 @@ import {
 } from "~/library/jest/azure";
 import { createUser } from "~/library/jest/helpers";
 import {
-  UserControllerList,
-  UserControllerListRequest,
-  UserControllerListResponse,
-} from "./list";
+  UserControllerSearch,
+  UserControllerSearchRequest,
+  UserControllerSearchResponse,
+} from "./search";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("UserControllerList", () => {
+describe("UserControllerSearch", () => {
   let context: InvocationContext = createContext();
   let request: HttpRequest;
 
@@ -25,35 +25,32 @@ describe("UserControllerList", () => {
       );
     }
 
-    let request = await createHttpRequest<UserControllerListRequest>({
+    let request = await createHttpRequest<UserControllerSearchRequest>({
       query: { limit: 10 },
-      body: {},
     });
-    let res: HttpSuccessResponse<UserControllerListResponse> =
-      await UserControllerList(request, context);
+    let res: HttpSuccessResponse<UserControllerSearchResponse> =
+      await UserControllerSearch(request, context);
 
     expect(res.jsonBody?.payload.results.length).toBe(10);
     expect(res.jsonBody?.payload.totalCount).toBe(25);
 
-    request = await createHttpRequest<UserControllerListRequest>({
+    request = await createHttpRequest<UserControllerSearchRequest>({
       query: {
         nextCursor: res.jsonBody?.payload.nextCursor?.toJSON(),
         limit: 10,
       },
-      body: {},
     });
-    res = await UserControllerList(request, context);
+    res = await UserControllerSearch(request, context);
 
     expect(res.jsonBody?.payload.results.length).toBe(10);
 
-    request = await createHttpRequest<UserControllerListRequest>({
+    request = await createHttpRequest<UserControllerSearchRequest>({
       query: {
         nextCursor: res.jsonBody?.payload.nextCursor?.toJSON(),
         limit: 10,
       },
-      body: {},
     });
-    res = await UserControllerList(request, context);
+    res = await UserControllerSearch(request, context);
 
     expect(res.jsonBody?.payload.results.length).toBe(5);
   });
