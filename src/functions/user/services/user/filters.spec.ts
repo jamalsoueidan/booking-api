@@ -82,7 +82,7 @@ describe("UserServiceFilters", () => {
       profession: Professions.MAKEUP_ARTIST,
     });
 
-    const pickSpecialty = results.specialities[0];
+    const pickSpecialty = results.specialties[0];
     const users = await UserServiceList({
       limit: 5,
       filters: {

@@ -6,7 +6,8 @@ import { createLocation } from "~/library/jest/helpers/location";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { pickMultipleItems } from "~/library/jest/utils/utils";
 import { Professions } from "../../user.types";
-import { UserServiceFiltersSpecialties } from "./filters/specialties";
+
+import { UserServiceFilters } from "./filters";
 import { UserServiceList } from "./list";
 import { UserServiceProfessions } from "./professions";
 
@@ -72,7 +73,7 @@ describe("UserServiceList", () => {
       });
       expect(result.totalCount).toBe(professions[profession]);
 
-      const specialties = await UserServiceFiltersSpecialties({
+      const { specialties } = await UserServiceFilters({
         profession,
       });
 

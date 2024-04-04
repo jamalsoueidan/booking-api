@@ -17,7 +17,7 @@ type UserAggregationResult = {
     productId: string;
     count: number;
   }>;
-  specialities: Array<{
+  specialties: Array<{
     speciality: string;
     count: number;
   }>;
@@ -145,7 +145,7 @@ export const UserServiceFilters = async ({
         locations: locationsFacet,
         availableDays: availableDaysFacet,
         products: productDetailsFacet,
-        specialities: specialitiesFacet,
+        specialties: specialitiesFacet,
       },
     },
   ]);
