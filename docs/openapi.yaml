@@ -2288,50 +2288,6 @@ components:
       required:
         - success
         - payload
-    UsersListBody:
-      type: object
-      properties:
-        profession:
-          type: string
-        specialties:
-          type: string
-        location:
-          type: object
-          properties:
-            city:
-              type: string
-            locationType:
-              type: string
-          required:
-            - city
-            - locationType
-        days:
-          type: array
-          items:
-            type: string
-    UsersListResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        payload:
-          type: object
-          properties:
-            nextCursor:
-              type: string
-            results:
-              type: array
-              items:
-                $ref: '#/components/schemas/User'
-            totalCount:
-              type: number
-          required:
-            - results
-            - total
-      required:
-        - success
-        - payload
     UsersProfessionsPayload:
       type: object
       properties:
@@ -2431,6 +2387,27 @@ components:
       required:
         - success
         - payload
+    UsersSearchBody:
+      type: object
+      properties:
+        profession:
+          type: string
+        specialties:
+          type: string
+        location:
+          type: object
+          properties:
+            city:
+              type: string
+            locationType:
+              type: string
+          required:
+            - city
+            - locationType
+        days:
+          type: array
+          items:
+            type: string
     UsersSearchResponse:
       type: object
       properties:
@@ -2438,9 +2415,19 @@ components:
           type: boolean
           example: true
         payload:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
+          type: object
+          properties:
+            nextCursor:
+              type: string
+            results:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+            totalCount:
+              type: number
+          required:
+            - results
+            - totalCount
       required:
         - success
         - payload
@@ -5028,50 +5015,6 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
       security: []
-  /users/list:
-    parameters:
-      - name: nextCursor
-        in: query
-        description: nextCursor
-        schema:
-          type: string
-      - name: limit
-        in: query
-        description: limit items (default 10)
-        schema:
-          type: string
-      - name: sortOrder
-        in: query
-        description: asc or desc
-        schema:
-          type: string
-    post:
-      tags:
-        - Users
-      operationId: usersList
-      summary: POST Get all users
-      description: This endpoint get all users
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UsersListBody'
-      responses:
-        '200':
-          description: Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UsersListResponse'
-        '400':
-          $ref: '#/components/responses/BadResponse'
-        '401':
-          $ref: '#/components/responses/UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-      security: []
   /users/professions:
     get:
       tags:
@@ -5125,18 +5068,37 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
       security: []
   /users/search:
-    get:
+    post:
       parameters:
-        - name: search
+        - name: nextCursor
           in: query
+          description: nextCursor
           schema:
             type: string
-          required: true
+        - name: limit
+          in: query
+          description: limit items (default 10)
+          schema:
+            type: string
+            default: 10
+        - name: sortOrder
+          in: query
+          description: asc or desc
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
       tags:
         - Users
       operationId: usersSearch
-      summary: GET Get all users using search by username or fullname
-      description: This endpoint get all users
+      summary: POST Post search for users
+      description: This endpoint search for users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersSearchBody'
       responses:
         '200':
           description: Response
