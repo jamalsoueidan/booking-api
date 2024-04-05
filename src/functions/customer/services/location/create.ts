@@ -1,7 +1,7 @@
 import { Location, LocationModel } from "~/functions/location";
 import { LocationServiceGetCoordinates } from "~/functions/location/services/get-coordinates";
 
-export type LocationServiceCreateProps = Location;
+export type LocationServiceCreateProps = Omit<Location, "city" | "country">;
 
 export const CustomerLocationServiceCreate = async (
   body: LocationServiceCreateProps

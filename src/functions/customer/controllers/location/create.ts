@@ -12,6 +12,8 @@ export type CustomerLocationControllerCreateRequest = {
 export const CustomerLocationControllerCreateBodySchema =
   LocationZodSchema.omit({
     customerId: true,
+    city: true,
+    country: true,
   }).strip();
 
 export const CustomerLocationControllerCreateQuerySchema = z.object({
