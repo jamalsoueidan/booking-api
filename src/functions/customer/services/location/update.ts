@@ -23,6 +23,8 @@ export const CustomerLocationServiceUpdate = async (
     body = {
       ...body,
       fullAddress: result.fullAddress,
+      city: result.city,
+      country: result.country,
       geoLocation: {
         type: "Point",
         coordinates: [result.longitude, result.latitude],

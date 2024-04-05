@@ -11,6 +11,8 @@ export const CustomerLocationServiceCreate = async (
   location.geoLocation.type = "Point";
   location.geoLocation.coordinates = [result.longitude, result.latitude];
   location.fullAddress = result.fullAddress;
+  location.city = result.city;
+  location.country = result.country;
   location.handle = createSlug(body.name);
   return location.save();
 };
