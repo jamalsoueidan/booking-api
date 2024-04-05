@@ -17,6 +17,7 @@ export const CustomerLocationControllerUpdateBodySchema =
     locationType: true,
     city: true,
     country: true,
+    handle: true,
   }).strip();
 
 export const CustomerLocationControllerUpdateQuerySchema = z.object({

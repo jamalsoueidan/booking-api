@@ -13,7 +13,7 @@ export const CustomerLocationServiceCreate = async (
   location.fullAddress = result.fullAddress;
   location.city = result.city;
   location.country = result.country;
-  location.handle = createSlug(body.name);
+  //location.handle = createSlug(body.name);
   return location.save();
 };
 

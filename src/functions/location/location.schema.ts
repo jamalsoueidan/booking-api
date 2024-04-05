@@ -87,10 +87,6 @@ export const LocationMongooseSchema = new mongoose.Schema<
       type: Number,
       default: 0,
     },
-    handle: {
-      type: String,
-      unique: true,
-    },
     deletedAt: {
       type: Date,
       default: null,
