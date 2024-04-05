@@ -137,7 +137,7 @@ components:
       $ref: paths/customer/_types/order/simple-line-item.yaml
     CustomerBaseOrderCustomer:
       $ref: paths/customer/_types/order/customer.yaml
-    CustomeBaserOrderLineItem:
+    CustomerBaseOrderLineItem:
       $ref: paths/customer/_types/order/line-item.yaml
     CustomerBaseOrderRefund:
       $ref: paths/customer/_types/order/refund.yaml
