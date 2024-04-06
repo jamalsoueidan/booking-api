@@ -16,18 +16,11 @@ export type CustomerControllerUpdateQuery = z.infer<
   typeof CustomerControllerUpdateQuerySchema
 >;
 
-export const CustomerControllerUpdateSchema = UserZodSchema.pick({
-  fullname: true,
-  email: true,
-  phone: true,
-  yearsExperience: true,
-  gender: true,
-  professions: true,
-  specialties: true,
-  speaks: true,
-  aboutMe: true,
-  shortDescription: true,
-  social: true,
+export const CustomerControllerUpdateSchema = UserZodSchema.omit({
+  _id: true,
+  active: true,
+  isBusiness: true,
+  username: true,
 })
   .partial()
   .strip();
