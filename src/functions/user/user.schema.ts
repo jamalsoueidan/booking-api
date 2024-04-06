@@ -72,8 +72,7 @@ export const UserMongooseSchema = new mongoose.Schema<
       default: [],
     },
     theme: {
-      backgroundColor: { type: String, default: "#e64980" },
-      foreground: { type: String, default: "#ffdeeb" },
+      color: { type: String, default: "pink" },
     },
   },
   { timestamps: true }
