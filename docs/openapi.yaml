@@ -1797,6 +1797,13 @@ components:
           type: array
           items:
             type: string
+        theme:
+          type: object
+          properties:
+            backgroundColor:
+              type: string
+            foregroundColor:
+              type: string
     CustomerProductListIdsResponse:
       type: object
       properties:
