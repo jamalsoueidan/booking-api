@@ -42,7 +42,7 @@ properties:
   theme:
     type: object
     properties:
-      background:
+      backgroundColor:
         type: string
-      foreground:
+      foregroundColor:
         type: string
