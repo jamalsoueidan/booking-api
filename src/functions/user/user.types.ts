@@ -94,8 +94,7 @@ export const UserZodSchema = z.object({
   createdAt: z.date().optional(),
   theme: z
     .object({
-      backgroundColor: z.string(),
-      foregroundColor: z.string(),
+      color: z.string(),
     })
     .optional(),
 });
