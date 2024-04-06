@@ -39,3 +39,10 @@ properties:
     type: array
     items:
       type: string
+  theme:
+    type: object
+    properties:
+      background:
+        type: string
+      foreground:
+        type: string

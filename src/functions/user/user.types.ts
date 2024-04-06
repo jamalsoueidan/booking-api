@@ -92,6 +92,12 @@ export const UserZodSchema = z.object({
   email: z.string(),
   phone: z.string().optional(),
   createdAt: z.date().optional(),
+  theme: z
+    .object({
+      background: z.string(),
+      foreground: z.string(),
+    })
+    .optional(),
 });
 
 export type User = z.infer<typeof UserZodSchema>;
