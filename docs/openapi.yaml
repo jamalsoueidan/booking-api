@@ -1800,9 +1800,7 @@ components:
         theme:
           type: object
           properties:
-            backgroundColor:
-              type: string
-            foregroundColor:
+            color:
               type: string
     CustomerProductListIdsResponse:
       type: object
