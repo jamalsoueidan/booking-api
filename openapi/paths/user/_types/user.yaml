@@ -56,6 +56,13 @@ properties:
             type: integer
           height:
             type: integer
+  theme:
+    type: object
+    properties:
+      color:
+        type: string
+    required:
+      - color
 required:
   - customerId
   - fullname
@@ -71,3 +78,4 @@ required:
   - social
   - speaks
   - images
+  - theme
