@@ -2124,6 +2124,13 @@ components:
                   type: integer
                 height:
                   type: integer
+        theme:
+          type: object
+          properties:
+            color:
+              type: string
+          required:
+            - color
       required:
         - customerId
         - fullname
@@ -2139,6 +2146,7 @@ components:
         - social
         - speaks
         - images
+        - theme
     UserScheduleWithLocations:
       type: object
       properties:
