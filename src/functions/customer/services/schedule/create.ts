@@ -16,7 +16,7 @@ export const CustomerScheduleServiceCreate = async (
         day: "monday",
         intervals: [
           {
-            from: "8:00",
+            from: "08:00",
             to: "16:00",
           },
         ],
