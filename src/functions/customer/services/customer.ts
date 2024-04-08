@@ -11,7 +11,7 @@ export type CustomerServiceCreateBody = Omit<
 export const CustomerServiceCreate = async (
   body: CustomerServiceCreateBody
 ) => {
-  const user = new UserModel({ ...body, isBusiness: true, active: true });
+  const user = new UserModel({ ...body, isBusiness: true });
   return user.save();
 };
 

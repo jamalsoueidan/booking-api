@@ -2,6 +2,7 @@ import { UserModel } from "../../user.model";
 
 export const UserServiceProfessions = async () => {
   return UserModel.aggregate<{ profession: string; count: number }>([
+    { $match: { active: true, isBusiness: true } },
     { $unwind: "$professions" },
     {
       $group: {

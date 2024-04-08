@@ -20,6 +20,7 @@ export const UserServiceTop = async ({
   const paginatedProfessions = professionsArray.slice(startIndex, endIndex);
 
   return UserModel.aggregate([
+    { $match: { active: true, isBusiness: true } },
     {
       $match: {
         professions: { $in: paginatedProfessions.map((p) => p.profession) },
