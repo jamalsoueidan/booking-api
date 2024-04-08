@@ -7,10 +7,7 @@ export type UserServiceGetCustomerIdProps = Required<Pick<User, "username">>;
 export const UserServiceGetCustomerId = ({
   username,
 }: UserServiceGetCustomerIdProps) => {
-  return UserModel.findOne(
-    { username, active: true, isBusiness: true },
-    { customerId: 1 }
-  )
+  return UserModel.findOne({ username, isBusiness: true }, { customerId: 1 })
     .lean()
     .orFail(
       new NotFoundError([
