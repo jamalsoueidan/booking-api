@@ -63,6 +63,10 @@ properties:
         type: string
     required:
       - color
+  active:
+    type: boolean
+  isBusiness:
+    type: boolean
 required:
   - customerId
   - fullname
@@ -79,3 +83,5 @@ required:
   - speaks
   - images
   - theme
+  - active
+  - isBusiness
