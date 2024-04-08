@@ -5,7 +5,7 @@ import { User } from "../../user.types";
 export type UserServiceGetProps = Required<Pick<User, "username">>;
 
 export const UserServiceGet = ({ username }: UserServiceGetProps) => {
-  return UserModel.findOne({ username, active: true, isBusiness: true })
+  return UserModel.findOne({ username, isBusiness: true })
     .lean()
     .orFail(
       new NotFoundError([
