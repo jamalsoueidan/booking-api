@@ -39,7 +39,7 @@ app.http("webhookCustomerDelete", {
     const customerId = customer.id;
     const response = await UserModel.deleteOne({
       customerId,
-      email: { $regex: "@example\\.com$", $options: "i" },
+      email: { $regex: "mailosaur", $options: "i" },
     });
 
     if (response.deletedCount > 0) {
