@@ -18,7 +18,7 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("ScheduleProductControllerUpdate", () => {
+describe("CustomerProductControllerUpdate", () => {
   let context: InvocationContext;
   let request: HttpRequest;
   const customerId = 123;
@@ -51,6 +51,8 @@ describe("ScheduleProductControllerUpdate", () => {
           unit: TimeUnit.WEEKS,
           value: 12,
         },
+        duration: 12,
+        description: "hej med dig",
         scheduleId: newSchedule._id,
       },
     });

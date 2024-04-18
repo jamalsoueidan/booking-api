@@ -26,9 +26,14 @@ export const CustomerProductServiceUpdate = async (
     {
       _id: product.scheduleId,
       customerId: filter.customerId,
+      "products.productId": filter.productId,
     },
-    { $push: { products: { ...product, productId: filter.productId } } },
-    { new: true, upsert: true }
+    {
+      $set: {
+        "products.$": { ...product, productId: filter.productId }, // Update the first matching product
+      },
+    },
+    { new: true }
   )
     .orFail(
       new NotFoundError([
@@ -57,7 +62,6 @@ export const CustomerProductServiceUpdate = async (
 
   return {
     ...modelProduct,
-    productId: filter.productId,
     scheduleId: schedule._id.toString(),
     scheduleName: schedule.name,
   };
