@@ -9,7 +9,7 @@ import {
 import { omitObjectIdProps } from "~/library/jest/helpers";
 
 import { getProductObject } from "~/library/jest/helpers/product";
-import { CustomerProductServiceUpsert } from "../../services/product/upsert";
+import { CustomerProductServiceAdd } from "../../services/product/add";
 import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
   CustomerProductControllerDestroy,
@@ -48,7 +48,7 @@ describe("CustomerProductControllerDestroy", () => {
       customerId: 123,
     });
 
-    const newProduct = await CustomerProductServiceUpsert(
+    const newProduct = await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
         productId,
