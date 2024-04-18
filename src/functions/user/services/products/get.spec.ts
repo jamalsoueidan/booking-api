@@ -1,4 +1,4 @@
-import { CustomerProductServiceUpsert } from "~/functions/customer/services/product/upsert";
+import { CustomerProductServiceAdd } from "~/functions/customer/services/product/add";
 import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { TimeUnit } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
@@ -33,7 +33,7 @@ describe("UserProductsService", () => {
       customerId: user.customerId,
     });
 
-    const updatedSchedule = await CustomerProductServiceUpsert(
+    const updatedSchedule = await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
         productId,

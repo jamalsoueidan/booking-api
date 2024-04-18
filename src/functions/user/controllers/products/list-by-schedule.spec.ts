@@ -8,7 +8,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
-import { CustomerProductServiceUpsert } from "~/functions/customer/services/product/upsert";
+import { CustomerProductServiceAdd } from "~/functions/customer/services/product/add";
 import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
@@ -50,7 +50,7 @@ describe("UserProductsControllerListBySchedule", () => {
       customerId: user.customerId,
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
         productId: 1000,
@@ -63,7 +63,7 @@ describe("UserProductsControllerListBySchedule", () => {
       customerId: user.customerId,
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule2.customerId,
         productId: 1002,
@@ -71,7 +71,7 @@ describe("UserProductsControllerListBySchedule", () => {
       { ...newProduct, scheduleId: newSchedule2._id }
     );
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule2.customerId,
         productId: 1004,
@@ -103,7 +103,7 @@ describe("UserProductsControllerListBySchedule", () => {
       customerId: user.customerId,
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
         productId: 1000,
@@ -116,7 +116,7 @@ describe("UserProductsControllerListBySchedule", () => {
       customerId: user.customerId,
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule2.customerId,
         productId: 1002,
@@ -124,7 +124,7 @@ describe("UserProductsControllerListBySchedule", () => {
       { ...newProduct, scheduleId: newSchedule2._id }
     );
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule2.customerId,
         productId: 1004,

@@ -36,7 +36,6 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
     breakTime: {
       type: Number,
       required: true,
-      default: 0, // default to 0 minutes if not provided
     },
     noticePeriod: {
       value: { type: Number, default: 1 },

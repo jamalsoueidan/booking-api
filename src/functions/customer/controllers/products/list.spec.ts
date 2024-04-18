@@ -9,7 +9,7 @@ import {
 } from "~/library/jest/azure";
 
 import { getProductObject } from "~/library/jest/helpers/product";
-import { CustomerProductServiceUpsert } from "../../services/product/upsert";
+import { CustomerProductServiceAdd } from "../../services/product/add";
 import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
   CustomerProductsControllerList,
@@ -45,7 +45,7 @@ describe("UserProductsControllerList", () => {
       customerId,
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
         productId: 1000,
@@ -58,7 +58,7 @@ describe("UserProductsControllerList", () => {
       customerId,
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule2.customerId,
         productId: 1002,
@@ -66,7 +66,7 @@ describe("UserProductsControllerList", () => {
       { ...newProduct, scheduleId: newSchedule2._id }
     );
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule2.customerId,
         productId: 1004,
