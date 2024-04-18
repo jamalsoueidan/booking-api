@@ -13,6 +13,8 @@ parameters:
 get:
   $ref: "./get/index.yaml#/get"
 put:
-  $ref: "./upsert/index.yaml#/put"
+  $ref: "./update/index.yaml#/put"
+post:
+  $ref: "./add/index.yaml#/post"
 delete:
   $ref: "./destroy/index.yaml#/delete"

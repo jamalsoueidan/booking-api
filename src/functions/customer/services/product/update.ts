@@ -43,8 +43,22 @@ export const CustomerProductServiceUpdate = async (
     )
     .lean();
 
+  const modelProduct = schedule.products.find(
+    (p) => p.productId === filter.productId
+  );
+
+  if (!modelProduct) {
+    throw new NotFoundError([
+      {
+        code: "custom",
+        message: "PRODUCT_NOT_FOUND",
+        path: ["productId"],
+      },
+    ]);
+  }
+
   return {
-    ...product,
+    ...modelProduct,
     productId: filter.productId,
     scheduleId: schedule._id.toString(),
     scheduleName: schedule.name,

@@ -1,0 +1,30 @@
+post:
+  tags:
+    - CustomerProduct
+  operationId: customerProductAdd
+  summary: PUT Add product to schedule
+  description: This endpoint add product that does not exist in schedule
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./body.yaml"
+
+  responses:
+    "200":
+      description: Response with schedule product payload
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
+
+  security: []

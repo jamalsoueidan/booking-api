@@ -36,14 +36,6 @@ properties:
     required:
       - amount
       - currencyCode
-  duration:
-    type: number
-  breakTime:
-    type: number
-  noticePeriod:
-    $ref: ../../schedule/_types/product-notice-period.yaml
-  bookingPeriod:
-    $ref: ../../schedule/_types/product-booking-period.yaml
   locations:
     $ref: ../../schedule/_types/product-locations.yaml
 
@@ -52,9 +44,5 @@ required:
   - productHandle
   - variantId
   - price
-  - duration
   - selectedOptions
-  - breakTime
-  - noticePeriod
-  - bookingPeriod
   - locations

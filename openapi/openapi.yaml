@@ -74,10 +74,14 @@ components:
       $ref: paths/customer/schedule/_types/product-notice-unit.yaml
     CustomerProductLocations:
       $ref: paths/customer/schedule/_types/product-locations.yaml
-    CustomerProductUpsertResponse:
-      $ref: paths/customer/product/upsert/response.yaml
-    CustomerProductUpsertBody:
-      $ref: paths/customer/product/upsert/body.yaml
+    CustomerProductUpdateResponse:
+      $ref: paths/customer/product/update/response.yaml
+    CustomerProductUpdateBody:
+      $ref: paths/customer/product/update/body.yaml
+    CustomerProductAddResponse:
+      $ref: paths/customer/product/add/response.yaml
+    CustomerProductAddBody:
+      $ref: paths/customer/product/add/body.yaml
     CustomerProductDestroyResponse:
       $ref: paths/customer/product/destroy/response.yaml
     CustomerProductGetResponse:

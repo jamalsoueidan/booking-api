@@ -18,6 +18,7 @@ const CustomerProductControllerUpdateQuerySchema = z.object({
 const CustomerProductControllerUpdateBodySchema = ScheduleProductZodSchema.omit(
   {
     productId: true,
+    productHandle: true,
   }
 )
   .extend({
