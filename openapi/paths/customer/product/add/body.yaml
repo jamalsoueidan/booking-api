@@ -2,6 +2,8 @@ type: object
 properties:
   scheduleId:
     type: string
+  productId:
+    type: string
   productHandle:
     type: string
   variantId:
@@ -40,6 +42,7 @@ properties:
     $ref: ../../schedule/_types/product-locations.yaml
 
 required:
+  - productId
   - scheduleId
   - productHandle
   - variantId
