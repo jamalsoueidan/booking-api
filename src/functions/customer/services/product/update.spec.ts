@@ -2,11 +2,12 @@ import { TimeUnit } from "~/functions/schedule";
 import { omitObjectIdProps } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { CustomerScheduleServiceCreate } from "../schedule/create";
-import { CustomerProductServiceUpsert } from "./upsert";
+import { CustomerProductServiceAdd } from "./add";
+import { CustomerProductServiceUpdate } from "./update";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("CustomerProductServiceUpsert", () => {
+describe("CustomerProductServiceUpdate", () => {
   const customerId = 123;
   const name = "Test Schedule";
   const productId = 1000;
@@ -25,48 +26,25 @@ describe("CustomerProductServiceUpsert", () => {
     locations: [],
   });
 
-  it("should add a new product to the schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
-      name,
-      customerId,
-    });
-
-    const updateProduct = await CustomerProductServiceUpsert(
-      {
-        customerId: newSchedule.customerId,
-        productId,
-      },
-      { ...newProduct, scheduleId: newSchedule._id }
-    );
-
-    expect(updateProduct).toMatchObject({
-      ...newProduct,
-      productId,
-      scheduleId: newSchedule._id.toString(),
-    });
-  });
-
   it("should update an existing product in the schedule", async () => {
     const newSchedule = await CustomerScheduleServiceCreate({
       name,
       customerId,
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
-        productId,
       },
-      { ...newProduct, scheduleId: newSchedule._id }
+      { ...newProduct, productId, scheduleId: newSchedule._id }
     );
 
     const productBody = {
-      ...newProduct,
       duration: 90,
       scheduleId: newSchedule._id,
     };
 
-    let updateProduct = await CustomerProductServiceUpsert(
+    let updateProduct = await CustomerProductServiceUpdate(
       {
         customerId: newSchedule.customerId,
         productId,

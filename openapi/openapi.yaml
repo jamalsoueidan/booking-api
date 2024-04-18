@@ -74,10 +74,14 @@ components:
       $ref: paths/customer/schedule/_types/product-notice-unit.yaml
     CustomerProductLocations:
       $ref: paths/customer/schedule/_types/product-locations.yaml
-    CustomerProductUpsertResponse:
-      $ref: paths/customer/product/upsert/response.yaml
-    CustomerProductUpsertBody:
-      $ref: paths/customer/product/upsert/body.yaml
+    CustomerProductUpdateResponse:
+      $ref: paths/customer/product/update/response.yaml
+    CustomerProductUpdateBody:
+      $ref: paths/customer/product/update/body.yaml
+    CustomerProductAddResponse:
+      $ref: paths/customer/product/add/response.yaml
+    CustomerProductAddBody:
+      $ref: paths/customer/product/add/body.yaml
     CustomerProductDestroyResponse:
       $ref: paths/customer/product/destroy/response.yaml
     CustomerProductGetResponse:
@@ -414,6 +418,8 @@ paths:
     $ref: "./paths/customer/product/list-ids/index.yaml"
   /customer/{customerId}/product/{productId}:
     $ref: "paths/customer/product/product.yaml"
+  /customer/{customerId}/product:
+    $ref: "paths/customer/product/add/index.yaml"
   /customer/{customerId}/product/{productId}/create-variant:
     $ref: "paths/customer/product/create-variant/index.yaml"
 

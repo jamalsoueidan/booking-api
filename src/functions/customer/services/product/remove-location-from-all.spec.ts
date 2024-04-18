@@ -1,79 +1,63 @@
 import mongoose from "mongoose";
 
 import { LocationTypes } from "~/functions/location";
-import { TimeUnit } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { CustomerScheduleServiceCreate } from "../schedule/create";
 import { CustomerScheduleServiceGet } from "../schedule/get";
+import { CustomerProductServiceAdd } from "./add";
 import { CustomerProductServiceRemoveLocationFromAll } from "./remove-location-from-all";
-import { CustomerProductServiceUpsert } from "./upsert";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerProductServiceRemoveLocationFromAll", () => {
   const customerId = 123;
-  const name = "Test Schedule";
-  const productId = 1000;
-  const newProduct = getProductObject({
-    variantId: 1,
-    duration: 60,
-    breakTime: 0,
-    noticePeriod: {
-      value: 1,
-      unit: TimeUnit.DAYS,
-    },
-    bookingPeriod: {
-      value: 1,
-      unit: TimeUnit.WEEKS,
-    },
-    locations: [],
-  });
 
   it("should be able to remove one location from all products", async () => {
     const newSchedule1 = await CustomerScheduleServiceCreate({
-      name,
+      name: "test",
       customerId,
     });
     const locationRemoveId = new mongoose.Types.ObjectId().toString();
-    await CustomerProductServiceUpsert(
+
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule1.customerId,
-        productId,
       },
       {
-        ...newProduct,
+        ...getProductObject({
+          locations: [
+            {
+              location: locationRemoveId,
+              locationType: LocationTypes.ORIGIN,
+            },
+            {
+              location: new mongoose.Types.ObjectId(),
+              locationType: LocationTypes.ORIGIN,
+            },
+          ],
+        }),
         scheduleId: newSchedule1._id,
-        locations: [
-          {
-            location: locationRemoveId,
-            locationType: LocationTypes.ORIGIN,
-          },
-          {
-            location: new mongoose.Types.ObjectId(),
-            locationType: LocationTypes.ORIGIN,
-          },
-        ],
       }
     );
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule1.customerId,
-        productId: 22,
       },
       {
-        ...newProduct,
         scheduleId: newSchedule1._id,
-        locations: [
-          {
-            location: locationRemoveId,
-            locationType: LocationTypes.ORIGIN,
-          },
-          {
-            location: new mongoose.Types.ObjectId().toString(),
-            locationType: LocationTypes.DESTINATION,
-          },
-        ],
+        ...getProductObject({
+          locations: [
+            {
+              location: locationRemoveId,
+              locationType: LocationTypes.ORIGIN,
+            },
+            {
+              location: new mongoose.Types.ObjectId().toString(),
+              locationType: LocationTypes.DESTINATION,
+            },
+          ],
+        }),
       }
     );
 
@@ -82,20 +66,20 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
       customerId,
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule2.customerId,
-        productId: 232,
       },
       {
-        ...newProduct,
         scheduleId: newSchedule2._id,
-        locations: [
-          {
-            location: locationRemoveId,
-            locationType: LocationTypes.ORIGIN,
-          },
-        ],
+        ...getProductObject({
+          locations: [
+            {
+              location: locationRemoveId,
+              locationType: LocationTypes.ORIGIN,
+            },
+          ],
+        }),
       }
     );
 

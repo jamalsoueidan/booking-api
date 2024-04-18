@@ -1,9 +1,15 @@
-put:
+post:
+  parameters:
+    - name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
   tags:
     - CustomerProduct
-  operationId: customerProductUpsert
-  summary: PUT Upsert product to schedule
-  description: This endpoint update product that exist in schedule
+  operationId: customerProductAdd
+  summary: PUT Add product to schedule
+  description: This endpoint add product that does not exist in schedule
   requestBody:
     required: true
     content:

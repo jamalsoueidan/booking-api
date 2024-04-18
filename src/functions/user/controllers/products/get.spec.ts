@@ -3,7 +3,7 @@ import { CustomerScheduleServiceCreate } from "~/functions/customer/services/sch
 
 import { TimeUnit } from "~/functions/schedule";
 
-import { CustomerProductServiceUpsert } from "~/functions/customer/services/product/upsert";
+import { CustomerProductServiceAdd } from "~/functions/customer/services/product/add";
 import {
   HttpSuccessResponse,
   createContext,
@@ -48,10 +48,9 @@ describe("UserProductsControllerGet", () => {
       customerId: user.customerId,
     });
 
-    const newProduct = await CustomerProductServiceUpsert(
+    const newProduct = await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
-        productId: product.productId,
       },
       { ...product, scheduleId: newSchedule._id }
     );

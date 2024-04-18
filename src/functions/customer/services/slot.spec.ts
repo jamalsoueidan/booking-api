@@ -133,7 +133,7 @@ describe("CustomerScheduleSlotService", () => {
         },
         duplicateDaySlot
       )
-    ).rejects.toThrowError();
+    ).rejects.toThrow();
   });
 
   it("should not allow overlapping time intervals within a day", async () => {

@@ -59,6 +59,7 @@ export const ScheduleProductZodSchema = z.object({
     name: z.string(),
     value: z.string(),
   }),
+  locations: z.array(LocationZodSchema),
   price: z.object({
     amount: z.string(),
     currencyCode: z.string(),
@@ -74,7 +75,6 @@ export const ScheduleProductZodSchema = z.object({
   breakTime: NumberOrStringType,
   noticePeriod: NoticePeriodZodSchema,
   bookingPeriod: BookingPeriodZodSchema,
-  locations: z.array(LocationZodSchema),
 });
 
 export type ScheduleProduct = z.infer<typeof ScheduleProductZodSchema>;

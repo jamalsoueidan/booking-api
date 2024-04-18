@@ -8,7 +8,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
-import { CustomerProductServiceUpsert } from "~/functions/customer/services/product/upsert";
+import { CustomerProductServiceAdd } from "~/functions/customer/services/product/add";
 import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
@@ -50,12 +50,11 @@ describe("UserProductsControllerListBySchedule", () => {
       customerId: user.customerId,
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
-        productId: 1000,
       },
-      { ...newProduct, scheduleId: newSchedule._id }
+      { ...newProduct, productId: 1000, scheduleId: newSchedule._id }
     );
 
     const newSchedule2 = await CustomerScheduleServiceCreate({
@@ -63,20 +62,18 @@ describe("UserProductsControllerListBySchedule", () => {
       customerId: user.customerId,
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule2.customerId,
-        productId: 1002,
       },
-      { ...newProduct, scheduleId: newSchedule2._id }
+      { ...newProduct, productId: 1002, scheduleId: newSchedule2._id }
     );
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule2.customerId,
-        productId: 1004,
       },
-      { ...newProduct, scheduleId: newSchedule2._id }
+      { ...newProduct, productId: 1004, scheduleId: newSchedule2._id }
     );
 
     request =
@@ -103,12 +100,11 @@ describe("UserProductsControllerListBySchedule", () => {
       customerId: user.customerId,
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
-        productId: 1000,
       },
-      { ...newProduct, scheduleId: newSchedule._id }
+      { ...newProduct, productId: 1000, scheduleId: newSchedule._id }
     );
 
     const newSchedule2 = await CustomerScheduleServiceCreate({
@@ -116,20 +112,18 @@ describe("UserProductsControllerListBySchedule", () => {
       customerId: user.customerId,
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule2.customerId,
-        productId: 1002,
       },
-      { ...newProduct, scheduleId: newSchedule2._id }
+      { ...newProduct, productId: 1002, scheduleId: newSchedule2._id }
     );
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule2.customerId,
-        productId: 1004,
       },
-      { ...newProduct, scheduleId: newSchedule2._id }
+      { ...newProduct, productId: 1004, scheduleId: newSchedule2._id }
     );
 
     request =

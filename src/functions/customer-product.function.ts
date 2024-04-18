@@ -3,10 +3,11 @@ import { CustomerProductsControllerList } from "./customer/controllers/products/
 
 import { app } from "@azure/functions";
 
+import { CustomerProductControllerAdd } from "./customer/controllers/product/add";
 import { CustomerProductControllerCreateVariant } from "./customer/controllers/product/create-variant";
 import { CustomerProductControllerDestroy } from "./customer/controllers/product/destroy";
 import { CustomerProductControllerGet } from "./customer/controllers/product/get";
-import { CustomerProductControllerUpsert } from "./customer/controllers/product/upsert";
+import { CustomerProductControllerUpdate } from "./customer/controllers/product/update";
 import { CustomerProductsControllerListIds } from "./customer/controllers/products";
 
 app.http("customerProductsListIds", {
@@ -30,11 +31,18 @@ app.http("customerProductCreateVariant", {
   handler: CustomerProductControllerCreateVariant,
 });
 
-app.http("customerProductUpsert", {
+app.http("customerProductUpdate", {
   methods: ["PUT"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/product/{productId?}",
-  handler: CustomerProductControllerUpsert,
+  handler: CustomerProductControllerUpdate,
+});
+
+app.http("customerProductAdd", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/product",
+  handler: CustomerProductControllerAdd,
 });
 
 app.http("customerProductGet", {
