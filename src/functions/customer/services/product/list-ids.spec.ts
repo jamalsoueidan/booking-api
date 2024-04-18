@@ -1,8 +1,8 @@
 import { TimeUnit } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { CustomerScheduleServiceCreate } from "../schedule/create";
+import { CustomerProductServiceAdd } from "./add";
 import { CustomerProductsServiceListIds } from "./list-ids";
-import { CustomerProductServiceUpsert } from "./upsert";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -46,7 +46,7 @@ describe("CustomerProductsServiceListIds", () => {
       locations: [],
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: schedule1.customerId,
         productId: 999,
@@ -61,7 +61,7 @@ describe("CustomerProductsServiceListIds", () => {
 
     const product2 = { ...product1, scheduleId: schedule2._id };
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: schedule2.customerId,
         productId: 1001,
@@ -69,7 +69,7 @@ describe("CustomerProductsServiceListIds", () => {
       product2
     );
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: schedule2.customerId,
         productId: 1000,
@@ -87,7 +87,7 @@ describe("CustomerProductsServiceListIds", () => {
       scheduleId: schedule3._id,
     };
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: schedule3.customerId,
         productId: 1002,
@@ -95,7 +95,7 @@ describe("CustomerProductsServiceListIds", () => {
       product3
     );
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: schedule3.customerId,
         productId: 1004,

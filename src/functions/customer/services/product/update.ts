@@ -8,21 +8,20 @@ import {
 import { NotFoundError } from "~/library/handler";
 import { CustomerProductServiceDestroy } from "./destroy";
 
-export type CustomerProductServiceUpsert = {
+export type CustomerProductServiceUpdate = {
   customerId: Schedule["customerId"];
   productId: ScheduleProduct["productId"];
 };
 
-export type CustomerProductServiceUpsertBody = Omit<
-  ScheduleProduct,
-  "productId"
-> & {
-  scheduleId: z.infer<typeof ScheduleZodSchema.shape._id>;
-};
+export type CustomerProductServiceUpdateBody = Partial<
+  Omit<ScheduleProduct, "productId"> & {
+    scheduleId: z.infer<typeof ScheduleZodSchema.shape._id>;
+  }
+>;
 
-export const CustomerProductServiceUpsert = async (
-  filter: CustomerProductServiceUpsert,
-  product: CustomerProductServiceUpsertBody
+export const CustomerProductServiceUpdate = async (
+  filter: CustomerProductServiceUpdate,
+  product: CustomerProductServiceUpdateBody
 ) => {
   await CustomerProductServiceDestroy(filter);
   const schedule = await ScheduleModel.findOneAndUpdate(

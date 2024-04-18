@@ -5,8 +5,8 @@ import { TimeUnit } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { CustomerScheduleServiceCreate } from "../schedule/create";
 import { CustomerScheduleServiceGet } from "../schedule/get";
+import { CustomerProductServiceAdd } from "./add";
 import { CustomerProductServiceRemoveLocationFromAll } from "./remove-location-from-all";
-import { CustomerProductServiceUpsert } from "./upsert";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -35,7 +35,7 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
       customerId,
     });
     const locationRemoveId = new mongoose.Types.ObjectId().toString();
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule1.customerId,
         productId,
@@ -56,7 +56,7 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
       }
     );
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule1.customerId,
         productId: 22,
@@ -82,7 +82,7 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
       customerId,
     });
 
-    await CustomerProductServiceUpsert(
+    await CustomerProductServiceAdd(
       {
         customerId: newSchedule2.customerId,
         productId: 232,
