@@ -1,11 +1,11 @@
-parameters:
-  - name: customerId
-    in: path
-    description: customerId is needed
-    required: true
-    schema:
-      type: string
 get:
+  parameters:
+    - name: customerId
+      in: path
+      description: customerId is needed
+      required: true
+      schema:
+        type: string
   tags:
     - CustomerProduct
   operationId: customerProductsListIds

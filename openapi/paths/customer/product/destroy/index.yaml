@@ -1,4 +1,15 @@
 delete:
+  parameters:
+    - name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: productId
+      in: path
+      required: true
+      schema:
+        type: string
   tags:
     - CustomerProduct
   operationId: customerProductDestroy

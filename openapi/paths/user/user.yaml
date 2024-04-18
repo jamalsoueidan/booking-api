@@ -1,9 +1,2 @@
-parameters:
-  - name: username
-    in: path
-    description: username
-    required: true
-    schema:
-      type: string
 get:
   $ref: "./get/index.yaml#/get"

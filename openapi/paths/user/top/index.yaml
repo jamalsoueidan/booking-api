@@ -1,15 +1,15 @@
-parameters:
-  - name: limit
-    in: query
-    description: limit items (default 5)
-    schema:
-      type: string
-  - name: page
-    in: query
-    description: page
-    schema:
-      type: string
 get:
+  parameters:
+    - name: limit
+      in: query
+      description: limit items (default 5)
+      schema:
+        type: string
+    - name: page
+      in: query
+      description: page
+      schema:
+        type: string
   tags:
     - Users
   operationId: usersTop

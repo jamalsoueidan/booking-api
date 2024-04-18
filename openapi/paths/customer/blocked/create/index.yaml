@@ -1,11 +1,11 @@
-parameters:
-  - name: customerId
-    in: path
-    description: The ID of the customerId
-    required: true
-    schema:
-      type: string
 post:
+  parameters:
+    - name: customerId
+      in: path
+      description: The ID of the customerId
+      required: true
+      schema:
+        type: string
   tags:
     - CustomerBlocked
   operationId: customerBlockedCreate
