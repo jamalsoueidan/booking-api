@@ -21,7 +21,6 @@ require("~/library/jest/mongoose/mongodb.jest");
 describe("CustomerProductControllerGet", () => {
   let context: InvocationContext;
   let request: HttpRequest;
-  const productId = 1000;
   const product = getProductObject({
     variantId: 1,
     duration: 60,
@@ -50,7 +49,6 @@ describe("CustomerProductControllerGet", () => {
     const newProduct = await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
-        productId,
       },
       { ...product, scheduleId: newSchedule._id }
     );
@@ -62,7 +60,7 @@ describe("CustomerProductControllerGet", () => {
     request = await createHttpRequest<CustomerProductControllerGetRequest>({
       query: {
         customerId: newSchedule.customerId,
-        productId,
+        productId: newProduct.productId,
       },
     });
 
@@ -70,6 +68,6 @@ describe("CustomerProductControllerGet", () => {
       await CustomerProductControllerGet(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
-    expect(res.jsonBody?.payload?.productId).toBe(productId);
+    expect(res.jsonBody?.payload?.productId).toBe(newProduct.productId);
   });
 });

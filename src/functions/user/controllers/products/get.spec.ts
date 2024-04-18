@@ -51,7 +51,6 @@ describe("UserProductsControllerGet", () => {
     const newProduct = await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
-        productId: product.productId,
       },
       { ...product, scheduleId: newSchedule._id }
     );

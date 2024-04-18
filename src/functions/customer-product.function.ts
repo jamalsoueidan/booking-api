@@ -41,7 +41,7 @@ app.http("customerProductUpdate", {
 app.http("customerProductAdd", {
   methods: ["POST"],
   authLevel: "anonymous",
-  route: "customer/{customerId?}/product/{productId?}",
+  route: "customer/{customerId?}/product",
   handler: CustomerProductControllerAdd,
 });
 

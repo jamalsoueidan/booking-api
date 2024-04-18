@@ -37,14 +37,12 @@ describe("CustomerProductServiceAdd", () => {
     const updateProduct = await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
-        productId,
       },
       productBody
     );
 
     expect(updateProduct).toMatchObject({
       ...productBody,
-      productId,
       scheduleId: newSchedule._id.toString(),
     });
   });
@@ -52,7 +50,6 @@ describe("CustomerProductServiceAdd", () => {
   it("not allow same product in any schedule belonging to same customer", async () => {
     const customerId = 123;
     const name = "Test Schedule";
-    const productId = 1000;
 
     const newSchedule = await CustomerScheduleServiceCreate({
       name,
@@ -79,7 +76,6 @@ describe("CustomerProductServiceAdd", () => {
     let updateProduct = await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
-        productId,
       },
       productBody
     );
@@ -90,7 +86,6 @@ describe("CustomerProductServiceAdd", () => {
       CustomerProductServiceAdd(
         {
           customerId: newSchedule.customerId,
-          productId,
         },
         { ...productBody, variantId: 12 }
       )

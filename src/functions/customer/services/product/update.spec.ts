@@ -35,9 +35,8 @@ describe("CustomerProductServiceUpdate", () => {
     await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
-        productId,
       },
-      { ...newProduct, scheduleId: newSchedule._id }
+      { ...newProduct, productId, scheduleId: newSchedule._id }
     );
 
     const productBody = {

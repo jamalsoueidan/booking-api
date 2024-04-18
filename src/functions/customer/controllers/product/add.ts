@@ -13,11 +13,9 @@ export type CustomerProductControllerAddRequest = {
 
 const CustomerProductControllerAddQuerySchema = z.object({
   customerId: GidFormat,
-  productId: GidFormat,
 });
 
 const CustomerProductControllerAddBodySchema = ScheduleProductZodSchema.omit({
-  productId: true,
   description: true,
   duration: true,
   bookingPeriod: true,

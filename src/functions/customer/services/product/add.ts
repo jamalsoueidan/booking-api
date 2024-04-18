@@ -4,17 +4,11 @@ import { StringOrObjectId } from "~/library/zod";
 
 export type CustomerProductServiceAdd = {
   customerId: Schedule["customerId"];
-  productId: ScheduleProduct["productId"];
 };
 
 export type CustomerProductServiceAddBody = Omit<
   ScheduleProduct,
-  | "productId"
-  | "description"
-  | "duration"
-  | "breakTime"
-  | "noticePeriod"
-  | "bookingPeriod"
+  "description" | "duration" | "breakTime" | "noticePeriod" | "bookingPeriod"
 > & {
   scheduleId: StringOrObjectId;
 };
@@ -26,7 +20,7 @@ export const CustomerProductServiceAdd = async (
   const productExistInSchedule = await ScheduleModel.findOne({
     _id: product.scheduleId,
     customerId: filter.customerId,
-    "products.productId": { $ne: filter.productId },
+    "products.productId": { $ne: product.productId },
   }).orFail(
     new NotFoundError([
       {
@@ -44,10 +38,7 @@ export const CustomerProductServiceAdd = async (
     },
     {
       $push: {
-        products: {
-          ...product,
-          productId: filter.productId,
-        },
+        products: product,
       },
     },
     { new: true }
@@ -64,7 +55,7 @@ export const CustomerProductServiceAdd = async (
     .lean();
 
   const modelProduct = newSchedule.products.find(
-    (p) => p.productId === filter.productId
+    (p) => p.productId === product.productId
   );
 
   if (!modelProduct) {
@@ -79,7 +70,6 @@ export const CustomerProductServiceAdd = async (
 
   return {
     ...modelProduct,
-    productId: filter.productId,
     scheduleId: productExistInSchedule._id.toString(),
     scheduleName: productExistInSchedule.name,
   };

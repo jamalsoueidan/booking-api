@@ -16,7 +16,7 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-describe("ScheduleProductControllerAdd", () => {
+describe("CustomerProductControllerAdd", () => {
   let context: InvocationContext;
   let request: HttpRequest;
   const customerId = 123;
@@ -32,11 +32,10 @@ describe("ScheduleProductControllerAdd", () => {
       customerId,
     });
 
-    const body = getProductObject();
+    const body = getProductObject({ productId });
     request = await createHttpRequest<CustomerProductControllerAddRequest>({
       query: {
         customerId,
-        productId: 1000,
       },
       body: { ...body, scheduleId: newSchedule._id },
     });
@@ -46,7 +45,6 @@ describe("ScheduleProductControllerAdd", () => {
 
     expect(res.jsonBody?.success).toBeTruthy();
 
-    console.log(res.jsonBody?.payload);
     expect(res.jsonBody?.payload).toEqual(
       expect.objectContaining({
         productId: 1000,

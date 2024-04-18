@@ -37,9 +37,8 @@ describe("ScheduleProductControllerUpdate", () => {
     await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
-        productId,
       },
-      { ...getProductObject(), scheduleId: newSchedule._id }
+      { ...getProductObject({ productId }), scheduleId: newSchedule._id }
     );
 
     request = await createHttpRequest<CustomerProductControllerUpdateRequest>({

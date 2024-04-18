@@ -8,22 +8,6 @@ require("~/library/jest/mongoose/mongodb.jest");
 
 describe("CustomerProductsServiceListIds", () => {
   const customerId = 123;
-  const name = "Test Schedule";
-  const productId = 1000;
-  const newProduct = getProductObject({
-    variantId: 1,
-    duration: 60,
-    breakTime: 0,
-    noticePeriod: {
-      value: 1,
-      unit: TimeUnit.DAYS,
-    },
-    bookingPeriod: {
-      value: 1,
-      unit: TimeUnit.WEEKS,
-    },
-    locations: [],
-  });
 
   it("should get all productIds for all schedules", async () => {
     const schedule1 = await CustomerScheduleServiceCreate({
@@ -49,9 +33,8 @@ describe("CustomerProductsServiceListIds", () => {
     await CustomerProductServiceAdd(
       {
         customerId: schedule1.customerId,
-        productId: 999,
       },
-      { ...product1, scheduleId: schedule1._id }
+      { ...product1, productId: 999, scheduleId: schedule1._id }
     );
 
     const schedule2 = await CustomerScheduleServiceCreate({
@@ -64,17 +47,15 @@ describe("CustomerProductsServiceListIds", () => {
     await CustomerProductServiceAdd(
       {
         customerId: schedule2.customerId,
-        productId: 1001,
       },
-      product2
+      { ...product2, productId: 1001 }
     );
 
     await CustomerProductServiceAdd(
       {
         customerId: schedule2.customerId,
-        productId: 1000,
       },
-      product2
+      { ...product2, productId: 1000 }
     );
 
     const schedule3 = await CustomerScheduleServiceCreate({
@@ -90,17 +71,15 @@ describe("CustomerProductsServiceListIds", () => {
     await CustomerProductServiceAdd(
       {
         customerId: schedule3.customerId,
-        productId: 1002,
       },
-      product3
+      { ...product3, productId: 1002 }
     );
 
     await CustomerProductServiceAdd(
       {
         customerId: schedule3.customerId,
-        productId: 1004,
       },
-      product3
+      { ...product3, productId: 1004 }
     );
 
     const products = await CustomerProductsServiceListIds({ customerId });

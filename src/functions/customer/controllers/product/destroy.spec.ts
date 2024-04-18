@@ -22,7 +22,6 @@ require("~/library/jest/mongoose/mongodb.jest");
 describe("CustomerProductControllerDestroy", () => {
   let context: InvocationContext;
   let request: HttpRequest;
-  const productId = 1000;
   const product = getProductObject({
     variantId: 1,
     duration: 60,
@@ -51,7 +50,6 @@ describe("CustomerProductControllerDestroy", () => {
     const newProduct = await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
-        productId,
       },
       { ...product, scheduleId: newSchedule._id }
     );
@@ -68,7 +66,7 @@ describe("CustomerProductControllerDestroy", () => {
     request = await createHttpRequest<CustomerProductControllerDestroyRequest>({
       query: {
         customerId: newSchedule.customerId,
-        productId,
+        productId: product.productId,
       },
     });
 

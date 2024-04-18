@@ -34,9 +34,8 @@ describe("CustomerProductsService", () => {
     const updatedSchedule = await CustomerProductServiceAdd(
       {
         customerId: newSchedule.customerId,
-        productId,
       },
-      { ...newProduct, scheduleId: newSchedule._id }
+      { ...newProduct, productId, scheduleId: newSchedule._id }
     );
 
     const foundProduct = await CustomerProductServiceGet({
