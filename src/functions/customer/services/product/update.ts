@@ -6,7 +6,6 @@ import {
   ScheduleZodSchema,
 } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
-import { CustomerProductServiceDestroy } from "./destroy";
 
 export type CustomerProductServiceUpdate = {
   customerId: Schedule["customerId"];
@@ -23,7 +22,6 @@ export const CustomerProductServiceUpdate = async (
   filter: CustomerProductServiceUpdate,
   product: CustomerProductServiceUpdateBody
 ) => {
-  await CustomerProductServiceDestroy(filter);
   const schedule = await ScheduleModel.findOneAndUpdate(
     {
       _id: product.scheduleId,
