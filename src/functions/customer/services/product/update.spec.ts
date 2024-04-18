@@ -3,6 +3,7 @@ import { omitObjectIdProps } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { CustomerScheduleServiceCreate } from "../schedule/create";
 import { CustomerProductServiceAdd } from "./add";
+import { CustomerProductServiceGet } from "./get";
 import { CustomerProductServiceUpdate } from "./update";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -52,7 +53,12 @@ describe("CustomerProductServiceUpdate", () => {
       productBody
     );
 
-    expect(omitObjectIdProps(updateProduct)).toEqual(
+    const getUpdatedProduct = await CustomerProductServiceGet({
+      customerId: newSchedule.customerId,
+      productId,
+    });
+
+    expect(omitObjectIdProps(getUpdatedProduct)).toEqual(
       expect.objectContaining(
         omitObjectIdProps({
           ...productBody,

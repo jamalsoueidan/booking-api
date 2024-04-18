@@ -22,19 +22,11 @@ export const CustomerProductServiceUpdate = async (
   filter: CustomerProductServiceUpdate,
   product: CustomerProductServiceUpdateBody
 ) => {
-  const schedule = await ScheduleModel.findOneAndUpdate(
-    {
-      _id: product.scheduleId,
-      customerId: filter.customerId,
-      "products.productId": filter.productId,
-    },
-    {
-      $set: {
-        "products.$": { ...product, productId: filter.productId }, // Update the first matching product
-      },
-    },
-    { new: true }
-  )
+  const schedule = await ScheduleModel.findOne({
+    _id: product.scheduleId,
+    customerId: filter.customerId,
+    "products.productId": filter.productId,
+  })
     .orFail(
       new NotFoundError([
         {
@@ -46,12 +38,12 @@ export const CustomerProductServiceUpdate = async (
     )
     .lean();
 
-  const modelProduct = schedule.products.find(
+  const oldProduct = schedule.products.find(
     (p) => p.productId === filter.productId
   );
 
-  if (!modelProduct) {
-    throw new NotFoundError([
+  if (!oldProduct) {
+    new NotFoundError([
       {
         code: "custom",
         message: "PRODUCT_NOT_FOUND",
@@ -60,8 +52,23 @@ export const CustomerProductServiceUpdate = async (
     ]);
   }
 
+  const newProduct = { ...oldProduct, ...product };
+
+  await ScheduleModel.updateOne(
+    {
+      _id: product.scheduleId,
+      customerId: filter.customerId,
+      "products.productId": filter.productId,
+    },
+    {
+      $set: {
+        "products.$": newProduct,
+      },
+    }
+  );
+
   return {
-    ...modelProduct,
+    ...newProduct,
     scheduleId: schedule._id.toString(),
     scheduleName: schedule.name,
   };
