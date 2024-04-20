@@ -1,17 +1,17 @@
-parameters:
-  - name: username
-    in: path
-    description: This field for username
-    required: true
-    schema:
-      type: string
-  - name: locationId
-    in: path
-    description: This field for locationId
-    required: true
-    schema:
-      type: string
 post:
+  parameters:
+    - name: username
+      in: path
+      description: This field for username
+      required: true
+      schema:
+        type: string
+    - name: locationId
+      in: path
+      description: This field for locationId
+      required: true
+      schema:
+        type: string
   tags:
     - UserAvailability
   operationId: userAvailabilityGenerate

@@ -1,4 +1,11 @@
 get:
+  parameters:
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
   tags:
     - User
   operationId: userGet

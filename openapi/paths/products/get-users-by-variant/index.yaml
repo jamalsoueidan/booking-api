@@ -1,27 +1,27 @@
-parameters:
-  - name: productId
-    in: query
-    description: product Id
-    required: true
-    schema:
-      type: string
-  - name: variantId
-    in: query
-    description: variant Id
-    schema:
-      type: string
-  - name: nextCursor
-    in: query
-    description: nextCursor
-    schema:
-      type: string
-  - name: limit
-    in: query
-    description: limit items (default 5)
-    schema:
-      type: string
-
 get:
+  parameters:
+    - name: productId
+      in: query
+      description: product Id
+      required: true
+      schema:
+        type: string
+    - name: variantId
+      in: query
+      description: variant Id
+      schema:
+        type: string
+    - name: nextCursor
+      in: query
+      description: nextCursor
+      schema:
+        type: string
+    - name: limit
+      in: query
+      description: limit items (default 5)
+      schema:
+        type: string
+
   tags:
     - Products
   operationId: productsGetUsersByVariant
