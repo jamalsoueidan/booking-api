@@ -160,6 +160,6 @@ describe("UserProductsServiceListProductsByLocation", () => {
         productHandle: "productHandle",
         locationId: "ads" as any,
       })
-    ).rejects.toThrowError();
+    ).rejects.toThrow();
   });
 });

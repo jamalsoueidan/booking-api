@@ -98,7 +98,7 @@ describe("CustomerScheduleSlotService", () => {
         },
         invalidSlot
       )
-    ).rejects.toThrowError();
+    ).rejects.toThrow();
   });
 
   it("should not allow duplicate days", async () => {
@@ -163,6 +163,6 @@ describe("CustomerScheduleSlotService", () => {
         },
         overlappingIntervalsSlot
       )
-    ).rejects.toThrowError();
+    ).rejects.toThrow();
   });
 });

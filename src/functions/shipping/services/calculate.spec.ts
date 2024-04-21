@@ -87,7 +87,7 @@ describe("ShippingServiceCalculate", () => {
           fullAddress: "Dortesvej 17 1 th",
         },
       })
-    ).rejects.toThrowError();
+    ).rejects.toThrow();
   });
 
   it("should throw error since minDriveDistance is 40, and distance is 30", async () => {
@@ -122,6 +122,6 @@ describe("ShippingServiceCalculate", () => {
           fullAddress: "Dortesvej 17 1 th",
         },
       })
-    ).rejects.toThrowError();
+    ).rejects.toThrow();
   });
 });
