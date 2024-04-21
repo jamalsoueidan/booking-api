@@ -37,7 +37,7 @@ export const UserMongooseSchema = new mongoose.Schema<
     yearsExperience: Number,
     username: {
       type: String,
-      unqiue: true,
+      unique: true,
       index: true,
     },
     fullname: {
@@ -45,7 +45,7 @@ export const UserMongooseSchema = new mongoose.Schema<
     },
     email: {
       type: String,
-      unqiue: true,
+      unique: true,
     },
     phone: {
       type: String,
