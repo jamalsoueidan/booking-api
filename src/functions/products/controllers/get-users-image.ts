@@ -5,10 +5,10 @@ import { NumberOrStringType } from "~/library/zod";
 import { UserProductsServiceGetUsersImage } from "../services/get-users-image";
 
 export type ProductsControllerGetUsersImageRequest = {
-  query: z.infer<typeof ProductsControllerGetUsersImageBodySchema>;
+  query: z.infer<typeof ProductsControllerGetUsersImageQuerySchema>;
 };
 
-export const ProductsControllerGetUsersImageBodySchema = z.object({
+export const ProductsControllerGetUsersImageQuerySchema = z.object({
   productIds: z.array(NumberOrStringType),
 });
 
@@ -18,7 +18,7 @@ export type ProductsControllerGetUsersImageResponse = Awaited<
 
 export const ProductsControllerGetUsersImage = _(
   async ({ query }: ProductsControllerGetUsersImageRequest) => {
-    const bodyData = ProductsControllerGetUsersImageBodySchema.parse(query);
-    return UserProductsServiceGetUsersImage(bodyData);
+    const queryData = ProductsControllerGetUsersImageQuerySchema.parse(query);
+    return UserProductsServiceGetUsersImage(queryData);
   }
 );
