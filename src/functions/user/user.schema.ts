@@ -40,16 +40,9 @@ export const UserMongooseSchema = new mongoose.Schema<
       unique: true,
       index: true,
     },
-    fullname: {
-      type: String,
-    },
-    email: {
-      type: String,
-      unique: true,
-    },
-    phone: {
-      type: String,
-    },
+    fullname: String,
+    email: String, //will be updated by shopify webhook
+    phone: String,
     social: {
       instagram: String,
       youtube: String,
