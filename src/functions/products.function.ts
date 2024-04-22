@@ -5,7 +5,7 @@ import { ProductsControllerGetUsersByVariant } from "./products/controllers/get-
 import { ProductsControllerGetUsersImage } from "./products/controllers/get-users-image";
 
 app.http("productsControllerGetUsersImage", {
-  methods: ["POST"],
+  methods: ["GET"],
   authLevel: "anonymous",
   route: "products/get-users-image",
   handler: ProductsControllerGetUsersImage,

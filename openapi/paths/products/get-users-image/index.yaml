@@ -1,15 +1,18 @@
-post:
+get:
+  parameters:
+    - name: productIds
+      in: query
+      required: true
+      schema:
+        type: array
+        items:
+          type: string
+
   tags:
     - Products
   operationId: productsGetUsersImage
-  summary: POST get users belongs to productIds array
-  description: This endpoint respond with users images
-  requestBody:
-    required: true
-    content:
-      application/json:
-        schema:
-          $ref: "./body.yaml"
+  summary: GET get users belongs to productIds array
+  description: This endpoint respond are used with conjunction to show users profile image under treatments in the store
   responses:
     "200":
       description: "Response"

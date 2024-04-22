@@ -348,8 +348,6 @@ components:
       $ref: paths/orchestrators/upload/response.yaml
 
     # Products
-    ProductsGetUsersImageBody:
-      $ref: paths/products/get-users-image/body.yaml
     ProductsGetUsersImageResponse:
       $ref: paths/products/get-users-image/response.yaml
     ProductsGetUsersImage:

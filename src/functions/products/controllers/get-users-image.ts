@@ -5,7 +5,7 @@ import { NumberOrStringType } from "~/library/zod";
 import { UserProductsServiceGetUsersImage } from "../services/get-users-image";
 
 export type ProductsControllerGetUsersImageRequest = {
-  body: z.infer<typeof ProductsControllerGetUsersImageBodySchema>;
+  query: z.infer<typeof ProductsControllerGetUsersImageBodySchema>;
 };
 
 export const ProductsControllerGetUsersImageBodySchema = z.object({
@@ -17,8 +17,8 @@ export type ProductsControllerGetUsersImageResponse = Awaited<
 >;
 
 export const ProductsControllerGetUsersImage = _(
-  async ({ body }: ProductsControllerGetUsersImageRequest) => {
-    const bodyData = ProductsControllerGetUsersImageBodySchema.parse(body);
+  async ({ query }: ProductsControllerGetUsersImageRequest) => {
+    const bodyData = ProductsControllerGetUsersImageBodySchema.parse(query);
     return UserProductsServiceGetUsersImage(bodyData);
   }
 );
