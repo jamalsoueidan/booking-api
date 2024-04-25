@@ -8,6 +8,10 @@ export class NotFoundError extends ZodError {
   status = 404;
 }
 
+export class FoundError extends ZodError {
+  status = 404;
+}
+
 export class ForbiddenError extends ZodError {
   status = 403;
 }

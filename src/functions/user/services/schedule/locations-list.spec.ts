@@ -22,18 +22,18 @@ describe("UserScheduleServiceLocationsList", () => {
     });
 
     const schedule1 = await CustomerScheduleServiceCreate({
-      name: faker.person.firstName(),
+      name: faker.person.lastName(),
       customerId,
       products: [
         getProductObject({
           locations: [
             {
               location: locationOrigin._id,
-              locationType: locationOrigin.locationType,
+              ...locationOrigin,
             },
             {
               location: locationDestination._id,
-              locationType: locationDestination.locationType,
+              ...locationDestination,
             },
           ],
         }),
@@ -41,7 +41,7 @@ describe("UserScheduleServiceLocationsList", () => {
           locations: [
             {
               location: locationOrigin._id,
-              locationType: locationOrigin.locationType,
+              ...locationOrigin,
             },
           ],
         }),
@@ -56,7 +56,7 @@ describe("UserScheduleServiceLocationsList", () => {
           locations: [
             {
               location: locationOrigin._id,
-              locationType: locationOrigin.locationType,
+              ...locationOrigin,
             },
           ],
         }),
@@ -64,7 +64,7 @@ describe("UserScheduleServiceLocationsList", () => {
           locations: [
             {
               location: locationOrigin._id,
-              locationType: locationOrigin.locationType,
+              ...locationOrigin,
             },
           ],
         }),
@@ -72,7 +72,7 @@ describe("UserScheduleServiceLocationsList", () => {
     });
 
     await CustomerScheduleServiceCreate({
-      name: faker.person.firstName(),
+      name: faker.person.fullName(),
       customerId,
       products: [],
     });

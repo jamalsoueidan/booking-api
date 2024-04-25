@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import { LocationTypes } from "~/functions/location";
+import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { CustomerScheduleServiceCreate } from "../schedule/create";
 import { CustomerScheduleServiceGet } from "../schedule/get";
@@ -17,6 +17,7 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
       name: "test",
       customerId,
     });
+
     const locationRemoveId = new mongoose.Types.ObjectId().toString();
 
     await CustomerProductServiceAdd(
@@ -29,10 +30,12 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
             {
               location: locationRemoveId,
               locationType: LocationTypes.ORIGIN,
+              originType: LocationOriginTypes.COMMERCIAL,
             },
             {
               location: new mongoose.Types.ObjectId(),
               locationType: LocationTypes.ORIGIN,
+              originType: LocationOriginTypes.COMMERCIAL,
             },
           ],
         }),
@@ -51,10 +54,12 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
             {
               location: locationRemoveId,
               locationType: LocationTypes.ORIGIN,
+              originType: LocationOriginTypes.COMMERCIAL,
             },
             {
               location: new mongoose.Types.ObjectId().toString(),
               locationType: LocationTypes.DESTINATION,
+              originType: LocationOriginTypes.COMMERCIAL,
             },
           ],
         }),
@@ -77,6 +82,7 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
             {
               location: locationRemoveId,
               locationType: LocationTypes.ORIGIN,
+              originType: LocationOriginTypes.COMMERCIAL,
             },
           ],
         }),
@@ -126,9 +132,8 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
       scheduleId: newSchedule2.id,
     });
 
-    expect(getSchedule1.products[0].locations).toHaveLength(1);
-    expect(getSchedule1.products[1].locations).toHaveLength(1);
-    expect(getSchedule2.products[0].locations).toHaveLength(0);
+    expect(getSchedule1.products).toHaveLength(2);
+    expect(getSchedule2.products).toHaveLength(0);
 
     getSchedule1.products.forEach((product) => {
       const locationIds = product.locations.map((location) =>

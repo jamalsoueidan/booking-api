@@ -34,7 +34,6 @@ describe("UserProductsControllerGet", () => {
       value: 1,
       unit: TimeUnit.WEEKS,
     },
-    locations: [],
   });
 
   beforeEach(async () => {

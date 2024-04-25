@@ -22,7 +22,6 @@ describe("UserProductsService", () => {
       value: 1,
       unit: TimeUnit.WEEKS,
     },
-    locations: [],
   });
 
   it("should find a product", async () => {

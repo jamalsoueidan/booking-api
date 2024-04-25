@@ -25,11 +25,11 @@ describe("UserProductsServiceListProductsByLocation", () => {
       locations: [
         {
           location: locationOrigin._id,
-          locationType: locationOrigin.locationType,
+          ...locationOrigin,
         },
         {
           location: locationDestination._id,
-          locationType: locationDestination.locationType,
+          ...locationDestination,
         },
       ],
     });
@@ -43,7 +43,7 @@ describe("UserProductsServiceListProductsByLocation", () => {
           locations: [
             {
               location: locationOrigin._id,
-              locationType: locationOrigin.locationType,
+              ...locationOrigin,
             },
           ],
         }),
@@ -78,11 +78,11 @@ describe("UserProductsServiceListProductsByLocation", () => {
       locations: [
         {
           location: locationOrigin._id,
-          locationType: locationOrigin.locationType,
+          ...locationOrigin,
         },
         {
           location: locationDestination._id,
-          locationType: locationDestination.locationType,
+          ...locationDestination,
         },
       ],
     });
@@ -91,11 +91,11 @@ describe("UserProductsServiceListProductsByLocation", () => {
       locations: [
         {
           location: locationOrigin._id,
-          locationType: locationOrigin.locationType,
+          ...locationOrigin,
         },
         {
           location: locationDestination._id,
-          locationType: locationDestination.locationType,
+          ...locationDestination,
         },
       ],
     });
@@ -104,11 +104,11 @@ describe("UserProductsServiceListProductsByLocation", () => {
       locations: [
         {
           location: locationOrigin._id,
-          locationType: locationOrigin.locationType,
+          ...locationOrigin,
         },
         {
           location: locationDestination._id,
-          locationType: locationDestination.locationType,
+          ...locationDestination,
         },
       ],
     });

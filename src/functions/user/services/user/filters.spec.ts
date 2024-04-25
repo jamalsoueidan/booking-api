@@ -3,7 +3,10 @@ import { createUser } from "~/library/jest/helpers";
 import { faker } from "@faker-js/faker";
 import { LocationTypes } from "~/functions/location";
 import { SlotWeekDays } from "~/functions/schedule";
-import { createLocation } from "~/library/jest/helpers/location";
+import {
+  createLocation,
+  getDumbLocationObject,
+} from "~/library/jest/helpers/location";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { pickMultipleItems } from "~/library/jest/utils/utils";
 import { Professions } from "../../user.types";
@@ -106,7 +109,7 @@ describe("UserServiceFilters", () => {
         {
           days: [faker.helpers.arrayElement(expectedDays)],
           totalProducts: 1,
-          locations: [],
+          locations: [getDumbLocationObject()],
         }
       );
 
@@ -150,7 +153,7 @@ describe("UserServiceFilters", () => {
         {
           days: [faker.helpers.arrayElement(expectedDays)],
           totalProducts: 4,
-          locations: [],
+          locations: [getDumbLocationObject()],
         }
       );
 

@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import mongoose from "mongoose";
 import { LocationModel } from "~/functions/location/location.model";
 import {
   Location,
@@ -8,6 +9,12 @@ import {
 import { User } from "~/functions/user";
 
 export const DEFAULT_GROUP = "all";
+
+export const getDumbLocationObject = () => ({
+  location: new mongoose.Types.ObjectId(),
+  locationType: LocationTypes.DESTINATION,
+  originType: LocationOriginTypes.COMMERCIAL,
+});
 
 export const getLocationObject = (props: Partial<Location> = {}): Location => ({
   name: faker.person.firstName(),

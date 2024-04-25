@@ -14,6 +14,7 @@ export const CustomerProductServiceRemoveLocationFromAll = async (filter: {
       );
     }
 
+    schedule.products = schedule.products.filter((p) => p.locations.length > 0);
     await schedule.save();
   }
 };

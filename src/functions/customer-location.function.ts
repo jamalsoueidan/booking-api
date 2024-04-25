@@ -10,6 +10,7 @@ import {
   CustomerLocationControllerSetDefault,
   CustomerLocationControllerUpdate,
 } from "./customer/controllers/location";
+import { CustomerLocationControllerGetProducts } from "./customer/controllers/location/get-products";
 
 app.http("customerLocationList", {
   methods: ["GET"],
@@ -23,6 +24,13 @@ app.http("customerLocationGet", {
   authLevel: "anonymous",
   route: "customer/{customerId}/location/{locationId}",
   handler: CustomerLocationControllerGetOne,
+});
+
+app.http("customerLocationGetProducts", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customer/{customerId}/location/{locationId}/products",
+  handler: CustomerLocationControllerGetProducts,
 });
 
 app.http("customerLocationUpdate", {

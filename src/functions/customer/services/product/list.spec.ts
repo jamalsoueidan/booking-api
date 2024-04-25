@@ -27,7 +27,6 @@ describe("CustomerProductsServiceList", () => {
         value: 1,
         unit: TimeUnit.WEEKS,
       },
-      locations: [],
     });
 
     await CustomerProductServiceAdd(

@@ -58,7 +58,6 @@ describe("UserAvailabilityControllerGenerate", () => {
           unit: TimeUnit.WEEKS,
           value: 1,
         },
-        locations: [],
       }),
     ],
   };

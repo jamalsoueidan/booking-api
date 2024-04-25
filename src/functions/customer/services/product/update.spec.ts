@@ -24,7 +24,6 @@ describe("CustomerProductServiceUpdate", () => {
       value: 1,
       unit: TimeUnit.WEEKS,
     },
-    locations: [],
   });
 
   it("should update an existing product in the schedule", async () => {

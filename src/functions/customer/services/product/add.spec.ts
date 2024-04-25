@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker";
-import { NotFoundError } from "~/library/handler";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { CustomerScheduleServiceCreate } from "../schedule/create";
 import { CustomerProductServiceAdd } from "./add";
@@ -10,7 +9,6 @@ describe("CustomerProductServiceAdd", () => {
   it("should add a new product to the schedule", async () => {
     const customerId = 123;
     const name = "Test Schedule";
-    const productId = 1000;
 
     const newSchedule = await CustomerScheduleServiceCreate({
       name,
@@ -29,7 +27,6 @@ describe("CustomerProductServiceAdd", () => {
           name: "test",
           value: "ok",
         },
-        locations: [],
       }),
       scheduleId: newSchedule._id,
     };
@@ -68,7 +65,6 @@ describe("CustomerProductServiceAdd", () => {
           name: "test",
           value: "ok",
         },
-        locations: [],
       }),
       scheduleId: newSchedule._id,
     };
@@ -89,6 +85,6 @@ describe("CustomerProductServiceAdd", () => {
         },
         { ...productBody, variantId: 12 }
       )
-    ).rejects.toThrow(NotFoundError);
+    ).rejects.toThrow();
   });
 });

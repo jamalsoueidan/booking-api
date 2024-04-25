@@ -14,7 +14,7 @@
       "name": "Debug Jest Tests",
       "program": "${workspaceFolder}/node_modules/.bin/jest",
       "args": [
-        "${workspaceFolder}/src/functions/user/services/availability/get.spec.ts"
+        "${workspaceFolder}/src/functions/customer/services/product/remove-location-from-all.spec.ts"
       ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",

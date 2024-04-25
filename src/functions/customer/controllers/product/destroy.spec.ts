@@ -34,7 +34,6 @@ describe("CustomerProductControllerDestroy", () => {
       value: 1,
       unit: TimeUnit.WEEKS,
     },
-    locations: [],
   });
 
   beforeEach(async () => {

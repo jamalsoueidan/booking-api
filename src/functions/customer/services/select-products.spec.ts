@@ -43,7 +43,6 @@ describe("MultiAvailability", () => {
           value: 2,
           unit: TimeUnit.MONTHS,
         },
-        locations: [],
       }),
       getProductObject({
         productId: 99,
@@ -58,7 +57,6 @@ describe("MultiAvailability", () => {
           value: 2,
           unit: TimeUnit.MONTHS,
         },
-        locations: [],
       }),
     ],
   };
@@ -100,7 +98,6 @@ describe("MultiAvailability", () => {
           value: 1,
           unit: TimeUnit.MONTHS,
         },
-        locations: [],
       }),
       getProductObject({
         productId: 9912,
@@ -115,7 +112,6 @@ describe("MultiAvailability", () => {
           value: 1,
           unit: TimeUnit.MONTHS,
         },
-        locations: [],
       }),
     ],
   };
@@ -148,7 +144,6 @@ describe("MultiAvailability", () => {
           value: 1,
           unit: TimeUnit.MONTHS,
         },
-        locations: [],
       }),
     ],
   };
@@ -181,7 +176,6 @@ describe("MultiAvailability", () => {
           value: 1,
           unit: TimeUnit.MONTHS,
         },
-        locations: [],
       }),
     ],
   };
