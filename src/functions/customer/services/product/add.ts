@@ -1,5 +1,5 @@
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
-import { NotFoundError } from "~/library/handler";
+import { FoundError, NotFoundError } from "~/library/handler";
 import { StringOrObjectId } from "~/library/zod";
 
 export type CustomerProductServiceAdd = {
@@ -17,19 +17,20 @@ export const CustomerProductServiceAdd = async (
   filter: CustomerProductServiceAdd,
   product: CustomerProductServiceAddBody
 ) => {
-  const productExistInSchedule = await ScheduleModel.findOne({
-    _id: product.scheduleId,
+  const productExistInSchedule = await ScheduleModel.exists({
     customerId: filter.customerId,
-    "products.productId": { $ne: product.productId },
-  }).orFail(
-    new NotFoundError([
+    "products.productId": { $eq: product.productId },
+  });
+
+  if (productExistInSchedule) {
+    throw new FoundError([
       {
         code: "custom",
         message: "PRODUCT_ALREADY_EXIST",
         path: ["productId"],
       },
-    ])
-  );
+    ]);
+  }
 
   const newSchedule = await ScheduleModel.findOneAndUpdate(
     {
@@ -43,16 +44,16 @@ export const CustomerProductServiceAdd = async (
     },
     { new: true }
   )
+    .lean()
     .orFail(
       new NotFoundError([
         {
           code: "custom",
-          message: "PRODUCT_ALREADY_EXIST",
+          message: "SCHEDULE_NOT_FOUND",
           path: ["productId"],
         },
       ])
-    )
-    .lean();
+    );
 
   const modelProduct = newSchedule.products.find(
     (p) => p.productId === product.productId
@@ -70,7 +71,7 @@ export const CustomerProductServiceAdd = async (
 
   return {
     ...modelProduct,
-    scheduleId: productExistInSchedule._id.toString(),
-    scheduleName: productExistInSchedule.name,
+    scheduleId: newSchedule._id.toString(),
+    scheduleName: newSchedule.name,
   };
 };

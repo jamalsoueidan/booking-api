@@ -246,6 +246,8 @@ components:
       $ref: paths/customer/location/list/response.yaml
     CustomerLocationGetResponse:
       $ref: paths/customer/location/get/response.yaml
+    CustomerLocationGetProductsResponse:
+      $ref: paths/customer/location/get-products/response.yaml
     CustomerLocationUpdateBody:
       $ref: paths/customer/location/update/body.yaml
     CustomerLocationUpdateResponse:
@@ -384,6 +386,8 @@ paths:
   # Customer Location Management
   /customer/{customerId}/location/{locationId}:
     $ref: "./paths/customer/location/get-delete-update-add.yaml"
+  /customer/{customerId}/location/{locationId}/products:
+    $ref: "./paths/customer/location/get-products/index.yaml"
   /customer/{customerId}/location/{locationId}/setDefault:
     $ref: "./paths/customer/location/set-default/index.yaml"
   /customer/{customerId}/locations:
