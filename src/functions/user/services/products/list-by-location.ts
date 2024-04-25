@@ -2,6 +2,7 @@ import mongoose, { PipelineStage } from "mongoose";
 import { Schedule, ScheduleModel } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
 import { StringOrObjectId } from "~/library/zod";
+import { UserModel } from "../../user.model";
 
 export type UserProductsServiceListProductsByLocationReturn = Pick<
   Schedule,
@@ -22,9 +23,9 @@ export const UserProductsServiceListProductsByLocation = async ({
   const schedulesPipeline: PipelineStage[] = [
     {
       $lookup: {
-        from: "User", // The name of the customer collection
-        localField: "customerId", // Field in the current documents
-        foreignField: "customerId", // Field in the customer documents to match on
+        from: UserModel.collection.name,
+        localField: "customerId",
+        foreignField: "customerId",
         as: "customer",
       },
     },
@@ -38,7 +39,7 @@ export const UserProductsServiceListProductsByLocation = async ({
     },
     {
       $lookup: {
-        from: "schedules", // The name of the schedule collection
+        from: ScheduleModel.collection.name,
         localField: "customer.customerId",
         foreignField: "customerId",
         as: "scheduleInfo",
