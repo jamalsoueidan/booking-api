@@ -22,7 +22,7 @@ describe("UserScheduleServiceLocationsList", () => {
     });
 
     const schedule1 = await CustomerScheduleServiceCreate({
-      name: faker.person.firstName(),
+      name: faker.person.lastName(),
       customerId,
       products: [
         getProductObject({
@@ -72,7 +72,7 @@ describe("UserScheduleServiceLocationsList", () => {
     });
 
     await CustomerScheduleServiceCreate({
-      name: faker.person.firstName(),
+      name: faker.person.fullName(),
       customerId,
       products: [],
     });
