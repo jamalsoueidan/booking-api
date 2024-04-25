@@ -332,9 +332,15 @@ components:
             enum:
               - origin
               - destination
+          originType:
+            type: string
+            enum:
+              - home
+              - commercial
         required:
           - location
           - locationType
+          - originType
     CustomerProductUpdateResponse:
       type: object
       properties:
@@ -2035,6 +2041,19 @@ components:
       required:
         - success
         - payload
+    CustomerLocationGetProductsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerProduct'
+      required:
+        - success
+        - payload
     CustomerLocationUpdateBody:
       type: object
       properties:
@@ -3469,6 +3488,40 @@ paths:
           $ref: '#/components/responses/UnauthorizedResponse'
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
+      security: []
+  '/customer/{customerId}/location/{locationId}/products':
+    get:
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: locationId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - CustomerLocation
+      operationId: customerLocationGetProducts
+      summary: GET Get products that belongs to location
+      description: This endpoint get products belonging to the user
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerLocationGetProductsResponse'
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
       security: []
   '/customer/{customerId}/location/{locationId}/setDefault':
     put:
