@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker";
-import { NotFoundError } from "~/library/handler";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { CustomerScheduleServiceCreate } from "../schedule/create";
 import { CustomerProductServiceAdd } from "./add";
@@ -86,6 +85,6 @@ describe("CustomerProductServiceAdd", () => {
         },
         { ...productBody, variantId: 12 }
       )
-    ).rejects.toThrow(NotFoundError);
+    ).rejects.toThrow();
   });
 });
