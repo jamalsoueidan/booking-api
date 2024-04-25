@@ -1,7 +1,7 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 import { BadError } from "~/library/handler";
 import { Schedule, ScheduleSlot } from "../schedule.types";
-import { ProductSchema } from "./product.schema";
+import { ProductSchema, validateProducts } from "./product.schema";
 import { SlotSchema, validateSlots } from "./slot.schema";
 
 export interface IScheduleDocument extends Omit<Schedule, "_id">, Document {
@@ -103,5 +103,6 @@ ScheduleMongooseSchema.pre<IScheduleDocument>("save", async function (next) {
 
 ScheduleMongooseSchema.pre<IScheduleDocument>("save", async function (next) {
   validateSlots(this.slots);
+  validateProducts(this.products);
   next();
 });

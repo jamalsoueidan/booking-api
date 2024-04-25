@@ -21,7 +21,6 @@ describe("CustomerProductServiceDestroy", () => {
       value: 1,
       unit: TimeUnit.WEEKS,
     },
-    locations: [],
   });
 
   it("should remove an existing product from the schedule", async () => {

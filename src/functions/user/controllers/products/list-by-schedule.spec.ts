@@ -32,7 +32,6 @@ const newProduct = getProductObject({
     value: 1,
     unit: TimeUnit.WEEKS,
   },
-  locations: [],
 });
 
 describe("UserProductsControllerListBySchedule", () => {

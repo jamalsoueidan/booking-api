@@ -14,7 +14,6 @@ describe("calculateMaxNoticeAndMinBookingPeriod", () => {
         breakTime: 15,
         noticePeriod: { unit: TimeUnit.DAYS, value: 1 },
         bookingPeriod: { unit: TimeUnit.WEEKS, value: 2 },
-        locations: [],
       }),
       getProductObject({
         productId: 2,
@@ -23,7 +22,6 @@ describe("calculateMaxNoticeAndMinBookingPeriod", () => {
         breakTime: 30,
         noticePeriod: { unit: TimeUnit.DAYS, value: 2 },
         bookingPeriod: { unit: TimeUnit.WEEKS, value: 1 },
-        locations: [],
       }),
       getProductObject({
         productId: 3,
@@ -32,7 +30,6 @@ describe("calculateMaxNoticeAndMinBookingPeriod", () => {
         breakTime: 20,
         noticePeriod: { unit: TimeUnit.DAYS, value: 3 },
         bookingPeriod: { unit: TimeUnit.WEEKS, value: 3 },
-        locations: [],
       }),
     ];
   });

@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
-import { LocationTypes } from "~/functions/location/location.types";
+import {
+  LocationOriginTypes,
+  LocationTypes,
+} from "~/functions/location/location.types";
+import { BadError } from "~/library/handler";
 import { ScheduleProduct, TimeUnit } from "../schedule.types";
 
 export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
@@ -66,6 +70,12 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
             enum: [LocationTypes.ORIGIN, LocationTypes.DESTINATION],
             required: true,
           },
+          originType: {
+            type: String,
+            enum: [LocationOriginTypes.HOME, LocationOriginTypes.COMMERCIAL],
+            default: LocationOriginTypes.COMMERCIAL,
+            required: true,
+          },
         },
       ],
       default: [],
@@ -75,3 +85,18 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
     _id: false,
   }
 );
+
+export function validateProducts(products: ScheduleProduct[]): void {
+  // Check for duplicate days
+  products.forEach((product, index) => {
+    if (product.locations.length === 0) {
+      throw new BadError([
+        {
+          code: "custom",
+          message: "Each product must atleast have one location",
+          path: [`products[${index}].locations`],
+        },
+      ]);
+    }
+  });
+}

@@ -7,7 +7,10 @@ require("~/library/jest/mongoose/mongodb.jest");
 import { faker } from "@faker-js/faker";
 import { Location, LocationTypes } from "~/functions/location";
 import { SlotWeekDays } from "~/functions/schedule";
-import { createLocation } from "~/library/jest/helpers/location";
+import {
+  createLocation,
+  getDumbLocationObject,
+} from "~/library/jest/helpers/location";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { pickMultipleItems } from "~/library/jest/utils/utils";
 import { Professions } from "../../user.types";
@@ -45,7 +48,7 @@ describe("UserServiceSearch", () => {
             ]),
           ],
           totalProducts: 1,
-          locations: [],
+          locations: [getDumbLocationObject()],
         }
       );
 

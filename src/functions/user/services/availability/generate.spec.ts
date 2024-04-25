@@ -88,11 +88,11 @@ describe("UserAvailabilityServiceGenerate", () => {
         locations: [
           {
             location: locationOrigin._id,
-            locationType: locationOrigin.locationType,
+            ...locationOrigin,
           },
           {
             location: locationDestination._id,
-            locationType: locationDestination.locationType,
+            ...locationDestination,
           },
         ],
       }

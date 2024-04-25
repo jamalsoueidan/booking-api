@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { LocationTypes } from "~/functions/location";
+import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import {
   GidFormat,
   NumberOrStringType,
@@ -47,6 +47,7 @@ export type ScheduleProductNoticePeriod = z.infer<typeof NoticePeriodZodSchema>;
 const LocationZodSchema = z.object({
   location: StringOrObjectIdType,
   locationType: z.nativeEnum(LocationTypes),
+  originType: z.nativeEnum(LocationOriginTypes),
 });
 
 export type ScheduleProductLocation = z.infer<typeof LocationZodSchema>;

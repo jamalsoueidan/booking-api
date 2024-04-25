@@ -29,11 +29,11 @@ describe("UserScheduleServiceLocationsList", () => {
           locations: [
             {
               location: locationOrigin._id,
-              locationType: locationOrigin.locationType,
+              ...locationOrigin,
             },
             {
               location: locationDestination._id,
-              locationType: locationDestination.locationType,
+              ...locationDestination,
             },
           ],
         }),
@@ -41,7 +41,7 @@ describe("UserScheduleServiceLocationsList", () => {
           locations: [
             {
               location: locationOrigin._id,
-              locationType: locationOrigin.locationType,
+              ...locationOrigin,
             },
           ],
         }),
@@ -56,7 +56,7 @@ describe("UserScheduleServiceLocationsList", () => {
           locations: [
             {
               location: locationOrigin._id,
-              locationType: locationOrigin.locationType,
+              ...locationOrigin,
             },
           ],
         }),
@@ -64,7 +64,7 @@ describe("UserScheduleServiceLocationsList", () => {
           locations: [
             {
               location: locationOrigin._id,
-              locationType: locationOrigin.locationType,
+              ...locationOrigin,
             },
           ],
         }),
