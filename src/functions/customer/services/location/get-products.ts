@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { ScheduleModel } from "~/functions/schedule";
 import { NumberOrString, StringOrObjectId } from "~/library/zod";
 
@@ -21,7 +22,7 @@ export const CustomerLocationServiceGetProducts = async ({
     },
     {
       $match: {
-        "products.locations.location": locationId,
+        "products.locations.location": new mongoose.Types.ObjectId(locationId),
       },
     },
     {
