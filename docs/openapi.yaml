@@ -220,6 +220,28 @@ components:
     CustomerProductBase:
       type: object
       properties:
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: number
+              variants:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    variantId:
+                      type: number
+                    duration:
+                      type: number
+                  required:
+                    - variantId
+                    - duration
+            required:
+              - productId
+              - variants
         productHandle:
           type: string
         productId:
