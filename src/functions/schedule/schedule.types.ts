@@ -52,7 +52,22 @@ const LocationZodSchema = z.object({
 
 export type ScheduleProductLocation = z.infer<typeof LocationZodSchema>;
 
+export const ScheduleProductOptionZodSchema = z.object({
+  productId: GidFormat,
+  variants: z.array(
+    z.object({
+      variantId: GidFormat,
+      duration: NumberOrStringType,
+    })
+  ),
+});
+
+export type ScheduleProductOption = z.infer<
+  typeof ScheduleProductOptionZodSchema
+>;
+
 export const ScheduleProductZodSchema = z.object({
+  options: z.array(ScheduleProductOptionZodSchema).optional(),
   productHandle: z.string(),
   productId: GidFormat,
   variantId: GidFormat,
