@@ -1,5 +1,9 @@
 type: object
 properties:
+  options:
+    type: array
+    items:
+      $ref: "./product-options.yaml"
   productHandle:
     type: string
   productId:
