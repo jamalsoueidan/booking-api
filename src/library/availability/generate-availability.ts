@@ -21,7 +21,6 @@ export type GenerateAvailabilityProps = {
   schedule: Awaited<ReturnType<typeof UserScheduleServiceGetWithCustomer>>;
   shipping?: Awaited<ReturnType<typeof ShippingServiceGet>>;
   fromDate?: string;
-  toDate?: string;
 };
 
 // Function to generate availability
@@ -29,7 +28,6 @@ export const generateAvailability = async ({
   schedule,
   shipping,
   fromDate,
-  toDate,
 }: GenerateAvailabilityProps) => {
   // Sort products by total time
   const sortedProducts = [...schedule.products].sort(

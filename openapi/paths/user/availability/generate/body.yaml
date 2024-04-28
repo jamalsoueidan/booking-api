@@ -6,6 +6,10 @@ properties:
     type: array
     items:
       type: string
+  optionIds:
+    type: object
+    additionalProperties:
+      type: string
   shippingId:
     type: string
 

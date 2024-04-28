@@ -10,7 +10,7 @@ import { LocationTypes } from "~/functions/location";
 
 import { faker } from "@faker-js/faker";
 import { OrderModel } from "~/functions/order/order.models";
-import { SlotWeekDays } from "~/functions/schedule";
+import { ScheduleModel, SlotWeekDays } from "~/functions/schedule";
 import { ShippingModel } from "~/functions/shipping/shipping.model";
 import { arrayElements, createUser } from "~/library/jest/helpers";
 import {
@@ -18,7 +18,10 @@ import {
   getLocationObject,
 } from "~/library/jest/helpers/location";
 import { getOrderObject } from "~/library/jest/helpers/order";
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import {
+  createSchedule,
+  getScheduleObject,
+} from "~/library/jest/helpers/schedule";
 import { createShipping } from "~/library/jest/helpers/shipping";
 import { UserAvailabilityServiceGenerate } from "./generate";
 
@@ -57,11 +60,6 @@ describe("UserAvailabilityServiceGenerate", () => {
 
     const nextDayInUTC = format(
       addDays(todayInUTC, 1),
-      "iiii"
-    ).toLowerCase() as SlotWeekDays;
-
-    const dayAfterNextInUTC = format(
-      addDays(todayInUTC, 2),
       "iiii"
     ).toLowerCase() as SlotWeekDays;
 
@@ -317,5 +315,58 @@ describe("UserAvailabilityServiceGenerate", () => {
     );
 
     expect(slotExists).toBeFalsy();
+  });
+
+  it("should handle product options", async () => {
+    const scheduleObject = getScheduleObject(
+      { customerId },
+      {
+        days,
+        totalProducts: 2,
+        locations: [
+          {
+            location: locationOrigin._id,
+            ...locationOrigin,
+          },
+          {
+            location: locationDestination._id,
+            ...locationDestination,
+          },
+        ],
+      }
+    );
+    scheduleObject.products[0].options = [
+      {
+        productId: 1,
+        variants: [
+          { variantId: 12, duration: 30 },
+          { variantId: 13, duration: 45 },
+        ],
+      },
+    ];
+
+    const schedule = new ScheduleModel(scheduleObject);
+    await schedule.save();
+
+    const productIds = arrayElements(schedule.products, 2).map(
+      (product) => product.productId
+    );
+
+    const fromDate = new Date().toISOString();
+    let result = await UserAvailabilityServiceGenerate(
+      {
+        username: user.username!,
+        locationId: locationOrigin._id,
+      },
+      {
+        productIds,
+        fromDate,
+        optionIds: {
+          1: 12,
+        },
+      }
+    );
+
+    expect(result[0].slots[0].products).toHaveLength(3);
   });
 });

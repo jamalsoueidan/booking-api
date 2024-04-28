@@ -54,7 +54,16 @@ describe("generateAvailability", () => {
         ],
       },
     ],
-    products: [getProductObject()],
+    products: [
+      getProductObject({
+        options: [
+          {
+            productId: 1,
+            variants: [{ variantId: 15, duration: 30 }],
+          },
+        ],
+      }),
+    ],
     customer: {
       fullname: "test",
     },
@@ -114,7 +123,6 @@ describe("generateAvailability", () => {
     availability = await generateAvailability({
       schedule,
       fromDate: randomSlot.from,
-      toDate: randomSlot.to,
     });
 
     //expect(availability.length).toBe(1);
