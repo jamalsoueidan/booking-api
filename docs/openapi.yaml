@@ -2691,6 +2691,10 @@ components:
           type: string
         toDate:
           type: string
+        optionIds:
+          type: object
+          additionalProperties:
+            type: string
         productIds:
           type: array
           items:
@@ -2733,6 +2737,10 @@ components:
         productIds:
           type: array
           items:
+            type: string
+        optionIds:
+          type: object
+          additionalProperties:
             type: string
         shippingId:
           type: string
