@@ -42,12 +42,12 @@ export const UserAvailabilityServiceGenerate = async (
     productIds: body.productIds,
   });
 
-  const optionIs = body.optionIds ? body.optionIds : null;
-  if (optionIs) {
+  const optionIds = body.optionIds ? body.optionIds : null;
+  if (optionIds) {
     schedule.products = schedule.products.reduce((products, currentProduct) => {
       currentProduct.options?.forEach((option) => {
-        if (optionIs.hasOwnProperty(option.productId.toString())) {
-          const requiredVariantId = optionIs[option.productId];
+        if (optionIds.hasOwnProperty(option.productId.toString())) {
+          const requiredVariantId = optionIds[option.productId];
           const variant = option.variants.find(
             (v) => v.variantId === requiredVariantId
           );
