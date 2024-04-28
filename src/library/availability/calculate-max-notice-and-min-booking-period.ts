@@ -1,5 +1,5 @@
 import { addDays, addHours, addMonths, addWeeks } from "date-fns";
-import { Schedule, TimeUnit } from "~/functions/schedule";
+import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
 
 /*
  * Notice Period: The notice period is the amount of advance notice required for booking an appointment.
@@ -13,7 +13,7 @@ import { Schedule, TimeUnit } from "~/functions/schedule";
  * a week, or even longer, depending on the availability and preferences of the service provider.
  */
 export const calculateMaxNoticeAndMinBookingPeriod = (
-  products: Schedule["products"]
+  products: Array<Pick<ScheduleProduct, "noticePeriod" | "bookingPeriod">>
 ) => {
   return products.reduce(
     (acc, curr) => {

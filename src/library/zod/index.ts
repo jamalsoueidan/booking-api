@@ -77,3 +77,18 @@ export const ObjectIdType = z
 export const StringOrObjectIdType = z.union([z.string(), ObjectIdType]);
 
 export type StringOrObjectId = z.infer<typeof StringOrObjectIdType>;
+
+export const ObjectKeysNumberOrString = z
+  .record(NumberOrStringType)
+  .transform((record) => {
+    const transformed: Record<number, number> = {};
+    Object.entries(record).forEach(([key, value]) => {
+      const numericKey = parseInt(key, 10);
+      transformed[numericKey] = value;
+    });
+    return transformed;
+  });
+
+export type ObjectKeysNumberOrStringType = z.infer<
+  typeof ObjectKeysNumberOrString
+>;
