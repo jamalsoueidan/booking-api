@@ -7,8 +7,24 @@ export type UserScheduleServiceGetWithCustomerProps = {
   productIds: Array<ScheduleProduct["productId"]>;
 };
 
-export type UserScheduleServiceGetWithCustomerResponse = Schedule & {
+export type UserScheduleServiceGetWithCustomerResponse = Omit<
+  Schedule,
+  "products"
+> & {
   customer: Pick<User, "fullname">;
+  products: Array<
+    Pick<
+      ScheduleProduct,
+      | "duration"
+      | "productId"
+      | "variantId"
+      | "options"
+      | "breakTime"
+      | "price"
+      | "noticePeriod"
+      | "bookingPeriod"
+    >
+  >;
 };
 
 export const UserScheduleServiceGetWithCustomer = async (

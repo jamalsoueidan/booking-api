@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 import { UserScheduleServiceGetWithCustomer } from "~/functions/user/services/schedule/get-with-customer";
 
 import { CustomerBlockedServiceRange } from "~/functions/customer/services/blocked/range";
-import { ScheduleProduct } from "~/functions/schedule";
+import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
 import { ShippingServiceGet } from "~/functions/shipping/services/get";
 import { findStartAndEndDate } from "~/library/availability/find-start-end-date-in-availability";
 import { generateAvailability } from "~/library/availability/generate-availability";
@@ -19,6 +19,7 @@ export type UserAvailabilityServiceGenerateProps = {
 
 export type UserAvailabilityServiceGenerateBody = {
   productIds: Array<ScheduleProduct["productId"]>;
+  optionIds?: Record<number, number>;
   fromDate: string;
   shippingId?: string | Types.ObjectId;
 };
@@ -40,6 +41,41 @@ export const UserAvailabilityServiceGenerate = async (
     customerId: user.customerId,
     productIds: body.productIds,
   });
+
+  const optionIs = body.optionIds ? body.optionIds : null;
+  if (optionIs) {
+    schedule.products = schedule.products.reduce((products, currentProduct) => {
+      currentProduct.options?.forEach((option) => {
+        if (optionIs.hasOwnProperty(option.productId.toString())) {
+          const requiredVariantId = optionIs[option.productId];
+          const variant = option.variants.find(
+            (v) => v.variantId === requiredVariantId
+          );
+          if (variant) {
+            products.push({
+              variantId: variant.variantId,
+              duration: variant.duration,
+              breakTime: 0,
+              price: {
+                amount: "0.0",
+                currencyCode: "DKK",
+              },
+              productId: option.productId,
+              bookingPeriod: {
+                unit: TimeUnit.MONTHS,
+                value: 12,
+              },
+              noticePeriod: {
+                unit: TimeUnit.HOURS,
+                value: 1,
+              },
+            });
+          }
+        }
+      });
+      return products;
+    }, schedule.products);
+  }
 
   let shipping: Awaited<ReturnType<typeof ShippingServiceGet>> | undefined;
   if (body.shippingId) {
