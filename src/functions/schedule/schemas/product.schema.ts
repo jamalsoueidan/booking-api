@@ -10,21 +10,26 @@ import {
   TimeUnit,
 } from "../schedule.types";
 
-export const OptionMongooseSchema = new mongoose.Schema<ScheduleProductOption>({
-  productId: {
-    type: Number,
-    index: true,
-  },
-  variants: [
-    {
-      variantId: Number,
-      duration: {
-        type: Number,
-        default: 60,
-      },
+export const OptionMongooseSchema = new mongoose.Schema<ScheduleProductOption>(
+  {
+    productId: {
+      type: Number,
+      index: true,
     },
-  ],
-});
+    variants: [
+      {
+        variantId: Number,
+        duration: {
+          type: Number,
+          default: 60,
+        },
+      },
+    ],
+  },
+  {
+    _id: false,
+  }
+);
 
 export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
   {

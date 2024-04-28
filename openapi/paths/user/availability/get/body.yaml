@@ -4,6 +4,10 @@ properties:
     type: string
   toDate:
     type: string
+  optionIds:
+    type: object
+    additionalProperties:
+      type: string
   productIds:
     type: array
     items:
