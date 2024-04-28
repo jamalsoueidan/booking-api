@@ -15,13 +15,18 @@ export const OptionMongooseSchema = new mongoose.Schema<ScheduleProductOption>(
     productId: {
       type: Number,
       index: true,
+      required: true,
     },
     variants: [
       {
-        variantId: Number,
+        variantId: {
+          type: Number,
+          required: true,
+        },
         duration: {
           type: Number,
           default: 60,
+          required: true,
         },
       },
     ],
