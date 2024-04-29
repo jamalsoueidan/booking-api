@@ -9,6 +9,7 @@ import { generateAvailability } from "~/library/availability/generate-availabili
 import { removeBookedSlots } from "~/library/availability/remove-booked-slots";
 import { StringOrObjectId } from "~/library/zod";
 
+import { NotFoundError } from "~/library/handler";
 import { UserServiceGetCustomerId } from "../user/get-customer-id";
 import { UserAvailabilityServiceGetOrders } from "./get-orders";
 
@@ -19,7 +20,7 @@ export type UserAvailabilityServiceGenerateProps = {
 
 export type UserAvailabilityServiceGenerateBody = {
   productIds: Array<ScheduleProduct["productId"]>;
-  optionIds?: Record<number, number>;
+  optionIds?: Record<number, Record<number, number>>;
   fromDate: string;
   shippingId?: string | Types.ObjectId;
 };
@@ -44,32 +45,69 @@ export const UserAvailabilityServiceGenerate = async (
 
   const optionIds = body.optionIds ? body.optionIds : null;
   if (optionIds) {
-    schedule.products = schedule.products.reduce((products, currentProduct) => {
-      currentProduct.options?.forEach((currentProductOption) => {
-        if (
-          optionIds.hasOwnProperty(currentProductOption.productId.toString())
-        ) {
-          const requiredVariantId = optionIds[currentProductOption.productId];
-          const variant = currentProductOption.variants.find(
-            (v) => v.variantId === requiredVariantId
-          );
-          if (variant) {
-            products.push({
-              variantId: variant.variantId,
-              duration: variant.duration,
-              productId: currentProductOption.productId,
-              breakTime: 0,
-              bookingPeriod: {
-                unit: TimeUnit.MONTHS,
-                value: 12,
-              },
-              noticePeriod: {
-                unit: TimeUnit.HOURS,
-                value: 1,
-              },
-              parentId: currentProduct.productId,
-            });
-          }
+    schedule.products = schedule.products.reduce((products, parentProduct) => {
+      parentProduct.options?.forEach((productOption) => {
+        const option = optionIds[parentProduct.productId];
+        if (!option) {
+          throw new NotFoundError([
+            {
+              path: ["optionIds", parentProduct.productId],
+              message: "MISSING_PARENT_ID",
+              code: "custom",
+            },
+          ]);
+        }
+
+        const variantId = option[productOption.productId];
+        if (!variantId) {
+          throw new NotFoundError([
+            {
+              path: [
+                "optionIds",
+                parentProduct.productId,
+                productOption.productId,
+              ],
+              message: `MISSING_PRODUCT_ID ${productOption.productId} in ${parentProduct.productId}`,
+              code: "custom",
+            },
+          ]);
+        }
+
+        const variant = productOption.variants.find(
+          (v) => v.variantId === variantId
+        );
+
+        if (!variant) {
+          throw new NotFoundError([
+            {
+              path: [
+                "optionIds",
+                parentProduct.productId,
+                productOption.productId,
+                variantId,
+              ],
+              message: "INCORRECT_VARIANT_ID",
+              code: "custom",
+            },
+          ]);
+        }
+
+        if (variant) {
+          products.push({
+            variantId: variant.variantId,
+            duration: variant.duration,
+            productId: productOption.productId,
+            breakTime: 0,
+            bookingPeriod: {
+              unit: TimeUnit.MONTHS,
+              value: 12,
+            },
+            noticePeriod: {
+              unit: TimeUnit.HOURS,
+              value: 1,
+            },
+            parentId: parentProduct.productId,
+          });
         }
       });
       return products;

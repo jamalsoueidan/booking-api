@@ -38,28 +38,7 @@ export const OptionMongooseSchema = new mongoose.Schema<ScheduleProductOption>(
 
 export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
   {
-    options: {
-      type: [OptionMongooseSchema],
-      default: () => [
-        {
-          productId: 9180311257415,
-          variants: [
-            {
-              variantId: 49454466007367,
-              duration: 30,
-            },
-            {
-              variantId: 49454466040135,
-              duration: 45,
-            },
-            {
-              variantId: 49454474494279,
-              duration: 60,
-            },
-          ],
-        },
-      ],
-    },
+    options: [OptionMongooseSchema],
     productHandle: {
       type: String,
       index: true,

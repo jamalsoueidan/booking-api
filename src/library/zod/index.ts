@@ -78,15 +78,24 @@ export const StringOrObjectIdType = z.union([z.string(), ObjectIdType]);
 
 export type StringOrObjectId = z.infer<typeof StringOrObjectIdType>;
 
+const ProductVariantSchema = z.object({
+  productId: z.number(),
+  variantId: z.number(),
+});
+
 export const ObjectKeysNumberOrString = z
-  .record(NumberOrStringType)
-  .transform((record) => {
-    const transformed: Record<number, number> = {};
-    Object.entries(record).forEach(([key, value]) => {
-      const numericKey = parseInt(key, 10);
-      transformed[numericKey] = value;
+  .record(ProductVariantSchema)
+  .transform((originalRecord) => {
+    const transformedRecord: Record<number, typeof ProductVariantSchema._type> =
+      {};
+    Object.keys(originalRecord).forEach((key) => {
+      const numericKey = parseInt(key, 10); // Convert the key from string to number
+      if (!isNaN(numericKey)) {
+        // Check if the conversion result is a valid number
+        transformedRecord[numericKey] = originalRecord[key];
+      }
     });
-    return transformed;
+    return transformedRecord;
   });
 
 export type ObjectKeysNumberOrStringType = z.infer<
