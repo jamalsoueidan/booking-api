@@ -104,9 +104,9 @@ export const generateAvailability = async ({
             });
 
             slotProducts.push({
+              parentId: product.parentId,
               productId: product.productId,
               variantId: product.variantId,
-              price: product.price,
               from: productStartTime,
               to: productEndTime,
               breakTime: product.breakTime,
