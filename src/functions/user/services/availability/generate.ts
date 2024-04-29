@@ -45,22 +45,20 @@ export const UserAvailabilityServiceGenerate = async (
   const optionIds = body.optionIds ? body.optionIds : null;
   if (optionIds) {
     schedule.products = schedule.products.reduce((products, currentProduct) => {
-      currentProduct.options?.forEach((option) => {
-        if (optionIds.hasOwnProperty(option.productId.toString())) {
-          const requiredVariantId = optionIds[option.productId];
-          const variant = option.variants.find(
+      currentProduct.options?.forEach((currentProductOption) => {
+        if (
+          optionIds.hasOwnProperty(currentProductOption.productId.toString())
+        ) {
+          const requiredVariantId = optionIds[currentProductOption.productId];
+          const variant = currentProductOption.variants.find(
             (v) => v.variantId === requiredVariantId
           );
           if (variant) {
             products.push({
               variantId: variant.variantId,
               duration: variant.duration,
+              productId: currentProductOption.productId,
               breakTime: 0,
-              price: {
-                amount: "0.0",
-                currencyCode: "DKK",
-              },
-              productId: option.productId,
               bookingPeriod: {
                 unit: TimeUnit.MONTHS,
                 value: 12,
@@ -69,6 +67,7 @@ export const UserAvailabilityServiceGenerate = async (
                 unit: TimeUnit.HOURS,
                 value: 1,
               },
+              parentId: currentProduct.productId,
             });
           }
         }

@@ -20,10 +20,9 @@ export type UserScheduleServiceGetWithCustomerResponse = Omit<
       | "variantId"
       | "options"
       | "breakTime"
-      | "price"
       | "noticePeriod"
       | "bookingPeriod"
-    >
+    > & { parentId?: number }
   >;
 };
 

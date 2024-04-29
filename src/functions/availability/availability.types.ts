@@ -5,10 +5,11 @@ import { User } from "../user/user.types";
 export type AvailabilityProducts = Array<
   Pick<
     ScheduleProduct,
-    "productId" | "variantId" | "price" | "breakTime" | "duration"
+    "productId" | "variantId" | "breakTime" | "duration"
   > & {
     from: Date;
     to: Date;
+    parentId?: number;
   }
 >;
 
