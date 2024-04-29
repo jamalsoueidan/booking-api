@@ -29,10 +29,7 @@ export const generateAvailability = async ({
   shipping,
   fromDate,
 }: GenerateAvailabilityProps) => {
-  // Sort products by total time
-  const sortedProducts = [...schedule.products].sort(
-    (a, b) => b.duration + b.breakTime - (a.duration + a.breakTime)
-  );
+  const sortedProducts = schedule.products;
 
   const { bookingPeriod, noticePeriod } = calculateMaxNoticeAndMinBookingPeriod(
     schedule.products
