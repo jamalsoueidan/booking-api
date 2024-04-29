@@ -9,7 +9,7 @@ export type UserAvailabilityServiceGenerateProps = {
 
 export type UserAvailabilityServiceGenerateBody = {
   productIds: Array<ScheduleProduct["productId"]>;
-  optionIds?: Record<number, number>;
+  optionIds?: Record<number, Record<number, number>>;
   fromDate: string;
   toDate: string;
   shippingId?: StringOrObjectId;

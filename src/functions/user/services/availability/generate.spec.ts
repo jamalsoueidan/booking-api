@@ -326,11 +326,13 @@ describe("UserAvailabilityServiceGenerate", () => {
         locations: [
           {
             location: locationOrigin._id,
-            ...locationOrigin,
+            locationType: locationOrigin.locationType,
+            originType: locationOrigin.originType,
           },
           {
             location: locationDestination._id,
-            ...locationDestination,
+            locationType: locationDestination.locationType,
+            originType: locationDestination.originType,
           },
         ],
       }
@@ -341,6 +343,13 @@ describe("UserAvailabilityServiceGenerate", () => {
         variants: [
           { variantId: 12, duration: 30 },
           { variantId: 13, duration: 45 },
+        ],
+      },
+      {
+        productId: 2,
+        variants: [
+          { variantId: 14, duration: 30 },
+          { variantId: 15, duration: 45 },
         ],
       },
     ];
@@ -362,11 +371,14 @@ describe("UserAvailabilityServiceGenerate", () => {
         productIds,
         fromDate,
         optionIds: {
-          1: 12,
+          [scheduleObject.products[0].productId]: {
+            1: 12,
+            2: 14,
+          },
         },
       }
     );
 
-    expect(result[0].slots[0].products).toHaveLength(3);
+    expect(result[0].slots[0].products).toHaveLength(4);
   });
 });
