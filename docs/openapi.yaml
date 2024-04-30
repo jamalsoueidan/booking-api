@@ -2695,10 +2695,9 @@ components:
         shippingId:
           type: string
       required:
-        - startDate
-        - productIds
         - fromDate
         - toDate
+        - productIds
     UserAvailabilityGeResponse:
       type: object
       properties:
@@ -2740,7 +2739,7 @@ components:
         shippingId:
           type: string
       required:
-        - startDate
+        - fromDate
         - productIds
     UserAvailabilityGenerateResponse:
       type: object
