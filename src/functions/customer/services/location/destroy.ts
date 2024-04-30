@@ -1,9 +1,9 @@
 import { LocationModel } from "~/functions/location";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 import { CustomerProductServiceRemoveLocationFromAll } from "../product/remove-location-from-all";
 
 export type CustomerLocationServiceDestroyProps = {
-  locationId: StringOrObjectId;
+  locationId: StringOrObjectIdType;
   customerId: number;
 };
 

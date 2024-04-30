@@ -1,6 +1,6 @@
 import { LocationModel } from "~/functions/location";
 import { NotFoundError } from "~/library/handler";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 import { UserServiceGet } from "./user/get";
 
 export const UserLocationServiceGetOne = async ({
@@ -8,7 +8,7 @@ export const UserLocationServiceGetOne = async ({
   locationId,
 }: {
   username: string;
-  locationId: StringOrObjectId;
+  locationId: StringOrObjectIdType;
 }) => {
   const user = await UserServiceGet({ username });
   return LocationModel.findOne({

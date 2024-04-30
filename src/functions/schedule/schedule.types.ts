@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { LocationOriginTypes, LocationTypes } from "~/functions/location";
-import { GidFormat, NumberOrString, StringOrObjectIdType } from "~/library/zod";
+import { GidFormat, NumberOrString, StringOrObjectId } from "~/library/zod";
 
 export enum TimeUnit {
   HOURS = "hours",
@@ -41,7 +41,7 @@ const NoticePeriodZodSchema = z.object({
 export type ScheduleProductNoticePeriod = z.infer<typeof NoticePeriodZodSchema>;
 
 const LocationZodSchema = z.object({
-  location: StringOrObjectIdType,
+  location: StringOrObjectId,
   locationType: z.nativeEnum(LocationTypes),
   originType: z.nativeEnum(LocationOriginTypes),
 });
@@ -185,7 +185,7 @@ export const ScheduleSlotsZodSchema = z
   });
 
 export const ScheduleZodSchema = z.object({
-  _id: StringOrObjectIdType,
+  _id: StringOrObjectId,
   name: z.string(),
   customerId: GidFormat,
   slots: ScheduleSlotsZodSchema,

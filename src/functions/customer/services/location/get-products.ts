@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import { ScheduleModel } from "~/functions/schedule";
-import { NumberOrStringType, StringOrObjectId } from "~/library/zod";
+import { NumberOrStringType, StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerLocationServiceGetProductsProps = {
   customerId: NumberOrStringType;
-  locationId: StringOrObjectId;
+  locationId: StringOrObjectIdType;
 };
 
 export const CustomerLocationServiceGetProducts = async ({

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BooleanOrStringType, GidFormat, NumberOrString } from "~/library/zod";
+import { BooleanOrString, GidFormat, NumberOrString } from "~/library/zod";
 
 export enum LocationTypes {
   ORIGIN = "origin",
@@ -11,7 +11,7 @@ export enum LocationOriginTypes {
   COMMERCIAL = "commercial",
 }
 export const LocationZodSchema = z.object({
-  isDefault: BooleanOrStringType,
+  isDefault: BooleanOrString,
   locationType: z.nativeEnum(LocationTypes),
   customerId: GidFormat,
   name: z.string(),

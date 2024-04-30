@@ -1,10 +1,10 @@
 import { PayoutModel } from "~/functions/payout";
 import { NotFoundError } from "~/library/handler";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerPayoutServiceGetProps = {
   customerId: number;
-  payoutId: StringOrObjectId;
+  payoutId: StringOrObjectIdType;
 };
 
 export const CustomerPayoutServiceGet = async ({

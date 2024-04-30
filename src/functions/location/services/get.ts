@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import { NotFoundError } from "~/library/handler";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 import { LocationModel } from "../location.model";
 
 export type LocationServiceGetProps = {
-  locationId: StringOrObjectId;
+  locationId: StringOrObjectIdType;
 };
 
 export const LocationServiceGet = async ({

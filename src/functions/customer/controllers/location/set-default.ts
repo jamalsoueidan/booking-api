@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { LocationZodSchema } from "~/functions/location/location.types";
 import { _ } from "~/library/handler";
-import { StringOrObjectIdType } from "~/library/zod";
+import { StringOrObjectId } from "~/library/zod";
 import { CustomerLocationServiceSetDefault } from "../../services/location/set-default";
 
 export type CustomerLocationControllerSetDefaultRequest = {
@@ -9,7 +9,7 @@ export type CustomerLocationControllerSetDefaultRequest = {
 };
 
 export const LocationServiceSetDefaultQuerySchema = z.object({
-  locationId: StringOrObjectIdType,
+  locationId: StringOrObjectId,
   customerId: LocationZodSchema.shape.customerId,
 });
 

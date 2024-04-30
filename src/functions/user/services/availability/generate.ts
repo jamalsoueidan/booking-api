@@ -7,7 +7,7 @@ import { ShippingServiceGet } from "~/functions/shipping/services/get";
 import { findStartAndEndDate } from "~/library/availability/find-start-end-date-in-availability";
 import { generateAvailability } from "~/library/availability/generate-availability";
 import { removeBookedSlots } from "~/library/availability/remove-booked-slots";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 
 import { NotFoundError } from "~/library/handler";
 import { UserServiceGetCustomerId } from "../user/get-customer-id";
@@ -15,7 +15,7 @@ import { UserAvailabilityServiceGetOrders } from "./get-orders";
 
 export type UserAvailabilityServiceGenerateProps = {
   username: string;
-  locationId: StringOrObjectId;
+  locationId: StringOrObjectIdType;
 };
 
 export type UserAvailabilityServiceGenerateBody = {

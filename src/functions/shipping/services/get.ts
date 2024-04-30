@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import { ShippingModel } from "~/functions/shipping/shipping.model";
 import { NotFoundError } from "~/library/handler";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 
 export type ShippingServiceGetProps = {
-  shippingId: StringOrObjectId;
+  shippingId: StringOrObjectIdType;
 };
 
 export const ShippingServiceGet = ({ shippingId }: ShippingServiceGetProps) => {

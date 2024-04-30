@@ -1,7 +1,7 @@
 import mongoose, { PipelineStage } from "mongoose";
 import { Schedule, ScheduleModel } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 import { UserModel } from "../../user.model";
 
 export type UserProductsServiceListProductsByLocationReturn = Pick<
@@ -12,7 +12,7 @@ export type UserProductsServiceListProductsByLocationReturn = Pick<
 export type UserProductsServiceListProductsByLocationProps = {
   username: string;
   productHandle: string | string[];
-  locationId: StringOrObjectId;
+  locationId: StringOrObjectIdType;
 };
 
 export const UserProductsServiceListProductsByLocation = async ({

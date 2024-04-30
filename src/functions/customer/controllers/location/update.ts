@@ -2,7 +2,7 @@ import { z } from "zod";
 import { LocationZodSchema } from "~/functions/location/location.types";
 
 import { _ } from "~/library/handler";
-import { StringOrObjectIdType } from "~/library/zod";
+import { StringOrObjectId } from "~/library/zod";
 import { CustomerLocationServiceUpdate } from "../../services/location/update";
 
 // should be PATCH and UPSERT
@@ -21,7 +21,7 @@ export const CustomerLocationControllerUpdateBodySchema =
   }).strip();
 
 export const CustomerLocationControllerUpdateQuerySchema = z.object({
-  locationId: StringOrObjectIdType,
+  locationId: StringOrObjectId,
   customerId: LocationZodSchema.shape.customerId,
 });
 

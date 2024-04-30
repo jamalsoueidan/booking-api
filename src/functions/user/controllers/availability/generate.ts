@@ -4,7 +4,7 @@ import { _ } from "~/library/handler";
 import {
   NumberOrString,
   ObjectKeysNumberOrStringSchema,
-  StringOrObjectIdType,
+  StringOrObjectId,
 } from "~/library/zod";
 import { UserAvailabilityServiceGenerate } from "../../services/availability/generate";
 
@@ -15,7 +15,7 @@ export type UserAvailabilityControllerGenerateRequest = {
 
 const QuerySchema = z.object({
   username: z.string(),
-  locationId: StringOrObjectIdType,
+  locationId: StringOrObjectId,
 });
 
 const BodySchema = z.object({

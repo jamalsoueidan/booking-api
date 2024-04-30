@@ -2,7 +2,7 @@ import { z } from "zod";
 import { ScheduleProductZodSchema } from "~/functions/schedule/schedule.types";
 
 import { _ } from "~/library/handler";
-import { GidFormat, StringOrObjectIdType } from "~/library/zod";
+import { GidFormat, StringOrObjectId } from "~/library/zod";
 import { CustomerProductServiceAdd } from "../../services/product/add";
 import { CustomerProductServiceUpdate } from "../../services/product/update";
 
@@ -23,7 +23,7 @@ const CustomerProductControllerAddBodySchema = ScheduleProductZodSchema.omit({
   noticePeriod: true,
 })
   .extend({
-    scheduleId: StringOrObjectIdType,
+    scheduleId: StringOrObjectId,
   })
   .strip();
 

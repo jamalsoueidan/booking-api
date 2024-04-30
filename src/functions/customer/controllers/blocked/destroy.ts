@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
-import { NumberOrString, StringOrObjectIdType } from "~/library/zod";
+import { NumberOrString, StringOrObjectId } from "~/library/zod";
 import { CustomerBlockedServiceDestroy } from "../../services/blocked/destroy";
 
 export type CustomerBlockedControllerDestroyRequest = {
@@ -9,7 +9,7 @@ export type CustomerBlockedControllerDestroyRequest = {
 
 export const CustomerBlockedControllerDestroySchema = z.object({
   customerId: NumberOrString,
-  blockedId: StringOrObjectIdType,
+  blockedId: StringOrObjectId,
 });
 
 export type CustomerBlockedControllerDestroyResponse = Awaited<

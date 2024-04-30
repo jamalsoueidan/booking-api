@@ -1,10 +1,10 @@
 import { ScheduleProduct } from "~/functions/schedule";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 import { UserAvailabilityServiceGenerate } from "./generate";
 
 export type UserAvailabilityServiceGenerateProps = {
   username: string;
-  locationId: StringOrObjectId;
+  locationId: StringOrObjectIdType;
 };
 
 export type UserAvailabilityServiceGenerateBody = {
@@ -12,7 +12,7 @@ export type UserAvailabilityServiceGenerateBody = {
   optionIds?: Record<number, Record<number, number>>;
   fromDate: string;
   toDate: string;
-  shippingId?: StringOrObjectId;
+  shippingId?: StringOrObjectIdType;
 };
 
 export const UserAvailabilityServiceGet = async (

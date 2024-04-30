@@ -7,7 +7,7 @@ export const objectIdValidator = z
     message: "Invalid ObjectId",
   });
 
-export const BooleanOrStringType = z
+export const BooleanOrString = z
   .union([z.boolean(), z.string()])
   .transform((value) => {
     if (typeof value === "string" && value === "true") {
@@ -74,9 +74,9 @@ export const ObjectIdType = z
   })
   .transform((value) => new mongoose.Types.ObjectId(value));
 
-export const StringOrObjectIdType = z.union([z.string(), ObjectIdType]);
+export const StringOrObjectId = z.union([z.string(), ObjectIdType]);
 
-export type StringOrObjectId = z.infer<typeof StringOrObjectIdType>;
+export type StringOrObjectIdType = z.infer<typeof StringOrObjectId>;
 
 const NestedNumericObjectSchema = z.record(z.record(NumberOrString));
 
