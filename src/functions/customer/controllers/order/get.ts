@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
-import { NumberOrStringType } from "~/library/zod";
+import { NumberOrString } from "~/library/zod";
 import { CustomerOrderServiceGet } from "../../services/order/get";
 
 export type CustomerOrderControllerGetRequest = {
@@ -8,8 +8,8 @@ export type CustomerOrderControllerGetRequest = {
 };
 
 export const CustomerOrderControllerGetSchema = z.object({
-  customerId: NumberOrStringType,
-  orderId: NumberOrStringType,
+  customerId: NumberOrString,
+  orderId: NumberOrString,
 });
 
 export type CustomerOrderControllerGetResponse = Awaited<

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { NumberOrStringType, ObjectIdType } from "~/library/zod";
+import { NumberOrString, ObjectIdType } from "~/library/zod";
 
 export enum PayoutLogReferenceType {
   SHIPPING = "Shipping",
@@ -9,7 +9,7 @@ export enum PayoutLogReferenceType {
 export const PayoutLogZodSchema = z.object({
   customerId: z.number(),
   referenceType: z.nativeEnum(PayoutLogReferenceType),
-  referenceId: z.union([NumberOrStringType, ObjectIdType]),
+  referenceId: z.union([NumberOrString, ObjectIdType]),
   orderId: z.number(),
   orderCreatedAt: z.number().optional(),
   payout: ObjectIdType,

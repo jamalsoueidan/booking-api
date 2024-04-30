@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { GidFormat, NumberOrStringType } from "~/library/zod";
+import { GidFormat, NumberOrString } from "~/library/zod";
 
 export enum Professions {
   MAKEUP_ARTIST = "makeup_artist",
@@ -46,7 +46,7 @@ export const UserZodSchema = z.object({
   _id: z.string(),
   customerId: GidFormat,
   isBusiness: z.boolean(),
-  yearsExperience: NumberOrStringType.optional(),
+  yearsExperience: NumberOrString.optional(),
   professions: z
     .array(z.nativeEnum(Professions))
     .or(z.nativeEnum(Professions))

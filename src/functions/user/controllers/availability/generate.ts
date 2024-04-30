@@ -2,8 +2,8 @@ import { z } from "zod";
 import { _ } from "~/library/handler";
 
 import {
-  NumberOrStringType,
-  ObjectKeysNumberOrString,
+  NumberOrString,
+  ObjectKeysNumberOrStringSchema,
   StringOrObjectIdType,
 } from "~/library/zod";
 import { UserAvailabilityServiceGenerate } from "../../services/availability/generate";
@@ -19,8 +19,8 @@ const QuerySchema = z.object({
 });
 
 const BodySchema = z.object({
-  productIds: z.array(NumberOrStringType),
-  optionIds: ObjectKeysNumberOrString.optional(),
+  productIds: z.array(NumberOrString),
+  optionIds: ObjectKeysNumberOrStringSchema.optional(),
   fromDate: z.string(),
   shippingId: z.union([z.string(), z.undefined()]),
 });

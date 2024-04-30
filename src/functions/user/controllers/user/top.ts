@@ -1,7 +1,7 @@
 import { _ } from "~/library/handler";
 
 import { z } from "zod";
-import { NumberOrStringType } from "~/library/zod";
+import { NumberOrString } from "~/library/zod";
 import { UserServiceTop } from "../../services/user/top";
 
 export type UserControllerTopRequest = {
@@ -9,8 +9,8 @@ export type UserControllerTopRequest = {
 };
 
 export const UserControllerTopSchema = z.object({
-  limit: NumberOrStringType.optional(),
-  page: NumberOrStringType.optional(),
+  limit: NumberOrString.optional(),
+  page: NumberOrString.optional(),
 });
 
 export type UserControllerTopResponse = Awaited<

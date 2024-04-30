@@ -1,7 +1,7 @@
 import { _ } from "~/library/handler";
 
 import { z } from "zod";
-import { NumberOrStringType, StringOrObjectIdType } from "~/library/zod";
+import { NumberOrString, StringOrObjectIdType } from "~/library/zod";
 import { ShippingServiceCreate } from "../services/create";
 import { ShippingZodSchema } from "../shipping.types";
 
@@ -12,7 +12,7 @@ export type ShippingControllerCreateRequest = {
 export const ShippingControllerCreateSchema = z
   .object({
     locationId: StringOrObjectIdType,
-    customerId: NumberOrStringType,
+    customerId: NumberOrString,
   })
   .merge(ShippingZodSchema.pick({ destination: true }));
 

@@ -1,7 +1,7 @@
 import { _ } from "~/library/handler";
 
 import { z } from "zod";
-import { NumberOrStringType } from "~/library/zod";
+import { NumberOrString } from "~/library/zod";
 import { UserProductsServiceGetUsersVariant } from "../services/get-users-by-variant";
 
 export type ProductsControllerGetUsersByVariantRequest = {
@@ -9,10 +9,10 @@ export type ProductsControllerGetUsersByVariantRequest = {
 };
 
 export const ProductsControllerGetUsersByVariantSchema = z.object({
-  productId: NumberOrStringType,
+  productId: NumberOrString,
   nextCursor: z.string().optional(),
-  limit: NumberOrStringType.optional(),
-  variantId: NumberOrStringType.optional(),
+  limit: NumberOrString.optional(),
+  variantId: NumberOrString.optional(),
 });
 
 export type ProductsControllerGetUsersByVariantResponse = Awaited<

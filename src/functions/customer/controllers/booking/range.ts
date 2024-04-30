@@ -1,7 +1,7 @@
 import { _ } from "~/library/handler";
 
 import { z } from "zod";
-import { NumberOrStringType } from "~/library/zod";
+import { NumberOrString } from "~/library/zod";
 import { CustomerBookingServiceRange } from "../../services/booking/range";
 
 export type CustomerBookingControllerRangeRequest = {
@@ -9,7 +9,7 @@ export type CustomerBookingControllerRangeRequest = {
 };
 
 export const CustomerBookingControllerRangeSchema = z.object({
-  customerId: NumberOrStringType,
+  customerId: NumberOrString,
   start: z.string(),
   end: z.string(),
 });

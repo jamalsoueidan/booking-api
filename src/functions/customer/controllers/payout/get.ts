@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
-import { NumberOrStringType, ObjectIdType } from "~/library/zod";
+import { NumberOrString, ObjectIdType } from "~/library/zod";
 import { CustomerPayoutServiceGet } from "../../services/payout/get";
 
 export type CustomerPayoutControllerGetRequest = {
@@ -8,7 +8,7 @@ export type CustomerPayoutControllerGetRequest = {
 };
 
 export const CustomerPayoutControllerGetSchema = z.object({
-  customerId: NumberOrStringType,
+  customerId: NumberOrString,
   payoutId: ObjectIdType,
 });
 

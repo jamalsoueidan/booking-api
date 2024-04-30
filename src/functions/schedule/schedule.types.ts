@@ -1,10 +1,6 @@
 import { z } from "zod";
 import { LocationOriginTypes, LocationTypes } from "~/functions/location";
-import {
-  GidFormat,
-  NumberOrStringType,
-  StringOrObjectIdType,
-} from "~/library/zod";
+import { GidFormat, NumberOrString, StringOrObjectIdType } from "~/library/zod";
 
 export enum TimeUnit {
   HOURS = "hours",
@@ -24,7 +20,7 @@ export enum SlotWeekDays {
 }
 
 const BookingPeriodZodSchema = z.object({
-  value: NumberOrStringType,
+  value: NumberOrString,
   unit: z.enum([TimeUnit.WEEKS, TimeUnit.MONTHS]),
 });
 
@@ -33,7 +29,7 @@ export type ScheduleProductBookingPeriod = z.infer<
 >;
 
 const NoticePeriodZodSchema = z.object({
-  value: NumberOrStringType,
+  value: NumberOrString,
   unit: z.enum([
     TimeUnit.HOURS,
     TimeUnit.DAYS,
@@ -57,7 +53,7 @@ export const ScheduleProductOptionZodSchema = z.object({
   variants: z.array(
     z.object({
       variantId: GidFormat,
-      duration: NumberOrStringType,
+      duration: NumberOrString,
     })
   ),
 });
@@ -87,8 +83,8 @@ export const ScheduleProductZodSchema = z.object({
     })
     .optional(),
   description: z.string().optional(),
-  duration: NumberOrStringType,
-  breakTime: NumberOrStringType,
+  duration: NumberOrString,
+  breakTime: NumberOrString,
   noticePeriod: NoticePeriodZodSchema,
   bookingPeriod: BookingPeriodZodSchema,
 });

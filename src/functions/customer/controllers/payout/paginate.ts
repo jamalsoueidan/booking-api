@@ -1,7 +1,7 @@
 import { _ } from "~/library/handler";
 
 import { z } from "zod";
-import { NumberOrStringType } from "~/library/zod";
+import { NumberOrString } from "~/library/zod";
 import { CustomerPayoutServicePaginate } from "../../services/payout/paginate";
 
 export type CustomerPayoutControllerPaginateRequest = {
@@ -14,10 +14,10 @@ enum SortOrder {
 }
 
 export const CustomerPayoutControllerPaginateSchema = z.object({
-  page: NumberOrStringType,
-  limit: NumberOrStringType.optional(),
+  page: NumberOrString,
+  limit: NumberOrString.optional(),
   sortOrder: z.nativeEnum(SortOrder).optional(),
-  customerId: NumberOrStringType,
+  customerId: NumberOrString,
 });
 
 export type CustomerPayoutControllerPaginateResponse = Awaited<

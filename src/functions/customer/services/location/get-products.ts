@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import { ScheduleModel } from "~/functions/schedule";
-import { NumberOrString, StringOrObjectId } from "~/library/zod";
+import { NumberOrStringType, StringOrObjectId } from "~/library/zod";
 
 export type CustomerLocationServiceGetProductsProps = {
-  customerId: NumberOrString;
+  customerId: NumberOrStringType;
   locationId: StringOrObjectId;
 };
 

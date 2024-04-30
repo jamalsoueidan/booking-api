@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
-import { NumberOrStringType, StringOrObjectIdType } from "~/library/zod";
+import { NumberOrString, StringOrObjectIdType } from "~/library/zod";
 import { CustomerBlockedServiceList } from "../../services/blocked/list";
 
 export type CustomerBlockedControllerListRequest = {
@@ -8,8 +8,8 @@ export type CustomerBlockedControllerListRequest = {
 };
 
 export const CustomerBlockedControllerListSchema = z.object({
-  customerId: NumberOrStringType,
-  limit: NumberOrStringType.optional(),
+  customerId: NumberOrString,
+  limit: NumberOrString.optional(),
   nextCursor: StringOrObjectIdType.optional(),
 });
 
