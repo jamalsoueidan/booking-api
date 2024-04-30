@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
 
-import { NumberOrStringType } from "~/library/zod";
+import { NumberOrString } from "~/library/zod";
 import { UserProductsServiceGetUsersImage } from "../services/get-users-image";
 
 export type ProductsControllerGetUsersImageRequest = {
@@ -9,7 +9,7 @@ export type ProductsControllerGetUsersImageRequest = {
 };
 
 export const ProductsControllerGetUsersImageBodySchema = z.object({
-  productIds: z.array(NumberOrStringType),
+  productIds: z.array(NumberOrString),
 });
 
 export type ProductsControllerGetUsersImageResponse = Awaited<

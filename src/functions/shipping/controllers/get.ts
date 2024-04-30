@@ -1,7 +1,7 @@
 import { _ } from "~/library/handler";
 
 import { z } from "zod";
-import { StringOrObjectIdType } from "~/library/zod";
+import { StringOrObjectId } from "~/library/zod";
 import { ShippingServiceGet } from "../services/get";
 
 export type ShippingControllerGetRequest = {
@@ -9,7 +9,7 @@ export type ShippingControllerGetRequest = {
 };
 
 export const ShippingControllerGetSchema = z.object({
-  shippingId: StringOrObjectIdType,
+  shippingId: StringOrObjectId,
 });
 
 export type ShippingControllerGetResponse = Awaited<

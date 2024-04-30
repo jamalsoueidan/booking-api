@@ -5,7 +5,7 @@ import {
 } from "~/functions/schedule/schedule.types";
 
 import { _ } from "~/library/handler";
-import { NumberOrStringType } from "~/library/zod";
+import { NumberOrString } from "~/library/zod";
 import { CustomerProductServiceCreateVariant } from "../../services/product/create-variant";
 
 export type CustomerProductControllerCreateVariantRequest = {
@@ -19,8 +19,8 @@ const CustomerProductControllerCreateVariantQuerySchema = z.object({
 });
 
 const CustomerProductControllerCreateVariantBodySchema = z.object({
-  price: NumberOrStringType,
-  compareAtPrice: NumberOrStringType,
+  price: NumberOrString,
+  compareAtPrice: NumberOrString,
 });
 
 export type CustomerProductControllerCreateVariantResponse = Awaited<

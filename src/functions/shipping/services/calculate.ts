@@ -1,12 +1,12 @@
 import { LocationServiceGet } from "~/functions/location/services/get";
 import { LocationServiceGetTravelTime } from "~/functions/location/services/get-travel-time";
 import { NotFoundError } from "~/library/handler";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 import { Shipping } from "../shipping.types";
 import { ShippingServiceCalculateCost } from "./calculate-cost";
 
 export type ShippingServiceCalculateProps = {
-  locationId: StringOrObjectId;
+  locationId: StringOrObjectIdType;
 } & Pick<Shipping, "destination">;
 
 export const ShippingServiceCalculate = async (

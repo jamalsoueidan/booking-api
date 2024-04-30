@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 import { ILocation, LocationModel } from "~/functions/location";
 import { LocationServiceGetCoordinates } from "~/functions/location/services/get-coordinates";
 import { NotFoundError } from "~/library/handler";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerLocationUpdateFilterProps = {
-  locationId: StringOrObjectId;
+  locationId: StringOrObjectIdType;
   customerId: number;
 };
 

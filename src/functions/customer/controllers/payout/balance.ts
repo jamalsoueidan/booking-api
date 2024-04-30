@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
-import { NumberOrStringType } from "~/library/zod";
+import { NumberOrString } from "~/library/zod";
 import { CustomerPayoutServiceBalance } from "../../services/payout/balance";
 
 export type CustomerPayoutControllerBalanceRequest = {
@@ -8,7 +8,7 @@ export type CustomerPayoutControllerBalanceRequest = {
 };
 
 export const CustomerPayoutControllerBalanceSchema = z.object({
-  customerId: NumberOrStringType,
+  customerId: NumberOrString,
 });
 
 export type CustomerPayoutControllerBalanceResponse = Awaited<

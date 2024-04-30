@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { LocationZodSchema } from "~/functions/location/location.types";
 import { _ } from "~/library/handler";
-import { StringOrObjectIdType } from "~/library/zod";
+import { StringOrObjectId } from "~/library/zod";
 import { CustomerLocationServiceGetProducts } from "../../services/location/get-products";
 
 export type CustomerLocationControllerGetProductsRequest = {
@@ -10,7 +10,7 @@ export type CustomerLocationControllerGetProductsRequest = {
 };
 
 export const LocationServiceGetProductsQuerySchema = z.object({
-  locationId: StringOrObjectIdType,
+  locationId: StringOrObjectId,
   customerId: LocationZodSchema.shape.customerId,
 });
 

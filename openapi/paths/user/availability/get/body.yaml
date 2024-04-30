@@ -18,7 +18,6 @@ properties:
     type: string
 
 required:
-  - startDate
-  - productIds
   - fromDate
   - toDate
+  - productIds

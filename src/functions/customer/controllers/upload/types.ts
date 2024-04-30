@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { NumberOrStringType } from "~/library/zod";
+import { NumberOrString } from "~/library/zod";
 
 export function getFilenameFromUrl(url: string) {
   const urlObj = new URL(url);
@@ -9,7 +9,7 @@ export function getFilenameFromUrl(url: string) {
 }
 
 export const fileInputSchema = z.object({
-  customerId: NumberOrStringType,
+  customerId: NumberOrString,
   resourceUrl: z.string().url(),
 });
 

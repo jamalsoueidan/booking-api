@@ -1,13 +1,13 @@
 import { LocationServiceGet } from "~/functions/location/services/get";
 import { LocationServiceGetTravelTime } from "~/functions/location/services/get-travel-time";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 import { ShippingModel } from "../shipping.model";
 import { Shipping } from "../shipping.types";
 import { ShippingServiceCalculateCost } from "./calculate-cost";
 
 export type ShippingServiceCreateProps = {
   customerId: number;
-  locationId: StringOrObjectId;
+  locationId: StringOrObjectIdType;
   destination: Shipping["destination"];
 };
 

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
 
-import { StringOrObjectIdType } from "~/library/zod";
+import { StringOrObjectId } from "~/library/zod";
 import { UserProductsServiceListProductsByLocation } from "../../services/products/list-by-location";
 
 export type UserProductsControllerGetProductsByLocationRequest = {
@@ -11,7 +11,7 @@ export type UserProductsControllerGetProductsByLocationRequest = {
 
 export const UserProductsControllerGetProductsByLocationQuerySchema = z.object({
   username: z.string(),
-  locationId: StringOrObjectIdType,
+  locationId: StringOrObjectId,
 });
 
 export const UserProductsControllerGetProductsByLocationBodySchema = z.object({

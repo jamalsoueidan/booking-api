@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
-import { NumberOrStringType } from "~/library/zod";
+import { NumberOrString } from "~/library/zod";
 import { CustomerBlockedServiceRange } from "../../services/blocked/range";
 
 export type CustomerBlockedControllerRangeRequest = {
@@ -8,7 +8,7 @@ export type CustomerBlockedControllerRangeRequest = {
 };
 
 export const CustomerBlockedControllerRangeQuerySchema = z.object({
-  customerId: NumberOrStringType,
+  customerId: NumberOrString,
   start: z.string(),
   end: z.string(),
 });

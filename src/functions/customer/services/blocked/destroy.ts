@@ -1,8 +1,8 @@
 import { BlockedModel } from "~/functions/blocked/blocked.model";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerBlockedServiceDestroyProps = {
-  blockedId: StringOrObjectId;
+  blockedId: StringOrObjectIdType;
   customerId: number;
 };
 

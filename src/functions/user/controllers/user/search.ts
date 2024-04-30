@@ -3,7 +3,7 @@ import { _ } from "~/library/handler";
 import { z } from "zod";
 import { LocationZodSchema } from "~/functions/location";
 import { SlotWeekDays } from "~/functions/schedule";
-import { CommaSeparatedArray, NumberOrStringType } from "~/library/zod";
+import { CommaSeparatedArray, NumberOrString } from "~/library/zod";
 import { UserServiceSearch } from "../../services/user/search";
 import { Professions } from "../../user.types";
 
@@ -20,7 +20,7 @@ enum SortOrder {
 export const UserControllerSearchQuerySchema = z
   .object({
     nextCursor: z.string().optional(),
-    limit: NumberOrStringType.optional(),
+    limit: NumberOrString.optional(),
     sortOrder: z.nativeEnum(SortOrder).optional(),
   })
   .strip();

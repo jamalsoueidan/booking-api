@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
-import { StringOrObjectIdType } from "~/library/zod";
+import { StringOrObjectId } from "~/library/zod";
 import { UserLocationServiceGetOne } from "../../services/location";
 
 export type UserLocationControllerGetOneRequest = {
@@ -8,7 +8,7 @@ export type UserLocationControllerGetOneRequest = {
 };
 
 export const LocationServiceGetOneQuerySchema = z.object({
-  locationId: StringOrObjectIdType,
+  locationId: StringOrObjectId,
   username: z.string(),
 });
 

@@ -2,9 +2,9 @@ import { z } from "zod";
 import { _ } from "~/library/handler";
 
 import {
-  NumberOrStringType,
+  NumberOrString,
   ObjectKeysNumberOrString,
-  StringOrObjectIdType,
+  StringOrObjectId,
 } from "~/library/zod";
 import { UserAvailabilityServiceGet } from "../../services/availability/get";
 
@@ -15,11 +15,11 @@ export type UserAvailabilityControllerGetRequest = {
 
 const QuerySchema = z.object({
   username: z.string(),
-  locationId: StringOrObjectIdType,
+  locationId: StringOrObjectId,
 });
 
 const BodySchema = z.object({
-  productIds: z.array(NumberOrStringType),
+  productIds: z.array(NumberOrString),
   optionIds: ObjectKeysNumberOrString.optional(),
   fromDate: z.string(),
   toDate: z.string(),

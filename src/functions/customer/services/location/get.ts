@@ -1,10 +1,10 @@
 import { LocationModel } from "~/functions/location";
 
 import { NotFoundError } from "~/library/handler";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerLocationServiceGetProps = {
-  locationId: StringOrObjectId;
+  locationId: StringOrObjectIdType;
   customerId: number;
 };
 

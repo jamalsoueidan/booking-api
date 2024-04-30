@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { _ } from "~/library/handler";
-import { NumberOrStringType } from "~/library/zod";
+import { NumberOrString } from "~/library/zod";
 import { CustomerBookingServiceGetByGroup } from "../../services/booking/get-by-group";
 
 export type CustomerBookingControllerGetByGroupRequest = {
@@ -8,8 +8,8 @@ export type CustomerBookingControllerGetByGroupRequest = {
 };
 
 export const CustomerBookingControllerGetByGroupSchema = z.object({
-  customerId: NumberOrStringType,
-  orderId: NumberOrStringType,
+  customerId: NumberOrString,
+  orderId: NumberOrString,
   groupId: z.string(),
 });
 

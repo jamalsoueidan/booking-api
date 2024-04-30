@@ -9,12 +9,12 @@ import {
 } from "~/functions/payout-log";
 import { ShippingModel } from "~/functions/shipping/shipping.model";
 import { Shipping } from "~/functions/shipping/shipping.types";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerPayoutLogServicePaginateProps = {
   page: number;
   customerId: number;
-  payoutId: StringOrObjectId;
+  payoutId: StringOrObjectIdType;
   limit?: number;
   sortOrder?: "asc" | "desc";
 };

@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 import { BlockedModel } from "~/functions/blocked/blocked.model";
 import { Blocked } from "~/functions/blocked/blocked.types";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerBlockedServiceListProps = {
   customerId: number;
   limit?: number;
-  nextCursor?: StringOrObjectId;
+  nextCursor?: StringOrObjectIdType;
 };
 
 export type CustomerBlockedServiceListAggregate = {
@@ -36,7 +36,7 @@ export const CustomerBlockedServiceList = async ({
   };
 
   const blocked = await BlockedModel.aggregate<
-    Blocked & { _id: StringOrObjectId }
+    Blocked & { _id: StringOrObjectIdType }
   >([matchStage, { $sort: { _id: 1 } }, limitStage]);
 
   const totalCount = await BlockedModel.countDocuments({ customerId });

@@ -7,7 +7,7 @@ export const objectIdValidator = z
     message: "Invalid ObjectId",
   });
 
-export const BooleanOrStringType = z
+export const BooleanOrString = z
   .union([z.boolean(), z.string()])
   .transform((value) => {
     if (typeof value === "string" && value === "true") {
@@ -57,13 +57,13 @@ export const GidFormat = z
     }
   });
 
-export const NumberOrStringType = z
+export const NumberOrString = z
   .union([z.number(), z.string()])
   .transform((value) =>
     typeof value === "string" ? parseInt(value, 10) : value
   );
 
-export type NumberOrString = z.infer<typeof NumberOrStringType>;
+export type NumberOrStringType = z.infer<typeof NumberOrString>;
 
 export const isValidObjectId = (value: any): value is string =>
   mongoose.Types.ObjectId.isValid(value);
@@ -74,30 +74,27 @@ export const ObjectIdType = z
   })
   .transform((value) => new mongoose.Types.ObjectId(value));
 
-export const StringOrObjectIdType = z.union([z.string(), ObjectIdType]);
+export const StringOrObjectId = z.union([z.string(), ObjectIdType]);
 
-export type StringOrObjectId = z.infer<typeof StringOrObjectIdType>;
+export type StringOrObjectIdType = z.infer<typeof StringOrObjectId>;
 
-const ProductVariantSchema = z.object({
-  productId: z.number(),
-  variantId: z.number(),
-});
+const NestedNumericObjectSchema = z.record(z.record(NumberOrString));
 
-export const ObjectKeysNumberOrString = z
-  .record(ProductVariantSchema)
-  .transform((originalRecord) => {
-    const transformedRecord: Record<number, typeof ProductVariantSchema._type> =
-      {};
-    Object.keys(originalRecord).forEach((key) => {
-      const numericKey = parseInt(key, 10); // Convert the key from string to number
-      if (!isNaN(numericKey)) {
-        // Check if the conversion result is a valid number
-        transformedRecord[numericKey] = originalRecord[key];
-      }
+export const ObjectKeysNumberOrStringSchema =
+  NestedNumericObjectSchema.transform((obj) => {
+    const transformed: Record<number, Record<number, number>> = {};
+    Object.entries(obj).forEach(([key, subObj]) => {
+      const numericKey = parseInt(key, 10);
+      const subObjectTransformed: Record<number, number> = {};
+      Object.entries(subObj).forEach(([subKey, value]) => {
+        const numericSubKey = parseInt(subKey, 10);
+        subObjectTransformed[numericSubKey] = value;
+      });
+      transformed[numericKey] = subObjectTransformed;
     });
-    return transformedRecord;
+    return transformed;
   });
 
 export type ObjectKeysNumberOrStringType = z.infer<
-  typeof ObjectKeysNumberOrString
+  typeof ObjectKeysNumberOrStringSchema
 >;

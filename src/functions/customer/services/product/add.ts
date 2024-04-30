@@ -1,6 +1,6 @@
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
 import { FoundError, NotFoundError } from "~/library/handler";
-import { StringOrObjectId } from "~/library/zod";
+import { StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerProductServiceAdd = {
   customerId: Schedule["customerId"];
@@ -10,7 +10,7 @@ export type CustomerProductServiceAddBody = Omit<
   ScheduleProduct,
   "description" | "duration" | "breakTime" | "noticePeriod" | "bookingPeriod"
 > & {
-  scheduleId: StringOrObjectId;
+  scheduleId: StringOrObjectIdType;
 };
 
 export const CustomerProductServiceAdd = async (
