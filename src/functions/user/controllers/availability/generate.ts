@@ -3,7 +3,7 @@ import { _ } from "~/library/handler";
 
 import {
   NumberOrString,
-  ObjectKeysNumberOrStringSchema,
+  ObjectKeysNumberOrString,
   StringOrObjectId,
 } from "~/library/zod";
 import { UserAvailabilityServiceGenerate } from "../../services/availability/generate";
@@ -20,7 +20,7 @@ const QuerySchema = z.object({
 
 const BodySchema = z.object({
   productIds: z.array(NumberOrString),
-  optionIds: ObjectKeysNumberOrStringSchema.optional(),
+  optionIds: ObjectKeysNumberOrString.optional(),
   fromDate: z.string(),
   shippingId: z.union([z.string(), z.undefined()]),
 });

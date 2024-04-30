@@ -80,8 +80,8 @@ export type StringOrObjectIdType = z.infer<typeof StringOrObjectId>;
 
 const NestedNumericObjectSchema = z.record(z.record(NumberOrString));
 
-export const ObjectKeysNumberOrStringSchema =
-  NestedNumericObjectSchema.transform((obj) => {
+export const ObjectKeysNumberOrString = NestedNumericObjectSchema.transform(
+  (obj) => {
     const transformed: Record<number, Record<number, number>> = {};
     Object.entries(obj).forEach(([key, subObj]) => {
       const numericKey = parseInt(key, 10);
@@ -93,8 +93,9 @@ export const ObjectKeysNumberOrStringSchema =
       transformed[numericKey] = subObjectTransformed;
     });
     return transformed;
-  });
+  }
+);
 
 export type ObjectKeysNumberOrStringType = z.infer<
-  typeof ObjectKeysNumberOrStringSchema
+  typeof ObjectKeysNumberOrString
 >;
