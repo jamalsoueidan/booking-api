@@ -1,7 +1,5 @@
 type: object
 properties:
-  scheduleId:
-    type: string
   variantId:
     type: number
   selectedOptions:
@@ -46,6 +44,3 @@ properties:
     $ref: ../../schedule/_types/product-locations.yaml
   description:
     type: string
-
-required:
-  - scheduleId
