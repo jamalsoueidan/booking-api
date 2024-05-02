@@ -41,7 +41,6 @@ describe("CustomerProductServiceUpdate", () => {
 
     const productBody = {
       duration: 90,
-      scheduleId: newSchedule._id,
     };
 
     let updateProduct = await CustomerProductServiceUpdate(
