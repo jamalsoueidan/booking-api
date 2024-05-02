@@ -1,25 +1,39 @@
+import { ScheduleModel } from "~/functions/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 
 export type CustomerProductOptionsDestroyProps = {
   customerId: number;
-  productId: string;
+  parentId: number;
+  productId: number;
 };
 
-export async function CustomerProductOptionsDestroyService(
-  props: CustomerProductOptionsDestroyProps
-) {
+export async function CustomerProductOptionsDestroyService({
+  customerId,
+  parentId,
+  productId,
+}: CustomerProductOptionsDestroyProps) {
   const { data } = await shopifyAdmin.request(PRODUCT_OPTION_DESTROY, {
     variables: {
-      id: `gid://shopify/Product/${props.productId}`,
+      productId: `gid://shopify/Product/${productId}`,
     },
   });
 
-  return data?.productDeleteAsync?.job;
+  return ScheduleModel.updateOne(
+    {
+      customerId,
+      "products.productId": parentId,
+    },
+    {
+      $pull: {
+        "products.$.options": { productId },
+      },
+    }
+  );
 }
 
 export const PRODUCT_OPTION_DESTROY = `#graphql
-  mutation productOptionDestroy($id: ID!) {
-    productDeleteAsync(productId: $id) {
+  mutation productOptionDestroy($productId: ID!) {
+    productDeleteAsync(productId: $productId) {
       job {
         done
         id

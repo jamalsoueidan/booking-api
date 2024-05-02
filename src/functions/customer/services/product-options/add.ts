@@ -1,42 +1,57 @@
+import { ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
 import { CustomerProductServiceUpdate } from "../product/update";
 
 export type CustomerProductOptionsAddServiceProps = {
   customerId: number;
-  parentId: number;
-  productId: number;
+  productId: number; // add option to this productId
+  cloneId: number; // which productId to clone from shopify
   title: string;
 };
 
 export async function CustomerProductOptionsAddService({
   customerId,
-  parentId,
   productId,
+  cloneId,
   title,
 }: CustomerProductOptionsAddServiceProps) {
   const { data } = await shopifyAdmin.request(PRODUCT_OPTION_DUPLCATE, {
     variables: {
-      id: `gid://shopify/Product/${productId}`,
+      productId: `gid://shopify/Product/${cloneId}`,
       title,
     },
   });
 
+  if (!data) {
+    throw new ShopifyError([
+      {
+        path: ["shopify"],
+        message: "GRAPHQL_ERROR",
+        code: "custom",
+      },
+    ]);
+  }
+
+  const newProductId = GidFormat.parse(data.productDuplicate?.newProduct?.id);
   await CustomerProductServiceUpdate(
     {
       customerId,
-      productId: parentId,
+      productId,
     },
     {
       options: [
         {
-          productId: GidFormat.parse(data.productDuplicate.newProduct.id),
-          variants: data.productDuplicate.newProduct.variants.nodes.map(
-            (variant) => ({
-              variantId: GidFormat.parse(variant.id),
-              duration: 0,
-            })
-          ),
+          productId: newProductId,
+          variants:
+            data.productDuplicate?.newProduct?.variants.nodes.map(
+              (variant) => ({
+                variantId: GidFormat.parse(variant.id),
+                duration: {
+                  value: 0,
+                },
+              })
+            ) || [],
         },
       ],
     }
@@ -44,8 +59,8 @@ export async function CustomerProductOptionsAddService({
 
   await shopifyAdmin.request(PRODUCT_OPTION_ADD_TAG, {
     variables: {
-      id: `gid://shopify/Product/${productId}`,
-      tags: `${customerId}, ${parentId}, user`,
+      id: `gid://shopify/Product/${newProductId}`,
+      tags: `customer-${customerId}, product-${productId}, user`,
     },
   });
 
@@ -53,8 +68,8 @@ export async function CustomerProductOptionsAddService({
 }
 
 export const PRODUCT_OPTION_DUPLCATE = `#graphql
-  mutation productOptionDuplicate($id: ID!, $title: String!) {
-    productDuplicate(newTitle: $title, productId: $id) {
+  mutation productOptionDuplicate($productId: ID!, $title: String!) {
+    productDuplicate(newTitle: $title, productId: $productId) {
       newProduct {
         id
         title
@@ -70,7 +85,7 @@ export const PRODUCT_OPTION_DUPLCATE = `#graphql
 ` as const;
 
 export const PRODUCT_OPTION_ADD_TAG = `#graphql
-  mutation productOptionAddTag($id: ID!, tags: String!) {
+  mutation productOptionAddTag($id: ID!, $tags: [String!]!) {
     tagsAdd(id: $id, tags: $tags) {
       node {
         id
