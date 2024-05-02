@@ -24,9 +24,14 @@ export const OptionMongooseSchema = new mongoose.Schema<ScheduleProductOption>(
           required: true,
         },
         duration: {
-          type: Number,
-          default: 60,
-          required: true,
+          metafieldId: {
+            type: Number,
+          },
+          value: {
+            type: Number,
+            default: 60,
+            required: true,
+          },
         },
       },
     ],
