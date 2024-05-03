@@ -3,19 +3,19 @@ import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
 import { CustomerProductServiceUpdate } from "../product/update";
 
-export type CustomerProductOptionsAddServiceProps = {
+export type CustomerProductOptionsServiceAddProps = {
   customerId: number;
   productId: number; // add option to this productId
   cloneId: number; // which productId to clone from shopify
   title: string;
 };
 
-export async function CustomerProductOptionsAddService({
+export async function CustomerProductOptionsServiceAdd({
   customerId,
   productId,
   cloneId,
   title,
-}: CustomerProductOptionsAddServiceProps) {
+}: CustomerProductOptionsServiceAddProps) {
   const { data } = await shopifyAdmin.request(PRODUCT_OPTION_DUPLCATE, {
     variables: {
       productId: `gid://shopify/Product/${cloneId}`,
@@ -48,7 +48,8 @@ export async function CustomerProductOptionsAddService({
               (variant) => ({
                 variantId: GidFormat.parse(variant.id),
                 duration: {
-                  value: 0,
+                  metafieldId: GidFormat.parse(variant.duration?.id),
+                  value: parseInt(variant.duration?.value || "0"),
                 },
               })
             ) || [],
@@ -77,6 +78,10 @@ export const PRODUCT_OPTION_DUPLCATE = `#graphql
           nodes {
             id
             title
+            duration: metafield(key: "duration", namespace: "booking") {
+              id
+              value
+            }
           }
         }
       }

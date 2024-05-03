@@ -5,7 +5,7 @@ import { GidFormat } from "~/library/zod";
 import { CustomerProductServiceAdd } from "../product/add";
 import { CustomerScheduleServiceCreate } from "../schedule/create";
 import {
-  CustomerProductOptionsAddService,
+  CustomerProductOptionsServiceAdd,
   PRODUCT_OPTION_ADD_TAG,
   PRODUCT_OPTION_DUPLCATE,
 } from "./add";
@@ -53,14 +53,26 @@ describe("CustomerProductOptionsAddService", () => {
           {
             id: "gid://shopify/ProductVariant/49475617128775",
             title: "Tyk",
+            duration: {
+              id: "gid://shopify/Metafield/3",
+              value: "1",
+            },
           },
           {
             id: "gid://shopify/ProductVariant/49475617259847",
             title: "Normal",
+            duration: {
+              id: "gid://shopify/Metafield/2",
+              value: "2",
+            },
           },
           {
             id: "gid://shopify/ProductVariant/49475617358151",
             title: "Meget tyk",
+            duration: {
+              id: "gid://shopify/Metafield/1",
+              value: "3",
+            },
           },
         ],
       },
@@ -74,6 +86,10 @@ describe("CustomerProductOptionsAddService", () => {
           {
             id: "gid://shopify/ProductVariant/34",
             title: "Tyk",
+            duration: {
+              id: "gid://shopify/Metafield/4",
+              value: "4",
+            },
           },
         ],
       },
@@ -93,7 +109,7 @@ describe("CustomerProductOptionsAddService", () => {
         data: { tagsAdd: { node: { id: mockProduct2.id } } },
       });
 
-    let result = await CustomerProductOptionsAddService({
+    let result = await CustomerProductOptionsServiceAdd({
       customerId,
       productId: product.productId,
       cloneId,
@@ -131,8 +147,11 @@ describe("CustomerProductOptionsAddService", () => {
     let options = scheduleProduct?.options![0];
     expect(options.productId).toEqual(GidFormat.parse(mockProduct.id));
     expect(options.variants).toHaveLength(3);
+    const variant = options.variants[0];
+    expect(variant.duration.metafieldId).toBe(3);
+    expect(variant.duration.value).toBe(1);
 
-    result = await CustomerProductOptionsAddService({
+    result = await CustomerProductOptionsServiceAdd({
       customerId,
       productId: product.productId,
       cloneId: 777,
