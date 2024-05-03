@@ -7,8 +7,8 @@ import { CustomerProductServiceAdd } from "../product/add";
 import { CustomerScheduleServiceCreate } from "../schedule/create";
 import {
   CustomerProductOptionsServiceAdd,
-  PRODUCT_OPTION_ADD_TAG,
   PRODUCT_OPTION_DUPLCATE,
+  PRODUCT_OPTION_UPDATE_TAG,
 } from "./add";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -110,8 +110,16 @@ describe("CustomerProductOptionsAddService", () => {
       })
       .mockResolvedValueOnce({
         data: {
-          tagsAdd: {
-            node: { id: mockProduct.productDuplicate?.newProduct?.id },
+          productUpdate: {
+            product: {
+              id: mockProduct.productDuplicate?.newProduct?.id,
+              tags: [
+                "user",
+                "options",
+                `customer-${customerId}`,
+                `product-9186772386119`,
+              ],
+            },
           },
         },
       })
@@ -120,8 +128,16 @@ describe("CustomerProductOptionsAddService", () => {
       })
       .mockResolvedValueOnce({
         data: {
-          tagsAdd: {
-            node: { id: mockProduct2.productDuplicate?.newProduct?.id },
+          productUpdate: {
+            product: {
+              id: mockProduct2.productDuplicate?.newProduct?.id,
+              tags: [
+                "user",
+                "options",
+                `customer-${customerId}`,
+                `product-${product.productId}`,
+              ],
+            },
           },
         },
       });
@@ -147,11 +163,11 @@ describe("CustomerProductOptionsAddService", () => {
     );
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
       2,
-      PRODUCT_OPTION_ADD_TAG,
+      PRODUCT_OPTION_UPDATE_TAG,
       {
         variables: {
           id: mockProduct.productDuplicate?.newProduct?.id,
-          tags: `customer-${customerId}, product-${product.productId}, user`,
+          tags: `user, options, customer-${customerId}, product-${product.productId}`,
         },
       }
     );

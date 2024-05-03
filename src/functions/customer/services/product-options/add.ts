@@ -35,10 +35,10 @@ export async function CustomerProductOptionsServiceAdd({
 
   const newProductId = GidFormat.parse(data.productDuplicate?.newProduct?.id);
 
-  await shopifyAdmin.request(PRODUCT_OPTION_ADD_TAG, {
+  await shopifyAdmin.request(PRODUCT_OPTION_UPDATE_TAG, {
     variables: {
       id: `gid://shopify/Product/${newProductId}`,
-      tags: `customer-${customerId}, product-${productId}, user`,
+      tags: `user, options, customer-${customerId}, product-${productId}`,
     },
   });
 
@@ -88,11 +88,12 @@ export const PRODUCT_OPTION_DUPLCATE = `#graphql
   }
 ` as const;
 
-export const PRODUCT_OPTION_ADD_TAG = `#graphql
-  mutation productOptionAddTag($id: ID!, $tags: [String!]!) {
-    tagsAdd(id: $id, tags: $tags) {
-      node {
+export const PRODUCT_OPTION_UPDATE_TAG = `#graphql
+  mutation productOptionUpdateTag($id: ID!, $tags: [String!]!) {
+    productUpdate(input: {tags: $tags, id: $id}) {
+      product {
         id
+        tags
       }
     }
   }
