@@ -35,7 +35,10 @@ export type ProductOptionDuplicateMutationVariables = AdminTypes.Exact<{
 
 export type ProductOptionDuplicateMutation = { productDuplicate?: AdminTypes.Maybe<{ newProduct?: AdminTypes.Maybe<(
       Pick<AdminTypes.Product, 'id' | 'title'>
-      & { variants: { nodes: Array<Pick<AdminTypes.ProductVariant, 'id' | 'title'>> } }
+      & { variants: { nodes: Array<(
+          Pick<AdminTypes.ProductVariant, 'id' | 'title'>
+          & { duration?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>> }
+        )> } }
     )> }> };
 
 export type ProductOptionAddTagMutationVariables = AdminTypes.Exact<{
@@ -62,8 +65,8 @@ export type ProductOptionUpdateMutationVariables = AdminTypes.Exact<{
 export type ProductOptionUpdateMutation = { productVariantsBulkUpdate?: AdminTypes.Maybe<{ product?: AdminTypes.Maybe<(
       Pick<AdminTypes.Product, 'id'>
       & { variants: { nodes: Array<(
-          Pick<AdminTypes.ProductVariant, 'id'>
-          & { metafield?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id'>> }
+          Pick<AdminTypes.ProductVariant, 'id' | 'price'>
+          & { duration?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>> }
         )> } }
     )> }> };
 
@@ -92,10 +95,10 @@ interface GeneratedQueryTypes {
 interface GeneratedMutationTypes {
   "#graphql\n  mutation fileCreate($files: [FileCreateInput!]!) {\n    fileCreate(files: $files) {\n      files {\n        fileStatus\n        alt\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: FileCreateMutation, variables: FileCreateMutationVariables},
   "#graphql\n  mutation stagedUploadsCreate($input: [StagedUploadInput!]!) {\n    stagedUploadsCreate(input: $input) {\n      stagedTargets {\n        resourceUrl\n        url\n        parameters {\n          name\n          value\n        }\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: StagedUploadsCreateMutation, variables: StagedUploadsCreateMutationVariables},
-  "#graphql\n  mutation productOptionDuplicate($productId: ID!, $title: String!) {\n    productDuplicate(newTitle: $title, productId: $productId) {\n      newProduct {\n        id\n        title\n        variants(first: 5) {\n          nodes {\n            id\n            title\n          }\n        }\n      }\n    }\n  }\n": {return: ProductOptionDuplicateMutation, variables: ProductOptionDuplicateMutationVariables},
+  "#graphql\n  mutation productOptionDuplicate($productId: ID!, $title: String!) {\n    productDuplicate(newTitle: $title, productId: $productId) {\n      newProduct {\n        id\n        title\n        variants(first: 5) {\n          nodes {\n            id\n            title\n            duration: metafield(key: \"duration\", namespace: \"booking\") {\n              id\n              value\n            }\n          }\n        }\n      }\n    }\n  }\n": {return: ProductOptionDuplicateMutation, variables: ProductOptionDuplicateMutationVariables},
   "#graphql\n  mutation productOptionAddTag($id: ID!, $tags: [String!]!) {\n    tagsAdd(id: $id, tags: $tags) {\n      node {\n        id\n      }\n    }\n  }\n": {return: ProductOptionAddTagMutation, variables: ProductOptionAddTagMutationVariables},
   "#graphql\n  mutation productOptionDestroy($productId: ID!) {\n    productDeleteAsync(productId: $productId) {\n      job {\n        done\n        id\n      }\n    }\n  }\n": {return: ProductOptionDestroyMutation, variables: ProductOptionDestroyMutationVariables},
-  "#graphql\n  mutation productOptionUpdate($productId: ID!, $variants: [ProductVariantsBulkInput!] = {}) {\n  productVariantsBulkUpdate(\n    productId: $productId,\n    variants: $variants\n  ) {\n    product {\n      id\n      variants(first: 5) {\n        nodes {\n          id\n          metafield(key: \"duration\", namespace: \"booking\") {\n            id\n          }\n        }\n      }\n    }\n  }\n}\n": {return: ProductOptionUpdateMutation, variables: ProductOptionUpdateMutationVariables},
+  "#graphql\n  mutation productOptionUpdate($productId: ID!, $variants: [ProductVariantsBulkInput!] = {}) {\n  productVariantsBulkUpdate(\n    productId: $productId,\n    variants: $variants\n  ) {\n    product {\n      id\n      variants(first: 5) {\n        nodes {\n          id\n          price\n          duration: metafield(key: \"duration\", namespace: \"booking\") {\n            id\n            value\n          }\n        }\n      }\n    }\n  }\n}\n": {return: ProductOptionUpdateMutation, variables: ProductOptionUpdateMutationVariables},
   "#graphql\n  mutation productVariantCreate($input: ProductVariantInput!) {\n    productVariantCreate(input: $input) {\n      productVariant {\n        product {\n          id\n          handle\n        }\n        id\n        title\n        selectedOptions {\n          name\n          value\n        }\n        price\n        compareAtPrice\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: ProductVariantCreateMutation, variables: ProductVariantCreateMutationVariables},
   "#graphql\n  mutation productVariantsBulkDelete($productId: ID!, $variantsIds: [ID!]!) {\n    productVariantsBulkDelete(productId: $productId, variantsIds: $variantsIds) {\n      product {\n        id\n        title\n      }\n      userErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n": {return: ProductVariantsBulkDeleteMutation, variables: ProductVariantsBulkDeleteMutationVariables},
 }

@@ -3,6 +3,9 @@ import { CustomerProductsControllerList } from "./customer/controllers/products/
 
 import { app } from "@azure/functions";
 
+import { CustomerProductOptionsControllerAdd } from "./customer/controllers/product-options/add";
+import { CustomerProductOptionsControllerDestroy } from "./customer/controllers/product-options/destroy";
+import { CustomerProductOptionsControllerUpdate } from "./customer/controllers/product-options/update";
 import { CustomerProductControllerAdd } from "./customer/controllers/product/add";
 import { CustomerProductControllerCreateVariant } from "./customer/controllers/product/create-variant";
 import { CustomerProductControllerDestroy } from "./customer/controllers/product/destroy";
@@ -36,6 +39,29 @@ app.http("customerProductUpdate", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/product/{productId?}",
   handler: CustomerProductControllerUpdate,
+});
+
+app.http("customerProductOptionsAdd", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/product/{productId?}/options",
+  handler: CustomerProductOptionsControllerAdd,
+});
+
+app.http("customerProductOptionsDestroy", {
+  methods: ["DELETE"],
+  authLevel: "anonymous",
+  route:
+    "customer/{customerId?}/product/{productId?}/options/{optionProductId?}",
+  handler: CustomerProductOptionsControllerDestroy,
+});
+
+app.http("customerProductOptionsUpdate", {
+  methods: ["PUT"],
+  authLevel: "anonymous",
+  route:
+    "customer/{customerId?}/product/{productId?}/options/{optionProductId?}",
+  handler: CustomerProductOptionsControllerUpdate,
 });
 
 app.http("customerProductAdd", {

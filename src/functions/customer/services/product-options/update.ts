@@ -1,22 +1,24 @@
 import { NotFoundError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
+import { GidFormat } from "~/library/zod";
 import { CustomerProductServiceGet } from "../product/get";
+import { CustomerProductServiceUpdate } from "../product/update";
 
-export type CustomerProductOptionsUpdateServiceProps = {
+export type CustomerProductOptionsServiceUpdateProps = {
   customerId: number;
   productId: number;
   optionProductId: number;
 };
 
-export type CustomerProductOptionsUpdateServiceBody = Array<{
+export type CustomerProductOptionsServiceUpdateBody = Array<{
   id: number;
   price: number;
   duration: number;
 }>;
 
-export async function CustomerProductOptionsUpdateService(
-  props: CustomerProductOptionsUpdateServiceProps,
-  body: CustomerProductOptionsUpdateServiceBody
+export async function CustomerProductOptionsServiceUpdate(
+  props: CustomerProductOptionsServiceUpdateProps,
+  body: CustomerProductOptionsServiceUpdateBody
 ) {
   const product = await CustomerProductServiceGet({
     customerId: props.customerId,
@@ -37,9 +39,6 @@ export async function CustomerProductOptionsUpdateService(
     ]);
   }
 
-  // first time we wouldn't have the metafieldId on our side.
-  let requestToUpdateMetafieldId = false;
-
   const variants = body.map((variant) => {
     const dbVariant = option.variants.find((v) => v.variantId === variant.id);
     if (!dbVariant) {
@@ -52,21 +51,13 @@ export async function CustomerProductOptionsUpdateService(
       ]);
     }
 
-    const id = dbVariant.duration.metafieldId
-      ? `gid://shopify/Metafield/${dbVariant.duration.metafieldId}`
-      : undefined;
-
-    if (!id) {
-      requestToUpdateMetafieldId = true;
-    }
-
     return {
       id: `gid://shopify/ProductVariant/${variant.id}`,
       price: variant.price.toString(),
       metafields: [
         {
-          ...(id ? { id } : {}),
-          value: dbVariant.duration.value.toString(),
+          id: `gid://shopify/Metafield/${dbVariant.duration.metafieldId}`,
+          value: variant.duration.toString(),
           type: "number_integer",
         },
       ],
@@ -80,8 +71,30 @@ export async function CustomerProductOptionsUpdateService(
     },
   });
 
-  if (requestToUpdateMetafieldId) {
-  }
+  // these could maybe come from webhook update
+  const updated =
+    data?.productVariantsBulkUpdate?.product?.variants.nodes.map((node) => ({
+      variantId: GidFormat.parse(node.id),
+      duration: {
+        value: parseInt(node.duration?.value || "", 10) || 60,
+        metafieldId: GidFormat.parse(node.duration?.id),
+      },
+    })) || [];
+
+  await CustomerProductServiceUpdate(
+    {
+      customerId: props.customerId,
+      productId: props.productId,
+    },
+    {
+      options: [
+        {
+          productId: props.optionProductId,
+          variants: updated,
+        },
+      ],
+    }
+  );
 
   return data?.productVariantsBulkUpdate?.product;
 }
@@ -97,8 +110,10 @@ export const PRODUCT_OPTION_UPDATE = `#graphql
       variants(first: 5) {
         nodes {
           id
-          metafield(key: "duration", namespace: "booking") {
+          price
+          duration: metafield(key: "duration", namespace: "booking") {
             id
+            value
           }
         }
       }
