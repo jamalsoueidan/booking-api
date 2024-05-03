@@ -1,0 +1,39 @@
+delete:
+  parameters:
+    - name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: productId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: optionProductId
+      in: path
+      required: true
+      schema:
+        type: string
+  tags:
+    - CustomerProductOptions
+  operationId: customerProductOptionsDestroy
+  summary: DEL destroy product option
+  description: This endpoint remove product option from product for schedule
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
+
+  security: []

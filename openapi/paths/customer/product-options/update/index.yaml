@@ -1,0 +1,46 @@
+put:
+  parameters:
+    - name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: productId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: optionProductId
+      in: path
+      required: true
+      schema:
+        type: string
+  tags:
+    - CustomerProductOptions
+  operationId: customerProductOptionsUpdate
+  summary: PUT Update product option in product
+  description: This endpoint update product option that exist in product
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./body.yaml"
+
+  responses:
+    "200":
+      description: Response with schedule product payload
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
+
+  security: []

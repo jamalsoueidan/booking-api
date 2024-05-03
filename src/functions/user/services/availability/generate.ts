@@ -95,7 +95,7 @@ export const UserAvailabilityServiceGenerate = async (
         if (variant) {
           products.push({
             variantId: variant.variantId,
-            duration: variant.duration,
+            duration: variant.duration.value,
             productId: productOption.productId,
             breakTime: 0,
             bookingPeriod: {

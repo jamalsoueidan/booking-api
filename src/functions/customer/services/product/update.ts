@@ -1,9 +1,8 @@
-import { z } from "zod";
 import {
   Schedule,
   ScheduleModel,
   ScheduleProduct,
-  ScheduleZodSchema,
+  ScheduleProductOption,
 } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
 
@@ -13,9 +12,7 @@ export type CustomerProductServiceUpdate = {
 };
 
 export type CustomerProductServiceUpdateBody = Partial<
-  Omit<ScheduleProduct, "productId"> & {
-    scheduleId: z.infer<typeof ScheduleZodSchema.shape._id>;
-  }
+  Omit<ScheduleProduct, "productId">
 >;
 
 export const CustomerProductServiceUpdate = async (
@@ -23,7 +20,6 @@ export const CustomerProductServiceUpdate = async (
   product: CustomerProductServiceUpdateBody
 ) => {
   const schedule = await ScheduleModel.findOne({
-    _id: product.scheduleId,
     customerId: filter.customerId,
     "products.productId": filter.productId,
   })
@@ -42,21 +38,18 @@ export const CustomerProductServiceUpdate = async (
     (p) => p.productId === filter.productId
   );
 
-  if (!oldProduct) {
-    new NotFoundError([
-      {
-        code: "custom",
-        message: "PRODUCT_NOT_FOUND",
-        path: ["productId"],
-      },
-    ]);
-  }
-
-  const newProduct = { ...oldProduct, ...product };
+  const newProduct = {
+    ...oldProduct,
+    ...product,
+    options: mergeArraysUnique(
+      oldProduct?.options || [],
+      product?.options || [],
+      "productId"
+    ),
+  };
 
   await ScheduleModel.updateOne(
     {
-      _id: product.scheduleId,
       customerId: filter.customerId,
       "products.productId": filter.productId,
     },
@@ -73,3 +66,24 @@ export const CustomerProductServiceUpdate = async (
     scheduleName: schedule.name,
   };
 };
+
+function mergeArraysUnique(
+  arr1: Array<ScheduleProductOption>,
+  arr2: Array<ScheduleProductOption>,
+  uniqueKey: keyof ScheduleProductOption
+) {
+  const merged = new Map();
+  arr1.forEach((item) => merged.set(item[uniqueKey], item));
+  arr2.forEach((item) => {
+    if (!merged.has(item[uniqueKey])) {
+      merged.set(item[uniqueKey], item);
+    } else {
+      merged.set(item[uniqueKey], {
+        ...merged.get(item[uniqueKey]),
+        ...item,
+      });
+    }
+  });
+
+  return Array.from(merged.values());
+}

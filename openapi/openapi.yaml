@@ -93,6 +93,18 @@ components:
     CustomerProductCreateVariant:
       $ref: paths/customer/product/create-variant/variant.yaml
 
+    # Product Options
+    CustomerProductOptionsUpdateResponse:
+      $ref: paths/customer/product-options/update/response.yaml
+    CustomerProductOptionsUpdateBody:
+      $ref: paths/customer/product-options/update/body.yaml
+    CustomerProductOptionsAddResponse:
+      $ref: paths/customer/product-options/add/response.yaml
+    CustomerProductOptionsAddBody:
+      $ref: paths/customer/product-options/add/body.yaml
+    CustomerProductOptionsDestroyResponse:
+      $ref: paths/customer/product-options/destroy/response.yaml
+
     # Schedule
     CustomerScheduleDestroy:
       $ref: paths/customer/schedule/_types/destroy.yaml
@@ -426,6 +438,12 @@ paths:
     $ref: "paths/customer/product/add/index.yaml"
   /customer/{customerId}/product/{productId}/create-variant:
     $ref: "paths/customer/product/create-variant/index.yaml"
+
+  # Customer Product Options Management
+  /customer/{customerId}/products/{productId}/options:
+    $ref: "./paths/customer/product-options/add/index.yaml"
+  /customer/{customerId}/product/{productId}/options/{optionProductId}:
+    $ref: "paths/customer/product-options/product-options.yaml"
 
   # Customer Resource Upload
   /customer/{customerId}/upload/resource-url:

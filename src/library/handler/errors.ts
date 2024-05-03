@@ -7,6 +7,9 @@ export class UnauthorizedError extends ZodError {
 export class NotFoundError extends ZodError {
   status = 404;
 }
+export class ShopifyError extends ZodError {
+  status = 404;
+}
 
 export class FoundError extends ZodError {
   status = 404;

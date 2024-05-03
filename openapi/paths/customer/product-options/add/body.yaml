@@ -1,0 +1,10 @@
+type: object
+properties:
+  cloneId:
+    type: string
+  title:
+    type: string
+
+required:
+  - cloneId
+  - title

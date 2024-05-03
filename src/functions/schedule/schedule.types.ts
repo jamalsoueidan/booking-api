@@ -53,7 +53,10 @@ export const ScheduleProductOptionZodSchema = z.object({
   variants: z.array(
     z.object({
       variantId: GidFormat,
-      duration: NumberOrString,
+      duration: z.object({
+        metafieldId: GidFormat,
+        value: NumberOrString,
+      }),
     })
   ),
 });
