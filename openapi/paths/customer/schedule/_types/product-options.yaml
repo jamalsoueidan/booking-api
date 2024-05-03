@@ -10,7 +10,15 @@ properties:
         variantId:
           type: number
         duration:
-          type: number
+          type: object
+          properties:
+            value:
+              type: number
+            metafieldId:
+              type: number
+          required:
+            - value
+            - metafieldId
       required:
         - variantId
         - duration

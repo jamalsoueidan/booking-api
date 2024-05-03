@@ -1,0 +1,4 @@
+put:
+  $ref: "./update/index.yaml#/put"
+delete:
+  $ref: "./destroy/index.yaml#/delete"

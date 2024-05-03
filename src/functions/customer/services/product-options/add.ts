@@ -34,7 +34,15 @@ export async function CustomerProductOptionsServiceAdd({
   }
 
   const newProductId = GidFormat.parse(data.productDuplicate?.newProduct?.id);
-  await CustomerProductServiceUpdate(
+
+  await shopifyAdmin.request(PRODUCT_OPTION_ADD_TAG, {
+    variables: {
+      id: `gid://shopify/Product/${newProductId}`,
+      tags: `customer-${customerId}, product-${productId}, user`,
+    },
+  });
+
+  return CustomerProductServiceUpdate(
     {
       customerId,
       productId,
@@ -57,15 +65,6 @@ export async function CustomerProductOptionsServiceAdd({
       ],
     }
   );
-
-  await shopifyAdmin.request(PRODUCT_OPTION_ADD_TAG, {
-    variables: {
-      id: `gid://shopify/Product/${newProductId}`,
-      tags: `customer-${customerId}, product-${productId}, user`,
-    },
-  });
-
-  return data?.productDuplicate?.newProduct;
 }
 
 export const PRODUCT_OPTION_DUPLCATE = `#graphql

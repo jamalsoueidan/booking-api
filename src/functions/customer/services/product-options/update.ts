@@ -81,7 +81,7 @@ export async function CustomerProductOptionsServiceUpdate(
       },
     })) || [];
 
-  await CustomerProductServiceUpdate(
+  return CustomerProductServiceUpdate(
     {
       customerId: props.customerId,
       productId: props.productId,
@@ -95,8 +95,6 @@ export async function CustomerProductOptionsServiceUpdate(
       ],
     }
   );
-
-  return data?.productVariantsBulkUpdate?.product;
 }
 
 export const PRODUCT_OPTION_UPDATE = `#graphql
