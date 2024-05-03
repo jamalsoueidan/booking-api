@@ -3,29 +3,29 @@ import { shopifyAdmin } from "~/library/shopify";
 
 export type CustomerProductOptionsDestroyProps = {
   customerId: number;
-  parentId: number;
+  optionProductId: number;
   productId: number;
 };
 
-export async function CustomerProductOptionsDestroyService({
+export async function CustomerProductOptionsServiceDestroy({
   customerId,
-  parentId,
+  optionProductId,
   productId,
 }: CustomerProductOptionsDestroyProps) {
   const { data } = await shopifyAdmin.request(PRODUCT_OPTION_DESTROY, {
     variables: {
-      productId: `gid://shopify/Product/${productId}`,
+      productId: `gid://shopify/Product/${optionProductId}`,
     },
   });
 
   return ScheduleModel.updateOne(
     {
       customerId,
-      "products.productId": parentId,
+      "products.productId": productId,
     },
     {
       $pull: {
-        "products.$.options": { productId },
+        "products.$.options": { productId: optionProductId },
       },
     }
   );

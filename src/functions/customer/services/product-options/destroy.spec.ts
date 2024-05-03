@@ -4,7 +4,7 @@ import { shopifyAdmin } from "~/library/shopify";
 import { CustomerProductServiceAdd } from "../product/add";
 import { CustomerScheduleServiceCreate } from "../schedule/create";
 import {
-  CustomerProductOptionsDestroyService,
+  CustomerProductOptionsServiceDestroy,
   PRODUCT_OPTION_DESTROY,
 } from "./destroy";
 
@@ -24,9 +24,9 @@ describe("CustomerProductOptionsDestroyService", () => {
     (shopifyAdmin.request as jest.Mock).mockClear();
   });
 
-  it("should destroy product", async () => {
-    const parentId = 321;
-    const productId = 123;
+  it("should be able to destroy product option", async () => {
+    const productId = 321;
+    const optionProductId = 123;
     const customerId = 123123;
     const mockProduct = {
       done: true,
@@ -44,10 +44,10 @@ describe("CustomerProductOptionsDestroyService", () => {
       },
       {
         ...getProductObject({
-          productId: parentId,
+          productId: productId,
           options: [
             {
-              productId,
+              productId: optionProductId,
               variants: [],
             },
           ],
@@ -61,10 +61,10 @@ describe("CustomerProductOptionsDestroyService", () => {
       data: { productDeleteAsync: { job: mockProduct } },
     });
 
-    const result = await CustomerProductOptionsDestroyService({
+    const result = await CustomerProductOptionsServiceDestroy({
       customerId,
-      parentId,
       productId,
+      optionProductId,
     });
 
     expect(result).toMatchObject({
@@ -81,7 +81,7 @@ describe("CustomerProductOptionsDestroyService", () => {
       PRODUCT_OPTION_DESTROY,
       {
         variables: {
-          productId: `gid://shopify/Product/${productId}`,
+          productId: `gid://shopify/Product/${optionProductId}`,
         },
       }
     );
