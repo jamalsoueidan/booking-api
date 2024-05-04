@@ -440,7 +440,7 @@ paths:
     $ref: "paths/customer/product/create-variant/index.yaml"
 
   # Customer Product Options Management
-  /customer/{customerId}/products/{productId}/options:
+  /customer/{customerId}/product/{productId}/options:
     $ref: "./paths/customer/product-options/add/index.yaml"
   /customer/{customerId}/product/{productId}/options/{optionProductId}:
     $ref: "paths/customer/product-options/product-options.yaml"
