@@ -49,7 +49,7 @@ app.http("customerProductOptionsAdd", {
   handler: CustomerProductOptionsControllerAdd,
 });
 
-app.http("customerProductOptionsAdd", {
+app.http("customerProductOptionsList", {
   methods: ["GET"],
   authLevel: "anonymous",
   route: "customer/{customerId?}/product/{productId?}/options",
