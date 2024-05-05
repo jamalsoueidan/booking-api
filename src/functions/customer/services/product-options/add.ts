@@ -23,7 +23,7 @@ export async function CustomerProductOptionsServiceAdd({
     },
   });
 
-  if (!data || !data.productDuplicate || !data.productDuplicate.newProduct) {
+  if (!data?.productDuplicate?.newProduct) {
     throw new ShopifyError([
       {
         path: ["shopify"],
@@ -57,7 +57,7 @@ export async function CustomerProductOptionsServiceAdd({
       })) || [],
   };
 
-  const product = await CustomerProductServiceUpdate(
+  await CustomerProductServiceUpdate(
     {
       customerId,
       productId,

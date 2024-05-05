@@ -71,11 +71,7 @@ export async function CustomerProductOptionsServiceUpdate(
     },
   });
 
-  if (
-    !data ||
-    !data.productVariantsBulkUpdate ||
-    !data.productVariantsBulkUpdate.product
-  ) {
+  if (!data?.productVariantsBulkUpdate?.product) {
     throw new ShopifyError([
       {
         path: ["shopify"],
