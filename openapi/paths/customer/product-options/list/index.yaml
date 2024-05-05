@@ -1,0 +1,34 @@
+get:
+  parameters:
+    - name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: productId
+      in: path
+      required: true
+      schema:
+        type: string
+  tags:
+    - CustomerProductOptions
+  operationId: customerProductOptionsList
+  summary: GET Get product options for product
+  description: This endpoint get product options for product
+  responses:
+    "200":
+      description: "Response"
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../../responses/forbidden.yaml"
+    "404":
+      $ref: "../../../../responses/not-found.yaml"
+
+  security: []

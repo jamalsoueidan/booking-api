@@ -1,4 +1,5 @@
 import "module-alias/register";
+import { CustomerProductOptionsControllerList } from "./customer/controllers/product-options/list";
 import { CustomerProductsControllerList } from "./customer/controllers/products/list";
 
 import { app } from "@azure/functions";
@@ -46,6 +47,13 @@ app.http("customerProductOptionsAdd", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/product/{productId?}/options",
   handler: CustomerProductOptionsControllerAdd,
+});
+
+app.http("customerProductOptionsAdd", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  route: "customer/{customerId?}/product/{productId?}/options",
+  handler: CustomerProductOptionsControllerList,
 });
 
 app.http("customerProductOptionsDestroy", {

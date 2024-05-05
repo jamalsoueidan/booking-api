@@ -443,7 +443,7 @@ paths:
 
   # Customer Product Options Management
   /customer/{customerId}/product/{productId}/options:
-    $ref: "./paths/customer/product-options/add/index.yaml"
+    $ref: "./paths/customer/product-options/add-list.yaml"
   /customer/{customerId}/product/{productId}/options/{optionProductId}:
     $ref: "paths/customer/product-options/product-options.yaml"
 
