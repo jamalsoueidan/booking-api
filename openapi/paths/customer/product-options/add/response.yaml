@@ -4,7 +4,7 @@ properties:
     type: boolean
     example: true
   payload:
-    $ref: ../_types/product.yaml
+    $ref: ../../schedule/_types/product-options.yaml
 required:
   - success
   - payload

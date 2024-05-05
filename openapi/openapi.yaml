@@ -94,8 +94,6 @@ components:
       $ref: paths/customer/product/create-variant/variant.yaml
 
     # Product Options
-    CustomerProductOption:
-      $ref: paths/customer/product-options/_types/product.yaml
     CustomerProductOptionsUpdateResponse:
       $ref: paths/customer/product-options/update/response.yaml
     CustomerProductOptionsUpdateBody:
