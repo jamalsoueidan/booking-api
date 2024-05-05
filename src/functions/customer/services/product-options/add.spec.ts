@@ -56,6 +56,7 @@ describe("CustomerProductOptionsAddService", () => {
               {
                 id: "gid://shopify/ProductVariant/49475617128775",
                 title: "Tyk",
+                price: "12.00",
                 duration: {
                   id: "gid://shopify/Metafield/3",
                   value: "1",
@@ -64,6 +65,7 @@ describe("CustomerProductOptionsAddService", () => {
               {
                 id: "gid://shopify/ProductVariant/49475617259847",
                 title: "Normal",
+                price: "12.00",
                 duration: {
                   id: "gid://shopify/Metafield/2",
                   value: "2",
@@ -72,6 +74,7 @@ describe("CustomerProductOptionsAddService", () => {
               {
                 id: "gid://shopify/ProductVariant/49475617358151",
                 title: "Meget tyk",
+                price: "12.00",
                 duration: {
                   id: "gid://shopify/Metafield/1",
                   value: "3",
@@ -93,6 +96,7 @@ describe("CustomerProductOptionsAddService", () => {
               {
                 id: "gid://shopify/ProductVariant/34",
                 title: "Tyk",
+                price: "12.00",
                 duration: {
                   id: "gid://shopify/Metafield/4",
                   value: "4",
@@ -149,7 +153,7 @@ describe("CustomerProductOptionsAddService", () => {
       title: "New Product",
     });
 
-    //expect(result).toEqual(mockProduct.productDuplicate?.newProduct);
+    expect(result).toEqual(mockProduct.productDuplicate?.newProduct);
     expect(shopifyAdmin.request).toHaveBeenCalledTimes(2);
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
       1,

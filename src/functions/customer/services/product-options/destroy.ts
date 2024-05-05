@@ -18,7 +18,7 @@ export async function CustomerProductOptionsServiceDestroy({
     },
   });
 
-  return ScheduleModel.updateOne(
+  await ScheduleModel.updateOne(
     {
       customerId,
       "products.productId": productId,
@@ -29,15 +29,14 @@ export async function CustomerProductOptionsServiceDestroy({
       },
     }
   );
+
+  return data?.productDelete;
 }
 
 export const PRODUCT_OPTION_DESTROY = `#graphql
   mutation productOptionDestroy($productId: ID!) {
-    productDeleteAsync(productId: $productId) {
-      job {
-        done
-        id
-      }
+    productDelete(input: {id: $productId}) {
+      deletedProductId
     }
   }
 ` as const;

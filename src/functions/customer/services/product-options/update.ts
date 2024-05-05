@@ -81,7 +81,7 @@ export async function CustomerProductOptionsServiceUpdate(
       },
     })) || [];
 
-  return CustomerProductServiceUpdate(
+  await CustomerProductServiceUpdate(
     {
       customerId: props.customerId,
       productId: props.productId,
@@ -95,6 +95,8 @@ export async function CustomerProductOptionsServiceUpdate(
       ],
     }
   );
+
+  return data?.productVariantsBulkUpdate?.product;
 }
 
 export const PRODUCT_OPTION_UPDATE = `#graphql
@@ -105,9 +107,11 @@ export const PRODUCT_OPTION_UPDATE = `#graphql
   ) {
     product {
       id
+      title
       variants(first: 5) {
         nodes {
           id
+          title
           price
           duration: metafield(key: "duration", namespace: "booking") {
             id

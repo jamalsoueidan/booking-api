@@ -42,7 +42,7 @@ export async function CustomerProductOptionsServiceAdd({
     },
   });
 
-  return CustomerProductServiceUpdate(
+  await CustomerProductServiceUpdate(
     {
       customerId,
       productId,
@@ -65,6 +65,8 @@ export async function CustomerProductOptionsServiceAdd({
       ],
     }
   );
+
+  return data.productDuplicate?.newProduct;
 }
 
 export const PRODUCT_OPTION_DUPLCATE = `#graphql
@@ -77,6 +79,7 @@ export const PRODUCT_OPTION_DUPLCATE = `#graphql
           nodes {
             id
             title
+            price
             duration: metafield(key: "duration", namespace: "booking") {
               id
               value

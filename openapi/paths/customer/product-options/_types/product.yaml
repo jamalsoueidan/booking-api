@@ -1,0 +1,27 @@
+type: object
+properties:
+  id:
+    type: string
+  title:
+    type: string
+  variants:
+    type: object
+    properties:
+      nodes:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            title:
+              type: string
+            price:
+              type: string
+            duration:
+              type: object
+              properties:
+                id:
+                  type: string
+                value:
+                  type: string

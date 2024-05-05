@@ -29,7 +29,6 @@ describe("CustomerProductOptionsDestroyService", () => {
     const optionProductId = 123;
     const customerId = 123123;
     const mockProduct = {
-      done: true,
       id: "123",
     };
 
@@ -58,7 +57,7 @@ describe("CustomerProductOptionsDestroyService", () => {
 
     // Setup mock responses
     mockRequest.mockResolvedValueOnce({
-      data: { productDeleteAsync: { job: mockProduct } },
+      data: { productDelete: { deletedProductId: mockProduct.id } },
     });
 
     const result = await CustomerProductOptionsServiceDestroy({
@@ -67,13 +66,7 @@ describe("CustomerProductOptionsDestroyService", () => {
       optionProductId,
     });
 
-    expect(result).toMatchObject({
-      acknowledged: true,
-      modifiedCount: 1,
-      upsertedId: null,
-      upsertedCount: 0,
-      matchedCount: 1,
-    });
+    expect(result).toMatchObject({ deletedProductId: mockProduct.id });
 
     expect(shopifyAdmin.request).toHaveBeenCalledTimes(1);
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(

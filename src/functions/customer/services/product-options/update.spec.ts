@@ -83,10 +83,12 @@ describe("CustomerProductOptionsAddService", () => {
       productVariantsBulkUpdate: {
         product: {
           id: `gid://shopify/Product/${optionProductId}`,
+          title: "Product",
           variants: {
             nodes: [
               {
                 id: "gid://shopify/ProductVariant/1",
+                title: "Variant 1",
                 price: "12.00",
                 duration: {
                   id: "gid://shopify/Metafield/11",
@@ -95,6 +97,7 @@ describe("CustomerProductOptionsAddService", () => {
               },
               {
                 id: "gid://shopify/ProductVariant/2",
+                title: "Variant 2",
                 price: "50.00",
                 duration: {
                   id: "gid://shopify/Metafield/22",
@@ -103,6 +106,7 @@ describe("CustomerProductOptionsAddService", () => {
               },
               {
                 id: "gid://shopify/ProductVariant/3",
+                title: "Variant 3",
                 price: newDurationPrice.toString(),
                 duration: {
                   id: "gid://shopify/Metafield/33",
@@ -132,7 +136,7 @@ describe("CustomerProductOptionsAddService", () => {
       ]
     );
 
-    //expect(result).toEqual(mockProduct.productVariantsBulkUpdate?.product);
+    expect(result).toEqual(mockProduct.productVariantsBulkUpdate?.product);
     expect(shopifyAdmin.request).toHaveBeenCalledTimes(1);
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
       1,
