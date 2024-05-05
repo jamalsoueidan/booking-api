@@ -47,6 +47,7 @@ describe("CustomerProductOptionsDestroyService", () => {
           options: [
             {
               productId: optionProductId,
+              title: "asd",
               variants: [],
             },
           ],
@@ -66,7 +67,7 @@ describe("CustomerProductOptionsDestroyService", () => {
       optionProductId,
     });
 
-    expect(result).toMatchObject({ deletedProductId: mockProduct.id });
+    expect(result).toHaveLength(0);
 
     expect(shopifyAdmin.request).toHaveBeenCalledTimes(1);
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(

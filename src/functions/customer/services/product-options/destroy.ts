@@ -1,4 +1,5 @@
 import { ScheduleModel } from "~/functions/schedule";
+import { NotFoundError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 
 export type CustomerProductOptionsDestroyProps = {
@@ -12,13 +13,13 @@ export async function CustomerProductOptionsServiceDestroy({
   optionProductId,
   productId,
 }: CustomerProductOptionsDestroyProps) {
-  const { data } = await shopifyAdmin.request(PRODUCT_OPTION_DESTROY, {
+  await shopifyAdmin.request(PRODUCT_OPTION_DESTROY, {
     variables: {
       productId: `gid://shopify/Product/${optionProductId}`,
     },
   });
 
-  await ScheduleModel.updateOne(
+  const schedule = await ScheduleModel.findOneAndUpdate(
     {
       customerId,
       "products.productId": productId,
@@ -27,10 +28,33 @@ export async function CustomerProductOptionsServiceDestroy({
       $pull: {
         "products.$.options": { productId: optionProductId },
       },
+    },
+    {
+      new: true,
     }
+  ).orFail(
+    new NotFoundError([
+      {
+        path: ["customerId", "productId"],
+        message: "PRODUCT_NOT_FOUND",
+        code: "custom",
+      },
+    ])
   );
 
-  return data?.productDelete;
+  const product = schedule.products.find((p) => p.productId === productId);
+
+  if (!product) {
+    throw new NotFoundError([
+      {
+        path: ["customerId", "productId"],
+        message: "PRODUCT_NOT_FOUND",
+        code: "custom",
+      },
+    ]);
+  }
+
+  return product.options;
 }
 
 export const PRODUCT_OPTION_DESTROY = `#graphql
