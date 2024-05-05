@@ -59,8 +59,14 @@ describe("generateAvailability", () => {
         options: [
           {
             productId: 1,
+            title: "a",
             variants: [
-              { variantId: 15, duration: { value: 30, metafieldId: 1 } },
+              {
+                variantId: 15,
+                title: "a",
+                price: 1,
+                duration: { value: 30, metafieldId: 1 },
+              },
             ],
           },
         ],

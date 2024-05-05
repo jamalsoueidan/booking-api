@@ -4,12 +4,7 @@ properties:
     type: boolean
     example: true
   payload:
-    type: object
-    properties:
-      deletedProductId:
-        type: string
-    required:
-      - deletedProductId
+    $ref: ../../schedule/_types/product-options.yaml
 required:
   - success
   - payload

@@ -23,7 +23,7 @@ export async function CustomerProductOptionsServiceAdd({
     },
   });
 
-  if (!data) {
+  if (!data?.productDuplicate?.newProduct) {
     throw new ShopifyError([
       {
         path: ["shopify"],
@@ -33,7 +33,7 @@ export async function CustomerProductOptionsServiceAdd({
     ]);
   }
 
-  const newProductId = GidFormat.parse(data.productDuplicate?.newProduct?.id);
+  const newProductId = GidFormat.parse(data.productDuplicate.newProduct.id);
 
   await shopifyAdmin.request(PRODUCT_OPTION_UPDATE_TAG, {
     variables: {
@@ -42,31 +42,32 @@ export async function CustomerProductOptionsServiceAdd({
     },
   });
 
+  const newOption = {
+    productId: newProductId,
+    title: data.productDuplicate.newProduct.title,
+    variants:
+      data.productDuplicate?.newProduct?.variants.nodes.map((variant) => ({
+        variantId: GidFormat.parse(variant.id),
+        title: variant.title,
+        price: variant.price,
+        duration: {
+          metafieldId: GidFormat.parse(variant.duration?.id),
+          value: parseInt(variant.duration?.value || "0"),
+        },
+      })) || [],
+  };
+
   await CustomerProductServiceUpdate(
     {
       customerId,
       productId,
     },
     {
-      options: [
-        {
-          productId: newProductId,
-          variants:
-            data.productDuplicate?.newProduct?.variants.nodes.map(
-              (variant) => ({
-                variantId: GidFormat.parse(variant.id),
-                duration: {
-                  metafieldId: GidFormat.parse(variant.duration?.id),
-                  value: parseInt(variant.duration?.value || "0"),
-                },
-              })
-            ) || [],
-        },
-      ],
+      options: [newOption],
     }
   );
 
-  return data.productDuplicate?.newProduct;
+  return newOption;
 }
 
 export const PRODUCT_OPTION_DUPLCATE = `#graphql

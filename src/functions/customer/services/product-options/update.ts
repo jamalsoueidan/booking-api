@@ -1,4 +1,4 @@
-import { NotFoundError } from "~/library/handler";
+import { NotFoundError, ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
 import { CustomerProductServiceGet } from "../product/get";
@@ -71,17 +71,29 @@ export async function CustomerProductOptionsServiceUpdate(
     },
   });
 
+  if (!data?.productVariantsBulkUpdate?.product) {
+    throw new ShopifyError([
+      {
+        path: ["shopify"],
+        message: "GRAPHQL_ERROR",
+        code: "custom",
+      },
+    ]);
+  }
+
   // these could maybe come from webhook update
-  const updated =
-    data?.productVariantsBulkUpdate?.product?.variants.nodes.map((node) => ({
+  const updatedOption =
+    data.productVariantsBulkUpdate.product.variants.nodes.map((node) => ({
       variantId: GidFormat.parse(node.id),
+      title: node.title,
+      price: node.price,
       duration: {
         value: parseInt(node.duration?.value || "", 10) || 60,
         metafieldId: GidFormat.parse(node.duration?.id),
       },
     })) || [];
 
-  await CustomerProductServiceUpdate(
+  const result = await CustomerProductServiceUpdate(
     {
       customerId: props.customerId,
       productId: props.productId,
@@ -90,13 +102,14 @@ export async function CustomerProductOptionsServiceUpdate(
       options: [
         {
           productId: props.optionProductId,
-          variants: updated,
+          title: data.productVariantsBulkUpdate.product.title,
+          variants: updatedOption,
         },
       ],
     }
   );
 
-  return data?.productVariantsBulkUpdate?.product;
+  return updatedOption;
 }
 
 export const PRODUCT_OPTION_UPDATE = `#graphql

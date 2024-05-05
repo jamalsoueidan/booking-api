@@ -2,6 +2,8 @@ type: object
 properties:
   productId:
     type: number
+  title:
+    type: string
   variants:
     type: array
     items:
@@ -9,6 +11,10 @@ properties:
       properties:
         variantId:
           type: number
+        title:
+          type: string
+        price:
+          type: string
         duration:
           type: object
           properties:
@@ -22,7 +28,10 @@ properties:
       required:
         - variantId
         - duration
+        - title
+        - price
 
 required:
   - productId
   - variants
+  - title

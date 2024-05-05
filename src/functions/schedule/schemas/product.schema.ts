@@ -17,12 +17,15 @@ export const OptionMongooseSchema = new mongoose.Schema<ScheduleProductOption>(
       index: true,
       required: true,
     },
+    title: String,
     variants: [
       {
         variantId: {
           type: Number,
           required: true,
         },
+        title: String,
+        price: Number,
         duration: {
           metafieldId: {
             type: Number,

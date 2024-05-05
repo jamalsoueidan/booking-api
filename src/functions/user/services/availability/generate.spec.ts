@@ -340,16 +340,38 @@ describe("UserAvailabilityServiceGenerate", () => {
     scheduleObject.products[0].options = [
       {
         productId: 1,
+        title: "a",
         variants: [
-          { variantId: 12, duration: { metafieldId: 1, value: 30 } },
-          { variantId: 13, duration: { metafieldId: 2, value: 45 } },
+          {
+            variantId: 12,
+            price: 1,
+            title: "a",
+            duration: { metafieldId: 1, value: 30 },
+          },
+          {
+            variantId: 13,
+            price: 1,
+            title: "a",
+            duration: { metafieldId: 2, value: 45 },
+          },
         ],
       },
       {
         productId: 2,
+        title: "a",
         variants: [
-          { variantId: 14, duration: { metafieldId: 1, value: 30 } },
-          { variantId: 15, duration: { metafieldId: 2, value: 45 } },
+          {
+            variantId: 14,
+            price: 1,
+            title: "a",
+            duration: { metafieldId: 1, value: 30 },
+          },
+          {
+            variantId: 15,
+            price: 1,
+            title: "a",
+            duration: { metafieldId: 2, value: 45 },
+          },
         ],
       },
     ];
