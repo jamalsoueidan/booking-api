@@ -98,6 +98,10 @@ components:
       $ref: paths/customer/product-options/update/response.yaml
     CustomerProductOptionsUpdateBody:
       $ref: paths/customer/product-options/update/body.yaml
+    CustomerProductOptionsList:
+      $ref: paths/customer/product-options/list/items.yaml
+    CustomerProductOptionsListResponse:
+      $ref: paths/customer/product-options/list/response.yaml
     CustomerProductOptionsAddResponse:
       $ref: paths/customer/product-options/add/response.yaml
     CustomerProductOptionsAddBody:
