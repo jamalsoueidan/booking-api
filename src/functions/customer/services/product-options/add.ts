@@ -2,6 +2,7 @@ import { UserModel } from "~/functions/user";
 import { NotFoundError, ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
+import { CustomerProductServiceGet } from "../product/get";
 import { CustomerProductServiceUpdate } from "../product/update";
 
 export type CustomerProductOptionsServiceAddProps = {
@@ -31,6 +32,11 @@ export async function CustomerProductOptionsServiceAdd({
     )
     .lean();
 
+  const product = await CustomerProductServiceGet({
+    customerId,
+    productId,
+  });
+
   const { data } = await shopifyAdmin.request(PRODUCT_OPTION_DUPLCATE, {
     variables: {
       productId: `gid://shopify/Product/${cloneId}`,
@@ -53,7 +59,7 @@ export async function CustomerProductOptionsServiceAdd({
   await shopifyAdmin.request(PRODUCT_OPTION_UPDATE_TAG, {
     variables: {
       id: `gid://shopify/Product/${newProductId}`,
-      tags: `user, options, user-${user.username}, customer-${customerId}, product-${productId}, product-${data.productDuplicate.newProduct.handle}`,
+      tags: `user, options, user-${user.username}, customer-${customerId}, product-${productId}, product-${product.productHandle}`,
     },
   });
 

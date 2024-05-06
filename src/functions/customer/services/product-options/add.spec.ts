@@ -176,7 +176,7 @@ describe("CustomerProductOptionsAddService", () => {
       {
         variables: {
           id: mockProduct.productDuplicate?.newProduct?.id,
-          tags: `user, options, user-${user.username}, customer-${customerId}, product-${product.productId}, product-${mockProduct.productDuplicate?.newProduct?.handle}`,
+          tags: `user, options, user-${user.username}, customer-${customerId}, product-${product.productId}, product-${product.productHandle}`,
         },
       }
     );
