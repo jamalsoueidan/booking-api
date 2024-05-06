@@ -1,4 +1,5 @@
-import { ShopifyError } from "~/library/handler";
+import { UserModel } from "~/functions/user";
+import { NotFoundError, ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
 import { CustomerProductServiceUpdate } from "../product/update";
@@ -16,6 +17,20 @@ export async function CustomerProductOptionsServiceAdd({
   cloneId,
   title,
 }: CustomerProductOptionsServiceAddProps) {
+  const user = await UserModel.findOne({
+    customerId,
+  })
+    .orFail(
+      new NotFoundError([
+        {
+          path: ["customerId"],
+          message: "NOT_FOUND",
+          code: "custom",
+        },
+      ])
+    )
+    .lean();
+
   const { data } = await shopifyAdmin.request(PRODUCT_OPTION_DUPLCATE, {
     variables: {
       productId: `gid://shopify/Product/${cloneId}`,
@@ -38,7 +53,7 @@ export async function CustomerProductOptionsServiceAdd({
   await shopifyAdmin.request(PRODUCT_OPTION_UPDATE_TAG, {
     variables: {
       id: `gid://shopify/Product/${newProductId}`,
-      tags: `user, options, customer-${customerId}, product-${productId}`,
+      tags: `user, options, user-${user.username}, customer-${customerId}, product-${productId}, product-${data.productDuplicate.newProduct.handle}`,
     },
   });
 
@@ -76,6 +91,7 @@ export const PRODUCT_OPTION_DUPLCATE = `#graphql
       newProduct {
         id
         title
+        handle
         variants(first: 5) {
           nodes {
             id

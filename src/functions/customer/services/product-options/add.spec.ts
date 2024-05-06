@@ -1,4 +1,5 @@
 import { ScheduleModel } from "~/functions/schedule";
+import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
@@ -31,6 +32,8 @@ describe("CustomerProductOptionsAddService", () => {
     const customerId = 123;
     const cloneId = 123123;
 
+    const user = await createUser({ customerId });
+
     const newSchedule = await CustomerScheduleServiceCreate({
       name: "Test Schedule",
       customerId,
@@ -51,6 +54,7 @@ describe("CustomerProductOptionsAddService", () => {
         newProduct: {
           id: "gid://shopify/Product/9186772386119",
           title: "New Product Title",
+          handle: "ikadsk",
           variants: {
             nodes: [
               {
@@ -91,6 +95,7 @@ describe("CustomerProductOptionsAddService", () => {
         newProduct: {
           id: "gid://shopify/Product/433443",
           title: "New Product Title",
+          handle: "ijejife",
           variants: {
             nodes: [
               {
@@ -171,7 +176,7 @@ describe("CustomerProductOptionsAddService", () => {
       {
         variables: {
           id: mockProduct.productDuplicate?.newProduct?.id,
-          tags: `user, options, customer-${customerId}, product-${product.productId}`,
+          tags: `user, options, user-${user.username}, customer-${customerId}, product-${product.productId}, product-${mockProduct.productDuplicate?.newProduct?.handle}`,
         },
       }
     );
