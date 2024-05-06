@@ -8,3 +8,7 @@ items:
       type: string
     duration:
       type: string
+  required:
+    - id
+    - price
+    - duration
