@@ -134,13 +134,15 @@ describe("CustomerProductOptionsAddService", () => {
         productId: product.productId,
         optionProductId,
       },
-      [
-        {
-          id: 3,
-          duration: newDurationValue,
-          price: newDurationPrice,
-        },
-      ]
+      {
+        variants: [
+          {
+            id: 3,
+            duration: newDurationValue,
+            price: newDurationPrice,
+          },
+        ],
+      }
     );
 
     //expect(result).toHaveLength(1);

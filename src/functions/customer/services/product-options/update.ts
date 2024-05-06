@@ -10,11 +10,13 @@ export type CustomerProductOptionsServiceUpdateProps = {
   optionProductId: number;
 };
 
-export type CustomerProductOptionsServiceUpdateBody = Array<{
-  id: number;
-  price: number;
-  duration: number;
-}>;
+export type CustomerProductOptionsServiceUpdateBody = {
+  variants: Array<{
+    id: number;
+    price: number;
+    duration: number;
+  }>;
+};
 
 export async function CustomerProductOptionsServiceUpdate(
   props: CustomerProductOptionsServiceUpdateProps,
@@ -39,7 +41,7 @@ export async function CustomerProductOptionsServiceUpdate(
     ]);
   }
 
-  const variants = body.map((variant) => {
+  const variants = body.variants.map((variant) => {
     const dbVariant = option.variants.find((v) => v.variantId === variant.id);
     if (!dbVariant) {
       throw new NotFoundError([

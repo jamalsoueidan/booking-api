@@ -15,13 +15,15 @@ const CustomerProductOptionsControllerUpdateQuerySchema = z.object({
   optionProductId: GidFormat, // which productId to clone from shopify
 });
 
-const CustomerProductOptionsControllerUpdateBodySchema = z.array(
-  z.object({
-    id: GidFormat,
-    price: NumberOrString,
-    duration: NumberOrString, // which productId to clone from shopify
-  })
-);
+const CustomerProductOptionsControllerUpdateBodySchema = z.object({
+  variants: z.array(
+    z.object({
+      id: GidFormat,
+      price: NumberOrString,
+      duration: NumberOrString, // which productId to clone from shopify
+    })
+  ),
+});
 
 export const CustomerProductOptionsControllerUpdate = _(
   ({ query, body }: CustomerProductOptionsControllerUpdateRequest) => {
