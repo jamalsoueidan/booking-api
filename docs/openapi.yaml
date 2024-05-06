@@ -574,6 +574,10 @@ components:
             type: string
           duration:
             type: string
+        required:
+          - id
+          - price
+          - duration
     CustomerProductOptionsList:
       type: array
       items:
