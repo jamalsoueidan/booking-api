@@ -20,9 +20,9 @@ export enum SlotWeekDays {
 }
 
 const BookingPeriodZodSchema = z.object({
-  valueMetafieldId: GidFormat.optional(),
+  valueMetafieldId: z.string().optional(),
   value: NumberOrString,
-  unitMetafieldId: GidFormat.optional(),
+  unitMetafieldId: z.string().optional(),
   unit: z.enum([TimeUnit.WEEKS, TimeUnit.MONTHS]),
 });
 
@@ -31,9 +31,9 @@ export type ScheduleProductBookingPeriod = z.infer<
 >;
 
 const NoticePeriodZodSchema = z.object({
-  valueMetafieldId: GidFormat.optional(),
+  valueMetafieldId: z.string().optional(),
   value: NumberOrString,
-  unitMetafieldId: GidFormat.optional(),
+  unitMetafieldId: z.string().optional(),
   unit: z.enum([
     TimeUnit.HOURS,
     TimeUnit.DAYS,
@@ -82,22 +82,22 @@ export const ScheduleProductZodSchema = z.object({
     name: z.string(),
     value: z.string(),
   }),
-  locationsMetafieldId: GidFormat.optional(),
+  locationsMetafieldId: z.string().optional(),
   locations: z.array(LocationZodSchema),
   price: z.object({
     amount: z.string(),
-    currencyCode: z.string(),
+    currencyCode: z.string().optional(),
   }),
   compareAtPrice: z
     .object({
       amount: z.string(),
-      currencyCode: z.string(),
+      currencyCode: z.string().optional(),
     })
     .optional(),
   description: z.string().optional(),
-  durationMetafieldId: GidFormat.optional(),
+  durationMetafieldId: z.string().optional(),
   duration: NumberOrString,
-  breakTimeMetafieldId: GidFormat.optional(),
+  breakTimeMetafieldId: z.string().optional(),
   breakTime: NumberOrString,
   noticePeriod: NoticePeriodZodSchema,
   bookingPeriod: BookingPeriodZodSchema,
