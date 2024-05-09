@@ -6,11 +6,9 @@ import {
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
-import { omitObjectIdProps } from "~/library/jest/helpers";
 
 import { getProductObject } from "~/library/jest/helpers/product";
-import { CustomerProductServiceAdd } from "../../services/product/add";
-import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import {
   CustomerProductControllerDestroy,
   CustomerProductControllerDestroyRequest,
@@ -41,26 +39,11 @@ describe("CustomerProductControllerDestroy", () => {
   });
 
   it("should be able to destroy schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
-      name: "asd",
+    const newSchedule = await createSchedule({
+      name: "adsasd",
       customerId: 123,
+      products: [product],
     });
-
-    const newProduct = await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
-      },
-      { ...product, scheduleId: newSchedule._id }
-    );
-
-    expect(omitObjectIdProps(newProduct)).toMatchObject(
-      omitObjectIdProps({
-        ...product,
-        productId: newProduct.productId,
-        scheduleId: newSchedule._id,
-        scheduleName: newSchedule.name,
-      })
-    );
 
     request = await createHttpRequest<CustomerProductControllerDestroyRequest>({
       query: {

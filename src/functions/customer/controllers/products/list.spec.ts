@@ -9,8 +9,7 @@ import {
 } from "~/library/jest/azure";
 
 import { getProductObject } from "~/library/jest/helpers/product";
-import { CustomerProductServiceAdd } from "../../services/product/add";
-import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import {
   CustomerProductsControllerList,
   CustomerProductsControllerListRequest,
@@ -39,36 +38,20 @@ describe("UserProductsControllerList", () => {
       },
     });
 
-    const newSchedule = await CustomerScheduleServiceCreate({
-      name: "ab",
+    const newSchedule = await createSchedule({
+      name: "adsasd",
       customerId,
+      products: [{ ...newProduct, productId: 1000 }],
     });
 
-    await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
-      },
-      { ...newProduct, productId: 1000, scheduleId: newSchedule._id }
-    );
-
-    const newSchedule2 = await CustomerScheduleServiceCreate({
-      name: "tdd",
+    const newSchedule2 = await createSchedule({
+      name: "adsd",
       customerId,
+      products: [
+        { ...newProduct, productId: 1002 },
+        { ...newProduct, productId: 1004 },
+      ],
     });
-
-    await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule2.customerId,
-      },
-      { ...newProduct, productId: 1002, scheduleId: newSchedule2._id }
-    );
-
-    await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule2.customerId,
-      },
-      { ...newProduct, productId: 1004, scheduleId: newSchedule2._id }
-    );
 
     request = await createHttpRequest<CustomerProductsControllerListRequest>({
       query: { customerId },

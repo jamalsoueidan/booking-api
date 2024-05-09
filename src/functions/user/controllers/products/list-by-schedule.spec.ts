@@ -8,10 +8,9 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
-import { CustomerProductServiceAdd } from "~/functions/customer/services/product/add";
-import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import {
   UserProductsControllerListBySchedule,
   UserProductsControllerListByScheduleRequest,
@@ -44,36 +43,20 @@ describe("UserProductsControllerListBySchedule", () => {
       { username: "jamalsoueidan", isBusiness: true, active: true }
     );
 
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "vagtplan",
       customerId: user.customerId,
+      products: [{ ...newProduct, productId: 1000 }],
     });
 
-    await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
-      },
-      { ...newProduct, productId: 1000, scheduleId: newSchedule._id }
-    );
-
-    const newSchedule2 = await CustomerScheduleServiceCreate({
+    const newSchedule2 = await createSchedule({
       name: "vagtplan2",
       customerId: user.customerId,
+      products: [
+        { ...newProduct, productId: 1002 },
+        { ...newProduct, productId: 1004 },
+      ],
     });
-
-    await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule2.customerId,
-      },
-      { ...newProduct, productId: 1002, scheduleId: newSchedule2._id }
-    );
-
-    await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule2.customerId,
-      },
-      { ...newProduct, productId: 1004, scheduleId: newSchedule2._id }
-    );
 
     request =
       await createHttpRequest<UserProductsControllerListByScheduleRequest>({
@@ -94,36 +77,20 @@ describe("UserProductsControllerListBySchedule", () => {
       { username: "jamalsoueidan", isBusiness: true, active: true }
     );
 
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "vagtplan",
       customerId: user.customerId,
+      products: [{ ...newProduct, productId: 1000 }],
     });
 
-    await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
-      },
-      { ...newProduct, productId: 1000, scheduleId: newSchedule._id }
-    );
-
-    const newSchedule2 = await CustomerScheduleServiceCreate({
+    const newSchedule2 = await createSchedule({
       name: "vagtplan2",
       customerId: user.customerId,
+      products: [
+        { ...newProduct, productId: 1001 },
+        { ...newProduct, productId: 1002 },
+      ],
     });
-
-    await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule2.customerId,
-      },
-      { ...newProduct, productId: 1002, scheduleId: newSchedule2._id }
-    );
-
-    await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule2.customerId,
-      },
-      { ...newProduct, productId: 1004, scheduleId: newSchedule2._id }
-    );
 
     request =
       await createHttpRequest<UserProductsControllerListByScheduleRequest>({

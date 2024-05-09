@@ -7,6 +7,9 @@ import {
 } from "~/library/jest/azure";
 
 import { getProductObject } from "~/library/jest/helpers/product";
+import { shopifyAdmin } from "~/library/shopify";
+import { GidFormat } from "~/library/zod";
+import { ProductDuplicateMutation } from "~/types/admin.generated";
 import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
   CustomerProductControllerAdd,
@@ -16,6 +19,59 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
+jest.mock("@shopify/admin-api-client", () => ({
+  createAdminApiClient: () => ({
+    request: jest.fn(),
+  }),
+}));
+
+const mockRequest = shopifyAdmin.request as jest.Mock;
+
+const mockProduct: ProductDuplicateMutation = {
+  productDuplicate: {
+    newProduct: {
+      id: "gid://shopify/Product/9196220121415",
+      handle: "testerne-new-product",
+      parentId: {
+        id: "gid://shopify/Metafield/44429081510215",
+        value: "gid://shopify/Product/8022089105682",
+      },
+      scheduleId: {
+        id: "gid://shopify/Metafield/44429081542983",
+        value: "schedule",
+      },
+      locations: {
+        id: "gid://shopify/Metafield/44429081411911",
+        value: '{"locations":[]}',
+      },
+      bookingPeriodValue: {
+        id: "gid://shopify/Metafield/44429081313607",
+        value: "1",
+      },
+      bookingPeriodUnit: {
+        id: "gid://shopify/Metafield/44429081280839",
+        value: "months",
+      },
+      noticePeriodValue: {
+        id: "gid://shopify/Metafield/44429081477447",
+        value: "1",
+      },
+      noticePeriodUnit: {
+        id: "gid://shopify/Metafield/44429081444679",
+        value: "hours",
+      },
+      duration: {
+        id: "gid://shopify/Metafield/44429081379143",
+        value: "60",
+      },
+      breaktime: {
+        id: "gid://shopify/Metafield/44429081346375",
+        value: "10",
+      },
+    },
+  },
+};
+
 describe("CustomerProductControllerAdd", () => {
   let context: InvocationContext;
   let request: HttpRequest;
@@ -24,9 +80,14 @@ describe("CustomerProductControllerAdd", () => {
 
   beforeEach(async () => {
     context = createContext();
+    (shopifyAdmin.request as jest.Mock).mockClear();
   });
 
   it("should be able to add slots schedule", async () => {
+    mockRequest.mockResolvedValueOnce({
+      data: mockProduct,
+    });
+
     const newSchedule = await CustomerScheduleServiceCreate({
       name: "asd",
       customerId,
@@ -47,7 +108,9 @@ describe("CustomerProductControllerAdd", () => {
 
     expect(res.jsonBody?.payload).toEqual(
       expect.objectContaining({
-        productId: 1000,
+        productId: GidFormat.parse(
+          mockProduct.productDuplicate?.newProduct?.id
+        ),
       })
     );
   });
