@@ -117,7 +117,9 @@ describe("CustomerProductServiceAdd", () => {
       parentId: productBody.productId,
       productId: GidFormat.parse(mockProduct.productDuplicate?.newProduct?.id),
       scheduleId: newSchedule._id.toString(),
-      variantId: GidFormat.parse(productBody.variantId),
+      variantId: GidFormat.parse(
+        mockProduct.productDuplicate?.newProduct?.variants.nodes[0].id
+      ),
     });
   });
 
