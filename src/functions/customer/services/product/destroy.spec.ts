@@ -32,13 +32,14 @@ describe("CustomerProductServiceDestroy", () => {
   });
 
   it("should remove an existing product from the schedule", async () => {
-    const mockProduct = {
-      id: "123",
-    };
-
-    // Setup mock responses
     mockRequest.mockResolvedValueOnce({
-      data: { productDelete: { deletedProductId: mockProduct.id } },
+      data: {
+        productDelete: {
+          deletedProductId: {
+            id: "123",
+          },
+        },
+      },
     });
 
     const newSchedule = await createSchedule({

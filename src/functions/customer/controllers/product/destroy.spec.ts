@@ -9,6 +9,7 @@ import {
 
 import { getProductObject } from "~/library/jest/helpers/product";
 import { createSchedule } from "~/library/jest/helpers/schedule";
+import { shopifyAdmin } from "~/library/shopify";
 import {
   CustomerProductControllerDestroy,
   CustomerProductControllerDestroyRequest,
@@ -16,6 +17,14 @@ import {
 } from "./destroy";
 
 require("~/library/jest/mongoose/mongodb.jest");
+
+jest.mock("@shopify/admin-api-client", () => ({
+  createAdminApiClient: () => ({
+    request: jest.fn(),
+  }),
+}));
+
+const mockRequest = shopifyAdmin.request as jest.Mock;
 
 describe("CustomerProductControllerDestroy", () => {
   let context: InvocationContext;
@@ -43,6 +52,16 @@ describe("CustomerProductControllerDestroy", () => {
       name: "adsasd",
       customerId: 123,
       products: [product],
+    });
+
+    mockRequest.mockResolvedValueOnce({
+      data: {
+        productDelete: {
+          deletedProductId: {
+            id: "123",
+          },
+        },
+      },
     });
 
     request = await createHttpRequest<CustomerProductControllerDestroyRequest>({
