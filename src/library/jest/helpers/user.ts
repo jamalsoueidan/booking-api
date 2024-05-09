@@ -41,7 +41,7 @@ export const getUserObject = (
 });
 
 export const createUser = (
-  filter: Pick<User, "customerId">,
+  filter: Partial<Pick<User, "customerId">> = {},
   props: Partial<User> = {}
 ) => {
   return CustomerServiceCreate(getUserObject({ ...props, ...filter }));

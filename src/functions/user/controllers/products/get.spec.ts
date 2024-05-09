@@ -21,26 +21,27 @@ require("~/library/jest/mongoose/mongodb.jest");
 describe("UserProductsControllerGet", () => {
   let context: InvocationContext;
   let request: HttpRequest;
-  const product = getProductObject({
-    variantId: 1,
-    duration: 60,
-    breakTime: 0,
-    noticePeriod: {
-      value: 1,
-      unit: TimeUnit.DAYS,
-    },
-    bookingPeriod: {
-      value: 1,
-      unit: TimeUnit.WEEKS,
-    },
-  });
 
   beforeEach(async () => {
     context = createContext();
   });
 
   it("should be able to get product inside schedule", async () => {
-    const user = await createUser({ customerId: 134 });
+    const user = await createUser();
+
+    const product = getProductObject({
+      variantId: 1,
+      duration: 60,
+      breakTime: 0,
+      noticePeriod: {
+        value: 1,
+        unit: TimeUnit.DAYS,
+      },
+      bookingPeriod: {
+        value: 1,
+        unit: TimeUnit.WEEKS,
+      },
+    });
 
     const newSchedule = await createSchedule({
       name: "asd",

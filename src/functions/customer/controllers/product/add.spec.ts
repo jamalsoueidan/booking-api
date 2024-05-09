@@ -80,7 +80,7 @@ describe("CustomerProductControllerAdd", () => {
 
   beforeEach(async () => {
     context = createContext();
-    (shopifyAdmin.request as jest.Mock).mockClear();
+    jest.clearAllMocks();
   });
 
   it("should be able to add slots schedule", async () => {
