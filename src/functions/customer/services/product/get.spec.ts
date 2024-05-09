@@ -1,7 +1,6 @@
 import { TimeUnit } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { CustomerScheduleServiceCreate } from "../schedule/create";
-import { CustomerProductServiceAdd } from "./add";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { CustomerProductServiceGet } from "./get";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -11,6 +10,7 @@ describe("CustomerProductsService", () => {
   const name = "Test Schedule";
   const productId = 1000;
   const newProduct = getProductObject({
+    productId,
     variantId: 1,
     duration: 60,
     breakTime: 0,
@@ -25,17 +25,11 @@ describe("CustomerProductsService", () => {
   });
 
   it("should find a product", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name,
       customerId,
+      products: [newProduct],
     });
-
-    const updatedSchedule = await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
-      },
-      { ...newProduct, productId, scheduleId: newSchedule._id }
-    );
 
     const foundProduct = await CustomerProductServiceGet({
       customerId: newSchedule.customerId,

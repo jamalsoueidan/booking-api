@@ -1,7 +1,6 @@
 import { TimeUnit } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { CustomerScheduleServiceCreate } from "../schedule/create";
-import { CustomerProductServiceAdd } from "./add";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { CustomerProductsServiceListIds } from "./list-ids";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -10,12 +9,8 @@ describe("CustomerProductsServiceListIds", () => {
   const customerId = 123;
 
   it("should get all productIds for all schedules", async () => {
-    const schedule1 = await CustomerScheduleServiceCreate({
-      name: "ab",
-      customerId: 7,
-    });
-
     const product1 = getProductObject({
+      productId: 999,
       variantId: 1,
       duration: 60,
       breakTime: 0,
@@ -29,59 +24,32 @@ describe("CustomerProductsServiceListIds", () => {
       },
     });
 
-    await CustomerProductServiceAdd(
-      {
-        customerId: schedule1.customerId,
-      },
-      { ...product1, productId: 999, scheduleId: schedule1._id }
-    );
-
-    const schedule2 = await CustomerScheduleServiceCreate({
-      name: "ab",
-      customerId,
+    await createSchedule({
+      name: "ANOTHER CUSTOMER",
+      customerId: 7,
+      products: [product1],
     });
 
-    const product2 = { ...product1, scheduleId: schedule2._id };
-
-    await CustomerProductServiceAdd(
-      {
-        customerId: schedule2.customerId,
-      },
-      { ...product2, productId: 1001 }
-    );
-
-    await CustomerProductServiceAdd(
-      {
-        customerId: schedule2.customerId,
-      },
-      { ...product2, productId: 1000 }
-    );
-
-    const schedule3 = await CustomerScheduleServiceCreate({
-      name: "test",
+    await createSchedule({
+      name: "SAME CUSTOMER",
       customerId,
+      products: [
+        { ...product1, productId: 1001 },
+        { ...product1, productId: 1002 },
+      ],
     });
 
-    const product3 = {
-      ...product1,
-      scheduleId: schedule3._id,
-    };
-
-    await CustomerProductServiceAdd(
-      {
-        customerId: schedule3.customerId,
-      },
-      { ...product3, productId: 1002 }
-    );
-
-    await CustomerProductServiceAdd(
-      {
-        customerId: schedule3.customerId,
-      },
-      { ...product3, productId: 1004 }
-    );
+    await createSchedule({
+      name: "SAME CUSTOMER2",
+      customerId,
+      products: [
+        { ...product1, productId: 1003 },
+        { ...product1, productId: 1004 },
+      ],
+    });
 
     const products = await CustomerProductsServiceListIds({ customerId });
-    expect(products).toEqual([1001, 1000, 1002, 1004]);
+
+    expect(products).toEqual([1001, 1002, 1003, 1004]);
   });
 });

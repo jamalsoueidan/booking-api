@@ -1,8 +1,7 @@
 import { TimeUnit } from "~/functions/schedule";
 import { omitObjectIdProps } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { CustomerScheduleServiceCreate } from "../schedule/create";
-import { CustomerProductServiceAdd } from "./add";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { CustomerProductServiceGet } from "./get";
 import { CustomerProductServiceUpdate } from "./update";
 
@@ -13,6 +12,7 @@ describe("CustomerProductServiceUpdate", () => {
   const name = "Test Schedule";
   const productId = 1000;
   const newProduct = getProductObject({
+    productId,
     variantId: 1,
     duration: 60,
     breakTime: 0,
@@ -27,17 +27,11 @@ describe("CustomerProductServiceUpdate", () => {
   });
 
   it("should update an existing product in the schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name,
       customerId,
+      products: [newProduct],
     });
-
-    await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
-      },
-      { ...newProduct, productId, scheduleId: newSchedule._id }
-    );
 
     const productBody = {
       duration: 90,

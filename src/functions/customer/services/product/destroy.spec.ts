@@ -1,7 +1,6 @@
 import { TimeUnit } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { CustomerScheduleServiceCreate } from "../schedule/create";
-import { CustomerProductServiceAdd } from "./add";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { CustomerProductServiceDestroy } from "./destroy";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -24,21 +23,15 @@ describe("CustomerProductServiceDestroy", () => {
   });
 
   it("should remove an existing product from the schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name,
       customerId,
+      products: [newProduct],
     });
-
-    const product = await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
-      },
-      { ...newProduct, scheduleId: newSchedule._id }
-    );
 
     const updatedSchedule = await CustomerProductServiceDestroy({
       customerId: newSchedule.customerId,
-      productId: product.productId,
+      productId: newProduct.productId,
     });
 
     expect(updatedSchedule?.modifiedCount).toBe(1);
