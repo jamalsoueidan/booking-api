@@ -30,7 +30,6 @@ describe("CustomerProductControllerDestroy", () => {
   let context: InvocationContext;
   let request: HttpRequest;
   const product = getProductObject({
-    variantId: 1,
     duration: 60,
     breakTime: 0,
     noticePeriod: {

@@ -32,6 +32,15 @@ const mockProduct: ProductDuplicateMutation = {
     newProduct: {
       id: "gid://shopify/Product/9196220121415",
       handle: "testerne-new-product",
+      variants: {
+        nodes: [
+          {
+            id: "gid://shopify/ProductVariant/49511289782599",
+            compareAtPrice: "150.00",
+            price: "90.00",
+          },
+        ],
+      },
       parentId: {
         id: "gid://shopify/Metafield/44429081510215",
         value: "gid://shopify/Product/8022089105682",
@@ -98,7 +107,7 @@ describe("CustomerProductControllerAdd", () => {
       query: {
         customerId,
       },
-      body: { ...body, scheduleId: newSchedule._id },
+      body: { ...body, title: "new", scheduleId: newSchedule._id },
     });
 
     const res: HttpSuccessResponse<CustomerProductControllerAddResponse> =

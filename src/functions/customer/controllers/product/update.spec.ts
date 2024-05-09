@@ -9,6 +9,11 @@ import {
 import { TimeUnit } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { createSchedule } from "~/library/jest/helpers/schedule";
+import { shopifyAdmin } from "~/library/shopify";
+import {
+  ProductPricepdateMutation,
+  ProductUpdateMutation,
+} from "~/types/admin.generated";
 import {
   CustomerProductControllerUpdate,
   CustomerProductControllerUpdateRequest,
@@ -16,6 +21,84 @@ import {
 } from "./update";
 
 require("~/library/jest/mongoose/mongodb.jest");
+
+jest.mock("@shopify/admin-api-client", () => ({
+  createAdminApiClient: () => ({
+    request: jest.fn(),
+  }),
+}));
+
+const mockRequest = shopifyAdmin.request as jest.Mock;
+
+const mockProductUpdate: ProductUpdateMutation = {
+  productUpdate: {
+    product: {
+      id: "gid://shopify/Product/9196220121415",
+      variants: {
+        nodes: [
+          {
+            id: "gid://shopify/ProductVariant/49511289782599",
+            compareAtPrice: "150.00",
+            price: "90.00",
+          },
+        ],
+      },
+      parentId: {
+        id: "gid://shopify/Metafield/44429081510215",
+        value: "gid://shopify/Product/8022089105682",
+      },
+      scheduleId: {
+        id: "gid://shopify/Metafield/44429081542983",
+        value: "schedule",
+      },
+      locations: {
+        id: "gid://shopify/Metafield/44429081411911",
+        value: '{"locations":[]}',
+      },
+      bookingPeriodValue: {
+        id: "gid://shopify/Metafield/44429081313607",
+        value: "1",
+      },
+      bookingPeriodUnit: {
+        id: "gid://shopify/Metafield/44429081280839",
+        value: "months",
+      },
+      noticePeriodValue: {
+        id: "gid://shopify/Metafield/44429081477447",
+        value: "1",
+      },
+      noticePeriodUnit: {
+        id: "gid://shopify/Metafield/44429081444679",
+        value: "hours",
+      },
+      duration: {
+        id: "gid://shopify/Metafield/44429081379143",
+        value: "60",
+      },
+      breaktime: {
+        id: "gid://shopify/Metafield/44429081346375",
+        value: "10",
+      },
+    },
+  },
+};
+
+const mockProductPriceUpdate: ProductPricepdateMutation = {
+  productVariantsBulkUpdate: {
+    product: {
+      id: "gid://shopify/Product/9196220121415",
+      variants: {
+        nodes: [
+          {
+            id: "gid://shopify/ProductVariant/49503397249351",
+            compareAtPrice: "150.00",
+            price: "90.00",
+          },
+        ],
+      },
+    },
+  },
+};
 
 describe("CustomerProductControllerUpdate", () => {
   let context: InvocationContext;
@@ -25,6 +108,7 @@ describe("CustomerProductControllerUpdate", () => {
 
   beforeEach(async () => {
     context = createContext();
+    jest.clearAllMocks();
   });
 
   it("should be able to update product inside schedule", async () => {
@@ -33,6 +117,14 @@ describe("CustomerProductControllerUpdate", () => {
       customerId,
       products: [getProductObject({ productId })],
     });
+
+    mockRequest
+      .mockResolvedValueOnce({
+        data: mockProductUpdate,
+      })
+      .mockResolvedValueOnce({
+        data: mockProductPriceUpdate,
+      });
 
     request = await createHttpRequest<CustomerProductControllerUpdateRequest>({
       query: {
@@ -46,7 +138,6 @@ describe("CustomerProductControllerUpdate", () => {
         },
         duration: 12,
         description: "hej med dig",
-        scheduleId: newSchedule._id,
       },
     });
 
