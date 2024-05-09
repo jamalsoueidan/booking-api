@@ -1,8 +1,9 @@
+import { ScheduleModel } from "~/functions/schedule";
 import { NotFoundError, ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
 import { CustomerProductServiceGet } from "../product/get";
-import { CustomerProductServiceUpdate } from "../product/update";
+import { mergeArraysUnique } from "../product/update";
 
 export type CustomerProductOptionsServiceUpdateProps = {
   customerId: number;
@@ -95,19 +96,30 @@ export async function CustomerProductOptionsServiceUpdate(
       },
     })) || [];
 
-  await CustomerProductServiceUpdate(
-    {
-      customerId: props.customerId,
-      productId: props.productId,
-    },
-    {
-      options: [
+  const newProduct = {
+    ...product,
+    options: mergeArraysUnique(
+      product?.options || [],
+      [
         {
           productId: props.optionProductId,
           title: data.productVariantsBulkUpdate.product.title,
           variants: updatedOption,
         },
       ],
+      "productId"
+    ),
+  };
+
+  await ScheduleModel.updateOne(
+    {
+      customerId: props.customerId,
+      "products.productId": props.productId,
+    },
+    {
+      $set: {
+        "products.$": newProduct,
+      },
     }
   );
 

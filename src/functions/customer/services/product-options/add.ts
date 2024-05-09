@@ -1,9 +1,10 @@
+import { ScheduleModel } from "~/functions/schedule";
 import { UserModel } from "~/functions/user";
 import { NotFoundError, ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
 import { CustomerProductServiceGet } from "../product/get";
-import { CustomerProductServiceUpdate } from "../product/update";
+import { mergeArraysUnique } from "../product/update";
 
 export type CustomerProductOptionsServiceAddProps = {
   customerId: number;
@@ -78,13 +79,24 @@ export async function CustomerProductOptionsServiceAdd({
       })) || [],
   };
 
-  await CustomerProductServiceUpdate(
+  const newProduct = {
+    ...product,
+    options: mergeArraysUnique(
+      product?.options || [],
+      [newOption],
+      "productId"
+    ),
+  };
+
+  await ScheduleModel.updateOne(
     {
       customerId,
-      productId,
+      "products.productId": productId,
     },
     {
-      options: [newOption],
+      $set: {
+        "products.$": newProduct,
+      },
     }
   );
 
