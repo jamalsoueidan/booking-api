@@ -14,6 +14,7 @@ export type CustomerProduct = Omit<
 
 export type CustomerProductServiceAddBody = CustomerProduct & {
   scheduleId: StringOrObjectIdType;
+  title: string;
 };
 
 export const CustomerProductServiceAdd = async (
@@ -38,7 +39,7 @@ export const CustomerProductServiceAdd = async (
   const { data } = await shopifyAdmin.request(PRODUCT_DUPLCATE, {
     variables: {
       productId: `gid://shopify/Product/${product.parentId}`,
-      title: "testerne",
+      title: product.title,
     },
   });
 
@@ -54,27 +55,37 @@ export const CustomerProductServiceAdd = async (
 
   const shopifyProduct = data.productDuplicate.newProduct;
   const shopifyProductId = GidFormat.parse(shopifyProduct.id);
+  const variant = shopifyProduct.variants.nodes[0];
 
   const newProduct: CustomerProduct &
     Pick<ScheduleProduct, "bookingPeriod" | "noticePeriod"> = {
     ...product,
     parentId: product.productId,
     productId: shopifyProductId,
-    durationMetafieldId: GidFormat.parse(shopifyProduct.duration?.id),
-    breakTimeMetafieldId: GidFormat.parse(shopifyProduct.breaktime?.id),
+    variantId: GidFormat.parse(variant.id),
+    price: {
+      amount: variant.price,
+      currencyCode: "DKK",
+    },
+    compareAtPrice: {
+      amount: variant.compareAtPrice,
+      currencyCode: "DKK",
+    },
+    durationMetafieldId: shopifyProduct.duration?.id,
+    breakTimeMetafieldId: shopifyProduct.breaktime?.id,
     noticePeriod: {
-      valueMetafieldId: GidFormat.parse(shopifyProduct.noticePeriodValue?.id),
+      valueMetafieldId: shopifyProduct.noticePeriodValue?.id,
       value: parseInt(shopifyProduct.noticePeriodValue?.value || ""),
-      unitMetafieldId: GidFormat.parse(shopifyProduct.noticePeriodUnit?.id),
+      unitMetafieldId: shopifyProduct.noticePeriodUnit?.id,
       unit: shopifyProduct.noticePeriodUnit?.value as any,
     },
     bookingPeriod: {
-      valueMetafieldId: GidFormat.parse(shopifyProduct.bookingPeriodValue?.id),
+      valueMetafieldId: shopifyProduct.bookingPeriodValue?.id,
       value: parseInt(shopifyProduct.bookingPeriodValue?.value || ""),
-      unitMetafieldId: GidFormat.parse(shopifyProduct.bookingPeriodUnit?.id),
+      unitMetafieldId: shopifyProduct.bookingPeriodUnit?.id,
       unit: shopifyProduct.bookingPeriodUnit?.value as any,
     },
-    locationsMetafieldId: GidFormat.parse(shopifyProduct.locations?.id),
+    locationsMetafieldId: shopifyProduct.locations?.id,
   };
 
   const newSchedule = await ScheduleModel.findOneAndUpdate(
@@ -119,6 +130,13 @@ export const PRODUCT_DUPLCATE = `#graphql
       newProduct {
         id
         handle
+        variants(first: 1) {
+          nodes {
+            id
+            compareAtPrice
+            price
+          }
+        }
         parentId: metafield(key: "parentId", namespace: "booking") {
           id
           value

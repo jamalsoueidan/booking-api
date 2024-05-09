@@ -21,6 +21,15 @@ const mockProduct: ProductDuplicateMutation = {
     newProduct: {
       id: "gid://shopify/Product/9196220121415",
       handle: "testerne-new-product",
+      variants: {
+        nodes: [
+          {
+            id: "gid://shopify/ProductVariant/49511289782599",
+            compareAtPrice: "150.00",
+            price: "90.00",
+          },
+        ],
+      },
       parentId: {
         id: "gid://shopify/Metafield/44429081510215",
         value: "gid://shopify/Product/8022089105682",
@@ -94,6 +103,7 @@ describe("CustomerProductServiceAdd", () => {
         },
       }),
       scheduleId: newSchedule._id,
+      title: "okay okay",
     };
 
     const updateProduct = await CustomerProductServiceAdd(
@@ -107,6 +117,7 @@ describe("CustomerProductServiceAdd", () => {
       parentId: productBody.productId,
       productId: GidFormat.parse(mockProduct.productDuplicate?.newProduct?.id),
       scheduleId: newSchedule._id.toString(),
+      variantId: GidFormat.parse(productBody.variantId),
     });
   });
 
@@ -137,6 +148,7 @@ describe("CustomerProductServiceAdd", () => {
         },
       }),
       scheduleId: newSchedule._id,
+      title: "okay okay",
     };
 
     let updateProduct = await CustomerProductServiceAdd(
