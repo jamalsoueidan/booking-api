@@ -11,9 +11,9 @@ import { getProductObject } from "./product";
 export const DEFAULT_GROUP = "all";
 
 export type Choices = {
-  totalProducts: number;
-  days: SlotWeekDays[];
-  locations: ScheduleProductLocation[];
+  totalProducts?: number;
+  days?: SlotWeekDays[];
+  locations?: ScheduleProductLocation[];
   interval?: ScheduleSlotInterval;
 };
 
@@ -21,9 +21,11 @@ export const getScheduleObject = (
   props: Partial<Omit<Schedule, "_id">> = {},
   choices: Choices
 ): Omit<Schedule, "_id"> => {
-  const products = Array(choices.totalProducts)
-    .fill(0)
-    .map(() => getProductObject({ locations: choices.locations }));
+  const products =
+    props.products ||
+    Array(choices.totalProducts)
+      .fill(0)
+      .map(() => getProductObject({ locations: choices.locations }));
 
   const intervals = [
     choices.interval || {
@@ -32,7 +34,8 @@ export const getScheduleObject = (
     },
   ];
 
-  const slots = choices.days.map((day) => ({
+  const days = choices.days || [SlotWeekDays.MONDAY, SlotWeekDays.TUESDAY];
+  const slots = days.map((day) => ({
     day: day,
     intervals,
   }));
@@ -48,7 +51,7 @@ export const getScheduleObject = (
 
 export const createSchedule = (
   props: Partial<Omit<Schedule, "_id">> = {},
-  choices: Choices
+  choices: Choices = {}
 ) => {
   const schedule = new ScheduleModel(getScheduleObject(props, choices));
   return schedule.save();

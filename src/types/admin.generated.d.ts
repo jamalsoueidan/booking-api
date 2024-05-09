@@ -70,6 +70,25 @@ export type ProductOptionUpdateMutation = { productVariantsBulkUpdate?: AdminTyp
         )> } }
     )> }> };
 
+export type ProductDuplicateMutationVariables = AdminTypes.Exact<{
+  productId: AdminTypes.Scalars['ID']['input'];
+  title: AdminTypes.Scalars['String']['input'];
+}>;
+
+
+export type ProductDuplicateMutation = { productDuplicate?: AdminTypes.Maybe<{ newProduct?: AdminTypes.Maybe<(
+      Pick<AdminTypes.Product, 'id' | 'handle'>
+      & { parentId?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, scheduleId?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, locations?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, bookingPeriodValue?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, bookingPeriodUnit?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, noticePeriodValue?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, noticePeriodUnit?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, duration?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, breaktime?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>> }
+    )> }> };
+
+export type ProductUpdateTagMutationVariables = AdminTypes.Exact<{
+  id: AdminTypes.Scalars['ID']['input'];
+  tags: Array<AdminTypes.Scalars['String']['input']> | AdminTypes.Scalars['String']['input'];
+}>;
+
+
+export type ProductUpdateTagMutation = { productUpdate?: AdminTypes.Maybe<{ product?: AdminTypes.Maybe<Pick<AdminTypes.Product, 'id' | 'tags'>> }> };
+
 export type ProductVariantCreateMutationVariables = AdminTypes.Exact<{
   input: AdminTypes.ProductVariantInput;
 }>;
@@ -79,6 +98,13 @@ export type ProductVariantCreateMutation = { productVariantCreate?: AdminTypes.M
       Pick<AdminTypes.ProductVariant, 'id' | 'title' | 'price' | 'compareAtPrice'>
       & { product: Pick<AdminTypes.Product, 'id' | 'handle'>, selectedOptions: Array<Pick<AdminTypes.SelectedOption, 'name' | 'value'>> }
     )>, userErrors: Array<Pick<AdminTypes.UserError, 'field' | 'message'>> }> };
+
+export type ProductDestroyMutationVariables = AdminTypes.Exact<{
+  productId: AdminTypes.Scalars['ID']['input'];
+}>;
+
+
+export type ProductDestroyMutation = { productDelete?: AdminTypes.Maybe<Pick<AdminTypes.ProductDeletePayload, 'deletedProductId'>> };
 
 export type ProductVariantsBulkDeleteMutationVariables = AdminTypes.Exact<{
   productId: AdminTypes.Scalars['ID']['input'];
@@ -99,7 +125,10 @@ interface GeneratedMutationTypes {
   "#graphql\n  mutation productOptionUpdateTag($id: ID!, $tags: [String!]!) {\n    productUpdate(input: {tags: $tags, id: $id}) {\n      product {\n        id\n        tags\n      }\n    }\n  }\n": {return: ProductOptionUpdateTagMutation, variables: ProductOptionUpdateTagMutationVariables},
   "#graphql\n  mutation productOptionDestroy($productId: ID!) {\n    productDelete(input: {id: $productId}) {\n      deletedProductId\n    }\n  }\n": {return: ProductOptionDestroyMutation, variables: ProductOptionDestroyMutationVariables},
   "#graphql\n  mutation productOptionUpdate($productId: ID!, $variants: [ProductVariantsBulkInput!] = {}) {\n  productVariantsBulkUpdate(\n    productId: $productId,\n    variants: $variants\n  ) {\n    product {\n      id\n      title\n      variants(first: 5) {\n        nodes {\n          id\n          title\n          price\n          duration: metafield(key: \"duration\", namespace: \"booking\") {\n            id\n            value\n          }\n        }\n      }\n    }\n  }\n}\n": {return: ProductOptionUpdateMutation, variables: ProductOptionUpdateMutationVariables},
+  "#graphql\n  mutation productDuplicate($productId: ID!, $title: String!) {\n    productDuplicate(newTitle: $title, productId: $productId) {\n      newProduct {\n        id\n        handle\n        parentId: metafield(key: \"parentId\", namespace: \"booking\") {\n          id\n          value\n        }\n        scheduleId: metafield(key: \"scheduleId\", namespace: \"booking\") {\n          id\n          value\n        }\n        locations: metafield(key: \"locations\", namespace: \"booking\") {\n          id\n          value\n        }\n        bookingPeriodValue: metafield(key: \"booking_period_value\", namespace: \"booking\") {\n          id\n          value\n        }\n        bookingPeriodUnit: metafield(key: \"booking_period_unit\", namespace: \"booking\") {\n          id\n          value\n        }\n        noticePeriodValue: metafield(key: \"notice_period_value\", namespace: \"booking\") {\n          id\n          value\n        }\n        noticePeriodUnit: metafield(key: \"notice_period_unit\", namespace: \"booking\") {\n          id\n          value\n        }\n        duration: metafield(key: \"duration\", namespace: \"booking\") {\n          id\n          value\n        }\n        breaktime: metafield(key: \"breaktime\", namespace: \"booking\") {\n          id\n          value\n        }\n      }\n    }\n  }\n": {return: ProductDuplicateMutation, variables: ProductDuplicateMutationVariables},
+  "#graphql\n  mutation productUpdateTag($id: ID!, $tags: [String!]!) {\n    productUpdate(input: {tags: $tags, id: $id}) {\n      product {\n        id\n        tags\n      }\n    }\n  }\n": {return: ProductUpdateTagMutation, variables: ProductUpdateTagMutationVariables},
   "#graphql\n  mutation productVariantCreate($input: ProductVariantInput!) {\n    productVariantCreate(input: $input) {\n      productVariant {\n        product {\n          id\n          handle\n        }\n        id\n        title\n        selectedOptions {\n          name\n          value\n        }\n        price\n        compareAtPrice\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: ProductVariantCreateMutation, variables: ProductVariantCreateMutationVariables},
+  "#graphql\n  mutation productDestroy($productId: ID!) {\n    productDelete(input: {id: $productId}) {\n      deletedProductId\n    }\n  }\n": {return: ProductDestroyMutation, variables: ProductDestroyMutationVariables},
   "#graphql\n  mutation productVariantsBulkDelete($productId: ID!, $variantsIds: [ID!]!) {\n    productVariantsBulkDelete(productId: $productId, variantsIds: $variantsIds) {\n      product {\n        id\n        title\n      }\n      userErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n": {return: ProductVariantsBulkDeleteMutation, variables: ProductVariantsBulkDeleteMutationVariables},
 }
 declare module '@shopify/admin-api-client' {

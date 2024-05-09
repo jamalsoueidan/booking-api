@@ -20,7 +20,9 @@ export enum SlotWeekDays {
 }
 
 const BookingPeriodZodSchema = z.object({
+  valueMetafieldId: GidFormat.optional(),
   value: NumberOrString,
+  unitMetafieldId: GidFormat.optional(),
   unit: z.enum([TimeUnit.WEEKS, TimeUnit.MONTHS]),
 });
 
@@ -29,7 +31,9 @@ export type ScheduleProductBookingPeriod = z.infer<
 >;
 
 const NoticePeriodZodSchema = z.object({
+  valueMetafieldId: GidFormat.optional(),
   value: NumberOrString,
+  unitMetafieldId: GidFormat.optional(),
   unit: z.enum([
     TimeUnit.HOURS,
     TimeUnit.DAYS,
@@ -71,12 +75,14 @@ export type ScheduleProductOption = z.infer<
 export const ScheduleProductZodSchema = z.object({
   options: z.array(ScheduleProductOptionZodSchema).optional(),
   productHandle: z.string(),
+  parentId: GidFormat,
   productId: GidFormat,
   variantId: GidFormat,
   selectedOptions: z.object({
     name: z.string(),
     value: z.string(),
   }),
+  locationsMetafieldId: GidFormat.optional(),
   locations: z.array(LocationZodSchema),
   price: z.object({
     amount: z.string(),
@@ -89,7 +95,9 @@ export const ScheduleProductZodSchema = z.object({
     })
     .optional(),
   description: z.string().optional(),
+  durationMetafieldId: GidFormat.optional(),
   duration: NumberOrString,
+  breakTimeMetafieldId: GidFormat.optional(),
   breakTime: NumberOrString,
   noticePeriod: NoticePeriodZodSchema,
   bookingPeriod: BookingPeriodZodSchema,

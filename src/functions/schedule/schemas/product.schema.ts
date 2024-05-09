@@ -47,6 +47,10 @@ export const OptionMongooseSchema = new mongoose.Schema<ScheduleProductOption>(
 export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
   {
     options: [OptionMongooseSchema],
+    parentId: {
+      type: Number,
+      index: true,
+    },
     productHandle: {
       type: String,
       index: true,
@@ -72,16 +76,20 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       currencyCode: String,
     },
     description: String,
+    durationMetafieldId: String,
     duration: {
       type: Number,
       default: 60,
     },
+    breakTimeMetafieldId: String,
     breakTime: {
       type: Number,
       default: 15,
     },
     noticePeriod: {
+      valueMetafieldId: String,
       value: { type: Number, default: 1 },
+      unitMetafieldId: String,
       unit: {
         type: String,
         enum: Object.values(TimeUnit),
@@ -89,13 +97,16 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       },
     },
     bookingPeriod: {
+      valueMetafieldId: String,
       value: { type: Number, default: 1 },
+      unitMetafieldId: String,
       unit: {
         type: String,
         enum: Object.values(TimeUnit),
         default: TimeUnit.MONTHS,
       },
     },
+    locationsMetafieldId: String,
     locations: {
       type: [
         {
@@ -139,3 +150,92 @@ export function validateProducts(products: ScheduleProduct[]): void {
     }
   });
 }
+
+/*
+{
+  product(handle: "afrensning") {
+    id
+    handle
+    parentId: metafield(key: "parentId", namespace: "booking") {
+      id
+      value
+    }
+    scheduleId: metafield(key: "scheduleId", namespace: "booking") {
+      id
+      value
+    }
+    locations: metafield(key: "locations", namespace: "booking") {
+      id
+      value
+    }
+    bookingPeriodValue: metafield(key: "booking_period_value", namespace: "booking") {
+      id
+      value
+    }
+    bookingPeriodUnit: metafield(key: "booking_period_unit", namespace: "booking") {
+      id
+      value
+    }
+    noticePeriodValue: metafield(key: "notice_period_value", namespace: "booking") {
+      id
+      value
+    }
+    noticePeriodUnit: metafield(key: "notice_period_unit", namespace: "booking") {
+      id
+      value
+    }
+    duration: metafield(key: "duration", namespace: "booking") {
+      id
+      value
+    }
+    breaktime: metafield(key: "breaktime", namespace: "booking") {
+      id
+      value
+    }
+  }
+}
+
+{
+  "data": {
+    "product": {
+      "id": "gid://shopify/Product/9196220121415",
+      "handle": "testerne-new-product",
+      "parentId": {
+        "id": "gid://shopify/Metafield/44429081510215",
+        "value": "gid://shopify/Product/8022089105682"
+      },
+      "scheduleId": {
+        "id": "gid://shopify/Metafield/44429081542983",
+        "value": "schedule"
+      },
+      "locations": {
+        "id": "gid://shopify/Metafield/44429081411911",
+        "value": "{\"locations\":[]}"
+      },
+      "bookingPeriodValue": {
+        "id": "gid://shopify/Metafield/44429081313607",
+        "value": "1"
+      },
+      "bookingPeriodUnit": {
+        "id": "gid://shopify/Metafield/44429081280839",
+        "value": "months"
+      },
+      "noticePeriodValue": {
+        "id": "gid://shopify/Metafield/44429081477447",
+        "value": "1"
+      },
+      "noticePeriodUnit": {
+        "id": "gid://shopify/Metafield/44429081444679",
+        "value": "hours"
+      },
+      "duration": {
+        "id": "gid://shopify/Metafield/44429081379143",
+        "value": "60"
+      },
+      "breaktime": {
+        "id": "gid://shopify/Metafield/44429081346375",
+        "value": "10"
+      }
+    }
+  }
+}*/

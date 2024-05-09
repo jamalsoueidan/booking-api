@@ -95,7 +95,7 @@ export async function CustomerProductOptionsServiceUpdate(
       },
     })) || [];
 
-  const result = await CustomerProductServiceUpdate(
+  await CustomerProductServiceUpdate(
     {
       customerId: props.customerId,
       productId: props.productId,

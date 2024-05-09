@@ -1,11 +1,10 @@
 import { ScheduleModel } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
 import { ProductOptionDuplicateMutation } from "~/types/admin.generated";
-import { CustomerProductServiceAdd } from "../product/add";
-import { CustomerScheduleServiceCreate } from "../schedule/create";
 import {
   CustomerProductOptionsServiceAdd,
   PRODUCT_OPTION_DUPLCATE,
@@ -34,20 +33,13 @@ describe("CustomerProductOptionsAddService", () => {
 
     const user = await createUser({ customerId });
 
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const product = { ...getProductObject({}) };
+
+    const newSchedule = await createSchedule({
       name: "Test Schedule",
       customerId,
+      products: [product],
     });
-
-    const product = await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
-      },
-      {
-        ...getProductObject({}),
-        scheduleId: newSchedule._id,
-      }
-    );
 
     const mockProduct: ProductOptionDuplicateMutation = {
       productDuplicate: {

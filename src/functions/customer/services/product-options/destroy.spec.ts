@@ -1,8 +1,7 @@
 import { ScheduleModel } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
-import { CustomerProductServiceAdd } from "../product/add";
-import { CustomerScheduleServiceCreate } from "../schedule/create";
 import {
   CustomerProductOptionsServiceDestroy,
   PRODUCT_OPTION_DESTROY,
@@ -32,29 +31,24 @@ describe("CustomerProductOptionsDestroyService", () => {
       id: "123",
     };
 
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const product = {
+      ...getProductObject({
+        productId: productId,
+        options: [
+          {
+            productId: optionProductId,
+            title: "asd",
+            variants: [],
+          },
+        ],
+      }),
+    };
+
+    const newSchedule = await createSchedule({
       name: "Test Schedule",
       customerId,
+      products: [product],
     });
-
-    await CustomerProductServiceAdd(
-      {
-        customerId,
-      },
-      {
-        ...getProductObject({
-          productId: productId,
-          options: [
-            {
-              productId: optionProductId,
-              title: "asd",
-              variants: [],
-            },
-          ],
-        }),
-        scheduleId: newSchedule._id,
-      }
-    );
 
     // Setup mock responses
     mockRequest.mockResolvedValueOnce({
