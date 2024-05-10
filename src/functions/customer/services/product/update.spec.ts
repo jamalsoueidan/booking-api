@@ -1,8 +1,9 @@
 import { TimeUnit } from "~/functions/schedule";
-import { omitObjectIdProps } from "~/library/jest/helpers";
+import { createUser, omitObjectIdProps } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
+import { GidFormat } from "~/library/zod";
 import {
   ProductPricepdateMutation,
   ProductUpdateMutation,
@@ -25,114 +26,136 @@ jest.mock("@shopify/admin-api-client", () => ({
 
 const mockRequest = shopifyAdmin.request as jest.Mock;
 
-const mockProductUpdate: ProductUpdateMutation = {
-  productUpdate: {
-    product: {
-      id: "gid://shopify/Product/9196220121415",
-      variants: {
-        nodes: [
-          {
-            id: "gid://shopify/ProductVariant/49511289782599",
-            compareAtPrice: "150.00",
-            price: "90.00",
-          },
-        ],
-      },
-      parentId: {
-        id: "gid://shopify/Metafield/44429081510215",
-        value: "gid://shopify/Product/8022089105682",
-      },
-      scheduleId: {
-        id: "gid://shopify/Metafield/44429081542983",
-        value: "schedule",
-      },
-      locations: {
-        id: "gid://shopify/Metafield/44429081411911",
-        value: '{"locations":[]}',
-      },
-      bookingPeriodValue: {
-        id: "gid://shopify/Metafield/44429081313607",
-        value: "1",
-      },
-      bookingPeriodUnit: {
-        id: "gid://shopify/Metafield/44429081280839",
-        value: "months",
-      },
-      noticePeriodValue: {
-        id: "gid://shopify/Metafield/44429081477447",
-        value: "1",
-      },
-      noticePeriodUnit: {
-        id: "gid://shopify/Metafield/44429081444679",
-        value: "hours",
-      },
-      duration: {
-        id: "gid://shopify/Metafield/44429081379143",
-        value: "60",
-      },
-      breaktime: {
-        id: "gid://shopify/Metafield/44429081346375",
-        value: "10",
-      },
-    },
-  },
-};
-
-const mockProductPriceUpdate: ProductPricepdateMutation = {
-  productVariantsBulkUpdate: {
-    product: {
-      id: "gid://shopify/Product/9196220121415",
-      variants: {
-        nodes: [
-          {
-            id: "gid://shopify/ProductVariant/49503397249351",
-            compareAtPrice: "150.00",
-            price: "90.00",
-          },
-        ],
-      },
-    },
-  },
-};
-
 describe("CustomerProductServiceUpdate", () => {
   const customerId = 123;
   const name = "Test Schedule";
-  const productId = 1000;
-  const newProduct = getProductObject({
-    productId,
-    variantId: 1,
-    durationMetafieldId: mockProductUpdate.productUpdate?.product?.duration?.id,
-    duration: parseInt(
-      mockProductUpdate.productUpdate?.product?.duration?.value || ""
-    ),
-    breakTime: 0,
-    noticePeriod: {
-      value: 1,
-      unit: TimeUnit.DAYS,
+
+  const productBody: CustomerProductServiceUpdateBody = {
+    duration: 90,
+    price: {
+      amount: "99.00",
     },
-    bookingPeriod: {
-      value: 1,
-      unit: TimeUnit.WEEKS,
+    compareAtPrice: {
+      amount: "199.0",
     },
-  });
+  };
+
+  const mockProductUpdate: ProductUpdateMutation = {
+    productUpdate: {
+      product: {
+        id: "gid://shopify/Product/9196220121415",
+        variants: {
+          nodes: [
+            {
+              id: "gid://shopify/ProductVariant/1",
+              compareAtPrice: productBody.compareAtPrice?.amount,
+              price: productBody.price?.amount,
+            },
+          ],
+        },
+        tags: [""],
+        parentId: {
+          id: "gid://shopify/Metafield/1",
+          value: "gid://shopify/Product/123",
+        },
+        scheduleId: {
+          id: "gid://shopify/Metafield/2",
+          value: "schedule",
+        },
+        locations: {
+          id: "gid://shopify/Metafield/3",
+          value: '{"locations":[]}',
+        },
+        bookingPeriodValue: {
+          id: "gid://shopify/Metafield/4",
+          value: "1",
+        },
+        bookingPeriodUnit: {
+          id: "gid://shopify/Metafield/5",
+          value: "months",
+        },
+        noticePeriodValue: {
+          id: "gid://shopify/Metafield/6",
+          value: "1",
+        },
+        noticePeriodUnit: {
+          id: "gid://shopify/Metafield/7",
+          value: "hours",
+        },
+        duration: {
+          id: "gid://shopify/Metafield/8",
+          value: productBody.duration!.toString(),
+        },
+        breaktime: {
+          id: "gid://shopify/Metafield/9",
+          value: "10",
+        },
+      },
+    },
+  };
+
+  const mockProductPriceUpdate: ProductPricepdateMutation = {
+    productVariantsBulkUpdate: {
+      product: {
+        id: mockProductUpdate.productUpdate?.product?.id!,
+        variants: {
+          nodes: [
+            {
+              id: mockProductUpdate.productUpdate?.product?.variants.nodes[0]
+                .id!,
+              compareAtPrice: productBody.compareAtPrice?.amount,
+              price: productBody.price?.amount,
+            },
+          ],
+        },
+      },
+    },
+  };
 
   it("should update an existing product in the schedule", async () => {
+    const user = await createUser({ customerId });
+
     const newSchedule = await createSchedule({
       name,
       customerId,
-      products: [newProduct],
+      products: [
+        getProductObject({
+          parentId: GidFormat.parse(
+            mockProductUpdate.productUpdate?.product?.parentId?.value
+          ),
+          productId: GidFormat.parse(
+            mockProductUpdate.productUpdate?.product?.id
+          ),
+          variantId: GidFormat.parse(
+            mockProductUpdate.productUpdate?.product?.variants.nodes[0].id
+          ),
+          durationMetafieldId:
+            mockProductUpdate.productUpdate?.product?.duration?.id,
+          duration: 120,
+          breakTimeMetafieldId:
+            mockProductUpdate.productUpdate?.product?.breaktime?.id,
+          breakTime: 0,
+          noticePeriod: {
+            valueMetafieldId:
+              mockProductUpdate.productUpdate?.product?.noticePeriodValue?.id,
+            unitMetafieldId:
+              mockProductUpdate.productUpdate?.product?.noticePeriodUnit?.id,
+            value: 1,
+            unit: TimeUnit.DAYS,
+          },
+          bookingPeriod: {
+            valueMetafieldId:
+              mockProductUpdate.productUpdate?.product?.bookingPeriodValue?.id,
+            unitMetafieldId:
+              mockProductUpdate.productUpdate?.product?.bookingPeriodUnit?.id,
+            value: 1,
+            unit: TimeUnit.WEEKS,
+          },
+        }),
+      ],
     });
 
-    const productBody: CustomerProductServiceUpdateBody = {
-      duration: 90,
-      price: {
-        amount: "99.00",
-      },
-      compareAtPrice: {
-        amount: "99.0",
-      },
-    };
+    const product = newSchedule.products[0];
 
     mockRequest
       .mockResolvedValueOnce({
@@ -145,21 +168,37 @@ describe("CustomerProductServiceUpdate", () => {
     let updateProduct = await CustomerProductServiceUpdate(
       {
         customerId: newSchedule.customerId,
-        productId,
+        productId: GidFormat.parse(
+          mockProductUpdate.productUpdate?.product?.id
+        ),
       },
       productBody
     );
 
+    const tags = [
+      `user`,
+      `user-${user.username}`,
+      `userid-${user.customerId}`,
+      `treatment`,
+      `productid-${GidFormat.parse(
+        mockProductUpdate.productUpdate?.product?.id
+      )}`,
+      `product-${product.productHandle}`,
+      `scheduleid-${newSchedule._id}`,
+      `locationid-${product.locations[0].location}`,
+    ];
+
     expect(shopifyAdmin.request).toHaveBeenCalledTimes(2);
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(1, PRODUCT_UPDATE, {
       variables: {
-        id: `gid://shopify/Product/${productId}`,
+        id: mockProductUpdate.productUpdate?.product?.id,
         metafields: [
           {
             id: mockProductUpdate.productUpdate?.product?.duration?.id,
             value: String(productBody.duration),
           },
         ],
+        tags: tags.join(", "),
       },
     });
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
@@ -167,7 +206,7 @@ describe("CustomerProductServiceUpdate", () => {
       PRODUCT_PRICE_UPDATE,
       {
         variables: {
-          productId: `gid://shopify/Product/${productId}`,
+          id: mockProductUpdate.productUpdate?.product?.id,
           variants: [
             {
               id: mockProductUpdate.productUpdate?.product?.variants.nodes[0]
@@ -182,7 +221,7 @@ describe("CustomerProductServiceUpdate", () => {
 
     const getUpdatedProduct = await CustomerProductServiceGet({
       customerId: newSchedule.customerId,
-      productId,
+      productId: GidFormat.parse(mockProductUpdate.productUpdate?.product?.id),
     });
 
     expect(omitObjectIdProps(getUpdatedProduct)).toEqual(

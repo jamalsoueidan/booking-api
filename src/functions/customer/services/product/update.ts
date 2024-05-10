@@ -1,9 +1,5 @@
-import {
-  Schedule,
-  ScheduleModel,
-  ScheduleProduct,
-  ScheduleProductOption,
-} from "~/functions/schedule";
+import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
+import { UserModel } from "~/functions/user";
 import { NotFoundError, ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 
@@ -17,12 +13,26 @@ export type CustomerProductServiceUpdateBody = Partial<
 >;
 
 export const CustomerProductServiceUpdate = async (
-  filter: CustomerProductServiceUpdate,
+  { customerId, productId }: CustomerProductServiceUpdate,
   body: CustomerProductServiceUpdateBody
 ) => {
+  const user = await UserModel.findOne({
+    customerId,
+  })
+    .orFail(
+      new NotFoundError([
+        {
+          path: ["customerId"],
+          message: "NOT_FOUND",
+          code: "custom",
+        },
+      ])
+    )
+    .lean();
+
   const schedule = await ScheduleModel.findOne({
-    customerId: filter.customerId,
-    "products.productId": filter.productId,
+    customerId,
+    "products.productId": productId,
   })
     .orFail(
       new NotFoundError([
@@ -35,9 +45,17 @@ export const CustomerProductServiceUpdate = async (
     )
     .lean();
 
-  const oldProduct = schedule.products.find(
-    (p) => p.productId === filter.productId
-  );
+  const oldProduct = schedule.products.find((p) => p.productId === productId);
+
+  if (!oldProduct) {
+    throw new NotFoundError([
+      {
+        code: "custom",
+        message: "PRODUCT_NOT_FOUND",
+        path: ["productId"],
+      },
+    ]);
+  }
 
   const metafields = [
     ...(body.breakTime
@@ -90,30 +108,58 @@ export const CustomerProductServiceUpdate = async (
       : []),
   ];
 
-  const { data } = await shopifyAdmin.request(PRODUCT_UPDATE, {
-    variables: {
-      id: `gid://shopify/Product/${filter.productId}`,
-      metafields,
-    },
-  });
+  const newProduct = {
+    ...oldProduct,
+    ...body,
+    locations: mergeArraysUnique(
+      oldProduct?.locations || [],
+      body?.locations || [],
+      "location"
+    ),
+    options: mergeArraysUnique(
+      oldProduct?.options || [],
+      body?.options || [],
+      "productId"
+    ),
+  };
 
-  if (!data?.productUpdate?.product) {
-    throw new ShopifyError([
-      {
-        path: ["shopify"],
-        message: "GRAPHQL_ERROR",
-        code: "custom",
+  if (metafields.length > 0) {
+    const { data } = await shopifyAdmin.request(PRODUCT_UPDATE, {
+      variables: {
+        id: `gid://shopify/Product/${productId}`,
+        metafields,
+        tags: [
+          "user",
+          `user-${user.username}`,
+          `userid-${user.customerId}`,
+          "treatment",
+          `productid-${oldProduct.productId}`,
+          `product-${oldProduct.productHandle}`,
+          `scheduleid-${schedule._id}`,
+        ]
+          .concat(newProduct.locations.map((l) => `locationid-${l.location}`))
+          .join(", "),
       },
-    ]);
+    });
+
+    if (!data?.productUpdate?.product) {
+      throw new ShopifyError([
+        {
+          path: ["shopify"],
+          message: "GRAPHQL_ERROR",
+          code: "custom",
+        },
+      ]);
+    }
   }
 
   if (body.price && body.compareAtPrice) {
     const { data: price } = await shopifyAdmin.request(PRODUCT_PRICE_UPDATE, {
       variables: {
-        productId: `gid://shopify/Product/${filter.productId}`,
+        id: `gid://shopify/Product/${productId}`,
         variants: [
           {
-            id: data.productUpdate.product.variants.nodes[0].id,
+            id: `gid://shopify/ProductVariant/${oldProduct.variantId}`,
             price: body.price?.amount,
             compareAtPrice: body.compareAtPrice?.amount,
           },
@@ -132,20 +178,10 @@ export const CustomerProductServiceUpdate = async (
     }
   }
 
-  const newProduct = {
-    ...oldProduct,
-    ...body,
-    options: mergeArraysUnique(
-      oldProduct?.options || [],
-      body?.options || [],
-      "productId"
-    ),
-  };
-
   await ScheduleModel.updateOne(
     {
-      customerId: filter.customerId,
-      "products.productId": filter.productId,
+      customerId,
+      "products.productId": productId,
     },
     {
       $set: {
@@ -161,10 +197,10 @@ export const CustomerProductServiceUpdate = async (
   };
 };
 
-export function mergeArraysUnique(
-  arr1: Array<ScheduleProductOption>,
-  arr2: Array<ScheduleProductOption>,
-  uniqueKey: keyof ScheduleProductOption
+export function mergeArraysUnique<T>(
+  arr1: Array<T>,
+  arr2: Array<T>,
+  uniqueKey: keyof T
 ) {
   const merged = new Map();
   arr1.forEach((item) => merged.set(item[uniqueKey], item));
@@ -183,8 +219,8 @@ export function mergeArraysUnique(
 }
 
 export const PRODUCT_UPDATE = `#graphql
-  mutation ProductUpdate($id: ID, $metafields: [MetafieldInput!]) {
-    productUpdate(input: {id: $id, metafields: $metafields}) {
+  mutation ProductUpdate($id: ID, $metafields: [MetafieldInput!], $tags: [String!]) {
+    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags}) {
       product {
         id
         variants(first: 1) {
@@ -194,6 +230,7 @@ export const PRODUCT_UPDATE = `#graphql
             price
           }
         }
+        tags,
         parentId: metafield(key: "parentId", namespace: "booking") {
           id
           value
@@ -236,9 +273,9 @@ export const PRODUCT_UPDATE = `#graphql
 ` as const;
 
 export const PRODUCT_PRICE_UPDATE = `#graphql
-  mutation productPricepdate($productId: ID!, $variants: [ProductVariantsBulkInput!] = {}) {
+  mutation productPricepdate($id: ID!, $variants: [ProductVariantsBulkInput!] = {}) {
     productVariantsBulkUpdate(
-      productId: $productId,
+      productId: $id,
       variants: $variants
     ) {
       product {

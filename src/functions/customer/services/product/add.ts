@@ -1,52 +1,25 @@
-import { Schedule, ScheduleModel } from "~/functions/schedule";
-import { UserModel } from "~/functions/user";
-import { FoundError, NotFoundError, ShopifyError } from "~/library/handler";
+import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
+import { ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat, StringOrObjectIdType } from "~/library/zod";
+import { CustomerProductServiceUpdate } from "./update";
 
 export type CustomerProductServiceAdd = {
   customerId: Schedule["customerId"];
 };
 
-export type CustomerProductServiceAddBody = {
-  parentId: number;
-  scheduleId: StringOrObjectIdType;
+export type CustomerProductServiceAddBody = Pick<
+  ScheduleProduct,
+  "parentId" | "locations" | "price" | "compareAtPrice"
+> & {
   title: string;
+  scheduleId: StringOrObjectIdType;
 };
 
 export const CustomerProductServiceAdd = async (
-  filter: CustomerProductServiceAdd,
+  { customerId }: CustomerProductServiceAdd,
   product: CustomerProductServiceAddBody
 ) => {
-  const user = await UserModel.findOne({
-    customerId: filter.customerId,
-  })
-    .orFail(
-      new NotFoundError([
-        {
-          path: ["customerId"],
-          message: "NOT_FOUND",
-          code: "custom",
-        },
-      ])
-    )
-    .lean();
-
-  const productExistInSchedule = await ScheduleModel.exists({
-    customerId: filter.customerId,
-    "products.parentId": { $eq: product.parentId },
-  });
-
-  if (productExistInSchedule) {
-    throw new FoundError([
-      {
-        code: "custom",
-        message: "PRODUCT_ALREADY_EXIST",
-        path: ["productId"],
-      },
-    ]);
-  }
-
   const { data } = await shopifyAdmin.request(PRODUCT_DUPLCATE, {
     variables: {
       productId: `gid://shopify/Product/${product.parentId}`,
@@ -75,11 +48,11 @@ export const CustomerProductServiceAdd = async (
     productId: shopifyProductId,
     variantId: GidFormat.parse(variant.id),
     price: {
-      amount: variant.price,
+      amount: product.price.amount,
       currencyCode: "DKK",
     },
     compareAtPrice: {
-      amount: variant.compareAtPrice,
+      amount: product.compareAtPrice.amount,
       currencyCode: "DKK",
     },
     durationMetafieldId: shopifyProduct.duration?.id,
@@ -99,10 +72,10 @@ export const CustomerProductServiceAdd = async (
     locationsMetafieldId: shopifyProduct.locations?.id,
   };
 
-  const newSchedule = await ScheduleModel.findOneAndUpdate(
+  await ScheduleModel.updateOne(
     {
       _id: product.scheduleId,
-      customerId: filter.customerId,
+      customerId,
     },
     {
       $push: {
@@ -110,41 +83,27 @@ export const CustomerProductServiceAdd = async (
       },
     },
     { new: true }
-  )
-    .lean()
-    .orFail();
-
-  const modelProduct = newSchedule.products.find(
-    (p) => p.productId === shopifyProductId
   );
 
-  if (!modelProduct) {
-    throw new NotFoundError([
-      {
-        code: "custom",
-        message: "PRODUCT_NOT_FOUND",
-        path: ["productId"],
+  return CustomerProductServiceUpdate(
+    { customerId, productId: shopifyProductId },
+    {
+      price: {
+        amount: product.price.amount,
+        currencyCode: "DKK",
       },
-    ]);
-  }
-
-  await shopifyAdmin.request(PRODUCT_UPDATE_TAG, {
-    variables: {
-      id: `gid://shopify/Product/${shopifyProductId}`,
-      tags: `user, treatment, user-${user.username}, customer-${user.customerId}, product-${newProduct.productId}, product-${newProduct.productHandle}`,
-    },
-  });
-
-  return {
-    ...modelProduct,
-    scheduleId: newSchedule._id.toString(),
-    scheduleName: newSchedule.name,
-  };
+      compareAtPrice: {
+        amount: product.compareAtPrice.amount,
+        currencyCode: "DKK",
+      },
+      locations: product.locations,
+    }
+  );
 };
 
 export const PRODUCT_DUPLCATE = `#graphql
   mutation productDuplicate($productId: ID!, $title: String!) {
-    productDuplicate(newTitle: $title, productId: $productId) {
+    productDuplicate(newTitle: $title, productId: $productId, includeImages: true) {
       newProduct {
         id
         handle
@@ -191,17 +150,6 @@ export const PRODUCT_DUPLCATE = `#graphql
           id
           value
         }
-      }
-    }
-  }
-` as const;
-
-export const PRODUCT_UPDATE_TAG = `#graphql
-  mutation productUpdateTag($id: ID!, $tags: [String!]!) {
-    productUpdate(input: {tags: $tags, id: $id}) {
-      product {
-        id
-        tags
       }
     }
   }
