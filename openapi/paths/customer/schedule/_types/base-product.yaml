@@ -12,8 +12,7 @@ properties:
     type: number
   description:
     type: string
-  selectedOptions:
-    $ref: "./product-selected-options.yaml"
+
   price:
     type: object
     properties:
@@ -48,7 +47,6 @@ required:
   - productId
   - duration
   - price
-  - selectedOptions
   - breakTime
   - noticePeriod
   - bookingPeriod

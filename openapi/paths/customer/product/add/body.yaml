@@ -8,9 +8,25 @@ properties:
     $ref: ../../schedule/_types/product-locations.yaml
   scheduleId:
     type: string
+  price:
+    type: object
+    properties:
+      amount:
+        type: string
+    required:
+      - amount
+  compareAtPrice:
+    type: object
+    properties:
+      amount:
+        type: string
+    required:
+      - amount
 
 required:
   - parentId
   - title
   - scheduleId
   - locations
+  - price
+  - compareAtPrice
