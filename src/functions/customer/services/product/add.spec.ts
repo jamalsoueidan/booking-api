@@ -161,7 +161,7 @@ describe("CustomerProductServiceAdd", () => {
     );
 
     expect(updateProduct).toMatchObject({
-      parentId: productBody.productId,
+      parentId: productBody.parentId,
       productId: GidFormat.parse(mockProduct.productDuplicate?.newProduct?.id),
       scheduleId: newSchedule._id.toString(),
       variantId: GidFormat.parse(
