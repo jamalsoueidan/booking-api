@@ -6,48 +6,11 @@ properties:
     type: string
   productId:
     type: string
-  productHandle:
-    type: string
-  variantId:
-    type: number
-  selectedOptions:
-    type: object
-    properties:
-      name:
-        type: string
-      value:
-        type: string
-    required:
-      - name
-      - value
-  price:
-    type: object
-    properties:
-      amount:
-        type: string
-      currencyCode:
-        type: string
-    required:
-      - amount
-      - currencyCode
-  compareAtPrice:
-    type: object
-    properties:
-      amount:
-        type: string
-      currencyCode:
-        type: string
-    required:
-      - amount
-      - currencyCode
   locations:
     $ref: ../../schedule/_types/product-locations.yaml
 
 required:
   - productId
   - scheduleId
-  - productHandle
   - variantId
-  - price
-  - selectedOptions
   - locations

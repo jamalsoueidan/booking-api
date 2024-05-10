@@ -1,4 +1,5 @@
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
+import { UserModel } from "~/functions/user";
 import { FoundError, NotFoundError, ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat, StringOrObjectIdType } from "~/library/zod";
@@ -21,6 +22,20 @@ export const CustomerProductServiceAdd = async (
   filter: CustomerProductServiceAdd,
   product: CustomerProductServiceAddBody
 ) => {
+  const user = await UserModel.findOne({
+    customerId: filter.customerId,
+  })
+    .orFail(
+      new NotFoundError([
+        {
+          path: ["customerId"],
+          message: "NOT_FOUND",
+          code: "custom",
+        },
+      ])
+    )
+    .lean();
+
   const productExistInSchedule = await ScheduleModel.exists({
     customerId: filter.customerId,
     "products.parentId": { $eq: product.parentId },
@@ -61,6 +76,7 @@ export const CustomerProductServiceAdd = async (
     Pick<ScheduleProduct, "bookingPeriod" | "noticePeriod"> = {
     ...product,
     parentId: product.productId,
+    productHandle: shopifyProduct.handle,
     productId: shopifyProductId,
     variantId: GidFormat.parse(variant.id),
     price: {
@@ -116,6 +132,13 @@ export const CustomerProductServiceAdd = async (
       },
     ]);
   }
+
+  await shopifyAdmin.request(PRODUCT_UPDATE_TAG, {
+    variables: {
+      id: `gid://shopify/Product/${shopifyProductId}`,
+      tags: `user, treatment, user-${user.username}, customer-${user.customerId}, product-${newProduct.productId}, product-${newProduct.productHandle}`,
+    },
+  });
 
   return {
     ...modelProduct,

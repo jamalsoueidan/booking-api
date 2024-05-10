@@ -1,17 +1,5 @@
 type: object
 properties:
-  variantId:
-    type: number
-  selectedOptions:
-    type: object
-    properties:
-      name:
-        type: string
-      value:
-        type: string
-    required:
-      - name
-      - value
   price:
     type: object
     properties:

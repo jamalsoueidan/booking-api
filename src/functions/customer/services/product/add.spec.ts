@@ -1,10 +1,15 @@
 import { faker } from "@faker-js/faker";
+import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { shopifyAdmin } from "~/library/shopify";
 import { ProductDuplicateMutation } from "~/types/admin.generated";
 import { CustomerScheduleServiceCreate } from "../schedule/create";
 import { GidFormat } from "./../../../../library/zod/index";
-import { CustomerProductServiceAdd } from "./add";
+import {
+  CustomerProductServiceAdd,
+  PRODUCT_DUPLCATE,
+  PRODUCT_UPDATE_TAG,
+} from "./add";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -78,14 +83,34 @@ describe("CustomerProductServiceAdd", () => {
 
   it("should add a new product to the schedule", async () => {
     const customerId = 123;
-    const name = "Test Schedule";
+    const user = await createUser({ customerId });
 
-    mockRequest.mockResolvedValueOnce({
-      data: mockProduct,
-    });
+    mockRequest
+      .mockResolvedValueOnce({
+        data: mockProduct,
+      })
+      .mockResolvedValueOnce({
+        data: {
+          productUpdate: {
+            product: {
+              id: mockProduct.productDuplicate?.newProduct?.id,
+              tags: [
+                "user",
+                "treatments",
+                `user-${user.username}`,
+                `customer-${user.customerId}`,
+                `product-${GidFormat.parse(
+                  mockProduct.productDuplicate?.newProduct?.id
+                )}`,
+                `product-${mockProduct.productDuplicate?.newProduct?.handle}`,
+              ],
+            },
+          },
+        },
+      });
 
     const newSchedule = await CustomerScheduleServiceCreate({
-      name,
+      name: "Test Schedule",
       customerId,
     });
 
@@ -113,6 +138,28 @@ describe("CustomerProductServiceAdd", () => {
       productBody
     );
 
+    expect(shopifyAdmin.request).toHaveBeenCalledTimes(2);
+    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(1, PRODUCT_DUPLCATE, {
+      variables: {
+        productId: `gid://shopify/Product/${productBody.parentId}`,
+        title: productBody.title,
+      },
+    });
+    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
+      2,
+      PRODUCT_UPDATE_TAG,
+      {
+        variables: {
+          id: mockProduct.productDuplicate?.newProduct?.id,
+          tags: `user, treatment, user-${user.username}, customer-${
+            user.customerId
+          }, product-${GidFormat.parse(
+            mockProduct.productDuplicate?.newProduct?.id
+          )}, product-${mockProduct.productDuplicate?.newProduct?.handle}`,
+        },
+      }
+    );
+
     expect(updateProduct).toMatchObject({
       parentId: productBody.productId,
       productId: GidFormat.parse(mockProduct.productDuplicate?.newProduct?.id),
@@ -126,6 +173,7 @@ describe("CustomerProductServiceAdd", () => {
   it("not allow same product in any schedule belonging to same customer", async () => {
     const customerId = 123;
     const name = "Test Schedule";
+    const user = await createUser({ customerId });
 
     mockRequest.mockResolvedValueOnce({
       data: mockProduct,
