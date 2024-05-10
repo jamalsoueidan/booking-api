@@ -6,6 +6,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
+import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
@@ -93,9 +94,31 @@ describe("CustomerProductControllerAdd", () => {
   });
 
   it("should be able to add slots schedule", async () => {
-    mockRequest.mockResolvedValueOnce({
-      data: mockProduct,
-    });
+    const user = await createUser({ customerId });
+
+    mockRequest
+      .mockResolvedValueOnce({
+        data: mockProduct,
+      })
+      .mockResolvedValueOnce({
+        data: {
+          productUpdate: {
+            product: {
+              id: mockProduct.productDuplicate?.newProduct?.id,
+              tags: [
+                "user",
+                "treatments",
+                `user-${user.username}`,
+                `customer-${user.customerId}`,
+                `product-${GidFormat.parse(
+                  mockProduct.productDuplicate?.newProduct?.id
+                )}`,
+                `product-${mockProduct.productDuplicate?.newProduct?.handle}`,
+              ],
+            },
+          },
+        },
+      });
 
     const newSchedule = await CustomerScheduleServiceCreate({
       name: "asd",
