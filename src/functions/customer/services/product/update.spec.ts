@@ -179,7 +179,7 @@ describe("CustomerProductServiceUpdate", () => {
       `user`,
       `user-${user.username}`,
       `userid-${user.customerId}`,
-      `treatment`,
+      `treatments`,
       `productid-${GidFormat.parse(
         mockProductUpdate.productUpdate?.product?.id
       )}`,

@@ -60,7 +60,7 @@ export async function CustomerProductOptionsServiceAdd({
   await shopifyAdmin.request(PRODUCT_OPTION_UPDATE_TAG, {
     variables: {
       id: `gid://shopify/Product/${newProductId}`,
-      tags: `user, options, user-${user.username}, customer-${customerId}, product-${productId}, product-${product.productHandle}`,
+      tags: `user, user-${user.username}, userid-${customerId}, options, productid-${productId}, product-${product.productHandle}`,
     },
   });
 

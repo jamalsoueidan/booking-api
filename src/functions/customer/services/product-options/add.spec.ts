@@ -116,9 +116,9 @@ describe("CustomerProductOptionsAddService", () => {
               id: mockProduct.productDuplicate?.newProduct?.id,
               tags: [
                 "user",
+                `userid-${customerId}`,
                 "options",
-                `customer-${customerId}`,
-                `product-9186772386119`,
+                `productid-9186772386119`,
               ],
             },
           },
@@ -134,9 +134,9 @@ describe("CustomerProductOptionsAddService", () => {
               id: mockProduct2.productDuplicate?.newProduct?.id,
               tags: [
                 "user",
+                `userid-${customerId}`,
                 "options",
-                `customer-${customerId}`,
-                `product-${product.productId}`,
+                `productid-${product.productId}`,
               ],
             },
           },
@@ -168,7 +168,7 @@ describe("CustomerProductOptionsAddService", () => {
       {
         variables: {
           id: mockProduct.productDuplicate?.newProduct?.id,
-          tags: `user, options, user-${user.username}, customer-${customerId}, product-${product.productId}, product-${product.productHandle}`,
+          tags: `user, user-${user.username}, userid-${customerId}, options, productid-${product.productId}, product-${product.productHandle}`,
         },
       }
     );

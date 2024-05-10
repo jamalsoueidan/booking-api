@@ -108,14 +108,19 @@ export const CustomerProductServiceUpdate = async (
       : []),
   ];
 
+  const locations = oldProduct.locations.concat(
+    (body.locations || [])?.filter(
+      (item2) =>
+        !oldProduct.locations.some(
+          (item1) => item1.location.toString() === item2.location.toString() // must use toString since location is type of objectId
+        )
+    )
+  );
+
   const newProduct = {
     ...oldProduct,
     ...body,
-    locations: mergeArraysUnique(
-      oldProduct?.locations || [],
-      body?.locations || [],
-      "location"
-    ),
+    locations: locations,
     options: mergeArraysUnique(
       oldProduct?.options || [],
       body?.options || [],
@@ -132,7 +137,7 @@ export const CustomerProductServiceUpdate = async (
           "user",
           `user-${user.username}`,
           `userid-${user.customerId}`,
-          "treatment",
+          "treatments",
           `productid-${oldProduct.productId}`,
           `product-${oldProduct.productHandle}`,
           `scheduleid-${schedule._id}`,

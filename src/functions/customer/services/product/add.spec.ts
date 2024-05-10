@@ -122,7 +122,7 @@ describe("CustomerProductServiceAdd", () => {
       `user`,
       `user-${user.username}`,
       `userid-${user.customerId}`,
-      `treatment`,
+      `treatments`,
       `productid-${GidFormat.parse(
         mockProduct.productDuplicate?.newProduct?.id
       )}`,
@@ -223,6 +223,7 @@ describe("CustomerProductServiceAdd", () => {
     );
 
     expect(shopifyAdmin.request).toHaveBeenCalledTimes(3);
+
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(1, PRODUCT_DUPLCATE, {
       variables: {
         productId: `gid://shopify/Product/${productBody.parentId}`,
@@ -242,6 +243,7 @@ describe("CustomerProductServiceAdd", () => {
         tags: tags.join(", "),
       },
     });
+
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
       3,
       PRODUCT_PRICE_UPDATE,
