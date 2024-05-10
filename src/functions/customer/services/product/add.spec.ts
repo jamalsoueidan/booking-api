@@ -215,7 +215,7 @@ describe("CustomerProductServiceAdd", () => {
         {
           customerId: newSchedule.customerId,
         },
-        { ...productBody, variantId: 12 }
+        { ...productBody }
       )
     ).rejects.toThrow();
   });

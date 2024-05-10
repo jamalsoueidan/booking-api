@@ -1,4 +1,4 @@
-import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
+import { Schedule, ScheduleModel } from "~/functions/schedule";
 import { UserModel } from "~/functions/user";
 import { FoundError, NotFoundError, ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
@@ -8,12 +8,8 @@ export type CustomerProductServiceAdd = {
   customerId: Schedule["customerId"];
 };
 
-export type CustomerProduct = Omit<
-  ScheduleProduct,
-  "description" | "duration" | "breakTime" | "noticePeriod" | "bookingPeriod"
->;
-
-export type CustomerProductServiceAddBody = CustomerProduct & {
+export type CustomerProductServiceAddBody = {
+  parentId: number;
   scheduleId: StringOrObjectIdType;
   title: string;
 };
@@ -72,10 +68,9 @@ export const CustomerProductServiceAdd = async (
   const shopifyProductId = GidFormat.parse(shopifyProduct.id);
   const variant = shopifyProduct.variants.nodes[0];
 
-  const newProduct: CustomerProduct &
-    Pick<ScheduleProduct, "bookingPeriod" | "noticePeriod"> = {
+  const newProduct = {
     ...product,
-    parentId: product.productId,
+    parentId: product.parentId,
     productHandle: shopifyProduct.handle,
     productId: shopifyProductId,
     variantId: GidFormat.parse(variant.id),

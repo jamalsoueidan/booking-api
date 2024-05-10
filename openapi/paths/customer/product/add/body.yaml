@@ -1,16 +1,16 @@
 type: object
 properties:
+  parentId:
+    type: string
   title:
-    type: string
-  scheduleId:
-    type: string
-  productId:
     type: string
   locations:
     $ref: ../../schedule/_types/product-locations.yaml
+  scheduleId:
+    type: string
 
 required:
-  - productId
+  - parentId
+  - title
   - scheduleId
-  - variantId
   - locations

@@ -30,5 +30,7 @@ properties:
     $ref: ../../schedule/_types/product-booking-period.yaml
   locations:
     $ref: ../../schedule/_types/product-locations.yaml
+  title:
+    type: string
   description:
     type: string
