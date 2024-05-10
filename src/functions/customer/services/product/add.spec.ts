@@ -239,6 +239,10 @@ describe("CustomerProductServiceAdd", () => {
             id: mockProductUpdate.productUpdate?.product?.locations?.id,
             value: JSON.stringify(productBody.locations),
           },
+          {
+            id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,
+            value: newSchedule._id.toString(),
+          },
         ],
         tags: tags.join(", "),
       },

@@ -55,6 +55,7 @@ export const CustomerProductServiceAdd = async (
       amount: product.compareAtPrice.amount,
       currencyCode: "DKK",
     },
+    scheduleIdMetafieldId: shopifyProduct.scheduleId?.id,
     durationMetafieldId: shopifyProduct.duration?.id,
     breakTimeMetafieldId: shopifyProduct.breaktime?.id,
     noticePeriod: {

@@ -126,6 +126,8 @@ describe("CustomerProductServiceUpdate", () => {
           productId: GidFormat.parse(
             mockProductUpdate.productUpdate?.product?.id
           ),
+          scheduleIdMetafieldId:
+            mockProductUpdate.productUpdate?.product?.scheduleId?.id,
           variantId: GidFormat.parse(
             mockProductUpdate.productUpdate?.product?.variants.nodes[0].id
           ),
@@ -196,6 +198,10 @@ describe("CustomerProductServiceUpdate", () => {
           {
             id: mockProductUpdate.productUpdate?.product?.duration?.id,
             value: String(productBody.duration),
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,
+            value: newSchedule._id.toString(),
           },
         ],
         tags: tags.join(", "),

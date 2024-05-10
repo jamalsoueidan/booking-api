@@ -132,7 +132,13 @@ export const CustomerProductServiceUpdate = async (
     const { data } = await shopifyAdmin.request(PRODUCT_UPDATE, {
       variables: {
         id: `gid://shopify/Product/${productId}`,
-        metafields,
+        metafields: [
+          ...metafields,
+          {
+            id: oldProduct?.scheduleIdMetafieldId,
+            value: schedule._id.toString(),
+          },
+        ],
         tags: [
           "user",
           `user-${user.username}`,
