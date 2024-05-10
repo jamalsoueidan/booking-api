@@ -8,7 +8,6 @@ import { CustomerProductOptionsControllerAdd } from "./customer/controllers/prod
 import { CustomerProductOptionsControllerDestroy } from "./customer/controllers/product-options/destroy";
 import { CustomerProductOptionsControllerUpdate } from "./customer/controllers/product-options/update";
 import { CustomerProductControllerAdd } from "./customer/controllers/product/add";
-import { CustomerProductControllerCreateVariant } from "./customer/controllers/product/create-variant";
 import { CustomerProductControllerDestroy } from "./customer/controllers/product/destroy";
 import { CustomerProductControllerGet } from "./customer/controllers/product/get";
 import { CustomerProductControllerUpdate } from "./customer/controllers/product/update";
@@ -26,13 +25,6 @@ app.http("customerProductsList", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/products",
   handler: CustomerProductsControllerList,
-});
-
-app.http("customerProductCreateVariant", {
-  methods: ["POST"],
-  authLevel: "anonymous",
-  route: "customer/{customerId?}/product/{productId?}/create-variant",
-  handler: CustomerProductControllerCreateVariant,
 });
 
 app.http("customerProductUpdate", {

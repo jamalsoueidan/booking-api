@@ -78,22 +78,16 @@ export const ScheduleProductZodSchema = z.object({
   parentId: GidFormat,
   productId: GidFormat,
   variantId: GidFormat,
-  selectedOptions: z.object({
-    name: z.string(),
-    value: z.string(),
-  }),
   locationsMetafieldId: z.string().optional(),
   locations: z.array(LocationZodSchema),
   price: z.object({
     amount: z.string(),
     currencyCode: z.string().optional(),
   }),
-  compareAtPrice: z
-    .object({
-      amount: z.string(),
-      currencyCode: z.string().optional(),
-    })
-    .optional(),
+  compareAtPrice: z.object({
+    amount: z.string(),
+    currencyCode: z.string().optional(),
+  }),
   description: z.string().optional(),
   durationMetafieldId: z.string().optional(),
   duration: NumberOrString,

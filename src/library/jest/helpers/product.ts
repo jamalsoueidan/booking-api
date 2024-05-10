@@ -15,13 +15,13 @@ export const getProductObject = (
   }),
   duration: faker.helpers.arrayElement([30, 45, 60]),
   breakTime: faker.helpers.arrayElement([5, 10, 15]),
-  selectedOptions: {
-    name: "Pris",
-    value: "Artist",
-  },
   price: {
     currencyCode: "DKK",
     amount: "200.00",
+  },
+  compareAtPrice: {
+    currencyCode: "DKK",
+    amount: "0.00",
   },
   bookingPeriod: {
     unit: TimeUnit.WEEKS,

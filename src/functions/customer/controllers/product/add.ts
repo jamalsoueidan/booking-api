@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { ScheduleProductZodSchema } from "~/functions/schedule";
 import { _ } from "~/library/handler";
 import { GidFormat, StringOrObjectId } from "~/library/zod";
 import { CustomerProductServiceAdd } from "../../services/product/add";
@@ -13,9 +14,11 @@ const CustomerProductControllerAddQuerySchema = z.object({
   customerId: GidFormat,
 });
 
-const CustomerProductControllerAddBodySchema = z
-  .object({
-    parentId: GidFormat,
+const CustomerProductControllerAddBodySchema = ScheduleProductZodSchema.pick({
+  parentId: true,
+  locations: true,
+})
+  .extend({
     scheduleId: StringOrObjectId,
     title: z.string(),
   })

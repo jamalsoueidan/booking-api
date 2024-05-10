@@ -63,10 +63,6 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       type: Number,
       index: true,
     },
-    selectedOptions: {
-      name: String,
-      value: String,
-    },
     price: {
       amount: String,
       currencyCode: String,
