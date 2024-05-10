@@ -1,5 +1,4 @@
-import { CustomerServiceCreate } from "~/functions/customer/services/customer";
-import { getUserObject } from "~/library/jest/helpers";
+import { createUser, getUserObject } from "~/library/jest/helpers";
 import { UserServiceUsernameTaken } from "./username-taken";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -8,7 +7,7 @@ describe("UserServiceUsernameTaken", () => {
   it("check username is taken", async () => {
     const userData = getUserObject();
 
-    await CustomerServiceCreate(userData);
+    await createUser(userData);
 
     let response = await UserServiceUsernameTaken({
       username: userData.username,

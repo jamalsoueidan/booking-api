@@ -1,10 +1,7 @@
 import { z } from "zod";
 import { UserZodSchema } from "~/functions/user";
 import { _ } from "~/library/handler";
-import {
-  CustomerServiceCreate,
-  CustomerServiceUpdate,
-} from "../../services/customer";
+import { CustomerServiceCreate } from "../../services/customer/create";
 
 export type CustomerControllerCreateRequest = {
   body: CustomerControllerCreteBody;
@@ -21,7 +18,7 @@ export type CustomerControllerCreteBody = z.infer<
 >;
 
 export type CustomerControllerCreateResponse = Awaited<
-  ReturnType<typeof CustomerServiceUpdate>
+  ReturnType<typeof CustomerServiceCreate>
 >;
 
 export const CustomerControllerCreate = _(
