@@ -33,7 +33,7 @@ export async function CustomerProductOptionsServiceAdd({
     )
     .lean();
 
-  const product = await CustomerProductServiceGet({
+  const rootProduct = await CustomerProductServiceGet({
     customerId,
     productId,
   });
@@ -57,10 +57,23 @@ export async function CustomerProductOptionsServiceAdd({
 
   const newProductId = GidFormat.parse(data.productDuplicate.newProduct.id);
 
-  await shopifyAdmin.request(PRODUCT_OPTION_UPDATE_TAG, {
+  await shopifyAdmin.request(PRODUCT_OPTION_ADD, {
     variables: {
       id: `gid://shopify/Product/${newProductId}`,
-      tags: `user, user-${user.username}, userid-${customerId}, options, productid-${productId}, product-${product.productHandle}`,
+      metafields: [
+        {
+          id: data.productDuplicate.newProduct.parentId?.id,
+          value: `gid://shopify/Product/${productId}`,
+        },
+      ],
+      tags: [
+        `user`,
+        `user-${user.username}`,
+        `userid-${customerId}`,
+        `options`,
+        `parentid-${rootProduct.productId}`,
+        `parent-${rootProduct.productHandle}`,
+      ].join(", "),
     },
   });
 
@@ -80,9 +93,9 @@ export async function CustomerProductOptionsServiceAdd({
   };
 
   const newProduct = {
-    ...product,
+    ...rootProduct,
     options: mergeArraysUnique(
-      product?.options || [],
+      rootProduct?.options || [],
       [newOption],
       "productId"
     ),
@@ -103,35 +116,47 @@ export async function CustomerProductOptionsServiceAdd({
   return newOption;
 }
 
-export const PRODUCT_OPTION_DUPLCATE = `#graphql
-  mutation productOptionDuplicate($productId: ID!, $title: String!) {
-    productDuplicate(newTitle: $title, productId: $productId) {
-      newProduct {
+export const PRODUCT_OPTION_FRAGMENT = `#graphql
+  fragment ProductOptionFragment on Product {
+    id
+    title
+    handle
+    tags
+    parentId: metafield(key: "parentId", namespace: "booking") {
+      id
+      value
+    }
+    variants(first: 1) {
+      nodes {
         id
         title
-        handle
-        variants(first: 5) {
-          nodes {
-            id
-            title
-            price
-            duration: metafield(key: "duration", namespace: "booking") {
-              id
-              value
-            }
-          }
+        price
+        duration: metafield(key: "duration", namespace: "booking") {
+          id
+          value
         }
       }
     }
   }
 ` as const;
 
-export const PRODUCT_OPTION_UPDATE_TAG = `#graphql
-  mutation productOptionUpdateTag($id: ID!, $tags: [String!]!) {
-    productUpdate(input: {tags: $tags, id: $id}) {
+export const PRODUCT_OPTION_DUPLCATE = `#graphql
+  ${PRODUCT_OPTION_FRAGMENT}
+  mutation productOptionDuplicate($productId: ID!, $title: String!) {
+    productDuplicate(newTitle: $title, productId: $productId) {
+      newProduct {
+        ...ProductOptionFragment
+      }
+    }
+  }
+` as const;
+
+export const PRODUCT_OPTION_ADD = `#graphql
+  ${PRODUCT_OPTION_FRAGMENT}
+  mutation ProductOptionAdd($id: ID!, $metafields: [MetafieldInput!]!, $tags: [String!]!) {
+    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags}) {
       product {
-        id
-        tags
+        ...ProductOptionFragment
       }
     }
   }
