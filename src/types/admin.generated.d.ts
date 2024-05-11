@@ -27,6 +27,32 @@ export type StagedUploadsCreateMutation = { stagedUploadsCreate?: AdminTypes.May
       & { parameters: Array<Pick<AdminTypes.StagedUploadParameter, 'name' | 'value'>> }
     )>>, userErrors: Array<Pick<AdminTypes.UserError, 'field' | 'message'>> }> };
 
+export type CollectionCreateMutationVariables = AdminTypes.Exact<{
+  input: AdminTypes.CollectionInput;
+}>;
+
+
+export type CollectionCreateMutation = { collectionCreate?: AdminTypes.Maybe<{ collection?: AdminTypes.Maybe<(
+      Pick<AdminTypes.Collection, 'id' | 'title' | 'descriptionHtml' | 'handle' | 'sortOrder'>
+      & { ruleSet?: AdminTypes.Maybe<(
+        Pick<AdminTypes.CollectionRuleSet, 'appliedDisjunctively'>
+        & { rules: Array<Pick<AdminTypes.CollectionRule, 'column' | 'relation' | 'condition'>> }
+      )> }
+    )> }> };
+
+export type PublishablePublishMutationVariables = AdminTypes.Exact<{
+  collectionId: AdminTypes.Scalars['ID']['input'];
+  publicationId: AdminTypes.Scalars['ID']['input'];
+}>;
+
+
+export type PublishablePublishMutation = { publishablePublish?: AdminTypes.Maybe<{ publishable?: AdminTypes.Maybe<Pick<AdminTypes.Collection, 'id' | 'handle'>> }> };
+
+export type PublicationsQueryVariables = AdminTypes.Exact<{ [key: string]: never; }>;
+
+
+export type PublicationsQuery = { publications: { nodes: Array<Pick<AdminTypes.Publication, 'id' | 'name'>> } };
+
 export type ProductOptionDuplicateMutationVariables = AdminTypes.Exact<{
   productId: AdminTypes.Scalars['ID']['input'];
   title: AdminTypes.Scalars['String']['input'];
@@ -121,11 +147,14 @@ export type ProductVariantsBulkDeleteMutation = { productVariantsBulkDelete?: Ad
 
 interface GeneratedQueryTypes {
   "#graphql\n  query FileGet($query: String!) {\n    files(first: 10, sortKey: UPDATED_AT, reverse: true, query: $query) {\n      nodes {\n        preview {\n          image {\n            url\n            width\n            height\n          }\n        }\n      }\n    }\n  }\n": {return: FileGetQuery, variables: FileGetQueryVariables},
+  "#graphql\n  query publications {\n    publications(first: 10, catalogType: APP) {\n      nodes {\n        id\n        name\n      }\n    }\n  }\n": {return: PublicationsQuery, variables: PublicationsQueryVariables},
 }
 
 interface GeneratedMutationTypes {
   "#graphql\n  mutation fileCreate($files: [FileCreateInput!]!) {\n    fileCreate(files: $files) {\n      files {\n        fileStatus\n        alt\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: FileCreateMutation, variables: FileCreateMutationVariables},
   "#graphql\n  mutation stagedUploadsCreate($input: [StagedUploadInput!]!) {\n    stagedUploadsCreate(input: $input) {\n      stagedTargets {\n        resourceUrl\n        url\n        parameters {\n          name\n          value\n        }\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: StagedUploadsCreateMutation, variables: StagedUploadsCreateMutationVariables},
+  "#graphql\n  mutation CollectionCreate($input: CollectionInput!) {\n    collectionCreate(\n      input: $input\n    ) {\n      collection {\n        id\n        title\n        descriptionHtml\n        handle\n        sortOrder\n        ruleSet {\n          appliedDisjunctively\n          rules {\n            column\n            relation\n            condition\n          }\n        }\n      }\n    }\n  }\n": {return: CollectionCreateMutation, variables: CollectionCreateMutationVariables},
+  "#graphql\n  mutation PublishablePublish($collectionId: ID!, $publicationId: ID!) {\n    publishablePublish(id: $collectionId, input: {publicationId: $publicationId}) {\n      publishable {\n        ... on Collection {\n          id\n          handle\n        }\n      }\n    }\n  }\n": {return: PublishablePublishMutation, variables: PublishablePublishMutationVariables},
   "#graphql\n  mutation productOptionDuplicate($productId: ID!, $title: String!) {\n    productDuplicate(newTitle: $title, productId: $productId) {\n      newProduct {\n        id\n        title\n        handle\n        variants(first: 5) {\n          nodes {\n            id\n            title\n            price\n            duration: metafield(key: \"duration\", namespace: \"booking\") {\n              id\n              value\n            }\n          }\n        }\n      }\n    }\n  }\n": {return: ProductOptionDuplicateMutation, variables: ProductOptionDuplicateMutationVariables},
   "#graphql\n  mutation productOptionUpdateTag($id: ID!, $tags: [String!]!) {\n    productUpdate(input: {tags: $tags, id: $id}) {\n      product {\n        id\n        tags\n      }\n    }\n  }\n": {return: ProductOptionUpdateTagMutation, variables: ProductOptionUpdateTagMutationVariables},
   "#graphql\n  mutation productOptionDestroy($productId: ID!) {\n    productDelete(input: {id: $productId}) {\n      deletedProductId\n    }\n  }\n": {return: ProductOptionDestroyMutation, variables: ProductOptionDestroyMutationVariables},

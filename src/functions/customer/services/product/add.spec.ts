@@ -236,6 +236,36 @@ describe("CustomerProductServiceAdd", () => {
         id: mockProduct.productDuplicate?.newProduct?.id,
         metafields: [
           {
+            id: mockProductUpdate.productUpdate?.product?.breaktime?.id,
+            value: mockProductUpdate.productUpdate?.product?.breaktime?.value,
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.duration?.id,
+            value: mockProductUpdate.productUpdate?.product?.duration?.value,
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.bookingPeriodValue
+              ?.id,
+            value: "3",
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.bookingPeriodUnit?.id,
+            value:
+              mockProductUpdate.productUpdate?.product?.bookingPeriodUnit
+                ?.value,
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.noticePeriodValue?.id,
+            value:
+              mockProductUpdate.productUpdate?.product?.noticePeriodValue
+                ?.value,
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.noticePeriodUnit?.id,
+            value:
+              mockProductUpdate.productUpdate?.product?.noticePeriodUnit?.value,
+          },
+          {
             id: mockProductUpdate.productUpdate?.product?.locations?.id,
             value: JSON.stringify(productBody.locations),
           },

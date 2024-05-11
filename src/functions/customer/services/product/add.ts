@@ -1,4 +1,9 @@
-import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
+import {
+  Schedule,
+  ScheduleModel,
+  ScheduleProduct,
+  TimeUnit,
+} from "~/functions/schedule";
 import { ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat, StringOrObjectIdType } from "~/library/zod";
@@ -41,7 +46,7 @@ export const CustomerProductServiceAdd = async (
   const shopifyProductId = GidFormat.parse(shopifyProduct.id);
   const variant = shopifyProduct.variants.nodes[0];
 
-  const newProduct = {
+  const newProduct: ScheduleProduct = {
     ...product,
     parentId: product.parentId,
     productHandle: shopifyProduct.handle,
@@ -57,18 +62,20 @@ export const CustomerProductServiceAdd = async (
     },
     scheduleIdMetafieldId: shopifyProduct.scheduleId?.id,
     durationMetafieldId: shopifyProduct.duration?.id,
+    duration: 60,
+    breakTime: 10,
     breakTimeMetafieldId: shopifyProduct.breaktime?.id,
     noticePeriod: {
       valueMetafieldId: shopifyProduct.noticePeriodValue?.id,
-      value: parseInt(shopifyProduct.noticePeriodValue?.value || ""),
+      value: 1,
       unitMetafieldId: shopifyProduct.noticePeriodUnit?.id,
-      unit: shopifyProduct.noticePeriodUnit?.value as any,
+      unit: TimeUnit.HOURS,
     },
     bookingPeriod: {
       valueMetafieldId: shopifyProduct.bookingPeriodValue?.id,
-      value: parseInt(shopifyProduct.bookingPeriodValue?.value || ""),
+      value: 3,
       unitMetafieldId: shopifyProduct.bookingPeriodUnit?.id,
-      unit: shopifyProduct.bookingPeriodUnit?.value as any,
+      unit: TimeUnit.MONTHS,
     },
     locationsMetafieldId: shopifyProduct.locations?.id,
   };
@@ -88,17 +95,7 @@ export const CustomerProductServiceAdd = async (
 
   return CustomerProductServiceUpdate(
     { customerId, productId: shopifyProductId },
-    {
-      price: {
-        amount: product.price.amount,
-        currencyCode: "DKK",
-      },
-      compareAtPrice: {
-        amount: product.compareAtPrice.amount,
-        currencyCode: "DKK",
-      },
-      locations: product.locations,
-    }
+    newProduct
   );
 };
 
