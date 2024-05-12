@@ -57,7 +57,7 @@ export async function CustomerProductOptionsServiceAdd({
 
   const newProductId = GidFormat.parse(data.productDuplicate.newProduct.id);
 
-  await shopifyAdmin.request(PRODUCT_OPTION_ADD, {
+  shopifyAdmin.request(PRODUCT_OPTION_ADD, {
     variables: {
       id: `gid://shopify/Product/${newProductId}`,
       metafields: [

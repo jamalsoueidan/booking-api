@@ -7,9 +7,6 @@ properties:
         type: string
       currencyCode:
         type: string
-    required:
-      - amount
-      - currencyCode
   compareAtPrice:
     type: object
     properties:
@@ -17,9 +14,6 @@ properties:
         type: string
       currencyCode:
         type: string
-    required:
-      - amount
-      - currencyCode
   duration:
     type: number
   breakTime:

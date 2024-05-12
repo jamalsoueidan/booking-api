@@ -13,15 +13,15 @@ properties:
     properties:
       amount:
         type: string
-    required:
-      - amount
+      currencyCode:
+        type: string
   compareAtPrice:
     type: object
     properties:
       amount:
         type: string
-    required:
-      - amount
+      currencyCode:
+        type: string
 
 required:
   - parentId
