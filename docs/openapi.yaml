@@ -220,6 +220,8 @@ components:
     CustomerProductBase:
       type: object
       properties:
+        title:
+          type: string
         options:
           type: array
           items:
