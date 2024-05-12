@@ -60,6 +60,7 @@ export const CustomerProductServiceAdd = async (
       amount: product.compareAtPrice.amount,
       currencyCode: "DKK",
     },
+    title: shopifyProduct.title,
     scheduleIdMetafieldId: shopifyProduct.scheduleId?.id,
     durationMetafieldId: shopifyProduct.duration?.id,
     duration: 60,
@@ -104,6 +105,7 @@ export const PRODUCT_FRAGMENT = `#graphql
     id
     handle
     tags
+    title
     variants(first: 1) {
       nodes {
         id

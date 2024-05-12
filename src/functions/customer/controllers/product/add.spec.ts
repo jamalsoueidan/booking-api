@@ -76,6 +76,7 @@ describe("CustomerProductControllerAdd", () => {
           id: "gid://shopify/Product/1",
           handle: "testerne-new-product",
           tags: [],
+          title,
           variants: {
             nodes: [
               {
@@ -153,6 +154,7 @@ describe("CustomerProductControllerAdd", () => {
           id: `gid://shopify/Product/${GidFormat.parse(
             mockProduct.productDuplicate?.newProduct?.id
           )}}`,
+          title,
           variants: {
             nodes: mockProduct.productDuplicate?.newProduct?.variants.nodes!,
           },

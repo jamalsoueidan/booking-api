@@ -76,6 +76,7 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       amount: String,
       currencyCode: String,
     },
+    title: String,
     description: String,
     durationMetafieldId: String,
     duration: {

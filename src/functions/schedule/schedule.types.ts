@@ -79,6 +79,7 @@ export const ScheduleProductZodSchema = z.object({
   parentId: GidFormat,
   productId: GidFormat,
   variantId: GidFormat,
+  title: z.string().optional(),
   scheduleIdMetafieldId: z.string().optional(),
   locationsMetafieldId: z.string().optional(),
   locations: z.array(LocationZodSchema),

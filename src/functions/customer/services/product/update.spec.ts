@@ -45,6 +45,7 @@ describe("CustomerProductServiceUpdate", () => {
       product: {
         id: "gid://shopify/Product/9196220121415",
         handle: "test-product-1",
+        title: "asd",
         tags: [""],
         variants: {
           nodes: [
