@@ -354,9 +354,6 @@ components:
               type: string
             currencyCode:
               type: string
-          required:
-            - amount
-            - currencyCode
         compareAtPrice:
           type: object
           properties:
@@ -364,9 +361,6 @@ components:
               type: string
             currencyCode:
               type: string
-          required:
-            - amount
-            - currencyCode
         duration:
           type: number
         breakTime:
@@ -408,15 +402,15 @@ components:
           properties:
             amount:
               type: string
-          required:
-            - amount
+            currencyCode:
+              type: string
         compareAtPrice:
           type: object
           properties:
             amount:
               type: string
-          required:
-            - amount
+            currencyCode:
+              type: string
       required:
         - parentId
         - title
