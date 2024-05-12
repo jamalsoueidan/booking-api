@@ -265,6 +265,7 @@ components:
         - productId
         - duration
         - price
+        - compareAtPrice
         - breakTime
         - noticePeriod
         - bookingPeriod
