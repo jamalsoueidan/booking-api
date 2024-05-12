@@ -1,6 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { CustomerServiceCreate } from "~/functions/customer/services/customer";
-import { getUserObject } from "~/library/jest/helpers";
+import { createUser, getUserObject } from "~/library/jest/helpers";
 import { Professions } from "../../user.types";
 import { UserServiceGet } from "./get";
 
@@ -15,7 +14,7 @@ describe("UserServiceGet", () => {
       username,
     });
 
-    await CustomerServiceCreate(userData);
+    await createUser(userData);
 
     const findUser = await UserServiceGet({ username });
 

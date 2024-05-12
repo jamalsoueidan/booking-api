@@ -7,9 +7,14 @@ import {
 } from "~/library/jest/azure";
 
 import { TimeUnit } from "~/functions/schedule";
+import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { CustomerProductServiceAdd } from "../../services/product/add";
-import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
+import { createSchedule } from "~/library/jest/helpers/schedule";
+import { shopifyAdmin } from "~/library/shopify";
+import {
+  ProductPricepdateMutation,
+  ProductUpdateMutation,
+} from "~/types/admin.generated";
 import {
   CustomerProductControllerUpdate,
   CustomerProductControllerUpdateRequest,
@@ -17,6 +22,14 @@ import {
 } from "./update";
 
 require("~/library/jest/mongoose/mongodb.jest");
+
+jest.mock("@shopify/admin-api-client", () => ({
+  createAdminApiClient: () => ({
+    request: jest.fn(),
+  }),
+}));
+
+const mockRequest = shopifyAdmin.request as jest.Mock;
 
 describe("CustomerProductControllerUpdate", () => {
   let context: InvocationContext;
@@ -26,20 +39,107 @@ describe("CustomerProductControllerUpdate", () => {
 
   beforeEach(async () => {
     context = createContext();
+    jest.clearAllMocks();
   });
 
   it("should be able to update product inside schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
-      name: "asd",
+    const user = await createUser({ customerId });
+
+    const product = getProductObject({ productId });
+    const newSchedule = await createSchedule({
+      name: "adsasd",
       customerId,
+      products: [product],
     });
 
-    await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
+    const mockProductUpdate: ProductUpdateMutation = {
+      productUpdate: {
+        product: {
+          id: "gid://shopify/Product/9196220121415",
+          variants: {
+            nodes: [
+              {
+                id: "gid://shopify/ProductVariant/49511289782599",
+                compareAtPrice: "150.00",
+                price: "90.00",
+              },
+            ],
+          },
+          handle: "testerne-new-product",
+          tags: [
+            `user`,
+            `user-${user.username}`,
+            `userid-${user.customerId}`,
+            `treatments`,
+            `productid-${product.productId}`,
+            `product-${product.productHandle}`,
+            `scheduleid-${newSchedule._id}`,
+            `locationid-${product.locations[0].location}`,
+          ],
+          parentId: {
+            id: "gid://shopify/Metafield/44429081510215",
+            value: "gid://shopify/Product/8022089105682",
+          },
+          scheduleId: {
+            id: "gid://shopify/Metafield/44429081542983",
+            value: "schedule",
+          },
+          locations: {
+            id: "gid://shopify/Metafield/44429081411911",
+            value: '{"locations":[]}',
+          },
+          bookingPeriodValue: {
+            id: "gid://shopify/Metafield/44429081313607",
+            value: "1",
+          },
+          bookingPeriodUnit: {
+            id: "gid://shopify/Metafield/44429081280839",
+            value: "months",
+          },
+          noticePeriodValue: {
+            id: "gid://shopify/Metafield/44429081477447",
+            value: "1",
+          },
+          noticePeriodUnit: {
+            id: "gid://shopify/Metafield/44429081444679",
+            value: "hours",
+          },
+          duration: {
+            id: "gid://shopify/Metafield/44429081379143",
+            value: "60",
+          },
+          breaktime: {
+            id: "gid://shopify/Metafield/44429081346375",
+            value: "10",
+          },
+        },
       },
-      { ...getProductObject({ productId }), scheduleId: newSchedule._id }
-    );
+    };
+
+    const mockProductPriceUpdate: ProductPricepdateMutation = {
+      productVariantsBulkUpdate: {
+        product: {
+          id: "gid://shopify/Product/9196220121415",
+          variants: {
+            nodes: [
+              {
+                id: "gid://shopify/ProductVariant/49503397249351",
+                compareAtPrice: "150.00",
+                price: "90.00",
+              },
+            ],
+          },
+        },
+      },
+    };
+
+    mockRequest
+      .mockResolvedValueOnce({
+        data: mockProductUpdate,
+      })
+      .mockResolvedValueOnce({
+        data: mockProductPriceUpdate,
+      });
 
     request = await createHttpRequest<CustomerProductControllerUpdateRequest>({
       query: {
@@ -53,7 +153,6 @@ describe("CustomerProductControllerUpdate", () => {
         },
         duration: 12,
         description: "hej med dig",
-        scheduleId: newSchedule._id,
       },
     });
 

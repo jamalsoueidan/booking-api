@@ -8,8 +8,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { CustomerProductServiceAdd } from "../../services/product/add";
-import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import {
   CustomerProductControllerGet,
   CustomerProductControllerGetRequest,
@@ -40,26 +39,16 @@ describe("CustomerProductControllerGet", () => {
   });
 
   it("should be able to get schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "asd",
       customerId: 123,
+      products: [product],
     });
-
-    const newProduct = await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
-      },
-      { ...product, scheduleId: newSchedule._id }
-    );
-
-    expect(newProduct?.scheduleId.toString()).toEqual(
-      newSchedule._id.toString()
-    );
 
     request = await createHttpRequest<CustomerProductControllerGetRequest>({
       query: {
         customerId: newSchedule.customerId,
-        productId: newProduct.productId,
+        productId: product.productId,
       },
     });
 
@@ -67,6 +56,6 @@ describe("CustomerProductControllerGet", () => {
       await CustomerProductControllerGet(request, context);
 
     expect(res.jsonBody?.success).toBeTruthy();
-    expect(res.jsonBody?.payload?.productId).toBe(newProduct.productId);
+    expect(res.jsonBody?.payload?.productId).toBe(product.productId);
   });
 });

@@ -6,11 +6,10 @@ import {
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
-import { omitObjectIdProps } from "~/library/jest/helpers";
 
 import { getProductObject } from "~/library/jest/helpers/product";
-import { CustomerProductServiceAdd } from "../../services/product/add";
-import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
+import { createSchedule } from "~/library/jest/helpers/schedule";
+import { shopifyAdmin } from "~/library/shopify";
 import {
   CustomerProductControllerDestroy,
   CustomerProductControllerDestroyRequest,
@@ -19,11 +18,18 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
+jest.mock("@shopify/admin-api-client", () => ({
+  createAdminApiClient: () => ({
+    request: jest.fn(),
+  }),
+}));
+
+const mockRequest = shopifyAdmin.request as jest.Mock;
+
 describe("CustomerProductControllerDestroy", () => {
   let context: InvocationContext;
   let request: HttpRequest;
   const product = getProductObject({
-    variantId: 1,
     duration: 60,
     breakTime: 0,
     noticePeriod: {
@@ -41,26 +47,21 @@ describe("CustomerProductControllerDestroy", () => {
   });
 
   it("should be able to destroy schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
-      name: "asd",
+    const newSchedule = await createSchedule({
+      name: "adsasd",
       customerId: 123,
+      products: [product],
     });
 
-    const newProduct = await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
+    mockRequest.mockResolvedValueOnce({
+      data: {
+        productDelete: {
+          deletedProductId: {
+            id: "123",
+          },
+        },
       },
-      { ...product, scheduleId: newSchedule._id }
-    );
-
-    expect(omitObjectIdProps(newProduct)).toMatchObject(
-      omitObjectIdProps({
-        ...product,
-        productId: newProduct.productId,
-        scheduleId: newSchedule._id,
-        scheduleName: newSchedule.name,
-      })
-    );
+    });
 
     request = await createHttpRequest<CustomerProductControllerDestroyRequest>({
       query: {

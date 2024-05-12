@@ -1,9 +1,7 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 
 import { TimeUnit } from "~/functions/schedule";
 
-import { CustomerProductServiceAdd } from "~/functions/customer/services/product/add";
 import {
   HttpSuccessResponse,
   createContext,
@@ -11,6 +9,7 @@ import {
 } from "~/library/jest/azure";
 import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import {
   UserProductsControllerGet,
   UserProductsControllerGetRequest,
@@ -22,41 +21,33 @@ require("~/library/jest/mongoose/mongodb.jest");
 describe("UserProductsControllerGet", () => {
   let context: InvocationContext;
   let request: HttpRequest;
-  const product = getProductObject({
-    variantId: 1,
-    duration: 60,
-    breakTime: 0,
-    noticePeriod: {
-      value: 1,
-      unit: TimeUnit.DAYS,
-    },
-    bookingPeriod: {
-      value: 1,
-      unit: TimeUnit.WEEKS,
-    },
-  });
 
   beforeEach(async () => {
     context = createContext();
   });
 
   it("should be able to get product inside schedule", async () => {
-    const user = await createUser({ customerId: 134 });
-    const newSchedule = await CustomerScheduleServiceCreate({
-      name: "asd",
-      customerId: user.customerId,
+    const user = await createUser();
+
+    const product = getProductObject({
+      variantId: 1,
+      duration: 60,
+      breakTime: 0,
+      noticePeriod: {
+        value: 1,
+        unit: TimeUnit.DAYS,
+      },
+      bookingPeriod: {
+        value: 1,
+        unit: TimeUnit.WEEKS,
+      },
     });
 
-    const newProduct = await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
-      },
-      { ...product, scheduleId: newSchedule._id }
-    );
-
-    expect(newProduct?.scheduleId.toString()).toEqual(
-      newSchedule._id.toString()
-    );
+    const newSchedule = await createSchedule({
+      name: "asd",
+      customerId: user.customerId,
+      products: [product],
+    });
 
     request = await createHttpRequest<UserProductsControllerGetRequest>({
       query: {

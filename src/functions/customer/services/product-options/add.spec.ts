@@ -1,15 +1,19 @@
 import { ScheduleModel } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
-import { ProductOptionDuplicateMutation } from "~/types/admin.generated";
-import { CustomerProductServiceAdd } from "../product/add";
-import { CustomerScheduleServiceCreate } from "../schedule/create";
+import {
+  ProductOptionAddMutation,
+  ProductOptionDuplicateMutation,
+  ProductParentUpdateMutation,
+} from "~/types/admin.generated";
 import {
   CustomerProductOptionsServiceAdd,
+  PRODUCT_OPTION_ADD,
   PRODUCT_OPTION_DUPLCATE,
-  PRODUCT_OPTION_UPDATE_TAG,
+  PRODUCT_PARENT_UPDATE,
 } from "./add";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -34,27 +38,25 @@ describe("CustomerProductOptionsAddService", () => {
 
     const user = await createUser({ customerId });
 
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const product = { ...getProductObject({}) };
+
+    const newSchedule = await createSchedule({
       name: "Test Schedule",
       customerId,
+      products: [product],
     });
 
-    const product = await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
-      },
-      {
-        ...getProductObject({}),
-        scheduleId: newSchedule._id,
-      }
-    );
-
-    const mockProduct: ProductOptionDuplicateMutation = {
+    const mockProductOptionDuplicate: ProductOptionDuplicateMutation = {
       productDuplicate: {
         newProduct: {
           id: "gid://shopify/Product/9186772386119",
           title: "New Product Title",
           handle: "ikadsk",
+          tags: [],
+          parentId: {
+            id: "gid://shopify/Metafield/44499605258567",
+            value: "",
+          },
           variants: {
             nodes: [
               {
@@ -90,21 +92,53 @@ describe("CustomerProductOptionsAddService", () => {
       },
     };
 
-    const mockProduct2: ProductOptionDuplicateMutation = {
-      productDuplicate: {
-        newProduct: {
-          id: "gid://shopify/Product/433443",
+    const tags = [
+      `user`,
+      `user-${user.username}`,
+      `userid-${customerId}`,
+      `options`,
+      `parentid-${product.productId}`,
+      `parent-${product.productHandle}`,
+    ];
+
+    const mockProductOptionUpdate: ProductOptionAddMutation = {
+      productUpdate: {
+        product: {
+          id: "gid://shopify/Product/9186772386119",
           title: "New Product Title",
-          handle: "ijejife",
+          handle: "ikadsk",
+          tags,
+          parentId: {
+            id: "gid://shopify/Metafield/44499605258567",
+            value: `gid://shopify/Product/${product.productId}`,
+          },
           variants: {
             nodes: [
               {
-                id: "gid://shopify/ProductVariant/34",
+                id: "gid://shopify/ProductVariant/49475617128775",
                 title: "Tyk",
                 price: "12.00",
                 duration: {
-                  id: "gid://shopify/Metafield/4",
-                  value: "4",
+                  id: "gid://shopify/Metafield/3",
+                  value: "1",
+                },
+              },
+              {
+                id: "gid://shopify/ProductVariant/49475617259847",
+                title: "Normal",
+                price: "12.00",
+                duration: {
+                  id: "gid://shopify/Metafield/2",
+                  value: "2",
+                },
+              },
+              {
+                id: "gid://shopify/ProductVariant/49475617358151",
+                title: "Meget tyk",
+                price: "12.00",
+                duration: {
+                  id: "gid://shopify/Metafield/1",
+                  value: "3",
                 },
               },
             ],
@@ -113,70 +147,79 @@ describe("CustomerProductOptionsAddService", () => {
       },
     };
 
+    const mockProductParentUpdate: ProductParentUpdateMutation = {
+      productUpdate: {
+        product: {
+          options: {
+            id: "gid://shopify/Metafield/44505109102919",
+          },
+        },
+      },
+    };
+
     mockRequest
       .mockResolvedValueOnce({
-        data: mockProduct,
+        data: mockProductOptionDuplicate,
       })
       .mockResolvedValueOnce({
-        data: {
-          productUpdate: {
-            product: {
-              id: mockProduct.productDuplicate?.newProduct?.id,
-              tags: [
-                "user",
-                "options",
-                `customer-${customerId}`,
-                `product-9186772386119`,
-              ],
-            },
-          },
-        },
+        data: mockProductOptionUpdate,
       })
       .mockResolvedValueOnce({
-        data: mockProduct2,
-      })
-      .mockResolvedValueOnce({
-        data: {
-          productUpdate: {
-            product: {
-              id: mockProduct2.productDuplicate?.newProduct?.id,
-              tags: [
-                "user",
-                "options",
-                `customer-${customerId}`,
-                `product-${product.productId}`,
-              ],
-            },
-          },
-        },
+        data: mockProductParentUpdate,
       });
 
     const result = await CustomerProductOptionsServiceAdd({
       customerId,
       productId: product.productId,
       cloneId,
-      title: "New Product",
+      title: mockProductOptionDuplicate.productDuplicate?.newProduct?.title!,
     });
 
     //expect(result).toHaveLength(1);
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(2);
+    expect(shopifyAdmin.request).toHaveBeenCalledTimes(3);
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
       1,
       PRODUCT_OPTION_DUPLCATE,
       {
         variables: {
           productId: `gid://shopify/Product/${cloneId}`,
-          title: "New Product",
+          title:
+            mockProductOptionDuplicate.productDuplicate?.newProduct?.title!,
         },
       }
     );
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
       2,
-      PRODUCT_OPTION_UPDATE_TAG,
+      PRODUCT_OPTION_ADD,
       {
         variables: {
-          id: mockProduct.productDuplicate?.newProduct?.id,
-          tags: `user, options, user-${user.username}, customer-${customerId}, product-${product.productId}, product-${product.productHandle}`,
+          id: mockProductOptionDuplicate.productDuplicate?.newProduct?.id,
+          metafields: [
+            {
+              id: mockProductOptionDuplicate.productDuplicate?.newProduct
+                ?.parentId?.id,
+              value: `gid://shopify/Product/${product.productId}`,
+            },
+          ],
+          tags: tags.join(", "),
+        },
+      }
+    );
+    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
+      3,
+      PRODUCT_PARENT_UPDATE,
+      {
+        variables: {
+          id: `gid://shopify/Product/${product.productId}`,
+          metafields: [
+            {
+              key: "options",
+              namespace: "booking",
+              value: JSON.stringify([
+                mockProductOptionDuplicate.productDuplicate?.newProduct?.id,
+              ]),
+            },
+          ],
         },
       }
     );
@@ -185,34 +228,19 @@ describe("CustomerProductOptionsAddService", () => {
     expect(schedule).not.toBeNull();
     expect(schedule.products).toHaveLength(1);
     let scheduleProduct = schedule.products[0];
+    expect(scheduleProduct.optionsMetafieldId).toBe(
+      mockProductParentUpdate.productUpdate?.product?.options?.id
+    );
     expect(scheduleProduct.options).toHaveLength(1);
     let options = scheduleProduct?.options![0];
     expect(options.productId).toEqual(
-      GidFormat.parse(mockProduct.productDuplicate?.newProduct?.id)
+      GidFormat.parse(
+        mockProductOptionDuplicate.productDuplicate?.newProduct?.id
+      )
     );
     expect(options.variants).toHaveLength(3);
     const variant = options.variants[0];
     expect(variant.duration.metafieldId).toBe(3);
     expect(variant.duration.value).toBe(1);
-
-    const result2 = await CustomerProductOptionsServiceAdd({
-      customerId,
-      productId: product.productId,
-      cloneId: 777,
-      title: "New Product",
-    });
-
-    //expect(result2).toHaveLength(2);
-
-    schedule = await ScheduleModel.findOne(newSchedule._id).orFail();
-    expect(schedule).not.toBeNull();
-    expect(schedule.products).toHaveLength(1);
-    scheduleProduct = schedule.products[0];
-    expect(scheduleProduct.options).toHaveLength(2);
-    options = scheduleProduct?.options![1];
-    expect(options.productId).toEqual(
-      GidFormat.parse(mockProduct2.productDuplicate?.newProduct?.id)
-    );
-    expect(options.variants).toHaveLength(1);
   });
 });

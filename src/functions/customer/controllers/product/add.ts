@@ -1,10 +1,9 @@
 import { z } from "zod";
-import { ScheduleProductZodSchema } from "~/functions/schedule/schedule.types";
 
+import { ScheduleProductZodSchema } from "~/functions/schedule";
 import { _ } from "~/library/handler";
 import { GidFormat, StringOrObjectId } from "~/library/zod";
 import { CustomerProductServiceAdd } from "../../services/product/add";
-import { CustomerProductServiceUpdate } from "../../services/product/update";
 
 export type CustomerProductControllerAddRequest = {
   query: z.infer<typeof CustomerProductControllerAddQuerySchema>;
@@ -15,20 +14,20 @@ const CustomerProductControllerAddQuerySchema = z.object({
   customerId: GidFormat,
 });
 
-const CustomerProductControllerAddBodySchema = ScheduleProductZodSchema.omit({
-  description: true,
-  duration: true,
-  bookingPeriod: true,
-  breakTime: true,
-  noticePeriod: true,
+const CustomerProductControllerAddBodySchema = ScheduleProductZodSchema.pick({
+  parentId: true,
+  locations: true,
+  price: true,
+  compareAtPrice: true,
 })
   .extend({
     scheduleId: StringOrObjectId,
+    title: z.string(),
   })
   .strip();
 
 export type CustomerProductControllerAddResponse = Awaited<
-  ReturnType<typeof CustomerProductServiceUpdate>
+  ReturnType<typeof CustomerProductServiceAdd>
 >;
 
 export const CustomerProductControllerAdd = _(

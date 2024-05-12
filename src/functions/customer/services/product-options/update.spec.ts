@@ -1,10 +1,9 @@
 import { ScheduleModel } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
 import { ProductOptionUpdateMutation } from "~/types/admin.generated";
-import { CustomerProductServiceAdd } from "../product/add";
-import { CustomerScheduleServiceCreate } from "../schedule/create";
 import {
   CustomerProductOptionsServiceUpdate,
   PRODUCT_OPTION_UPDATE,
@@ -31,57 +30,50 @@ describe("CustomerProductOptionsAddService", () => {
     const productId = 123123;
     const optionProductId = 323232;
 
-    const newSchedule = await CustomerScheduleServiceCreate({
-      name: "Test Schedule",
-      customerId,
-    });
-
-    const product = await CustomerProductServiceAdd(
-      {
-        customerId,
-      },
-      {
-        ...getProductObject({
-          productId,
-          options: [
+    const product = getProductObject({
+      productId,
+      options: [
+        {
+          productId: optionProductId,
+          title: "new",
+          variants: [
             {
-              productId: optionProductId,
-              title: "new",
-              variants: [
-                {
-                  variantId: 1,
-                  title: "a",
-                  price: 1,
-                  duration: {
-                    metafieldId: 11,
-                    value: 60,
-                  },
-                },
-                {
-                  variantId: 2,
-                  title: "b",
-                  price: 2,
-                  duration: {
-                    metafieldId: 22,
-                    value: 30,
-                  },
-                },
-                {
-                  variantId: 3,
-                  title: "c",
-                  price: 2,
-                  duration: {
-                    metafieldId: 33,
-                    value: 15,
-                  },
-                },
-              ],
+              variantId: 1,
+              title: "a",
+              price: 1,
+              duration: {
+                metafieldId: 11,
+                value: 60,
+              },
+            },
+            {
+              variantId: 2,
+              title: "b",
+              price: 2,
+              duration: {
+                metafieldId: 22,
+                value: 30,
+              },
+            },
+            {
+              variantId: 3,
+              title: "c",
+              price: 2,
+              duration: {
+                metafieldId: 33,
+                value: 15,
+              },
             },
           ],
-        }),
-        scheduleId: newSchedule._id,
-      }
-    );
+        },
+      ],
+    });
+
+    const newSchedule = await createSchedule({
+      name: "Test Schedule",
+      customerId,
+      products: [product],
+    });
 
     const newDurationPrice = 1;
     const newDurationValue = 120;

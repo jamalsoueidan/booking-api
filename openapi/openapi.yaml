@@ -66,8 +66,6 @@ components:
       $ref: paths/customer/schedule/_types/product-booking-period.yaml
     CustomerProductBookingUnit:
       $ref: paths/customer/schedule/_types/product-booking-unit.yaml
-    CustomerProductSelectedOptions:
-      $ref: paths/customer/schedule/_types/product-selected-options.yaml
     CustomerProductNoticePeriod:
       $ref: paths/customer/schedule/_types/product-notice-period.yaml
     CustomerProductNoticeUnit:
@@ -86,12 +84,6 @@ components:
       $ref: paths/customer/product/destroy/response.yaml
     CustomerProductGetResponse:
       $ref: paths/customer/product/get/response.yaml
-    CustomerProductCreateVariantResponse:
-      $ref: paths/customer/product/create-variant/response.yaml
-    CustomerProductCreateVariantBody:
-      $ref: paths/customer/product/create-variant/body.yaml
-    CustomerProductCreateVariant:
-      $ref: paths/customer/product/create-variant/variant.yaml
 
     # Product Options
     CustomerProductOptionsUpdateResponse:
@@ -440,8 +432,6 @@ paths:
     $ref: "paths/customer/product/product.yaml"
   /customer/{customerId}/product:
     $ref: "paths/customer/product/add/index.yaml"
-  /customer/{customerId}/product/{productId}/create-variant:
-    $ref: "paths/customer/product/create-variant/index.yaml"
 
   # Customer Product Options Management
   /customer/{customerId}/product/{productId}/options:

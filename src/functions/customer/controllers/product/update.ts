@@ -2,7 +2,7 @@ import { z } from "zod";
 import { ScheduleProductZodSchema } from "~/functions/schedule/schedule.types";
 
 import { _ } from "~/library/handler";
-import { GidFormat, StringOrObjectId } from "~/library/zod";
+import { GidFormat } from "~/library/zod";
 import { CustomerProductServiceUpdate } from "../../services/product/update";
 
 export type CustomerProductControllerUpdateRequest = {
@@ -21,9 +21,6 @@ const CustomerProductControllerUpdateBodySchema = ScheduleProductZodSchema.omit(
     productHandle: true,
   }
 )
-  .extend({
-    scheduleId: StringOrObjectId,
-  })
   .partial()
   .strip();
 

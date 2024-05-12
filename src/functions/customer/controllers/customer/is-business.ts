@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { UserZodSchema } from "~/functions/user";
 import { _ } from "~/library/handler";
-import { CustomerServiceIsBusiness } from "../../services/customer";
+import { CustomerServiceIsBusiness } from "../../services/customer/is-business";
 
 export type CustomerControllerIsBusinessRequest = {
   query: z.infer<typeof CustomerControllerIsBusinessSchema>;

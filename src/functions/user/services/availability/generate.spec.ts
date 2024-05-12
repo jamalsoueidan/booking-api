@@ -351,25 +351,25 @@ describe("UserAvailabilityServiceGenerate", () => {
           {
             variantId: 13,
             price: 1,
-            title: "a",
+            title: "b",
             duration: { metafieldId: 2, value: 45 },
           },
         ],
       },
       {
         productId: 2,
-        title: "a",
+        title: "af",
         variants: [
           {
             variantId: 14,
             price: 1,
-            title: "a",
+            title: "af",
             duration: { metafieldId: 1, value: 30 },
           },
           {
             variantId: 15,
             price: 1,
-            title: "a",
+            title: "af",
             duration: { metafieldId: 2, value: 45 },
           },
         ],

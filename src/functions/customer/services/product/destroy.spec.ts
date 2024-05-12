@@ -1,10 +1,18 @@
 import { TimeUnit } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { CustomerScheduleServiceCreate } from "../schedule/create";
-import { CustomerProductServiceAdd } from "./add";
+import { createSchedule } from "~/library/jest/helpers/schedule";
+import { shopifyAdmin } from "~/library/shopify";
 import { CustomerProductServiceDestroy } from "./destroy";
 
 require("~/library/jest/mongoose/mongodb.jest");
+
+jest.mock("@shopify/admin-api-client", () => ({
+  createAdminApiClient: () => ({
+    request: jest.fn(),
+  }),
+}));
+
+const mockRequest = shopifyAdmin.request as jest.Mock;
 
 describe("CustomerProductServiceDestroy", () => {
   const customerId = 123;
@@ -24,21 +32,25 @@ describe("CustomerProductServiceDestroy", () => {
   });
 
   it("should remove an existing product from the schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
-      name,
-      customerId,
+    mockRequest.mockResolvedValueOnce({
+      data: {
+        productDelete: {
+          deletedProductId: {
+            id: "123",
+          },
+        },
+      },
     });
 
-    const product = await CustomerProductServiceAdd(
-      {
-        customerId: newSchedule.customerId,
-      },
-      { ...newProduct, scheduleId: newSchedule._id }
-    );
+    const newSchedule = await createSchedule({
+      name,
+      customerId,
+      products: [newProduct],
+    });
 
     const updatedSchedule = await CustomerProductServiceDestroy({
       customerId: newSchedule.customerId,
-      productId: product.productId,
+      productId: newProduct.productId,
     });
 
     expect(updatedSchedule?.modifiedCount).toBe(1);

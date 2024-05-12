@@ -57,6 +57,8 @@ export const GidFormat = z
     }
   });
 
+export type GidFormatType = z.infer<typeof GidFormat>;
+
 export const NumberOrString = z
   .union([z.number(), z.string()])
   .transform((value) =>

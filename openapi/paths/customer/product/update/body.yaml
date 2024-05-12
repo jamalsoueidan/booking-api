@@ -1,17 +1,5 @@
 type: object
 properties:
-  variantId:
-    type: number
-  selectedOptions:
-    type: object
-    properties:
-      name:
-        type: string
-      value:
-        type: string
-    required:
-      - name
-      - value
   price:
     type: object
     properties:
@@ -42,5 +30,7 @@ properties:
     $ref: ../../schedule/_types/product-booking-period.yaml
   locations:
     $ref: ../../schedule/_types/product-locations.yaml
+  title:
+    type: string
   description:
     type: string
