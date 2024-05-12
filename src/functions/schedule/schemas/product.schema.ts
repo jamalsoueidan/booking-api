@@ -67,6 +67,11 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       type: String,
       index: true,
     },
+    hasOptionsMetafieldId: String,
+    hasOptions: {
+      type: Boolean,
+      default: false,
+    },
     price: {
       amount: String,
       currencyCode: String,
