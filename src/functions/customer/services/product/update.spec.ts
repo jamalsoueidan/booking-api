@@ -44,6 +44,8 @@ describe("CustomerProductServiceUpdate", () => {
     productUpdate: {
       product: {
         id: "gid://shopify/Product/9196220121415",
+        handle: "test-product-1",
+        tags: [""],
         variants: {
           nodes: [
             {
@@ -53,7 +55,6 @@ describe("CustomerProductServiceUpdate", () => {
             },
           ],
         },
-        tags: [""],
         parentId: {
           id: "gid://shopify/Metafield/1",
           value: "gid://shopify/Product/123",
@@ -61,6 +62,10 @@ describe("CustomerProductServiceUpdate", () => {
         scheduleId: {
           id: "gid://shopify/Metafield/2",
           value: "schedule",
+        },
+        hasOptions: {
+          id: "gid://shopify/Metafield/23323",
+          value: "False",
         },
         locations: {
           id: "gid://shopify/Metafield/3",
@@ -128,6 +133,11 @@ describe("CustomerProductServiceUpdate", () => {
           ),
           scheduleIdMetafieldId:
             mockProductUpdate.productUpdate?.product?.scheduleId?.id,
+          hasOptionsMetafieldId:
+            mockProductUpdate.productUpdate?.product?.hasOptions?.id,
+          hasOptions:
+            mockProductUpdate.productUpdate?.product?.hasOptions?.value.toLowerCase() ===
+            "true",
           variantId: GidFormat.parse(
             mockProductUpdate.productUpdate?.product?.variants.nodes[0].id
           ),

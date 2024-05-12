@@ -65,6 +65,7 @@ describe("CustomerProductControllerUpdate", () => {
               },
             ],
           },
+          handle: "testerne-new-product",
           tags: [
             `user`,
             `user-${user.username}`,

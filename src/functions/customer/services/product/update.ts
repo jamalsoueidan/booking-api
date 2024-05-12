@@ -2,6 +2,7 @@ import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
 import { UserModel } from "~/functions/user";
 import { NotFoundError, ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
+import { PRODUCT_FRAGMENT } from "./add";
 
 export type CustomerProductServiceUpdate = {
   customerId: Schedule["customerId"];
@@ -230,54 +231,11 @@ export function mergeArraysUnique<T>(
 }
 
 export const PRODUCT_UPDATE = `#graphql
+  ${PRODUCT_FRAGMENT}
   mutation ProductUpdate($id: ID, $metafields: [MetafieldInput!], $tags: [String!]) {
     productUpdate(input: {id: $id, metafields: $metafields, tags: $tags}) {
       product {
-        id
-        variants(first: 1) {
-          nodes {
-            id
-            compareAtPrice
-            price
-          }
-        }
-        tags,
-        parentId: metafield(key: "parentId", namespace: "booking") {
-          id
-          value
-        }
-        scheduleId: metafield(key: "scheduleId", namespace: "booking") {
-          id
-          value
-        }
-        locations: metafield(key: "locations", namespace: "booking") {
-          id
-          value
-        }
-        bookingPeriodValue: metafield(key: "booking_period_value", namespace: "booking") {
-          id
-          value
-        }
-        bookingPeriodUnit: metafield(key: "booking_period_unit", namespace: "booking") {
-          id
-          value
-        }
-        noticePeriodValue: metafield(key: "notice_period_value", namespace: "booking") {
-          id
-          value
-        }
-        noticePeriodUnit: metafield(key: "notice_period_unit", namespace: "booking") {
-          id
-          value
-        }
-        duration: metafield(key: "duration", namespace: "booking") {
-          id
-          value
-        }
-        breaktime: metafield(key: "breaktime", namespace: "booking") {
-          id
-          value
-        }
+        ...ProductFragment
       }
     }
   }

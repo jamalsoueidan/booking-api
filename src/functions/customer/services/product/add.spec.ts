@@ -59,6 +59,7 @@ describe("CustomerProductServiceAdd", () => {
         newProduct: {
           id: "gid://shopify/Product/1",
           handle: "testerne-new-product",
+          tags: [],
           variants: {
             nodes: [
               {
@@ -79,6 +80,10 @@ describe("CustomerProductServiceAdd", () => {
           locations: {
             id: "gid://shopify/Metafield/44429081411911",
             value: "{}",
+          },
+          hasOptions: {
+            id: "gid://shopify/Metafield/44429081423",
+            value: "false",
           },
           bookingPeriodValue: {
             id: "gid://shopify/Metafield/44429081313607",
@@ -137,6 +142,7 @@ describe("CustomerProductServiceAdd", () => {
           id: `gid://shopify/Product/${GidFormat.parse(
             mockProduct.productDuplicate?.newProduct?.id
           )}}`,
+          handle: "testerne-new-product",
           variants: {
             nodes: mockProduct.productDuplicate?.newProduct?.variants.nodes!,
           },
@@ -148,6 +154,10 @@ describe("CustomerProductServiceAdd", () => {
           scheduleId: {
             id: mockProduct.productDuplicate?.newProduct?.scheduleId?.id!,
             value: "schedule",
+          },
+          hasOptions: {
+            id: mockProduct.productDuplicate?.newProduct?.scheduleId?.id!,
+            value: "False",
           },
           locations: {
             id: mockProduct.productDuplicate?.newProduct?.locations?.id!,

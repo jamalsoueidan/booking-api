@@ -75,6 +75,7 @@ describe("CustomerProductControllerAdd", () => {
         newProduct: {
           id: "gid://shopify/Product/1",
           handle: "testerne-new-product",
+          tags: [],
           variants: {
             nodes: [
               {
@@ -95,6 +96,10 @@ describe("CustomerProductControllerAdd", () => {
           locations: {
             id: "gid://shopify/Metafield/44429081411911",
             value: "{}",
+          },
+          hasOptions: {
+            id: "gid://shopify/Metafield/44429081423",
+            value: "false",
           },
           bookingPeriodValue: {
             id: "gid://shopify/Metafield/44429081313607",
@@ -155,6 +160,7 @@ describe("CustomerProductControllerAdd", () => {
           variants: {
             nodes: mockProduct.productDuplicate?.newProduct?.variants.nodes!,
           },
+          handle: "testerne-new-product",
           tags,
           parentId: {
             id: mockProduct.productDuplicate?.newProduct?.parentId?.id!,
