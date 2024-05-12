@@ -46,6 +46,7 @@ export const OptionMongooseSchema = new mongoose.Schema<ScheduleProductOption>(
 
 export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
   {
+    optionsMetafieldId: String,
     options: [OptionMongooseSchema],
     parentId: {
       type: Number,
@@ -66,11 +67,6 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
     scheduleIdMetafieldId: {
       type: String,
       index: true,
-    },
-    hasOptionsMetafieldId: String,
-    hasOptions: {
-      type: Boolean,
-      default: false,
     },
     price: {
       amount: String,

@@ -73,13 +73,12 @@ export type ScheduleProductOption = z.infer<
 >;
 
 export const ScheduleProductZodSchema = z.object({
+  optionsMetafieldId: z.string().optional(),
   options: z.array(ScheduleProductOptionZodSchema).optional(),
   productHandle: z.string(),
   parentId: GidFormat,
   productId: GidFormat,
   variantId: GidFormat,
-  hasOptionsMetafieldId: z.string().optional(),
-  hasOptions: z.boolean().optional(),
   scheduleIdMetafieldId: z.string().optional(),
   locationsMetafieldId: z.string().optional(),
   locations: z.array(LocationZodSchema),
