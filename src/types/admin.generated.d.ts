@@ -51,7 +51,7 @@ export type PublishablePublishMutation = { publishablePublish?: AdminTypes.Maybe
 export type PublicationsQueryVariables = AdminTypes.Exact<{ [key: string]: never; }>;
 
 
-export type PublicationsQuery = { publications: { nodes: Array<Pick<AdminTypes.Publication, 'id' | 'name'>> } };
+export type PublicationsQuery = { publications: { nodes: Array<Pick<AdminTypes.Publication, 'id'>> } };
 
 export type ProductOptionFragmentFragment = (
   Pick<AdminTypes.Product, 'id' | 'title' | 'handle' | 'tags'>
@@ -182,7 +182,7 @@ export type ProductVariantsBulkDeleteMutation = { productVariantsBulkDelete?: Ad
 
 interface GeneratedQueryTypes {
   "#graphql\n  query FileGet($query: String!) {\n    files(first: 10, sortKey: UPDATED_AT, reverse: true, query: $query) {\n      nodes {\n        preview {\n          image {\n            url\n            width\n            height\n          }\n        }\n      }\n    }\n  }\n": {return: FileGetQuery, variables: FileGetQueryVariables},
-  "#graphql\n  query publications {\n    publications(first: 10, catalogType: APP) {\n      nodes {\n        id\n        name\n      }\n    }\n  }\n": {return: PublicationsQuery, variables: PublicationsQueryVariables},
+  "#graphql\n  query publications {\n    publications(first: 10, catalogType: APP) {\n      nodes {\n        id\n      }\n    }\n  }\n": {return: PublicationsQuery, variables: PublicationsQueryVariables},
 }
 
 interface GeneratedMutationTypes {

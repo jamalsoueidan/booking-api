@@ -1,6 +1,6 @@
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
 import { UserModel } from "~/functions/user";
-import { NotFoundError, ShopifyError } from "~/library/handler";
+import { NotFoundError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { PRODUCT_FRAGMENT } from "./add";
 
@@ -130,7 +130,7 @@ export const CustomerProductServiceUpdate = async (
   };
 
   if (metafields.length > 0) {
-    const { data } = await shopifyAdmin.request(PRODUCT_UPDATE, {
+    shopifyAdmin.request(PRODUCT_UPDATE, {
       variables: {
         id: `gid://shopify/Product/${productId}`,
         metafields: [
@@ -153,20 +153,10 @@ export const CustomerProductServiceUpdate = async (
           .join(", "),
       },
     });
-
-    if (!data?.productUpdate?.product) {
-      throw new ShopifyError([
-        {
-          path: ["shopify"],
-          message: "GRAPHQL_ERROR",
-          code: "custom",
-        },
-      ]);
-    }
   }
 
   if (body.price && body.compareAtPrice) {
-    const { data: price } = await shopifyAdmin.request(PRODUCT_PRICE_UPDATE, {
+    shopifyAdmin.request(PRODUCT_PRICE_UPDATE, {
       variables: {
         id: `gid://shopify/Product/${productId}`,
         variants: [
@@ -178,16 +168,6 @@ export const CustomerProductServiceUpdate = async (
         ],
       },
     });
-
-    if (!price?.productVariantsBulkUpdate?.product) {
-      throw new ShopifyError([
-        {
-          path: ["shopify"],
-          message: "GRAPHQL_ERROR",
-          code: "custom",
-        },
-      ]);
-    }
   }
 
   await ScheduleModel.updateOne(

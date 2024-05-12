@@ -14,7 +14,7 @@ export async function CustomerProductOptionsServiceDestroy({
   optionProductId,
   productId,
 }: CustomerProductOptionsDestroyProps) {
-  await shopifyAdmin.request(PRODUCT_OPTION_DESTROY, {
+  shopifyAdmin.request(PRODUCT_OPTION_DESTROY, {
     variables: {
       productId: `gid://shopify/Product/${optionProductId}`,
     },
@@ -58,7 +58,7 @@ export async function CustomerProductOptionsServiceDestroy({
   }
 
   if (product.options?.length === 0) {
-    await shopifyAdmin.request(PRODUCT_DESTROY_METAFIELD, {
+    shopifyAdmin.request(PRODUCT_DESTROY_METAFIELD, {
       variables: {
         metafieldId: product.optionsMetafieldId || "",
       },
@@ -76,7 +76,7 @@ export async function CustomerProductOptionsServiceDestroy({
       }
     );
   } else {
-    await shopifyAdmin.request(PRODUCT_PARENT_UPDATE, {
+    shopifyAdmin.request(PRODUCT_PARENT_UPDATE, {
       variables: {
         id: `gid://shopify/Product/${productId}`,
         metafields: [

@@ -9,28 +9,24 @@ export type CustomerProductServiceDestroyFilter = {
 export const CustomerProductServiceDestroy = async (
   filter: CustomerProductServiceDestroyFilter
 ) => {
-  try {
-    await shopifyAdmin.request(PRODUCT_DESTROY, {
-      variables: {
-        productId: `gid://shopify/Product/${filter.productId}`,
-      },
-    });
+  shopifyAdmin.request(PRODUCT_DESTROY, {
+    variables: {
+      productId: `gid://shopify/Product/${filter.productId}`,
+    },
+  });
 
-    return ScheduleModel.updateOne(
-      {
-        customerId: filter.customerId,
-        products: {
-          $elemMatch: {
-            productId: filter.productId,
-          },
+  return ScheduleModel.updateOne(
+    {
+      customerId: filter.customerId,
+      products: {
+        $elemMatch: {
+          productId: filter.productId,
         },
       },
-      { $pull: { products: { productId: filter.productId } } },
-      { new: true }
-    ).lean();
-  } catch (error) {
-    console.error("Error destroying product:", error);
-  }
+    },
+    { $pull: { products: { productId: filter.productId } } },
+    { new: true }
+  ).lean();
 };
 
 export const PRODUCT_DESTROY = `#graphql
