@@ -63,10 +63,6 @@ describe("CustomerProductServiceUpdate", () => {
           id: "gid://shopify/Metafield/2",
           value: "schedule",
         },
-        hasOptions: {
-          id: "gid://shopify/Metafield/23323",
-          value: "False",
-        },
         locations: {
           id: "gid://shopify/Metafield/3",
           value: '{"locations":[]}',
@@ -133,11 +129,6 @@ describe("CustomerProductServiceUpdate", () => {
           ),
           scheduleIdMetafieldId:
             mockProductUpdate.productUpdate?.product?.scheduleId?.id,
-          hasOptionsMetafieldId:
-            mockProductUpdate.productUpdate?.product?.hasOptions?.id,
-          hasOptions:
-            mockProductUpdate.productUpdate?.product?.hasOptions?.value.toLowerCase() ===
-            "true",
           variantId: GidFormat.parse(
             mockProductUpdate.productUpdate?.product?.variants.nodes[0].id
           ),

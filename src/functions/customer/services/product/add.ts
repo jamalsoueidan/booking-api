@@ -62,7 +62,6 @@ export const CustomerProductServiceAdd = async (
     },
     scheduleIdMetafieldId: shopifyProduct.scheduleId?.id,
     durationMetafieldId: shopifyProduct.duration?.id,
-    hasOptionsMetafieldId: shopifyProduct.hasOptions?.id,
     duration: 60,
     breakTime: 10,
     breakTimeMetafieldId: shopifyProduct.breaktime?.id,
@@ -117,10 +116,6 @@ export const PRODUCT_FRAGMENT = `#graphql
       value
     }
     scheduleId: metafield(key: "scheduleId", namespace: "booking") {
-      id
-      value
-    }
-    hasOptions: metafield(key: "has_options", namespace: "booking") {
       id
       value
     }

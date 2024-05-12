@@ -1,4 +1,4 @@
-import { ScheduleModel } from "~/functions/schedule";
+import { ScheduleModel, ScheduleProduct } from "~/functions/schedule";
 import { UserModel } from "~/functions/user";
 import { NotFoundError, ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
@@ -41,7 +41,7 @@ export async function CustomerProductOptionsServiceAdd({
   const { data } = await shopifyAdmin.request(PRODUCT_OPTION_DUPLCATE, {
     variables: {
       productId: `gid://shopify/Product/${cloneId}`,
-      title,
+      title, //Afrensning - XXX
     },
   });
 
@@ -92,13 +92,38 @@ export async function CustomerProductOptionsServiceAdd({
       })) || [],
   };
 
-  const newProduct = {
+  const options = mergeArraysUnique(
+    rootProduct?.options || [],
+    [newOption],
+    "productId"
+  );
+
+  const { data: parentProductData } = await shopifyAdmin.request(
+    PRODUCT_PARENT_UPDATE,
+    {
+      variables: {
+        id: `gid://shopify/Product/${productId}`,
+        metafields: [
+          {
+            ...(rootProduct.optionsMetafieldId
+              ? {
+                  id: rootProduct.optionsMetafieldId,
+                }
+              : {
+                  key: "options",
+                  namespace: "booking",
+                }),
+            value: JSON.stringify(options.map((o) => o.productId)),
+          },
+        ],
+      },
+    }
+  );
+
+  const newProduct: ScheduleProduct = {
     ...rootProduct,
-    options: mergeArraysUnique(
-      rootProduct?.options || [],
-      [newOption],
-      "productId"
-    ),
+    optionsMetafieldId: parentProductData?.productUpdate?.product?.options?.id,
+    options,
   };
 
   await ScheduleModel.updateOne(
@@ -126,7 +151,7 @@ export const PRODUCT_OPTION_FRAGMENT = `#graphql
       id
       value
     }
-    variants(first: 1) {
+    variants(first: 5) {
       nodes {
         id
         title
@@ -157,6 +182,18 @@ export const PRODUCT_OPTION_ADD = `#graphql
     productUpdate(input: {id: $id, metafields: $metafields, tags: $tags}) {
       product {
         ...ProductOptionFragment
+      }
+    }
+  }
+` as const;
+
+export const PRODUCT_PARENT_UPDATE = `#graphql
+  mutation ProductParentUpdate($id: ID, $metafields: [MetafieldInput!]) {
+    productUpdate(input: {id: $id, metafields: $metafields}) {
+      product {
+        options: metafield(key: "options", namespace: "booking") {
+          id
+        }
       }
     }
   }

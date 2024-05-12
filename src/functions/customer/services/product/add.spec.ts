@@ -81,10 +81,6 @@ describe("CustomerProductServiceAdd", () => {
             id: "gid://shopify/Metafield/44429081411911",
             value: "{}",
           },
-          hasOptions: {
-            id: "gid://shopify/Metafield/44429081423",
-            value: "false",
-          },
           bookingPeriodValue: {
             id: "gid://shopify/Metafield/44429081313607",
             value: "1",
@@ -154,10 +150,6 @@ describe("CustomerProductServiceAdd", () => {
           scheduleId: {
             id: mockProduct.productDuplicate?.newProduct?.scheduleId?.id!,
             value: "schedule",
-          },
-          hasOptions: {
-            id: mockProduct.productDuplicate?.newProduct?.scheduleId?.id!,
-            value: "False",
           },
           locations: {
             id: mockProduct.productDuplicate?.newProduct?.locations?.id!,

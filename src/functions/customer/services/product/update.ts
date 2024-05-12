@@ -227,7 +227,7 @@ export function mergeArraysUnique<T>(
     }
   });
 
-  return Array.from(merged.values());
+  return Array.from(merged.values()) as T[];
 }
 
 export const PRODUCT_UPDATE = `#graphql

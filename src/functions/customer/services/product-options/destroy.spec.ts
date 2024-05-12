@@ -3,7 +3,12 @@ import { getProductObject } from "~/library/jest/helpers/product";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import {
+  ProductDestroyMetafieldMutation,
+  ProductOptionDestroyMutation,
+} from "~/types/admin.generated";
+import {
   CustomerProductOptionsServiceDestroy,
+  PRODUCT_DESTROY_METAFIELD,
   PRODUCT_OPTION_DESTROY,
 } from "./destroy";
 
@@ -31,9 +36,20 @@ describe("CustomerProductOptionsDestroyService", () => {
       id: "123",
     };
 
+    const productDelete: ProductOptionDestroyMutation = {
+      productDelete: { deletedProductId: mockProduct.id },
+    };
+
+    const metafieldDelete: ProductDestroyMetafieldMutation = {
+      metafieldDelete: {
+        deletedId: "gid://shopify/Metafield/44505109102919",
+      },
+    };
+
     const product = {
       ...getProductObject({
         productId: productId,
+        optionsMetafieldId: metafieldDelete.metafieldDelete?.deletedId!,
         options: [
           {
             productId: optionProductId,
@@ -51,9 +67,13 @@ describe("CustomerProductOptionsDestroyService", () => {
     });
 
     // Setup mock responses
-    mockRequest.mockResolvedValueOnce({
-      data: { productDelete: { deletedProductId: mockProduct.id } },
-    });
+    mockRequest
+      .mockResolvedValueOnce({
+        data: productDelete,
+      })
+      .mockResolvedValueOnce({
+        data: metafieldDelete,
+      });
 
     const result = await CustomerProductOptionsServiceDestroy({
       customerId,
@@ -63,7 +83,7 @@ describe("CustomerProductOptionsDestroyService", () => {
 
     expect(result).toHaveLength(0);
 
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(1);
+    expect(shopifyAdmin.request).toHaveBeenCalledTimes(2);
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
       1,
       PRODUCT_OPTION_DESTROY,
@@ -73,10 +93,20 @@ describe("CustomerProductOptionsDestroyService", () => {
         },
       }
     );
+    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
+      2,
+      PRODUCT_DESTROY_METAFIELD,
+      {
+        variables: {
+          metafieldId: metafieldDelete.metafieldDelete?.deletedId,
+        },
+      }
+    );
 
     let schedule = await ScheduleModel.findOne(newSchedule._id).orFail();
     expect(schedule.products).toHaveLength(1);
     let scheduleProduct = schedule.products[0];
     expect(scheduleProduct.options).toHaveLength(0);
+    expect(scheduleProduct.optionsMetafieldId).toBe(null);
   });
 });

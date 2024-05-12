@@ -7,11 +7,13 @@ import { GidFormat } from "~/library/zod";
 import {
   ProductOptionAddMutation,
   ProductOptionDuplicateMutation,
+  ProductParentUpdateMutation,
 } from "~/types/admin.generated";
 import {
   CustomerProductOptionsServiceAdd,
   PRODUCT_OPTION_ADD,
   PRODUCT_OPTION_DUPLCATE,
+  PRODUCT_PARENT_UPDATE,
 } from "./add";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -44,7 +46,7 @@ describe("CustomerProductOptionsAddService", () => {
       products: [product],
     });
 
-    const mockProductDuplcate: ProductOptionDuplicateMutation = {
+    const mockProductOptionDuplicate: ProductOptionDuplicateMutation = {
       productDuplicate: {
         newProduct: {
           id: "gid://shopify/Product/9186772386119",
@@ -99,7 +101,7 @@ describe("CustomerProductOptionsAddService", () => {
       `parent-${product.productHandle}`,
     ];
 
-    const mockProductUpdate: ProductOptionAddMutation = {
+    const mockProductOptionUpdate: ProductOptionAddMutation = {
       productUpdate: {
         product: {
           id: "gid://shopify/Product/9186772386119",
@@ -145,30 +147,44 @@ describe("CustomerProductOptionsAddService", () => {
       },
     };
 
+    const mockProductParentUpdate: ProductParentUpdateMutation = {
+      productUpdate: {
+        product: {
+          options: {
+            id: "gid://shopify/Metafield/44505109102919",
+          },
+        },
+      },
+    };
+
     mockRequest
       .mockResolvedValueOnce({
-        data: mockProductDuplcate,
+        data: mockProductOptionDuplicate,
       })
       .mockResolvedValueOnce({
-        data: mockProductUpdate,
+        data: mockProductOptionUpdate,
+      })
+      .mockResolvedValueOnce({
+        data: mockProductParentUpdate,
       });
 
     const result = await CustomerProductOptionsServiceAdd({
       customerId,
       productId: product.productId,
       cloneId,
-      title: mockProductDuplcate.productDuplicate?.newProduct?.title!,
+      title: mockProductOptionDuplicate.productDuplicate?.newProduct?.title!,
     });
 
     //expect(result).toHaveLength(1);
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(2);
+    expect(shopifyAdmin.request).toHaveBeenCalledTimes(3);
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
       1,
       PRODUCT_OPTION_DUPLCATE,
       {
         variables: {
           productId: `gid://shopify/Product/${cloneId}`,
-          title: mockProductDuplcate.productDuplicate?.newProduct?.title!,
+          title:
+            mockProductOptionDuplicate.productDuplicate?.newProduct?.title!,
         },
       }
     );
@@ -177,15 +193,35 @@ describe("CustomerProductOptionsAddService", () => {
       PRODUCT_OPTION_ADD,
       {
         variables: {
-          id: mockProductDuplcate.productDuplicate?.newProduct?.id,
+          id: mockProductOptionDuplicate.productDuplicate?.newProduct?.id,
           metafields: [
             {
-              id: mockProductDuplcate.productDuplicate?.newProduct?.parentId
-                ?.id,
+              id: mockProductOptionDuplicate.productDuplicate?.newProduct
+                ?.parentId?.id,
               value: `gid://shopify/Product/${product.productId}`,
             },
           ],
           tags: tags.join(", "),
+        },
+      }
+    );
+    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
+      3,
+      PRODUCT_PARENT_UPDATE,
+      {
+        variables: {
+          id: `gid://shopify/Product/${product.productId}`,
+          metafields: [
+            {
+              key: "options",
+              namespace: "booking",
+              value: JSON.stringify([
+                GidFormat.parse(
+                  mockProductOptionDuplicate.productDuplicate?.newProduct?.id
+                ),
+              ]),
+            },
+          ],
         },
       }
     );
@@ -194,10 +230,15 @@ describe("CustomerProductOptionsAddService", () => {
     expect(schedule).not.toBeNull();
     expect(schedule.products).toHaveLength(1);
     let scheduleProduct = schedule.products[0];
+    expect(scheduleProduct.optionsMetafieldId).toBe(
+      mockProductParentUpdate.productUpdate?.product?.options?.id
+    );
     expect(scheduleProduct.options).toHaveLength(1);
     let options = scheduleProduct?.options![0];
     expect(options.productId).toEqual(
-      GidFormat.parse(mockProductDuplcate.productDuplicate?.newProduct?.id)
+      GidFormat.parse(
+        mockProductOptionDuplicate.productDuplicate?.newProduct?.id
+      )
     );
     expect(options.variants).toHaveLength(3);
     const variant = options.variants[0];
