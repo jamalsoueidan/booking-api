@@ -216,9 +216,7 @@ describe("CustomerProductOptionsAddService", () => {
               key: "options",
               namespace: "booking",
               value: JSON.stringify([
-                GidFormat.parse(
-                  mockProductOptionDuplicate.productDuplicate?.newProduct?.id
-                ),
+                mockProductOptionDuplicate.productDuplicate?.newProduct?.id,
               ]),
             },
           ],

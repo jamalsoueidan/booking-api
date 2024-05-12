@@ -98,6 +98,15 @@ export async function CustomerProductOptionsServiceAdd({
     "productId"
   );
 
+  const optionMetafield = rootProduct.optionsMetafieldId
+    ? {
+        id: rootProduct.optionsMetafieldId,
+      }
+    : {
+        key: "options",
+        namespace: "booking",
+      };
+
   const { data: parentProductData } = await shopifyAdmin.request(
     PRODUCT_PARENT_UPDATE,
     {
@@ -105,15 +114,10 @@ export async function CustomerProductOptionsServiceAdd({
         id: `gid://shopify/Product/${productId}`,
         metafields: [
           {
-            ...(rootProduct.optionsMetafieldId
-              ? {
-                  id: rootProduct.optionsMetafieldId,
-                }
-              : {
-                  key: "options",
-                  namespace: "booking",
-                }),
-            value: JSON.stringify(options.map((o) => o.productId)),
+            ...optionMetafield,
+            value: JSON.stringify(
+              options.map((o) => `gid://shopify/Product/${o.productId}`)
+            ),
           },
         ],
       },
