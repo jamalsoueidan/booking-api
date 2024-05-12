@@ -130,7 +130,7 @@ export const CustomerProductServiceUpdate = async (
   };
 
   if (metafields.length > 0) {
-    shopifyAdmin.request(PRODUCT_UPDATE, {
+    await shopifyAdmin.request(PRODUCT_UPDATE, {
       variables: {
         id: `gid://shopify/Product/${productId}`,
         metafields: [
@@ -156,7 +156,7 @@ export const CustomerProductServiceUpdate = async (
   }
 
   if (body.price && body.compareAtPrice) {
-    shopifyAdmin.request(PRODUCT_PRICE_UPDATE, {
+    await shopifyAdmin.request(PRODUCT_PRICE_UPDATE, {
       variables: {
         id: `gid://shopify/Product/${productId}`,
         variants: [

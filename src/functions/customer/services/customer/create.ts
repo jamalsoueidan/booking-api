@@ -50,14 +50,18 @@ export const CustomerServiceCreate = async (
   }
 
   const { data: publications } = await shopifyAdmin.request(PUBLICATIONS);
-  publications?.publications.nodes.map((pub) => {
-    shopifyAdmin.request(PUBLISH_COLLECTION, {
-      variables: {
-        collectionId: collection.id,
-        publicationId: pub.id,
-      },
-    });
-  });
+  if (publications) {
+    await Promise.all(
+      publications?.publications.nodes.map(async (pub) => {
+        return shopifyAdmin.request(PUBLISH_COLLECTION, {
+          variables: {
+            collectionId: collection.id,
+            publicationId: pub.id,
+          },
+        });
+      })
+    );
+  }
 
   return result;
 };
