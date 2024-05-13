@@ -155,7 +155,7 @@ describe("CustomerProductServiceAdd", () => {
           },
           hideFromProfile: {
             id: mockProduct.productDuplicate?.newProduct?.hideFromProfile?.id!,
-            value: "false",
+            value: "true",
           },
           hideFromCombine: {
             id: mockProduct.productDuplicate?.newProduct?.hideFromCombine?.id!,
@@ -242,7 +242,7 @@ describe("CustomerProductServiceAdd", () => {
       {
         ...productBody,
         hideFromCombine: false,
-        hideFromProfile: false,
+        hideFromProfile: true,
         scheduleId: newSchedule._id,
         title,
       }
@@ -261,6 +261,15 @@ describe("CustomerProductServiceAdd", () => {
       variables: {
         id: mockProduct.productDuplicate?.newProduct?.id,
         metafields: [
+          {
+            id: mockProductUpdate.productUpdate?.product?.hideFromProfile?.id,
+            value: "true",
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.hideFromCombine?.id,
+            value:
+              mockProductUpdate.productUpdate?.product?.hideFromCombine?.value,
+          },
           {
             id: mockProductUpdate.productUpdate?.product?.breaktime?.id,
             value: mockProductUpdate.productUpdate?.product?.breaktime?.value,

@@ -28,12 +28,12 @@ export type CustomerProductServiceAddBody = Pick<
 
 export const CustomerProductServiceAdd = async (
   { customerId }: CustomerProductServiceAdd,
-  product: CustomerProductServiceAddBody
+  body: CustomerProductServiceAddBody
 ) => {
   const { data } = await shopifyAdmin.request(PRODUCT_DUPLCATE, {
     variables: {
-      productId: `gid://shopify/Product/${product.parentId}`,
-      title: product.title,
+      productId: `gid://shopify/Product/${body.parentId}`,
+      title: body.title,
     },
   });
 
@@ -52,21 +52,21 @@ export const CustomerProductServiceAdd = async (
   const variant = shopifyProduct.variants.nodes[0];
 
   const newProduct: ScheduleProduct = {
-    ...product,
-    parentId: product.parentId,
+    ...body,
+    parentId: body.parentId,
     productHandle: shopifyProduct.handle,
     productId: shopifyProductId,
     variantId: GidFormat.parse(variant.id),
     price: {
-      amount: product.price.amount,
+      amount: body.price.amount,
       currencyCode: "DKK",
     },
     hideFromCombineMetafieldId: shopifyProduct.hideFromCombine?.id,
-    hideFromCombine: product.hideFromCombine,
+    hideFromCombine: body.hideFromCombine,
     hideFromProfileMetafieldId: shopifyProduct.hideFromProfile?.id,
-    hideFromProfile: product.hideFromProfile,
+    hideFromProfile: body.hideFromProfile,
     compareAtPrice: {
-      amount: product.compareAtPrice.amount,
+      amount: body.compareAtPrice.amount,
       currencyCode: "DKK",
     },
     title: shopifyProduct.title,
@@ -92,7 +92,7 @@ export const CustomerProductServiceAdd = async (
 
   await ScheduleModel.updateOne(
     {
-      _id: product.scheduleId,
+      _id: body.scheduleId,
       customerId,
     },
     {
