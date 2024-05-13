@@ -1,18 +1,17 @@
 # Booking Api
 
-The API specification can be seen hosted at [https://jamalsoueidan.github.io/booking-api](https://jamalsoueidan.github.io/booking-api)
+The Booking API is built on top of the Shopify GraphQL API. We're reducing the number of calls to the Booking API by using Shopify metafields and search filters.
 
-Download Openapi 3.x definition [https://github.com/jamalsoueidan/booking-shopify-api/blob/main/docs/openapi.yaml](https://github.com/jamalsoueidan/booking-shopify-api/blob/main/docs/openapi.yaml)
+For each user, we create a new collection that contains all their services. We also create mock products that users can duplicate. These products come pre-set with metafields and are ready to be modified. Additionally, we have organized universal services into specific collections; for example, the "Hairstylist" collection includes services related to hairstyling.
 
-## Azure Functions
+TODO:
 
-I previously started using Node/Express to develop all api endpoints, which were hosted on Heroku. But with the configuration I had to mantain, and all that comes with Node and Express I choose to move forward to Azure Functions.
+- We need to move the **booking time** to the browser, returning only the booked time range.
+- We need to determine if we can store user data in Shopify content metafields.
 
-This allows me to primarily focus on the endpoints, rather than managing the Node Express server with its associated plugins and middlewares etc.
+## Setup
 
-Beside that I'm using Durable Functions which is an extension of Azure Fucntions, which can be long-running, and can call other durable functions synchronously and asynchronously which is great, I use when I need to upload image to shopify.
-
-I'm planning also to use Azure queue storage to handle webhooks data processing.
+_The guide is not complete, since there is some metafields that needs to be setup in each product._
 
 ## 1. Edit local.settings.json.example
 
