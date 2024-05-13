@@ -14,7 +14,9 @@ properties:
     type: number
   description:
     type: string
-  hidden:
+  hideFromProfile:
+    type: boolean
+  hideFromCombine:
     type: boolean
   price:
     type: object
@@ -55,3 +57,5 @@ required:
   - noticePeriod
   - bookingPeriod
   - options
+  - hideFromCombine
+  - hideFromProfile
