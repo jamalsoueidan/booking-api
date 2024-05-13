@@ -59,6 +59,24 @@ export const CustomerProductServiceUpdate = async (
   }
 
   const metafields = [
+    ...(body.hasOwnProperty("hideFromProfile") &&
+    body.hideFromProfile !== oldProduct.hideFromProfile
+      ? [
+          {
+            id: oldProduct?.hideFromProfileMetafieldId,
+            value: String(body.hideFromProfile),
+          },
+        ]
+      : []),
+    ...(body.hasOwnProperty("hideFromCombine") &&
+    body.hideFromCombine !== oldProduct.hideFromCombine
+      ? [
+          {
+            id: oldProduct?.hideFromCombineMetafieldId,
+            value: String(body.hideFromCombine),
+          },
+        ]
+      : []),
     ...(body.breakTime
       ? [
           {

@@ -1,5 +1,9 @@
 type: object
 properties:
+  hideFromProfile:
+    type: string
+  hideFromCombine:
+    type: string
   price:
     type: object
     properties:

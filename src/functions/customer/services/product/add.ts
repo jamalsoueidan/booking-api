@@ -15,7 +15,12 @@ export type CustomerProductServiceAdd = {
 
 export type CustomerProductServiceAddBody = Pick<
   ScheduleProduct,
-  "parentId" | "locations" | "price" | "compareAtPrice"
+  | "parentId"
+  | "locations"
+  | "price"
+  | "compareAtPrice"
+  | "hideFromCombine"
+  | "hideFromProfile"
 > & {
   title: string;
   scheduleId: StringOrObjectIdType;
@@ -56,6 +61,10 @@ export const CustomerProductServiceAdd = async (
       amount: product.price.amount,
       currencyCode: "DKK",
     },
+    hideFromCombineMetafieldId: shopifyProduct.hideFromCombine?.id,
+    hideFromCombine: product.hideFromCombine,
+    hideFromProfileMetafieldId: shopifyProduct.hideFromProfile?.id,
+    hideFromProfile: product.hideFromProfile,
     compareAtPrice: {
       amount: product.compareAtPrice.amount,
       currencyCode: "DKK",
@@ -112,6 +121,14 @@ export const PRODUCT_FRAGMENT = `#graphql
         compareAtPrice
         price
       }
+    }
+    hideFromCombine: metafield(key: "hide_from_combine", namespace: "booking") {
+      id
+      value
+    }
+    hideFromProfile: metafield(key: "hide_from_profile", namespace: "booking") {
+      id
+      value
     }
     parentId: metafield(key: "parentId", namespace: "booking") {
       id

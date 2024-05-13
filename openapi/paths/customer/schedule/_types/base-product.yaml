@@ -14,7 +14,8 @@ properties:
     type: number
   description:
     type: string
-
+  hidden:
+    type: boolean
   price:
     type: object
     properties:

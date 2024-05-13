@@ -56,6 +56,14 @@ describe("CustomerProductServiceUpdate", () => {
             },
           ],
         },
+        hideFromProfile: {
+          id: `gid://shopify/Metafield/44429081510215`,
+          value: "false",
+        },
+        hideFromCombine: {
+          id: `gid://shopify/Metafield/233`,
+          value: "false",
+        },
         parentId: {
           id: "gid://shopify/Metafield/1",
           value: "gid://shopify/Product/123",
@@ -125,6 +133,12 @@ describe("CustomerProductServiceUpdate", () => {
           parentId: GidFormat.parse(
             mockProductUpdate.productUpdate?.product?.parentId?.value
           ),
+          hideFromProfileMetafieldId:
+            mockProductUpdate.productUpdate?.product?.hideFromProfile?.id,
+          hideFromProfile: false,
+          hideFromCombineMetafieldId:
+            mockProductUpdate.productUpdate?.product?.hideFromCombine?.id,
+          hideFromCombine: false,
           productId: GidFormat.parse(
             mockProductUpdate.productUpdate?.product?.id
           ),

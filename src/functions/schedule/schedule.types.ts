@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { LocationOriginTypes, LocationTypes } from "~/functions/location";
-import { GidFormat, NumberOrString, StringOrObjectId } from "~/library/zod";
+import {
+  BooleanOrString,
+  GidFormat,
+  NumberOrString,
+  StringOrObjectId,
+} from "~/library/zod";
 
 export enum TimeUnit {
   HOURS = "hours",
@@ -79,6 +84,10 @@ export const ScheduleProductZodSchema = z.object({
   parentId: GidFormat,
   productId: GidFormat,
   variantId: GidFormat,
+  hideFromProfileMetafieldId: z.string().optional(),
+  hideFromProfile: BooleanOrString,
+  hideFromCombineMetafieldId: z.string().optional(),
+  hideFromCombine: BooleanOrString,
   title: z.string().optional(),
   scheduleIdMetafieldId: z.string().optional(),
   locationsMetafieldId: z.string().optional(),

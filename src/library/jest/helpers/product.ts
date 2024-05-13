@@ -27,6 +27,8 @@ export const getProductObject = (
     unit: TimeUnit.WEEKS,
     value: 1,
   },
+  hideFromProfile: false,
+  hideFromCombine: false,
   noticePeriod: {
     unit: TimeUnit.HOURS,
     value: 1,

@@ -8,9 +8,7 @@ import {
 
 import mongoose from "mongoose";
 import { LocationOriginTypes, LocationTypes } from "~/functions/location";
-import { ScheduleProduct } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
-import { getProductObject } from "~/library/jest/helpers/product";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
 import {
@@ -41,34 +39,11 @@ describe("CustomerProductControllerAdd", () => {
   const customerId = 123;
   const productId = 1000;
   let mockProduct: ProductDuplicateMutation;
-  let productBody: Pick<
-    ScheduleProduct,
-    "parentId" | "locations" | "price" | "compareAtPrice"
-  >;
   let title: string = "title product";
 
   beforeEach(async () => {
     context = createContext();
     jest.clearAllMocks();
-
-    productBody = {
-      parentId: 8022089105682,
-      locations: [
-        {
-          location: new mongoose.Types.ObjectId(),
-          locationType: LocationTypes.DESTINATION,
-          originType: LocationOriginTypes.COMMERCIAL,
-        },
-      ],
-      price: {
-        amount: "100",
-        currencyCode: "DKK",
-      },
-      compareAtPrice: {
-        amount: "150",
-        currencyCode: "DKK",
-      },
-    };
 
     mockProduct = {
       productDuplicate: {
@@ -88,7 +63,7 @@ describe("CustomerProductControllerAdd", () => {
           },
           parentId: {
             id: `gid://shopify/Metafield/44429081510215`,
-            value: `gid://shopify/Product/${productBody.parentId}`,
+            value: `gid://shopify/Product/1`,
           },
           scheduleId: {
             id: "gid://shopify/Metafield/44429081542983",
@@ -135,6 +110,29 @@ describe("CustomerProductControllerAdd", () => {
       customerId,
     });
 
+    const body: CustomerProductControllerAddRequest["body"] = {
+      hideFromCombine: false,
+      hideFromProfile: false,
+      title: "new",
+      scheduleId: newSchedule._id,
+      parentId: 1,
+      locations: [
+        {
+          location: new mongoose.Types.ObjectId(),
+          locationType: LocationTypes.DESTINATION,
+          originType: LocationOriginTypes.COMMERCIAL,
+        },
+      ],
+      price: {
+        amount: "100",
+        currencyCode: "DKK",
+      },
+      compareAtPrice: {
+        amount: "150",
+        currencyCode: "DKK",
+      },
+    };
+
     const tags = [
       `user`,
       `user-${user.username}`,
@@ -145,7 +143,7 @@ describe("CustomerProductControllerAdd", () => {
       )}`,
       `product-${mockProduct.productDuplicate?.newProduct?.handle}`,
       `scheduleid-${newSchedule._id}`,
-      `locationid-${productBody.locations[0].location}`,
+      `locationid-${body.locations[0].location}`,
     ];
 
     const mockProductUpdate: ProductUpdateMutation = {
@@ -162,7 +160,7 @@ describe("CustomerProductControllerAdd", () => {
           tags,
           parentId: {
             id: mockProduct.productDuplicate?.newProduct?.parentId?.id!,
-            value: `gid://shopify/Product/${productBody.parentId}`,
+            value: `gid://shopify/Product/${body.parentId}`,
           },
           scheduleId: {
             id: mockProduct.productDuplicate?.newProduct?.scheduleId?.id!,
@@ -214,8 +212,8 @@ describe("CustomerProductControllerAdd", () => {
               {
                 id: mockProduct.productDuplicate?.newProduct?.variants.nodes[0]
                   .id!,
-                compareAtPrice: productBody.compareAtPrice.amount,
-                price: productBody.price.amount,
+                compareAtPrice: body.compareAtPrice.amount,
+                price: body.price.amount,
               },
             ],
           },
@@ -234,12 +232,11 @@ describe("CustomerProductControllerAdd", () => {
         data: mockProductPriceUpdate,
       });
 
-    const body = getProductObject({ productId });
     request = await createHttpRequest<CustomerProductControllerAddRequest>({
       query: {
         customerId,
       },
-      body: { ...body, title: "new", scheduleId: newSchedule._id },
+      body,
     });
 
     const res: HttpSuccessResponse<CustomerProductControllerAddResponse> =

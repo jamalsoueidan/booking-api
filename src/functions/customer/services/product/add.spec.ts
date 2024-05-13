@@ -70,6 +70,14 @@ describe("CustomerProductServiceAdd", () => {
               },
             ],
           },
+          hideFromProfile: {
+            id: `gid://shopify/Metafield/44429081510215`,
+            value: "false",
+          },
+          hideFromCombine: {
+            id: `gid://shopify/Metafield/233`,
+            value: "false",
+          },
           parentId: {
             id: `gid://shopify/Metafield/44429081510215`,
             value: `gid://shopify/Product/${productBody.parentId}`,
@@ -140,11 +148,19 @@ describe("CustomerProductServiceAdd", () => {
             mockProduct.productDuplicate?.newProduct?.id
           )}}`,
           title,
+          tags,
           handle: "testerne-new-product",
           variants: {
             nodes: mockProduct.productDuplicate?.newProduct?.variants.nodes!,
           },
-          tags,
+          hideFromProfile: {
+            id: mockProduct.productDuplicate?.newProduct?.hideFromProfile?.id!,
+            value: "false",
+          },
+          hideFromCombine: {
+            id: mockProduct.productDuplicate?.newProduct?.hideFromCombine?.id!,
+            value: "false",
+          },
           parentId: {
             id: mockProduct.productDuplicate?.newProduct?.parentId?.id!,
             value: `gid://shopify/Product/${productBody.parentId}`,
@@ -223,7 +239,13 @@ describe("CustomerProductServiceAdd", () => {
       {
         customerId: newSchedule.customerId,
       },
-      { ...productBody, scheduleId: newSchedule._id, title }
+      {
+        ...productBody,
+        hideFromCombine: false,
+        hideFromProfile: false,
+        scheduleId: newSchedule._id,
+        title,
+      }
     );
 
     expect(shopifyAdmin.request).toHaveBeenCalledTimes(3);
