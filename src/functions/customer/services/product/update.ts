@@ -137,6 +137,22 @@ export const CustomerProductServiceUpdate = async (
   const newProduct = {
     ...oldProduct,
     ...body,
+    noticePeriod: {
+      ...oldProduct.noticePeriod,
+      ...body.noticePeriod,
+    },
+    bookingPeriod: {
+      ...oldProduct.bookingPeriod,
+      ...body.bookingPeriod,
+    },
+    compareAtPrice: {
+      ...oldProduct.compareAtPrice,
+      ...body.compareAtPrice,
+    },
+    price: {
+      ...oldProduct.price,
+      ...body.price,
+    },
     locations: locations,
     options: mergeArraysUnique(
       oldProduct?.options || [],

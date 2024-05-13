@@ -16,6 +16,7 @@ import {
   ProductPricepdateMutation,
   ProductUpdateMutation,
 } from "~/types/admin.generated";
+import { PRODUCT_UPDATE } from "../../services/product/update";
 import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
   CustomerProductControllerAdd,
@@ -60,6 +61,14 @@ describe("CustomerProductControllerAdd", () => {
                 price: "0.00",
               },
             ],
+          },
+          hideFromProfile: {
+            id: `gid://shopify/Metafield/44429081510215`,
+            value: "false",
+          },
+          hideFromCombine: {
+            id: `gid://shopify/Metafield/233`,
+            value: "false",
           },
           parentId: {
             id: `gid://shopify/Metafield/44429081510215`,
@@ -112,7 +121,7 @@ describe("CustomerProductControllerAdd", () => {
 
     const body: CustomerProductControllerAddRequest["body"] = {
       hideFromCombine: false,
-      hideFromProfile: false,
+      hideFromProfile: true,
       title: "new",
       scheduleId: newSchedule._id,
       parentId: 1,
@@ -158,6 +167,14 @@ describe("CustomerProductControllerAdd", () => {
           },
           handle: "testerne-new-product",
           tags,
+          hideFromProfile: {
+            id: `gid://shopify/Metafield/44429081510215`,
+            value: "true",
+          },
+          hideFromCombine: {
+            id: `gid://shopify/Metafield/233`,
+            value: "false",
+          },
           parentId: {
             id: mockProduct.productDuplicate?.newProduct?.parentId?.id!,
             value: `gid://shopify/Product/${body.parentId}`,
@@ -241,6 +258,62 @@ describe("CustomerProductControllerAdd", () => {
 
     const res: HttpSuccessResponse<CustomerProductControllerAddResponse> =
       await CustomerProductControllerAdd(request, context);
+
+    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(2, PRODUCT_UPDATE, {
+      variables: {
+        id: mockProduct.productDuplicate?.newProduct?.id,
+        metafields: [
+          {
+            id: mockProductUpdate.productUpdate?.product?.hideFromProfile?.id,
+            value: "true",
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.hideFromCombine?.id,
+            value:
+              mockProductUpdate.productUpdate?.product?.hideFromCombine?.value,
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.breaktime?.id,
+            value: mockProductUpdate.productUpdate?.product?.breaktime?.value,
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.duration?.id,
+            value: mockProductUpdate.productUpdate?.product?.duration?.value,
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.bookingPeriodValue
+              ?.id,
+            value: "3",
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.bookingPeriodUnit?.id,
+            value:
+              mockProductUpdate.productUpdate?.product?.bookingPeriodUnit
+                ?.value,
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.noticePeriodValue?.id,
+            value:
+              mockProductUpdate.productUpdate?.product?.noticePeriodValue
+                ?.value,
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.noticePeriodUnit?.id,
+            value:
+              mockProductUpdate.productUpdate?.product?.noticePeriodUnit?.value,
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.locations?.id,
+            value: JSON.stringify(body.locations),
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,
+            value: newSchedule._id.toString(),
+          },
+        ],
+        tags: tags.join(", "),
+      },
+    });
 
     expect(res.jsonBody?.success).toBeTruthy();
 

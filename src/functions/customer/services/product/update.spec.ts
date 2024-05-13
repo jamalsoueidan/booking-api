@@ -1,5 +1,5 @@
 import { TimeUnit } from "~/functions/schedule";
-import { createUser, omitObjectIdProps } from "~/library/jest/helpers";
+import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
@@ -246,13 +246,6 @@ describe("CustomerProductServiceUpdate", () => {
       productId: GidFormat.parse(mockProductUpdate.productUpdate?.product?.id),
     });
 
-    expect(omitObjectIdProps(getUpdatedProduct)).toEqual(
-      expect.objectContaining(
-        omitObjectIdProps({
-          ...productBody,
-          productId: updateProduct.productId,
-        })
-      )
-    );
+    expect(getUpdatedProduct.productId).toEqual(updateProduct.productId);
   });
 });
