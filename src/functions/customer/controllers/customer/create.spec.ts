@@ -7,6 +7,7 @@ import {
 
 import { getUserObject } from "~/library/jest/helpers";
 import { shopifyAdmin } from "~/library/shopify";
+import { CreateUserMetaobjectMutation } from "~/types/admin.generated";
 import {
   CustomerControllerCreate,
   CustomerControllerCreateRequest,
@@ -89,9 +90,52 @@ describe("CustomerControllerCreate", () => {
   });
 
   it("Should be able to create user", async () => {
+    const userData = getUserObject();
+
     mockRequest
       .mockResolvedValueOnce({
         data: mockCollection,
+      })
+      .mockResolvedValueOnce({
+        data: {
+          metaobjectCreate: {
+            metaobject: {
+              id: "gid://shopify/Metaobject/77261930823",
+              type: "user",
+              fields: [
+                {
+                  key: "fullname",
+                  value: userData.fullname,
+                },
+                {
+                  key: "username",
+                  value: userData.username,
+                },
+                {
+                  key: "short_description",
+                  value: userData.shortDescription,
+                },
+                {
+                  key: "about_me",
+                  value: userData.aboutMe,
+                },
+                {
+                  key: "professions",
+                  value: JSON.stringify(userData.professions),
+                },
+                {
+                  key: "collection",
+                  value: mockCollection.collectionCreate?.collection?.id,
+                },
+                {
+                  key: "theme",
+                  value: "pink",
+                },
+              ],
+            },
+            userErrors: [],
+          } as CreateUserMetaobjectMutation,
+        },
       })
       .mockResolvedValueOnce({
         data: mockPublications,
@@ -101,7 +145,7 @@ describe("CustomerControllerCreate", () => {
       });
 
     request = await createHttpRequest<CustomerControllerCreateRequest>({
-      body: getUserObject(),
+      body: userData,
     });
 
     const res: HttpSuccessResponse<CustomerControllerCreateResponse> =

@@ -2,7 +2,7 @@ post:
   tags:
     - Customer
   operationId: customerCreate
-  summary: PUT Create user
+  summary: POST Create user
   description: This endpoint creates new user
   requestBody:
     required: true

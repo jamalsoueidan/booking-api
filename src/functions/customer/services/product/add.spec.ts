@@ -28,31 +28,30 @@ describe("CustomerProductServiceAdd", () => {
   let productBody: Pick<
     ScheduleProduct,
     "parentId" | "locations" | "price" | "compareAtPrice"
-  >;
+  > = {
+    parentId: 8022089105682,
+    locations: [
+      {
+        location: new mongoose.Types.ObjectId(),
+        locationType: LocationTypes.DESTINATION,
+        originType: LocationOriginTypes.COMMERCIAL,
+      },
+    ],
+    price: {
+      amount: "100",
+      currencyCode: "DKK",
+    },
+    compareAtPrice: {
+      amount: "150",
+      currencyCode: "DKK",
+    },
+  };
+
   let title: string = "title product";
 
   beforeEach(() => {
     // Clear all mocks before each test
     (shopifyAdmin.request as jest.Mock).mockClear();
-
-    productBody = {
-      parentId: 8022089105682,
-      locations: [
-        {
-          location: new mongoose.Types.ObjectId(),
-          locationType: LocationTypes.DESTINATION,
-          originType: LocationOriginTypes.COMMERCIAL,
-        },
-      ],
-      price: {
-        amount: "100",
-        currencyCode: "DKK",
-      },
-      compareAtPrice: {
-        amount: "150",
-        currencyCode: "DKK",
-      },
-    };
 
     mockProduct = {
       productDuplicate: {
@@ -69,6 +68,10 @@ describe("CustomerProductServiceAdd", () => {
                 price: "0.00",
               },
             ],
+          },
+          user: {
+            id: `gid://shopify/Metafield/22`,
+            value: `gid://shopify/Metafield/111`,
           },
           hideFromProfile: {
             id: `gid://shopify/Metafield/44429081510215`,
@@ -172,6 +175,10 @@ describe("CustomerProductServiceAdd", () => {
           locations: {
             id: mockProduct.productDuplicate?.newProduct?.locations?.id!,
             value: '{"locations":[]}',
+          },
+          user: {
+            id: mockProduct.productDuplicate?.newProduct?.user?.id!,
+            value: user.userMetaobjectId!,
           },
           bookingPeriodValue: {
             id: mockProduct.productDuplicate?.newProduct?.bookingPeriodValue
@@ -305,6 +312,10 @@ describe("CustomerProductServiceAdd", () => {
             value: JSON.stringify(productBody.locations),
           },
           {
+            id: mockProductUpdate.productUpdate?.product?.user?.id,
+            value: mockProductUpdate.productUpdate?.product?.user?.value,
+          },
+          {
             id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,
             value: newSchedule._id.toString(),
           },
@@ -338,6 +349,10 @@ describe("CustomerProductServiceAdd", () => {
       variantId: GidFormat.parse(
         mockProduct.productDuplicate?.newProduct?.variants.nodes[0].id
       ),
+      user: {
+        metaobjectId: mockProduct.productDuplicate?.newProduct?.user?.id!,
+        value: mockProduct.productDuplicate?.newProduct?.user?.value!,
+      },
     });
   });
 });

@@ -45,7 +45,8 @@ export enum Specialties {
 export const UserZodSchema = z.object({
   _id: z.string(),
   customerId: GidFormat,
-  collectionId: z.string().optional(),
+  userMetaobjectId: z.string().optional(),
+  collectionMetaobjectId: z.string().optional(),
   isBusiness: z.boolean(),
   yearsExperience: NumberOrString.optional(),
   professions: z
@@ -80,6 +81,7 @@ export const UserZodSchema = z.object({
     .object({
       profile: z
         .object({
+          metaobjectId: z.string().optional(),
           url: z.string().url({ message: "Invalid url" }).optional(),
           width: z.number().optional(),
           height: z.number().optional(),

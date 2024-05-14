@@ -1,10 +1,9 @@
 import { shopifyAdmin } from "~/library/shopify";
-import { FileInputProps, getFilenameFromUrl } from "./types";
 
-export async function fileGetHandler(input: FileInputProps) {
+export async function fileGetHandler(metaobjectId: string) {
   const { data } = await shopifyAdmin.request(FILE_GET, {
     variables: {
-      query: getFilenameFromUrl(input.resourceUrl) || "",
+      query: metaobjectId,
     },
   });
 
@@ -13,7 +12,7 @@ export async function fileGetHandler(input: FileInputProps) {
 
 const FILE_GET = `#graphql
   query FileGet($query: String!) {
-    files(first: 10, sortKey: UPDATED_AT, reverse: true, query: $query) {
+    files(first: 1, query: $query) {
       nodes {
         preview {
           image {

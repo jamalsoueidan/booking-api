@@ -1,6 +1,6 @@
-import { UserModel } from "~/functions/user";
 import { connect } from "~/library/mongoose";
 import { type FileGetQuery } from "~/types/admin.generated";
+import { CustomerServiceUpdate } from "../../services/customer/update";
 
 type Node = FileGetQuery["files"]["nodes"][number];
 type PreviewType = NonNullable<Node["preview"]>;
@@ -8,22 +8,28 @@ type ImageType = NonNullable<PreviewType["image"]>;
 
 type Props = {
   customerId: number;
-  image: ImageType;
+  profile: ImageType;
+  metaobjectId: string;
 };
 
-export async function updateCustomerHandler({ customerId, image }: Props) {
+export async function updateCustomerHandler({
+  customerId,
+  profile,
+  metaobjectId,
+}: Props) {
   await connect();
 
-  const response = await UserModel.findOneAndUpdate(
+  return CustomerServiceUpdate(
     { customerId },
     {
       images: {
         profile: {
-          ...image,
+          metaobjectId: metaobjectId,
+          url: profile.url,
+          width: profile.width || 0,
+          height: profile.height || 0,
         },
       },
     }
   );
-
-  return response;
 }

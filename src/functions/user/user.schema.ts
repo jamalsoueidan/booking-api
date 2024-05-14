@@ -21,7 +21,8 @@ export const UserMongooseSchema = new mongoose.Schema<
       required: true,
       index: true,
     },
-    collectionId: String,
+    userMetaobjectId: String,
+    collectionMetaobjectId: String,
     professions: {
       type: [String],
       index: true,
@@ -56,6 +57,7 @@ export const UserMongooseSchema = new mongoose.Schema<
     active: { type: Boolean, default: false, index: true },
     images: {
       profile: {
+        metaobjectId: String,
         url: String,
         width: Number,
         height: Number,

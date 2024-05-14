@@ -84,6 +84,12 @@ export const ScheduleProductZodSchema = z.object({
   parentId: GidFormat,
   productId: GidFormat,
   variantId: GidFormat,
+  user: z
+    .object({
+      metaobjectId: z.string().optional(),
+      value: z.string().optional(),
+    })
+    .optional(),
   hideFromProfileMetafieldId: z.string().optional(),
   hideFromProfile: BooleanOrString,
   hideFromCombineMetafieldId: z.string().optional(),

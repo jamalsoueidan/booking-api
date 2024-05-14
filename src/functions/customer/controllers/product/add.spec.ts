@@ -38,7 +38,6 @@ describe("CustomerProductControllerAdd", () => {
   let context: InvocationContext;
   let request: HttpRequest;
   const customerId = 123;
-  const productId = 1000;
   let mockProduct: ProductDuplicateMutation;
   let title: string = "title product";
 
@@ -61,6 +60,10 @@ describe("CustomerProductControllerAdd", () => {
                 price: "0.00",
               },
             ],
+          },
+          user: {
+            id: `gid://shopify/Metafield/44429081510215`,
+            value: `gid://shopify/Metafield/44429081510215`,
           },
           hideFromProfile: {
             id: `gid://shopify/Metafield/44429081510215`,
@@ -167,6 +170,10 @@ describe("CustomerProductControllerAdd", () => {
           },
           handle: "testerne-new-product",
           tags,
+          user: {
+            id: `gid://shopify/Metafield/44429081510215`,
+            value: `gid://shopify/Metafield/44429081510215`,
+          },
           hideFromProfile: {
             id: `gid://shopify/Metafield/44429081510215`,
             value: "true",
@@ -305,6 +312,10 @@ describe("CustomerProductControllerAdd", () => {
           {
             id: mockProductUpdate.productUpdate?.product?.locations?.id,
             value: JSON.stringify(body.locations),
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.user?.id,
+            value: user.userMetaobjectId,
           },
           {
             id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,

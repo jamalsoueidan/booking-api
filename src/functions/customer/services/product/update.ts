@@ -2,6 +2,7 @@ import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
 import { UserModel } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
+import { MetafieldInput } from "~/types/admin.types";
 import { PRODUCT_FRAGMENT } from "./add";
 
 export type CustomerProductServiceUpdate = {
@@ -58,7 +59,7 @@ export const CustomerProductServiceUpdate = async (
     ]);
   }
 
-  const metafields = [
+  const metafields: MetafieldInput[] = [
     ...(body.hasOwnProperty("hideFromProfile")
       ? [
           {
@@ -123,6 +124,14 @@ export const CustomerProductServiceUpdate = async (
           },
         ]
       : []),
+    ...(user.userMetaobjectId !== oldProduct.user?.value
+      ? [
+          {
+            id: oldProduct?.user?.metaobjectId,
+            value: user.userMetaobjectId,
+          },
+        ]
+      : []),
   ];
 
   const locations = oldProduct.locations.concat(
@@ -137,6 +146,10 @@ export const CustomerProductServiceUpdate = async (
   const newProduct = {
     ...oldProduct,
     ...body,
+    user: {
+      ...oldProduct.user,
+      value: user.images?.profile?.metaobjectId || oldProduct.user?.value,
+    },
     noticePeriod: {
       ...oldProduct.noticePeriod,
       ...body.noticePeriod,

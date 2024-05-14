@@ -21,6 +21,8 @@ export const CustomerControllerUpdateSchema = UserZodSchema.omit({
   active: true,
   isBusiness: true,
   username: true,
+  userMetaobjectId: true,
+  collectionMetaobjectId: true,
 })
   .partial()
   .strip();
