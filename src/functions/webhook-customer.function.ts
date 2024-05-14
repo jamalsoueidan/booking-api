@@ -3,6 +3,7 @@ import "module-alias/register";
 import { HttpRequest, InvocationContext, app } from "@azure/functions";
 import { connect } from "~/library/mongoose";
 import { BlockedModel } from "./blocked/blocked.model";
+import { CustomerServiceUpdate } from "./customer/services/customer/update";
 import { LocationModel } from "./location";
 import { ScheduleModel } from "./schedule";
 import { UserModel } from "./user";
@@ -88,7 +89,7 @@ app.http("webhookCustomerUpdate", {
     const customer = (await request.json()) as unknown as Customer;
     const active = customer.tags.includes("public");
     const customerId = customer.id;
-    const response = await UserModel.updateOne(
+    await CustomerServiceUpdate(
       { customerId },
       {
         active,
@@ -98,7 +99,7 @@ app.http("webhookCustomerUpdate", {
       }
     );
     context.log(
-      `Customer Update, customerId = '${customerId}', active = '${active}', update = '${response.modifiedCount}'`
+      `Customer Update, customerId = '${customerId}', active = '${active}', updated`
     );
     return { body: "" };
   },

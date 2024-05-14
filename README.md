@@ -1,8 +1,12 @@
 # Booking Api
 
-The Booking API is built on top of the Shopify GraphQL API. We're reducing the number of calls to the Booking API by using Shopify metafields and search filters.
+The Booking API is built on top of the Shopify GraphQL API. We are reducing the number of calls to the Booking API by saving a lot of documents from MongoDB into Shopify metafields. This approach allows us to take advantage of Shopify as a hosting provider.
 
-For each user, we create a new collection that contains all their services. We also create mock products that users can duplicate. These products come pre-set with metafields and are ready to be modified. Additionally, we have organized universal services into specific collections; for example, the "Hairstylist" collection includes services related to hairstyling.
+User documents are saved in Shopify user metafields.
+Products are stored in the corresponding product metafields.
+Locations will also be saved soon.
+
+For each user, we create a new collection that contains all their services. We also create products that users can duplicate. These products come pre-set with metafields and are ready to be modified. Additionally, we have organized products into specific collections; for example, the "Hairstylist" collection includes services related to hairstyling.
 
 TODO:
 

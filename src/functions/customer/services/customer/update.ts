@@ -3,24 +3,7 @@ import { NotFoundError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 
 export type CustomerServiceUpdate = Pick<User, "customerId">;
-export type CustomerServiceUpdateBody = Partial<
-  Pick<
-    User,
-    | "fullname"
-    | "phone"
-    | "email"
-    | "yearsExperience"
-    | "gender"
-    | "professions"
-    | "specialties"
-    | "speaks"
-    | "aboutMe"
-    | "shortDescription"
-    | "social"
-    | "theme"
-    | "images"
-  >
->;
+export type CustomerServiceUpdateBody = Partial<User>;
 
 export const CustomerServiceUpdate = async (
   filter: Pick<User, "customerId">,
@@ -82,6 +65,13 @@ export const CustomerServiceUpdate = async (
       fields.push({
         key: "theme",
         value: body.theme.color,
+      });
+    }
+
+    if (body.active && user.active !== body.active) {
+      fields.push({
+        key: "active",
+        value: String(body.active),
       });
     }
 
