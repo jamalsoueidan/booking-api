@@ -32,13 +32,7 @@ export type CollectionCreateMutationVariables = AdminTypes.Exact<{
 }>;
 
 
-export type CollectionCreateMutation = { collectionCreate?: AdminTypes.Maybe<{ collection?: AdminTypes.Maybe<(
-      Pick<AdminTypes.Collection, 'id' | 'title' | 'descriptionHtml' | 'handle' | 'sortOrder'>
-      & { ruleSet?: AdminTypes.Maybe<(
-        Pick<AdminTypes.CollectionRuleSet, 'appliedDisjunctively'>
-        & { rules: Array<Pick<AdminTypes.CollectionRule, 'column' | 'relation' | 'condition'>> }
-      )> }
-    )> }> };
+export type CollectionCreateMutation = { collectionCreate?: AdminTypes.Maybe<{ collection?: AdminTypes.Maybe<Pick<AdminTypes.Collection, 'id' | 'title' | 'descriptionHtml' | 'handle'>> }> };
 
 export type PublishablePublishMutationVariables = AdminTypes.Exact<{
   collectionId: AdminTypes.Scalars['ID']['input'];
@@ -52,6 +46,25 @@ export type PublicationsQueryVariables = AdminTypes.Exact<{ [key: string]: never
 
 
 export type PublicationsQuery = { publications: { nodes: Array<Pick<AdminTypes.Publication, 'id'>> } };
+
+export type CreateUserMetaobjectMutationVariables = AdminTypes.Exact<{
+  handle: AdminTypes.Scalars['String']['input'];
+  fields?: AdminTypes.InputMaybe<Array<AdminTypes.MetaobjectFieldInput> | AdminTypes.MetaobjectFieldInput>;
+}>;
+
+
+export type CreateUserMetaobjectMutation = { metaobjectCreate?: AdminTypes.Maybe<{ metaobject?: AdminTypes.Maybe<(
+      Pick<AdminTypes.Metaobject, 'id' | 'type'>
+      & { fields: Array<Pick<AdminTypes.MetaobjectField, 'value' | 'key'>> }
+    )>, userErrors: Array<Pick<AdminTypes.MetaobjectUserError, 'code' | 'field' | 'message'>> }> };
+
+export type UpdateUserMetaobjectMutationVariables = AdminTypes.Exact<{
+  id: AdminTypes.Scalars['ID']['input'];
+  fields: Array<AdminTypes.MetaobjectFieldInput> | AdminTypes.MetaobjectFieldInput;
+}>;
+
+
+export type UpdateUserMetaobjectMutation = { metaobjectUpdate?: AdminTypes.Maybe<{ metaobject?: AdminTypes.Maybe<{ fields: Array<Pick<AdminTypes.MetaobjectField, 'value' | 'key'>> }> }> };
 
 export type ProductOptionFragmentFragment = (
   Pick<AdminTypes.Product, 'id' | 'title' | 'handle' | 'tags'>
@@ -188,8 +201,10 @@ interface GeneratedQueryTypes {
 interface GeneratedMutationTypes {
   "#graphql\n  mutation fileCreate($files: [FileCreateInput!]!) {\n    fileCreate(files: $files) {\n      files {\n        fileStatus\n        alt\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: FileCreateMutation, variables: FileCreateMutationVariables},
   "#graphql\n  mutation stagedUploadsCreate($input: [StagedUploadInput!]!) {\n    stagedUploadsCreate(input: $input) {\n      stagedTargets {\n        resourceUrl\n        url\n        parameters {\n          name\n          value\n        }\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: StagedUploadsCreateMutation, variables: StagedUploadsCreateMutationVariables},
-  "#graphql\n  mutation CollectionCreate($input: CollectionInput!) {\n    collectionCreate(\n      input: $input\n    ) {\n      collection {\n        id\n        title\n        descriptionHtml\n        handle\n        sortOrder\n        ruleSet {\n          appliedDisjunctively\n          rules {\n            column\n            relation\n            condition\n          }\n        }\n      }\n    }\n  }\n": {return: CollectionCreateMutation, variables: CollectionCreateMutationVariables},
+  "#graphql\n  mutation CollectionCreate($input: CollectionInput!) {\n    collectionCreate(\n      input: $input\n    ) {\n      collection {\n        id\n        title\n        descriptionHtml\n        handle\n      }\n    }\n  }\n": {return: CollectionCreateMutation, variables: CollectionCreateMutationVariables},
   "#graphql\n  mutation PublishablePublish($collectionId: ID!, $publicationId: ID!) {\n    publishablePublish(id: $collectionId, input: {publicationId: $publicationId}) {\n      publishable {\n        ... on Collection {\n          id\n          handle\n        }\n      }\n    }\n  }\n": {return: PublishablePublishMutation, variables: PublishablePublishMutationVariables},
+  "#graphql\n  mutation CreateUserMetaobject($handle: String!, $fields: [MetaobjectFieldInput!]) {\n    metaobjectCreate(\n      metaobject: {type: \"user\", fields: $fields, handle: $handle, capabilities: {publishable: {status: ACTIVE}}}\n    ) {\n      metaobject {\n        id\n        type\n        fields {\n          value\n          key\n        }\n      }\n      userErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n": {return: CreateUserMetaobjectMutation, variables: CreateUserMetaobjectMutationVariables},
+  "#graphql\n  mutation UpdateUserMetaobject($id: ID!, $fields: [MetaobjectFieldInput!]!) {\n    metaobjectUpdate(id: $id, metaobject: {fields: $fields}) {\n      metaobject {\n        fields {\n          value\n          key\n        }\n      }\n    }\n  }\n": {return: UpdateUserMetaobjectMutation, variables: UpdateUserMetaobjectMutationVariables},
   "#graphql\n  #graphql\n  fragment ProductOptionFragment on Product {\n    id\n    title\n    handle\n    tags\n    parentId: metafield(key: \"parentId\", namespace: \"booking\") {\n      id\n      value\n    }\n    variants(first: 5) {\n      nodes {\n        id\n        title\n        price\n        duration: metafield(key: \"duration\", namespace: \"booking\") {\n          id\n          value\n        }\n      }\n    }\n  }\n\n  mutation productOptionDuplicate($productId: ID!, $title: String!) {\n    productDuplicate(newTitle: $title, productId: $productId) {\n      newProduct {\n        ...ProductOptionFragment\n      }\n    }\n  }\n": {return: ProductOptionDuplicateMutation, variables: ProductOptionDuplicateMutationVariables},
   "#graphql\n  #graphql\n  fragment ProductOptionFragment on Product {\n    id\n    title\n    handle\n    tags\n    parentId: metafield(key: \"parentId\", namespace: \"booking\") {\n      id\n      value\n    }\n    variants(first: 5) {\n      nodes {\n        id\n        title\n        price\n        duration: metafield(key: \"duration\", namespace: \"booking\") {\n          id\n          value\n        }\n      }\n    }\n  }\n\n  mutation ProductOptionAdd($id: ID!, $metafields: [MetafieldInput!]!, $tags: [String!]!) {\n    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags}) {\n      product {\n        ...ProductOptionFragment\n      }\n    }\n  }\n": {return: ProductOptionAddMutation, variables: ProductOptionAddMutationVariables},
   "#graphql\n  mutation ProductParentUpdate($id: ID, $metafields: [MetafieldInput!]) {\n    productUpdate(input: {id: $id, metafields: $metafields}) {\n      product {\n        options: metafield(key: \"options\", namespace: \"booking\") {\n          id\n        }\n      }\n    }\n  }\n": {return: ProductParentUpdateMutation, variables: ProductParentUpdateMutationVariables},

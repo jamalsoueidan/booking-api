@@ -1,5 +1,9 @@
 type: object
 properties:
+  collectionMetaobjectId:
+    type: string
+  userMetaobjectId:
+    type: string
   customerId:
     type: number
   fullname:
@@ -68,6 +72,8 @@ properties:
   isBusiness:
     type: boolean
 required:
+  - collectionMetaobjectId
+  - userMetaobjectId
   - customerId
   - fullname
   - username

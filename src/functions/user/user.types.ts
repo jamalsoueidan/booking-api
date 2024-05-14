@@ -45,7 +45,8 @@ export enum Specialties {
 export const UserZodSchema = z.object({
   _id: z.string(),
   customerId: GidFormat,
-  collectionId: z.string().optional(),
+  userMetaobjectId: z.string().optional(),
+  collectionMetaobjectId: z.string().optional(),
   isBusiness: z.boolean(),
   yearsExperience: NumberOrString.optional(),
   professions: z

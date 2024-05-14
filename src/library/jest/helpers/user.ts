@@ -17,6 +17,8 @@ function pickRandomProfessionsOneOrMore(): Professions[] {
 export const getUserObject = (
   props: Partial<User> = {}
 ): Omit<User, "_id"> => ({
+  userMetaobjectId: faker.internet.url(),
+  collectionMetaobjectId: faker.internet.url(),
   email: faker.internet.email(),
   professions: pickRandomProfessionsOneOrMore(),
   username: faker.internet.userName().toLowerCase(),

@@ -21,7 +21,8 @@ export const UserMongooseSchema = new mongoose.Schema<
       required: true,
       index: true,
     },
-    collectionId: String,
+    userMetaobjectId: String,
+    collectionMetaobjectId: String,
     professions: {
       type: [String],
       index: true,
