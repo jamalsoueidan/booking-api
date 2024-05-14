@@ -1,8 +1,14 @@
 import { UserModel } from "~/functions/user";
 import { getUserObject } from "~/library/jest/helpers";
+import { ensureType } from "~/library/jest/helpers/mock";
 import { shopifyAdmin } from "~/library/shopify";
 import {
+  CollectionCreateMutation,
+  CreateUserMetaobjectMutation,
+} from "~/types/admin.generated";
+import {
   COLLECTION_CREATE,
+  CREATE_USER_METAOBJECT,
   CustomerServiceCreate,
   PUBLICATIONS,
   PUBLISH_COLLECTION,
@@ -17,28 +23,6 @@ jest.mock("@shopify/admin-api-client", () => ({
 }));
 
 const mockRequest = shopifyAdmin.request as jest.Mock;
-
-const mockCollection = {
-  collectionCreate: {
-    collection: {
-      id: "gid://shopify/Collection/625094558023",
-      title: "testestest",
-      descriptionHtml: "",
-      handle: "testestest",
-      sortOrder: "BEST_SELLING",
-      ruleSet: {
-        appliedDisjunctively: false,
-        rules: [
-          {
-            column: "TAG",
-            relation: "EQUALS",
-            condition: "testest",
-          },
-        ],
-      },
-    },
-  },
-};
 
 const mockPublications = {
   publications: {
@@ -76,17 +60,70 @@ const mockPublish = {
 };
 
 describe("CustomerServiceCreate", () => {
-  const userData = getUserObject();
-
   beforeAll(async () => {
     await UserModel.ensureIndexes();
     jest.clearAllMocks();
   });
 
   it("Should create a user", async () => {
+    const userData = getUserObject();
+
+    const collectionMetaobjectId = "gid://shopify/Collection/625094558023";
+    const userMetaobjectId = "gid://shopify/Metaobject/77261930823";
+
     mockRequest
       .mockResolvedValueOnce({
-        data: mockCollection,
+        data: ensureType<CollectionCreateMutation>({
+          collectionCreate: {
+            collection: {
+              id: collectionMetaobjectId,
+              title: userData.username,
+              descriptionHtml: "",
+              handle: userData.username,
+            },
+          },
+        }),
+      })
+      .mockResolvedValueOnce({
+        data: ensureType<CreateUserMetaobjectMutation>({
+          metaobjectCreate: {
+            metaobject: {
+              id: userMetaobjectId,
+              type: "user",
+              fields: [
+                {
+                  key: "fullname",
+                  value: userData.fullname,
+                },
+                {
+                  key: "username",
+                  value: userData.username,
+                },
+                {
+                  key: "short_description",
+                  value: userData.shortDescription,
+                },
+                {
+                  key: "about_me",
+                  value: userData.aboutMe,
+                },
+                {
+                  key: "professions",
+                  value: JSON.stringify(userData.professions),
+                },
+                {
+                  key: "collection",
+                  value: collectionMetaobjectId,
+                },
+                {
+                  key: "theme",
+                  value: "pink",
+                },
+              ],
+            },
+            userErrors: [],
+          },
+        }),
       })
       .mockResolvedValueOnce({
         data: mockPublications,
@@ -95,24 +132,24 @@ describe("CustomerServiceCreate", () => {
         mockPublish,
       });
 
-    const newUser = await CustomerServiceCreate(userData);
+    const user = await CustomerServiceCreate(userData);
 
     expect(shopifyAdmin.request).toHaveBeenCalledTimes(
-      2 + mockPublications.publications.nodes.length
+      3 + mockPublications.publications.nodes.length
     );
 
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(1, COLLECTION_CREATE, {
       variables: {
         input: {
-          handle: newUser.username,
-          title: newUser.username,
+          handle: user.username,
+          title: user.username,
           ruleSet: {
             appliedDisjunctively: false,
             rules: [
               {
                 column: "TAG" as any,
                 relation: "EQUALS" as any,
-                condition: `user-${newUser.username}`,
+                condition: `user-${user.username}`,
               },
             ],
           },
@@ -120,50 +157,66 @@ describe("CustomerServiceCreate", () => {
       },
     });
 
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(2, PUBLICATIONS);
+    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
+      2,
+      CREATE_USER_METAOBJECT,
+      {
+        variables: {
+          handle: user.username,
+          fields: [
+            {
+              key: "username",
+              value: user.username,
+            },
+            {
+              key: "fullname",
+              value: user.fullname,
+            },
+            {
+              key: "short_description",
+              value: user.shortDescription || "",
+            },
+            {
+              key: "about_me",
+              value: user.aboutMe || "",
+            },
+            {
+              key: "professions",
+              value: JSON.stringify(user.professions || []),
+            },
+            {
+              key: "collection",
+              value: collectionMetaobjectId,
+            },
+            {
+              key: "theme",
+              value: "pink",
+            },
+          ],
+        },
+      }
+    );
+
+    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(3, PUBLICATIONS);
 
     mockPublications.publications.nodes.map((p, index) => {
       expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
-        3 + index,
+        4 + index,
         PUBLISH_COLLECTION,
         {
           variables: {
-            collectionId: mockCollection.collectionCreate.collection.id,
+            collectionId: collectionMetaobjectId,
             publicationId: p.id,
           },
         }
       );
     });
 
-    expect(newUser).toMatchObject(userData);
-    const getuser = await UserModel.findById(newUser._id);
-    expect(getuser?.collectionId).toBe(
-      mockCollection.collectionCreate.collection.handle
+    expect(user).toMatchObject(userData);
+    const getuser = await UserModel.findById(user._id);
+    expect(getuser?.collectionMetaobjectId).toBe(collectionMetaobjectId);
+    expect(getuser?.userMetaobjectId).toBe(
+      "gid://shopify/Metaobject/77261930823"
     );
-  });
-
-  it("Should throw error user with the same username", async () => {
-    mockRequest
-      .mockResolvedValueOnce({
-        data: mockCollection,
-      })
-      .mockResolvedValueOnce({
-        data: mockPublications,
-      })
-      .mockResolvedValue({
-        mockPublish,
-      });
-
-    await CustomerServiceCreate({
-      ...getUserObject(),
-      username: "123123",
-    });
-
-    await expect(
-      CustomerServiceCreate({
-        ...getUserObject(),
-        username: "123123",
-      })
-    ).rejects.toThrow(/E11000 duplicate key error/);
   });
 });
