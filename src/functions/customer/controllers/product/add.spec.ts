@@ -38,7 +38,6 @@ describe("CustomerProductControllerAdd", () => {
   let context: InvocationContext;
   let request: HttpRequest;
   const customerId = 123;
-  const productId = 1000;
   let mockProduct: ProductDuplicateMutation;
   let title: string = "title product";
 
@@ -313,6 +312,10 @@ describe("CustomerProductControllerAdd", () => {
           {
             id: mockProductUpdate.productUpdate?.product?.locations?.id,
             value: JSON.stringify(body.locations),
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.user?.id,
+            value: mockProductUpdate.productUpdate?.product?.user?.value,
           },
           {
             id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,

@@ -56,6 +56,10 @@ describe("CustomerProductServiceUpdate", () => {
             },
           ],
         },
+        user: {
+          id: `gid://shopify/Metafield/44429081510215`,
+          value: `gid://shopify/Metafield/123312`,
+        },
         hideFromProfile: {
           id: `gid://shopify/Metafield/44429081510215`,
           value: "false",
@@ -133,6 +137,10 @@ describe("CustomerProductServiceUpdate", () => {
           parentId: GidFormat.parse(
             mockProductUpdate.productUpdate?.product?.parentId?.value
           ),
+          user: {
+            metaobjectId: mockProductUpdate.productUpdate?.product?.user?.id,
+            value: mockProductUpdate.productUpdate?.product?.user?.value,
+          },
           hideFromProfileMetafieldId:
             mockProductUpdate.productUpdate?.product?.hideFromProfile?.id,
           hideFromProfile: false,
@@ -214,6 +222,10 @@ describe("CustomerProductServiceUpdate", () => {
           {
             id: mockProductUpdate.productUpdate?.product?.duration?.id,
             value: String(productBody.duration),
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.user?.id,
+            value: user.userMetaobjectId,
           },
           {
             id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,
