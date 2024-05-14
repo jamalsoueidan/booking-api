@@ -190,6 +190,7 @@ export const CustomerProductServiceUpdate = async (
           `user-${user.username}`,
           `userid-${user.customerId}`,
           "treatments",
+          `parentid-${oldProduct.parentId}`,
           `productid-${oldProduct.productId}`,
           `product-${oldProduct.productHandle}`,
           `scheduleid-${schedule._id}`,

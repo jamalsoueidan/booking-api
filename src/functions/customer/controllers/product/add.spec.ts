@@ -150,6 +150,7 @@ describe("CustomerProductControllerAdd", () => {
       `user-${user.username}`,
       `userid-${user.customerId}`,
       `treatments`,
+      `parentid-${body.parentId}`,
       `productid-${GidFormat.parse(
         mockProduct.productDuplicate?.newProduct?.id
       )}`,
