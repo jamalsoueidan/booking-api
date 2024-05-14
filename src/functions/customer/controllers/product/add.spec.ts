@@ -315,7 +315,7 @@ describe("CustomerProductControllerAdd", () => {
           },
           {
             id: mockProductUpdate.productUpdate?.product?.user?.id,
-            value: mockProductUpdate.productUpdate?.product?.user?.value,
+            value: user.userMetaobjectId,
           },
           {
             id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,
