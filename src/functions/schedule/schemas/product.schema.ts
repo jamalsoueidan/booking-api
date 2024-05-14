@@ -76,6 +76,10 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       amount: String,
       currencyCode: String,
     },
+    user: {
+      metaobjectId: String,
+      value: String,
+    },
     hideFromProfileMetafieldId: String,
     hideFromProfile: Boolean,
     hideFromCombineMetafieldId: String,

@@ -62,6 +62,10 @@ describe("CustomerProductControllerAdd", () => {
               },
             ],
           },
+          user: {
+            id: `gid://shopify/Metafield/44429081510215`,
+            value: `gid://shopify/Metafield/44429081510215`,
+          },
           hideFromProfile: {
             id: `gid://shopify/Metafield/44429081510215`,
             value: "false",
@@ -167,6 +171,10 @@ describe("CustomerProductControllerAdd", () => {
           },
           handle: "testerne-new-product",
           tags,
+          user: {
+            id: `gid://shopify/Metafield/44429081510215`,
+            value: `gid://shopify/Metafield/44429081510215`,
+          },
           hideFromProfile: {
             id: `gid://shopify/Metafield/44429081510215`,
             value: "true",

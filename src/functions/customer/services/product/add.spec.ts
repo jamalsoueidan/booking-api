@@ -70,6 +70,10 @@ describe("CustomerProductServiceAdd", () => {
               },
             ],
           },
+          user: {
+            id: `gid://shopify/Metafield/22`,
+            value: `gid://shopify/Metafield/111`,
+          },
           hideFromProfile: {
             id: `gid://shopify/Metafield/44429081510215`,
             value: "false",
@@ -152,6 +156,10 @@ describe("CustomerProductServiceAdd", () => {
           handle: "testerne-new-product",
           variants: {
             nodes: mockProduct.productDuplicate?.newProduct?.variants.nodes!,
+          },
+          user: {
+            id: mockProduct.productDuplicate?.newProduct?.user?.id!,
+            value: mockProduct.productDuplicate?.newProduct?.user?.value!,
           },
           hideFromProfile: {
             id: mockProduct.productDuplicate?.newProduct?.hideFromProfile?.id!,
@@ -338,6 +346,10 @@ describe("CustomerProductServiceAdd", () => {
       variantId: GidFormat.parse(
         mockProduct.productDuplicate?.newProduct?.variants.nodes[0].id
       ),
+      user: {
+        metaobjectId: mockProduct.productDuplicate?.newProduct?.user?.id!,
+        value: mockProduct.productDuplicate?.newProduct?.user?.value!,
+      },
     });
   });
 });

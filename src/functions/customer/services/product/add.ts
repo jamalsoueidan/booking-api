@@ -61,6 +61,10 @@ export const CustomerProductServiceAdd = async (
       amount: body.price.amount,
       currencyCode: "DKK",
     },
+    user: {
+      metaobjectId: shopifyProduct.user?.id,
+      value: shopifyProduct.user?.value,
+    },
     hideFromCombineMetafieldId: shopifyProduct.hideFromCombine?.id,
     hideFromCombine: body.hideFromCombine,
     hideFromProfileMetafieldId: shopifyProduct.hideFromProfile?.id,
@@ -121,6 +125,10 @@ export const PRODUCT_FRAGMENT = `#graphql
         compareAtPrice
         price
       }
+    }
+    user: metafield(key: "user", namespace: "booking") {
+      id
+      value
     }
     hideFromCombine: metafield(key: "hide_from_combine", namespace: "booking") {
       id
