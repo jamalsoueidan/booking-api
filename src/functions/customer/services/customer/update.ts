@@ -60,7 +60,7 @@ export const CustomerServiceUpdate = async (
     if (body.aboutMe && user.aboutMe !== body.aboutMe) {
       fields.push({
         key: "about_me",
-        value: body.aboutMe,
+        value: JSON.stringify(body.aboutMe),
       });
     }
 
@@ -68,6 +68,13 @@ export const CustomerServiceUpdate = async (
       fields.push({
         key: "professions",
         value: JSON.stringify(body.professions || []),
+      });
+    }
+
+    if (body.social && user.social !== body.social) {
+      fields.push({
+        key: "social",
+        value: JSON.stringify(body.social),
       });
     }
 
