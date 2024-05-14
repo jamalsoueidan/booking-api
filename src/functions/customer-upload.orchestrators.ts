@@ -37,7 +37,8 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
     return { sucess: false, error: zodParse.error };
   }
 
-  yield context.df.callActivity("fileCreate", zodParse.data);
+  const response: Awaited<ReturnType<typeof fileCreateHandler>> =
+    yield context.df.callActivity("fileCreate", zodParse.data);
 
   const maxRetries = 5;
   let attemptCount = 0;
@@ -51,10 +52,10 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
     yield context.df.createTimer(nextCheckTime);
 
     // Check if data is available from Shopify
-    const response: Awaited<ReturnType<typeof fileGetHandler>> =
-      yield context.df.callActivity("fileGet", body);
-    if (response && response.files.nodes.length > 0) {
-      fileUploaded = response.files.nodes[0];
+    const image: Awaited<ReturnType<typeof fileGetHandler>> =
+      yield context.df.callActivity("fileGet", response.id);
+    if (image && image.files.nodes.length > 0) {
+      fileUploaded = image.files.nodes[0];
     }
 
     attemptCount++;
@@ -64,7 +65,8 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
     context.info(`Data for ${body.customerId} not available after retries.`);
     return yield context.df.callActivity("updateCustomer", {
       customerId: zodParse.data.customerId,
-      image: fileUploaded.preview?.image,
+      profile: fileUploaded.preview?.image,
+      metaobjectId: response.id,
     });
   }
 
@@ -81,7 +83,6 @@ const uploadOrchestrator: HttpHandler = async (
 ): Promise<HttpResponse> => {
   const client = df.getClient(context);
   const body: unknown = await request.json();
-
   const instanceId: string = await client.startNew("upload", { input: body });
 
   context.log(`Started orchestration with ID = '${instanceId}'.`);

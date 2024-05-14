@@ -57,6 +57,7 @@ export const UserMongooseSchema = new mongoose.Schema<
     active: { type: Boolean, default: false, index: true },
     images: {
       profile: {
+        metaobjectId: String,
         url: String,
         width: Number,
         height: Number,

@@ -81,6 +81,7 @@ export const UserZodSchema = z.object({
     .object({
       profile: z
         .object({
+          metaobjectId: z.string().optional(),
           url: z.string().url({ message: "Invalid url" }).optional(),
           width: z.number().optional(),
           height: z.number().optional(),

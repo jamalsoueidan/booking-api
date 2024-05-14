@@ -12,19 +12,20 @@ export async function fileCreateHandler(input: FileInputProps) {
     },
   });
 
-  return data;
+  if (!data?.fileCreate?.files) {
+    throw new Error("Error");
+  }
+
+  return data.fileCreate.files[0];
 }
 
 const FILE_CREATE = `#graphql
   mutation fileCreate($files: [FileCreateInput!]!) {
     fileCreate(files: $files) {
       files {
-        fileStatus
+        id
         alt
-      }
-      userErrors {
-        field
-        message
+        fileStatus
       }
     }
   }

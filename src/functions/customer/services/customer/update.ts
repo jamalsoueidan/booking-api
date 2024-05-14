@@ -18,6 +18,7 @@ export type CustomerServiceUpdateBody = Partial<
     | "shortDescription"
     | "social"
     | "theme"
+    | "images"
   >
 >;
 
@@ -74,6 +75,16 @@ export const CustomerServiceUpdate = async (
       fields.push({
         key: "theme",
         value: body.theme.color,
+      });
+    }
+
+    if (
+      body.images?.profile?.metaobjectId &&
+      user.images?.profile?.metaobjectId !== body.images.profile.metaobjectId
+    ) {
+      fields.push({
+        key: "image",
+        value: body.images?.profile?.metaobjectId,
       });
     }
 

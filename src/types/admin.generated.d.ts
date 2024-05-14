@@ -8,7 +8,7 @@ export type FileCreateMutationVariables = AdminTypes.Exact<{
 }>;
 
 
-export type FileCreateMutation = { fileCreate?: AdminTypes.Maybe<{ files?: AdminTypes.Maybe<Array<Pick<AdminTypes.GenericFile, 'fileStatus' | 'alt'> | Pick<AdminTypes.MediaImage, 'fileStatus' | 'alt'> | Pick<AdminTypes.Video, 'fileStatus' | 'alt'>>>, userErrors: Array<Pick<AdminTypes.FilesUserError, 'field' | 'message'>> }> };
+export type FileCreateMutation = { fileCreate?: AdminTypes.Maybe<{ files?: AdminTypes.Maybe<Array<Pick<AdminTypes.GenericFile, 'id' | 'alt' | 'fileStatus'> | Pick<AdminTypes.MediaImage, 'id' | 'alt' | 'fileStatus'> | Pick<AdminTypes.Video, 'id' | 'alt' | 'fileStatus'>>> }> };
 
 export type FileGetQueryVariables = AdminTypes.Exact<{
   query: AdminTypes.Scalars['String']['input'];
@@ -194,12 +194,12 @@ export type ProductVariantsBulkDeleteMutationVariables = AdminTypes.Exact<{
 export type ProductVariantsBulkDeleteMutation = { productVariantsBulkDelete?: AdminTypes.Maybe<{ product?: AdminTypes.Maybe<Pick<AdminTypes.Product, 'id' | 'title'>>, userErrors: Array<Pick<AdminTypes.ProductVariantsBulkDeleteUserError, 'code' | 'field' | 'message'>> }> };
 
 interface GeneratedQueryTypes {
-  "#graphql\n  query FileGet($query: String!) {\n    files(first: 10, sortKey: UPDATED_AT, reverse: true, query: $query) {\n      nodes {\n        preview {\n          image {\n            url\n            width\n            height\n          }\n        }\n      }\n    }\n  }\n": {return: FileGetQuery, variables: FileGetQueryVariables},
+  "#graphql\n  query FileGet($query: String!) {\n    files(first: 1, query: $query) {\n      nodes {\n        preview {\n          image {\n            url\n            width\n            height\n          }\n        }\n      }\n    }\n  }\n": {return: FileGetQuery, variables: FileGetQueryVariables},
   "#graphql\n  query publications {\n    publications(first: 10, catalogType: APP) {\n      nodes {\n        id\n      }\n    }\n  }\n": {return: PublicationsQuery, variables: PublicationsQueryVariables},
 }
 
 interface GeneratedMutationTypes {
-  "#graphql\n  mutation fileCreate($files: [FileCreateInput!]!) {\n    fileCreate(files: $files) {\n      files {\n        fileStatus\n        alt\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: FileCreateMutation, variables: FileCreateMutationVariables},
+  "#graphql\n  mutation fileCreate($files: [FileCreateInput!]!) {\n    fileCreate(files: $files) {\n      files {\n        id\n        alt\n        fileStatus\n      }\n    }\n  }\n": {return: FileCreateMutation, variables: FileCreateMutationVariables},
   "#graphql\n  mutation stagedUploadsCreate($input: [StagedUploadInput!]!) {\n    stagedUploadsCreate(input: $input) {\n      stagedTargets {\n        resourceUrl\n        url\n        parameters {\n          name\n          value\n        }\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n": {return: StagedUploadsCreateMutation, variables: StagedUploadsCreateMutationVariables},
   "#graphql\n  mutation CollectionCreate($input: CollectionInput!) {\n    collectionCreate(\n      input: $input\n    ) {\n      collection {\n        id\n        title\n        descriptionHtml\n        handle\n      }\n    }\n  }\n": {return: CollectionCreateMutation, variables: CollectionCreateMutationVariables},
   "#graphql\n  mutation PublishablePublish($collectionId: ID!, $publicationId: ID!) {\n    publishablePublish(id: $collectionId, input: {publicationId: $publicationId}) {\n      publishable {\n        ... on Collection {\n          id\n          handle\n        }\n      }\n    }\n  }\n": {return: PublishablePublishMutation, variables: PublishablePublishMutationVariables},
