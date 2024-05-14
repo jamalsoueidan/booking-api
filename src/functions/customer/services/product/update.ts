@@ -124,12 +124,11 @@ export const CustomerProductServiceUpdate = async (
           },
         ]
       : []),
-    ...(user.images?.profile?.metaobjectId &&
-    user.images?.profile?.metaobjectId !== oldProduct.user?.value
+    ...(user.userMetaobjectId !== oldProduct.user?.value
       ? [
           {
             id: oldProduct?.user?.metaobjectId,
-            value: user.images.profile.metaobjectId,
+            value: user.userMetaobjectId,
           },
         ]
       : []),

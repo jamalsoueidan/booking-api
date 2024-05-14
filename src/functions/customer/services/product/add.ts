@@ -66,9 +66,9 @@ export const CustomerProductServiceAdd = async (
       value: shopifyProduct.user?.value,
     },
     hideFromCombineMetafieldId: shopifyProduct.hideFromCombine?.id,
-    hideFromCombine: body.hideFromCombine,
+    hideFromCombine: body.hideFromCombine || false,
     hideFromProfileMetafieldId: shopifyProduct.hideFromProfile?.id,
-    hideFromProfile: body.hideFromProfile,
+    hideFromProfile: body.hideFromProfile || false,
     compareAtPrice: {
       amount: body.compareAtPrice.amount,
       currencyCode: "DKK",
