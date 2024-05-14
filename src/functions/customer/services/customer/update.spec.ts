@@ -1,5 +1,5 @@
 import { UserModel } from "~/functions/user";
-import { createUser, getUserObject } from "~/library/jest/helpers";
+import { createUser } from "~/library/jest/helpers";
 import { ensureType } from "~/library/jest/helpers/mock";
 import { shopifyAdmin } from "~/library/shopify";
 import { UpdateUserMetaobjectMutation } from "~/types/admin.generated";
@@ -16,8 +16,6 @@ jest.mock("@shopify/admin-api-client", () => ({
 const mockRequest = shopifyAdmin.request as jest.Mock;
 
 describe("CustomerService", () => {
-  const userData = getUserObject();
-
   beforeAll(async () => UserModel.ensureIndexes());
 
   it("Should update a user by customerId", async () => {
