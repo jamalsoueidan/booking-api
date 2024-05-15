@@ -87,7 +87,7 @@ app.http("webhookCustomerUpdate", {
   handler: async (request: HttpRequest, context: InvocationContext) => {
     await connect();
     const customer = (await request.json()) as unknown as Customer;
-    const active = customer.tags.includes("public");
+    const active = customer.tags.includes("active");
     const customerId = customer.id;
     await CustomerServiceUpdate(
       { customerId },
