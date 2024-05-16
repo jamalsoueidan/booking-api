@@ -219,6 +219,7 @@ describe("CustomerProductServiceUpdate", () => {
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(1, PRODUCT_UPDATE, {
       variables: {
         id: mockProductUpdate.productUpdate?.product?.id,
+        descriptionHtml: updateProduct.description,
         metafields: [
           {
             id: mockProductUpdate.productUpdate?.product?.duration?.id,
