@@ -406,6 +406,8 @@ components:
           type: string
         title:
           type: string
+        description:
+          type: string
         locations:
           $ref: '#/components/schemas/CustomerProductLocations'
         scheduleId:
@@ -431,6 +433,7 @@ components:
       required:
         - parentId
         - title
+        - description
         - scheduleId
         - locations
         - hideFromProfile
