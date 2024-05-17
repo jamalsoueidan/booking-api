@@ -88,6 +88,7 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
     hideFromCombine: Boolean,
     title: String,
     description: String,
+    descriptionHtml: String,
     durationMetafieldId: String,
     duration: {
       type: Number,

@@ -32,3 +32,5 @@ properties:
     type: string
   description:
     type: string
+  descriptionHtml:
+    type: string
