@@ -226,14 +226,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CustomerProductOptionsList/items'
+        description:
+          type: string
+        descriptionHtml:
+          type: string
         productHandle:
           type: string
         productId:
           type: number
         variantId:
           type: number
-        description:
-          type: string
         hideFromProfile:
           type: boolean
         hideFromCombine:
@@ -278,6 +280,8 @@ components:
         - options
         - hideFromCombine
         - hideFromProfile
+        - description
+        - descriptionHtml
     CustomerProduct:
       type: object
       allOf:
@@ -388,6 +392,8 @@ components:
           type: string
         description:
           type: string
+        descriptionHtml:
+          type: string
     CustomerProductAddResponse:
       type: object
       properties:
@@ -407,6 +413,8 @@ components:
         title:
           type: string
         description:
+          type: string
+        descriptionHtml:
           type: string
         locations:
           $ref: '#/components/schemas/CustomerProductLocations'
@@ -434,6 +442,7 @@ components:
         - parentId
         - title
         - description
+        - descriptionHtml
         - scheduleId
         - locations
         - hideFromProfile
