@@ -69,6 +69,10 @@ describe("CustomerProductServiceAdd", () => {
               },
             ],
           },
+          active: {
+            id: `gid://shopify/Metafield/3333`,
+            value: `False`,
+          },
           user: {
             id: `gid://shopify/Metafield/22`,
             value: `gid://shopify/Metafield/111`,
@@ -156,6 +160,10 @@ describe("CustomerProductServiceAdd", () => {
           handle: "testerne-new-product",
           variants: {
             nodes: mockProduct.productDuplicate?.newProduct?.variants.nodes!,
+          },
+          active: {
+            id: mockProduct.productDuplicate?.newProduct?.active?.id!,
+            value: `True`,
           },
           hideFromProfile: {
             id: mockProduct.productDuplicate?.newProduct?.hideFromProfile?.id!,
@@ -317,6 +325,10 @@ describe("CustomerProductServiceAdd", () => {
           {
             id: mockProductUpdate.productUpdate?.product?.user?.id,
             value: mockProductUpdate.productUpdate?.product?.user?.value,
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.active?.id,
+            value: "true",
           },
           {
             id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,

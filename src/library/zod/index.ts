@@ -10,8 +10,12 @@ export const objectIdValidator = z
 export const BooleanOrString = z
   .union([z.boolean(), z.string()])
   .transform((value) => {
-    if (typeof value === "string" && value === "true") {
-      return true;
+    if (typeof value === "string") {
+      if (value.toLowerCase() === "true") {
+        return true;
+      } else {
+        return false;
+      }
     }
     return value;
   })

@@ -3,7 +3,7 @@ import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
-import { GidFormat } from "~/library/zod";
+import { BooleanOrString, GidFormat } from "~/library/zod";
 import {
   ProductPricepdateMutation,
   ProductUpdateMutation,
@@ -55,6 +55,10 @@ describe("CustomerProductServiceUpdate", () => {
               price: productBody.price?.amount,
             },
           ],
+        },
+        active: {
+          id: `gid://shopify/Metafield/3333`,
+          value: `False`,
         },
         user: {
           id: `gid://shopify/Metafield/44429081510215`,
@@ -141,6 +145,11 @@ describe("CustomerProductServiceUpdate", () => {
             metaobjectId: mockProductUpdate.productUpdate?.product?.user?.id,
             value: mockProductUpdate.productUpdate?.product?.user?.value,
           },
+          activeMetafieldId:
+            mockProductUpdate.productUpdate?.product?.active?.id,
+          active: BooleanOrString.parse(
+            mockProductUpdate.productUpdate?.product?.active?.value
+          ),
           hideFromProfileMetafieldId:
             mockProductUpdate.productUpdate?.product?.hideFromProfile?.id,
           hideFromProfile: false,
@@ -228,6 +237,10 @@ describe("CustomerProductServiceUpdate", () => {
           {
             id: mockProductUpdate.productUpdate?.product?.user?.id,
             value: user.userMetaobjectId,
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.active?.id,
+            value: user.active.toString(),
           },
           {
             id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,
