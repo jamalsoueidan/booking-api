@@ -11,11 +11,11 @@ export type FileCreateMutationVariables = AdminTypes.Exact<{
 export type FileCreateMutation = { fileCreate?: AdminTypes.Maybe<{ files?: AdminTypes.Maybe<Array<Pick<AdminTypes.GenericFile, 'id' | 'alt' | 'fileStatus'> | Pick<AdminTypes.MediaImage, 'id' | 'alt' | 'fileStatus'> | Pick<AdminTypes.Video, 'id' | 'alt' | 'fileStatus'>>> }> };
 
 export type FileGetQueryVariables = AdminTypes.Exact<{
-  query: AdminTypes.Scalars['String']['input'];
+  id: AdminTypes.Scalars['ID']['input'];
 }>;
 
 
-export type FileGetQuery = { files: { nodes: Array<{ preview?: AdminTypes.Maybe<{ image?: AdminTypes.Maybe<Pick<AdminTypes.Image, 'url' | 'width' | 'height'>> }> }> } };
+export type FileGetQuery = { node?: AdminTypes.Maybe<{ preview?: AdminTypes.Maybe<{ image?: AdminTypes.Maybe<Pick<AdminTypes.Image, 'url' | 'width' | 'height'>> }> }> };
 
 export type StagedUploadsCreateMutationVariables = AdminTypes.Exact<{
   input: Array<AdminTypes.StagedUploadInput> | AdminTypes.StagedUploadInput;
@@ -195,7 +195,7 @@ export type ProductVariantsBulkDeleteMutationVariables = AdminTypes.Exact<{
 export type ProductVariantsBulkDeleteMutation = { productVariantsBulkDelete?: AdminTypes.Maybe<{ product?: AdminTypes.Maybe<Pick<AdminTypes.Product, 'id' | 'title'>>, userErrors: Array<Pick<AdminTypes.ProductVariantsBulkDeleteUserError, 'code' | 'field' | 'message'>> }> };
 
 interface GeneratedQueryTypes {
-  "#graphql\n  query FileGet($query: String!) {\n    files(first: 1, query: $query) {\n      nodes {\n        preview {\n          image {\n            url\n            width\n            height\n          }\n        }\n      }\n    }\n  }\n": {return: FileGetQuery, variables: FileGetQueryVariables},
+  "#graphql\n  query FileGet($id: ID!) {\n    node(id: $id) {\n      ... on MediaImage {\n        preview {\n          image {\n            url\n            width\n            height\n          }\n        }\n      }\n    }\n  }\n": {return: FileGetQuery, variables: FileGetQueryVariables},
   "#graphql\n  query publications {\n    publications(first: 10, catalogType: APP) {\n      nodes {\n        id\n      }\n    }\n  }\n": {return: PublicationsQuery, variables: PublicationsQueryVariables},
 }
 
