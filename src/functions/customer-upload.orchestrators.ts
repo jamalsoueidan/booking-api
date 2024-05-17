@@ -7,7 +7,6 @@ import {
 } from "@azure/functions";
 import * as df from "durable-functions";
 import { OrchestrationContext } from "durable-functions";
-import { type FileGetQuery } from "~/types/admin.generated";
 import { fileCreateHandler } from "./customer/controllers/upload/file-create";
 import { fileGetHandler } from "./customer/controllers/upload/file-get";
 import {
@@ -42,7 +41,7 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
 
   const maxRetries = 5;
   let attemptCount = 0;
-  let fileUploaded: FileGetQuery["files"]["nodes"][number] | undefined;
+  let fileUploaded: boolean = false;
 
   while (!fileUploaded && attemptCount < maxRetries) {
     // Wait for 5 seconds before each new attempt
@@ -52,22 +51,19 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
     yield context.df.createTimer(nextCheckTime);
 
     // Check if data is available from Shopify
-    const image: Awaited<ReturnType<typeof fileGetHandler>> =
+    const profile: Awaited<ReturnType<typeof fileGetHandler>> =
       yield context.df.callActivity("fileGet", response.id);
-    if (image && image.files.nodes.length > 0) {
-      fileUploaded = image.files.nodes[0];
+    if (profile) {
+      fileUploaded = true;
+      context.info(`Data for ${body.customerId} not available after retries.`);
+      return yield context.df.callActivity("updateCustomer", {
+        customerId: zodParse.data.customerId,
+        profile,
+        metaobjectId: response.id,
+      });
     }
 
     attemptCount++;
-  }
-
-  if (fileUploaded) {
-    context.info(`Data for ${body.customerId} not available after retries.`);
-    return yield context.df.callActivity("updateCustomer", {
-      customerId: zodParse.data.customerId,
-      profile: fileUploaded.preview?.image,
-      metaobjectId: response.id,
-    });
   }
 
   context.error(`Data for ${body.customerId} not available after retries.`);

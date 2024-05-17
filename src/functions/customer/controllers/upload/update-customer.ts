@@ -1,14 +1,13 @@
 import { connect } from "~/library/mongoose";
-import { type FileGetQuery } from "~/types/admin.generated";
 import { CustomerServiceUpdate } from "../../services/customer/update";
-
-type Node = FileGetQuery["files"]["nodes"][number];
-type PreviewType = NonNullable<Node["preview"]>;
-type ImageType = NonNullable<PreviewType["image"]>;
 
 type Props = {
   customerId: number;
-  profile: ImageType;
+  profile: {
+    url: string;
+    width: number;
+    height: number;
+  };
   metaobjectId: string;
 };
 
