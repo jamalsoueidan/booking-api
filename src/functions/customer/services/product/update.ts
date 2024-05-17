@@ -134,6 +134,13 @@ export const CustomerProductServiceUpdate = async (
       : []),
   ];
 
+  if (user.active !== oldProduct.active) {
+    metafields.push({
+      id: oldProduct.activeMetafieldId,
+      value: user.active.toString(),
+    });
+  }
+
   const locations = oldProduct.locations.concat(
     (body.locations || [])?.filter(
       (item2) =>
@@ -146,6 +153,7 @@ export const CustomerProductServiceUpdate = async (
   const newProduct = {
     ...oldProduct,
     ...body,
+    active: user.active,
     user: {
       ...oldProduct.user,
       value: user.images?.profile?.metaobjectId || oldProduct.user?.value,

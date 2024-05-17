@@ -61,6 +61,10 @@ describe("CustomerProductControllerAdd", () => {
               },
             ],
           },
+          active: {
+            id: `gid://shopify/Metafield/3333`,
+            value: `False`,
+          },
           user: {
             id: `gid://shopify/Metafield/44429081510215`,
             value: `gid://shopify/Metafield/44429081510215`,
@@ -183,6 +187,10 @@ describe("CustomerProductControllerAdd", () => {
           hideFromCombine: {
             id: `gid://shopify/Metafield/233`,
             value: "false",
+          },
+          active: {
+            id: mockProduct.productDuplicate?.newProduct?.active?.id!,
+            value: "False",
           },
           parentId: {
             id: mockProduct.productDuplicate?.newProduct?.parentId?.id!,
@@ -319,6 +327,10 @@ describe("CustomerProductControllerAdd", () => {
           {
             id: mockProductUpdate.productUpdate?.product?.user?.id,
             value: user.userMetaobjectId,
+          },
+          {
+            id: mockProductUpdate.productUpdate?.product?.active?.id,
+            value: "true",
           },
           {
             id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,

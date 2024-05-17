@@ -90,6 +90,8 @@ export const ScheduleProductZodSchema = z.object({
       value: z.string().optional(),
     })
     .optional(),
+  activeMetafieldId: z.string().optional(),
+  active: BooleanOrString,
   hideFromProfileMetafieldId: z.string().optional(),
   hideFromProfile: BooleanOrString,
   hideFromCombineMetafieldId: z.string().optional(),

@@ -66,6 +66,8 @@ export const CustomerProductServiceAdd = async (
       metaobjectId: shopifyProduct.user?.id,
       value: shopifyProduct.user?.value,
     },
+    activeMetafieldId: shopifyProduct.active?.id,
+    active: false,
     hideFromCombineMetafieldId: shopifyProduct.hideFromCombine?.id,
     hideFromCombine: body.hideFromCombine || false,
     hideFromProfileMetafieldId: shopifyProduct.hideFromProfile?.id,
@@ -126,6 +128,10 @@ export const PRODUCT_FRAGMENT = `#graphql
         compareAtPrice
         price
       }
+    }
+    active: metafield(key: "active", namespace: "system") {
+      id
+      value
     }
     user: metafield(key: "user", namespace: "booking") {
       id
