@@ -249,6 +249,7 @@ describe("CustomerProductServiceAdd", () => {
       },
       {
         ...productBody,
+        description: "test test",
         hideFromCombine: false,
         hideFromProfile: true,
         scheduleId: newSchedule._id,
@@ -268,6 +269,7 @@ describe("CustomerProductServiceAdd", () => {
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(2, PRODUCT_UPDATE, {
       variables: {
         id: mockProduct.productDuplicate?.newProduct?.id,
+        descriptionHtml: updateProduct.description,
         metafields: [
           {
             id: mockProductUpdate.productUpdate?.product?.hideFromProfile?.id,

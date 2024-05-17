@@ -17,7 +17,7 @@ export const CustomerServiceCreate = async (
     variables: {
       input: {
         handle: user.username,
-        title: user.username,
+        title: `User > ${user.username}`,
         ruleSet: {
           appliedDisjunctively: false,
           rules: [

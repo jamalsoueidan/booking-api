@@ -21,6 +21,7 @@ const CustomerProductControllerAddBodySchema = ScheduleProductZodSchema.pick({
   compareAtPrice: true,
   hideFromCombine: true,
   hideFromProfile: true,
+  description: true,
 })
   .extend({
     scheduleId: StringOrObjectId,

@@ -4,6 +4,8 @@ properties:
     type: string
   title:
     type: string
+  description:
+    type: string
   locations:
     $ref: ../../schedule/_types/product-locations.yaml
   scheduleId:
@@ -30,6 +32,7 @@ properties:
 required:
   - parentId
   - title
+  - description
   - scheduleId
   - locations
   - hideFromProfile
