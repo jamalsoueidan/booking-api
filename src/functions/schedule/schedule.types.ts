@@ -109,6 +109,7 @@ export const ScheduleProductZodSchema = z.object({
     currencyCode: z.string().optional(),
   }),
   description: z.string().optional(),
+  descriptionHtml: z.string().optional(),
   durationMetafieldId: z.string().optional(),
   duration: NumberOrString,
   breakTimeMetafieldId: z.string().optional(),

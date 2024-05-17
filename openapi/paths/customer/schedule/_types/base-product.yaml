@@ -6,14 +6,16 @@ properties:
     type: array
     items:
       $ref: "./product-options.yaml"
+  description:
+    type: string
+  descriptionHtml:
+    type: string
   productHandle:
     type: string
   productId:
     type: number
   variantId:
     type: number
-  description:
-    type: string
   hideFromProfile:
     type: boolean
   hideFromCombine:
@@ -59,3 +61,5 @@ required:
   - options
   - hideFromCombine
   - hideFromProfile
+  - description
+  - descriptionHtml

@@ -16,6 +16,7 @@ export type CustomerProductServiceAdd = {
 export type CustomerProductServiceAddBody = Pick<
   ScheduleProduct,
   | "description"
+  | "descriptionHtml"
   | "parentId"
   | "locations"
   | "price"
