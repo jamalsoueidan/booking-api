@@ -185,6 +185,7 @@ export const CustomerProductServiceUpdate = async (
   if (metafields.length > 0) {
     await shopifyAdmin.request(PRODUCT_UPDATE, {
       variables: {
+        title: body.title || oldProduct.title,
         descriptionHtml: body.descriptionHtml || oldProduct.descriptionHtml,
         id: `gid://shopify/Product/${productId}`,
         metafields: [
@@ -267,8 +268,8 @@ export function mergeArraysUnique<T>(
 
 export const PRODUCT_UPDATE = `#graphql
   ${PRODUCT_FRAGMENT}
-  mutation ProductUpdate($id: ID, $metafields: [MetafieldInput!], $tags: [String!], $descriptionHtml: String) {
-    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags, descriptionHtml: $descriptionHtml}) {
+  mutation ProductUpdate($id: ID, $metafields: [MetafieldInput!], $tags: [String!], $title: String, $descriptionHtml: String) {
+    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags, title: $title, descriptionHtml: $descriptionHtml}) {
       product {
         ...ProductFragment
       }
