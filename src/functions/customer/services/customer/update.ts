@@ -43,7 +43,7 @@ export const CustomerServiceUpdate = async (
     if (body.aboutMeHtml && user.aboutMeHtml !== body.aboutMeHtml) {
       fields.push({
         key: "about_me",
-        value: JSON.stringify(body.aboutMeHtml),
+        value: body.aboutMeHtml,
       });
     }
 
