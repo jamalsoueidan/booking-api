@@ -182,7 +182,11 @@ export const CustomerProductServiceUpdate = async (
     ),
   };
 
-  if (metafields.length > 0) {
+  if (
+    metafields.length > 0 ||
+    body.title !== oldProduct.title ||
+    body.descriptionHtml !== oldProduct.descriptionHtml
+  ) {
     await shopifyAdmin.request(PRODUCT_UPDATE, {
       variables: {
         title: body.title || oldProduct.title,
