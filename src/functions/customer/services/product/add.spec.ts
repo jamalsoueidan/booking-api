@@ -27,8 +27,19 @@ describe("CustomerProductServiceAdd", () => {
   let mockProduct: ProductDuplicateMutation;
   let productBody: Pick<
     ScheduleProduct,
-    "parentId" | "locations" | "price" | "compareAtPrice"
+    | "parentId"
+    | "locations"
+    | "price"
+    | "compareAtPrice"
+    | "description"
+    | "descriptionHtml"
+    | "hideFromCombine"
+    | "hideFromProfile"
   > = {
+    description: "test test",
+    descriptionHtml: "<p>test test</p>",
+    hideFromCombine: false,
+    hideFromProfile: true,
     parentId: 8022089105682,
     locations: [
       {
@@ -257,9 +268,6 @@ describe("CustomerProductServiceAdd", () => {
       },
       {
         ...productBody,
-        description: "test test",
-        hideFromCombine: false,
-        hideFromProfile: true,
         scheduleId: newSchedule._id,
         title,
       }
@@ -277,7 +285,7 @@ describe("CustomerProductServiceAdd", () => {
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(2, PRODUCT_UPDATE, {
       variables: {
         id: mockProduct.productDuplicate?.newProduct?.id,
-        descriptionHtml: updateProduct.description,
+        descriptionHtml: updateProduct.descriptionHtml,
         metafields: [
           {
             id: mockProductUpdate.productUpdate?.product?.hideFromProfile?.id,

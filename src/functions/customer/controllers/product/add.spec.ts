@@ -131,6 +131,7 @@ describe("CustomerProductControllerAdd", () => {
       hideFromProfile: true,
       title: "new",
       description: "ok",
+      descriptionHtml: "<b>test</b>",
       scheduleId: newSchedule._id,
       parentId: 1,
       locations: [
@@ -279,7 +280,7 @@ describe("CustomerProductControllerAdd", () => {
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(2, PRODUCT_UPDATE, {
       variables: {
         id: mockProduct.productDuplicate?.newProduct?.id,
-        descriptionHtml: "ok",
+        descriptionHtml: body.descriptionHtml,
         metafields: [
           {
             id: mockProductUpdate.productUpdate?.product?.hideFromProfile?.id,

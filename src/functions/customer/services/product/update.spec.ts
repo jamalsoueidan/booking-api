@@ -141,6 +141,8 @@ describe("CustomerProductServiceUpdate", () => {
           parentId: GidFormat.parse(
             mockProductUpdate.productUpdate?.product?.parentId?.value
           ),
+          description: "test test",
+          descriptionHtml: "<p>test test</p>",
           user: {
             metaobjectId: mockProductUpdate.productUpdate?.product?.user?.id,
             value: mockProductUpdate.productUpdate?.product?.user?.value,
@@ -228,7 +230,7 @@ describe("CustomerProductServiceUpdate", () => {
     expect(shopifyAdmin.request).toHaveBeenNthCalledWith(1, PRODUCT_UPDATE, {
       variables: {
         id: mockProductUpdate.productUpdate?.product?.id,
-        descriptionHtml: updateProduct.description,
+        descriptionHtml: updateProduct.descriptionHtml,
         metafields: [
           {
             id: mockProductUpdate.productUpdate?.product?.duration?.id,

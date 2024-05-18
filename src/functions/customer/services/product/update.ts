@@ -185,7 +185,7 @@ export const CustomerProductServiceUpdate = async (
   if (metafields.length > 0) {
     await shopifyAdmin.request(PRODUCT_UPDATE, {
       variables: {
-        descriptionHtml: body.description || oldProduct.description,
+        descriptionHtml: body.descriptionHtml || oldProduct.descriptionHtml,
         id: `gid://shopify/Product/${productId}`,
         metafields: [
           ...metafields,
