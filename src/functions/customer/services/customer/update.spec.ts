@@ -22,7 +22,7 @@ describe("CustomerService", () => {
     const user = await createUser({ customerId: 123 });
 
     const updatedData = {
-      aboutMe: "test test",
+      aboutMeHtml: "test test",
     };
 
     mockRequest.mockResolvedValueOnce({
@@ -32,7 +32,7 @@ describe("CustomerService", () => {
             fields: [
               {
                 key: "about_me",
-                value: updatedData.aboutMe,
+                value: updatedData.aboutMeHtml,
               },
             ],
           },
@@ -45,6 +45,6 @@ describe("CustomerService", () => {
       updatedData
     );
 
-    expect(updatedUser.aboutMe).toEqual(updatedData.aboutMe);
+    expect(updatedUser.aboutMeHtml).toEqual(updatedData.aboutMeHtml);
   });
 });

@@ -52,6 +52,7 @@ export const UserMongooseSchema = new mongoose.Schema<
       facebook: String,
     },
     aboutMe: String,
+    aboutMeHtml: String,
     gender: String,
     shortDescription: String,
     active: { type: Boolean, default: false, index: true },

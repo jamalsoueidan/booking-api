@@ -67,6 +67,7 @@ export const UserZodSchema = z.object({
     .string()
     .transform((input) => input.replace(/[^a-zA-Z0-9-_]/g, "-").toLowerCase()),
   aboutMe: z.string().optional(),
+  aboutMeHtml: z.string().optional(),
   shortDescription: z.string().optional(),
   gender: z.string().optional(),
   social: z

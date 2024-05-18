@@ -40,10 +40,10 @@ export const CustomerServiceUpdate = async (
       });
     }
 
-    if (body.aboutMe && user.aboutMe !== body.aboutMe) {
+    if (body.aboutMeHtml && user.aboutMeHtml !== body.aboutMeHtml) {
       fields.push({
         key: "about_me",
-        value: JSON.stringify(body.aboutMe),
+        value: JSON.stringify(body.aboutMeHtml),
       });
     }
 

@@ -105,7 +105,7 @@ describe("CustomerServiceCreate", () => {
                 },
                 {
                   key: "about_me",
-                  value: userData.aboutMe,
+                  value: userData.aboutMeHtml,
                 },
                 {
                   key: "professions",
@@ -178,7 +178,7 @@ describe("CustomerServiceCreate", () => {
             },
             {
               key: "about_me",
-              value: user.aboutMe || "",
+              value: user.aboutMeHtml || "",
             },
             {
               key: "professions",

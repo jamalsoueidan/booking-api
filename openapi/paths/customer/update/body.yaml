@@ -20,6 +20,8 @@ properties:
       type: string
   aboutMe:
     type: string
+  aboutMeHtml:
+    type: string
   shortDescription:
     type: string
   gender:

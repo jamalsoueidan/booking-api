@@ -52,7 +52,7 @@ export const CustomerServiceCreate = async (
           },
           {
             key: "about_me",
-            value: user.aboutMe || "",
+            value: user.aboutMeHtml || "",
           },
           {
             key: "professions",
