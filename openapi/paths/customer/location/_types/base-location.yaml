@@ -15,6 +15,10 @@ properties:
     type: string
   fullAddress:
     type: string
+  city:
+    type: string
+  country:
+    type: string
 
 required:
   - metafieldId
@@ -23,3 +27,5 @@ required:
   - customerId
   - name
   - fullAddress
+  - city
+  - country
