@@ -1,5 +1,7 @@
 type: object
 properties:
+  metafieldId:
+    type: string
   locationType:
     type: string
     enum: [origin, destination]
@@ -15,6 +17,7 @@ properties:
     type: string
 
 required:
+  - metafieldId
   - locationType
   - originType
   - customerId

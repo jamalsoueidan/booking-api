@@ -1,6 +1,9 @@
 import { faker } from "@faker-js/faker";
 
-import { createLocation } from "~/library/jest/helpers/location";
+import {
+  createLocation,
+  getDumbLocationObject,
+} from "~/library/jest/helpers/location";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { CustomerLocationServiceGetProducts } from "./get-products";
@@ -20,11 +23,11 @@ describe("CustomerLocationServiceGetProducts", () => {
         {
           ...getProductObject({
             locations: [
-              {
+              getDumbLocationObject({
                 location: location1._id,
                 locationType: location1.locationType,
                 originType: location1.originType,
-              },
+              }),
             ],
           }),
         },
@@ -38,11 +41,11 @@ describe("CustomerLocationServiceGetProducts", () => {
         {
           ...getProductObject({
             locations: [
-              {
+              getDumbLocationObject({
                 location: location1._id,
                 locationType: location1.locationType,
                 originType: location1.originType,
-              },
+              }),
             ],
           }),
         },

@@ -2,7 +2,10 @@ import { faker } from "@faker-js/faker";
 import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { LocationTypes } from "~/functions/location";
 import { createUser } from "~/library/jest/helpers";
-import { createLocation } from "~/library/jest/helpers/location";
+import {
+  createLocation,
+  getDumbLocationObject,
+} from "~/library/jest/helpers/location";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { UserProductsServiceListProductsByLocation } from "./list-by-location";
 
@@ -23,14 +26,14 @@ describe("UserProductsServiceListProductsByLocation", () => {
 
     const product1 = getProductObject({
       locations: [
-        {
+        getDumbLocationObject({
           location: locationOrigin._id,
           ...locationOrigin,
-        },
-        {
+        }),
+        getDumbLocationObject({
           location: locationDestination._id,
           ...locationDestination,
-        },
+        }),
       ],
     });
 
@@ -41,10 +44,10 @@ describe("UserProductsServiceListProductsByLocation", () => {
         product1,
         getProductObject({
           locations: [
-            {
+            getDumbLocationObject({
               location: locationOrigin._id,
               ...locationOrigin,
-            },
+            }),
           ],
         }),
       ],
@@ -76,40 +79,40 @@ describe("UserProductsServiceListProductsByLocation", () => {
 
     const product1 = getProductObject({
       locations: [
-        {
+        getDumbLocationObject({
           location: locationOrigin._id,
           ...locationOrigin,
-        },
-        {
+        }),
+        getDumbLocationObject({
           location: locationDestination._id,
           ...locationDestination,
-        },
+        }),
       ],
     });
 
     const product2 = getProductObject({
       locations: [
-        {
+        getDumbLocationObject({
           location: locationOrigin._id,
           ...locationOrigin,
-        },
-        {
+        }),
+        getDumbLocationObject({
           location: locationDestination._id,
           ...locationDestination,
-        },
+        }),
       ],
     });
 
     const product3 = getProductObject({
       locations: [
-        {
+        getDumbLocationObject({
           location: locationOrigin._id,
           ...locationOrigin,
-        },
-        {
+        }),
+        getDumbLocationObject({
           location: locationDestination._id,
           ...locationDestination,
-        },
+        }),
       ],
     });
 

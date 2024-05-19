@@ -15,6 +15,7 @@ import { ShippingModel } from "~/functions/shipping/shipping.model";
 import { arrayElements, createUser } from "~/library/jest/helpers";
 import {
   createLocation,
+  getDumbLocationObject,
   getLocationObject,
 } from "~/library/jest/helpers/location";
 import { getOrderObject } from "~/library/jest/helpers/order";
@@ -84,14 +85,14 @@ describe("UserAvailabilityServiceGenerate", () => {
         totalProducts: 2,
         days,
         locations: [
-          {
+          getDumbLocationObject({
             location: locationOrigin._id,
             ...locationOrigin,
-          },
-          {
+          }),
+          getDumbLocationObject({
             location: locationDestination._id,
             ...locationDestination,
-          },
+          }),
         ],
       }
     );
@@ -324,16 +325,16 @@ describe("UserAvailabilityServiceGenerate", () => {
         days,
         totalProducts: 2,
         locations: [
-          {
+          getDumbLocationObject({
             location: locationOrigin._id,
             locationType: locationOrigin.locationType,
             originType: locationOrigin.originType,
-          },
-          {
+          }),
+          getDumbLocationObject({
             location: locationDestination._id,
             locationType: locationDestination.locationType,
             originType: locationDestination.originType,
-          },
+          }),
         ],
       }
     );

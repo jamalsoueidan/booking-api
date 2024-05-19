@@ -2,7 +2,10 @@ import { faker } from "@faker-js/faker";
 import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { LocationTypes } from "~/functions/location";
 import { createUser } from "~/library/jest/helpers";
-import { createLocation } from "~/library/jest/helpers/location";
+import {
+  createLocation,
+  getDumbLocationObject,
+} from "~/library/jest/helpers/location";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { UserScheduleServiceGetByProductId } from "./get-by-product";
 
@@ -23,14 +26,14 @@ describe("UserScheduleServiceGetByProductId", () => {
 
     const product = getProductObject({
       locations: [
-        {
+        getDumbLocationObject({
           location: locationOrigin._id,
           ...locationOrigin,
-        },
-        {
+        }),
+        getDumbLocationObject({
           location: locationDestination._id,
           ...locationDestination,
-        },
+        }),
       ],
     });
 
@@ -41,18 +44,18 @@ describe("UserScheduleServiceGetByProductId", () => {
         product,
         getProductObject({
           locations: [
-            {
+            getDumbLocationObject({
               location: locationOrigin._id,
               ...locationOrigin,
-            },
+            }),
           ],
         }),
         getProductObject({
           locations: [
-            {
+            getDumbLocationObject({
               location: locationOrigin._id,
               ...locationOrigin,
-            },
+            }),
           ],
         }),
       ],
@@ -65,10 +68,10 @@ describe("UserScheduleServiceGetByProductId", () => {
       products: [
         getProductObject({
           locations: [
-            {
+            getDumbLocationObject({
               location: locationOrigin._id,
               ...locationOrigin,
-            },
+            }),
           ],
         }),
       ],

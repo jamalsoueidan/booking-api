@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 import { LocationOriginTypes, LocationTypes } from "~/functions/location";
+import { getDumbLocationObject } from "~/library/jest/helpers/location";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { CustomerScheduleServiceGet } from "../schedule/get";
@@ -21,32 +22,32 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
         {
           ...getProductObject({
             locations: [
-              {
+              getDumbLocationObject({
                 location: locationRemoveId,
                 locationType: LocationTypes.ORIGIN,
                 originType: LocationOriginTypes.COMMERCIAL,
-              },
-              {
+              }),
+              getDumbLocationObject({
                 location: new mongoose.Types.ObjectId(),
                 locationType: LocationTypes.ORIGIN,
                 originType: LocationOriginTypes.COMMERCIAL,
-              },
+              }),
             ],
           }),
         },
         {
           ...getProductObject({
             locations: [
-              {
+              getDumbLocationObject({
                 location: locationRemoveId,
                 locationType: LocationTypes.ORIGIN,
                 originType: LocationOriginTypes.COMMERCIAL,
-              },
-              {
+              }),
+              getDumbLocationObject({
                 location: new mongoose.Types.ObjectId(),
                 locationType: LocationTypes.ORIGIN,
                 originType: LocationOriginTypes.COMMERCIAL,
-              },
+              }),
             ],
           }),
         },
@@ -60,11 +61,11 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
         {
           ...getProductObject({
             locations: [
-              {
+              getDumbLocationObject({
                 location: locationRemoveId,
                 locationType: LocationTypes.ORIGIN,
                 originType: LocationOriginTypes.COMMERCIAL,
-              },
+              }),
             ],
           }),
         },

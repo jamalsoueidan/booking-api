@@ -10,10 +10,18 @@ import { User } from "~/functions/user";
 
 export const DEFAULT_GROUP = "all";
 
-export const getDumbLocationObject = () => ({
+export const getDumbLocationObject = (
+  props: Partial<
+    Pick<Location, "metafieldId" | "locationType" | "originType"> & {
+      location: any;
+    }
+  > = {}
+) => ({
+  metafieldId: `gid://${faker.number.int({ min: 1, max: 5 })}`,
   location: new mongoose.Types.ObjectId(),
   locationType: LocationTypes.DESTINATION,
   originType: LocationOriginTypes.COMMERCIAL,
+  ...props,
 });
 
 export const getLocationObject = (props: Partial<Location> = {}): Location => ({

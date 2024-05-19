@@ -136,6 +136,7 @@ describe("CustomerProductControllerAdd", () => {
       parentId: 1,
       locations: [
         {
+          metafieldId: "1",
           location: new mongoose.Types.ObjectId(),
           locationType: LocationTypes.DESTINATION,
           originType: LocationOriginTypes.COMMERCIAL,
