@@ -107,7 +107,7 @@ describe("CustomerProductServiceAdd", () => {
           },
           locations: {
             id: "gid://shopify/Metafield/44429081411911",
-            value: "{}",
+            value: "[]",
           },
           bookingPeriodValue: {
             id: "gid://shopify/Metafield/44429081313607",
@@ -195,7 +195,9 @@ describe("CustomerProductServiceAdd", () => {
           },
           locations: {
             id: mockProduct.productDuplicate?.newProduct?.locations?.id!,
-            value: '{"locations":[]}',
+            value: JSON.stringify(
+              productBody.locations.map((l) => l.metafieldId)
+            ),
           },
           user: {
             id: mockProduct.productDuplicate?.newProduct?.user?.id!,
@@ -330,7 +332,9 @@ describe("CustomerProductServiceAdd", () => {
           },
           {
             id: mockProductUpdate.productUpdate?.product?.locations?.id,
-            value: JSON.stringify(productBody.locations),
+            value: JSON.stringify(
+              productBody.locations.map((l) => l.metafieldId)
+            ),
           },
           {
             id: mockProductUpdate.productUpdate?.product?.user?.id,

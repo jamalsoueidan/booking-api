@@ -120,7 +120,7 @@ export const CustomerProductServiceUpdate = async (
       ? [
           {
             id: oldProduct?.locationsMetafieldId,
-            value: JSON.stringify(body.locations),
+            value: JSON.stringify(body.locations.map((p) => p.metafieldId)),
           },
         ]
       : []),

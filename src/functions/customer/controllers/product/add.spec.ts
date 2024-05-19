@@ -126,6 +126,15 @@ describe("CustomerProductControllerAdd", () => {
       customerId,
     });
 
+    const locations = [
+      {
+        metafieldId: "1",
+        location: new mongoose.Types.ObjectId(),
+        locationType: LocationTypes.DESTINATION,
+        originType: LocationOriginTypes.COMMERCIAL,
+      },
+    ];
+
     const body: CustomerProductControllerAddRequest["body"] = {
       hideFromCombine: false,
       hideFromProfile: true,
@@ -134,14 +143,7 @@ describe("CustomerProductControllerAdd", () => {
       descriptionHtml: "<b>test</b>",
       scheduleId: newSchedule._id,
       parentId: 1,
-      locations: [
-        {
-          metafieldId: "1",
-          location: new mongoose.Types.ObjectId(),
-          locationType: LocationTypes.DESTINATION,
-          originType: LocationOriginTypes.COMMERCIAL,
-        },
-      ],
+      locations,
       price: {
         amount: "100",
         currencyCode: "DKK",
@@ -204,7 +206,7 @@ describe("CustomerProductControllerAdd", () => {
           },
           locations: {
             id: mockProduct.productDuplicate?.newProduct?.locations?.id!,
-            value: '{"locations":[]}',
+            value: JSON.stringify(locations.map((l) => l.metafieldId)),
           },
           bookingPeriodValue: {
             id: mockProduct.productDuplicate?.newProduct?.bookingPeriodValue
@@ -325,7 +327,7 @@ describe("CustomerProductControllerAdd", () => {
           },
           {
             id: mockProductUpdate.productUpdate?.product?.locations?.id,
-            value: JSON.stringify(body.locations),
+            value: JSON.stringify(locations.map((l) => l.metafieldId)),
           },
           {
             id: mockProductUpdate.productUpdate?.product?.user?.id,
