@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import mongoose from "mongoose";
 import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
+import { getDumbLocationObject } from "./location";
 
 export const getProductObject = (
   props: Partial<ScheduleProduct> = {}
@@ -35,11 +36,11 @@ export const getProductObject = (
   },
   description: faker.commerce.productDescription(),
   locations: [
-    {
+    getDumbLocationObject({
       location: new mongoose.Types.ObjectId(),
       locationType: LocationTypes.DESTINATION,
       originType: LocationOriginTypes.COMMERCIAL,
-    },
+    }),
   ],
   ...props,
 });

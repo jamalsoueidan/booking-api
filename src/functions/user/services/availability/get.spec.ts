@@ -4,7 +4,10 @@ import { LocationTypes } from "~/functions/location";
 
 import { SlotWeekDays } from "~/functions/schedule";
 import { arrayElements, createUser } from "~/library/jest/helpers";
-import { createLocation } from "~/library/jest/helpers/location";
+import {
+  createLocation,
+  getDumbLocationObject,
+} from "~/library/jest/helpers/location";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { UserAvailabilityServiceGenerate } from "./generate";
 import { UserAvailabilityServiceGet } from "./get";
@@ -67,14 +70,14 @@ describe("UserAvailabilityServiceGet", () => {
         totalProducts: 2,
         days,
         locations: [
-          {
+          getDumbLocationObject({
             location: locationOrigin._id,
             ...locationOrigin,
-          },
-          {
+          }),
+          getDumbLocationObject({
             location: locationDestination._id,
             ...locationDestination,
-          },
+          }),
         ],
       }
     );

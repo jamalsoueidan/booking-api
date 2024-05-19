@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import { ScheduleProduct } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
+import { getDumbLocationObject } from "~/library/jest/helpers/location";
 import { shopifyAdmin } from "~/library/shopify";
 import {
   ProductDuplicateMutation,
@@ -42,11 +43,11 @@ describe("CustomerProductServiceAdd", () => {
     hideFromProfile: true,
     parentId: 8022089105682,
     locations: [
-      {
+      getDumbLocationObject({
         location: new mongoose.Types.ObjectId(),
         locationType: LocationTypes.DESTINATION,
         originType: LocationOriginTypes.COMMERCIAL,
-      },
+      }),
     ],
     price: {
       amount: "100",
