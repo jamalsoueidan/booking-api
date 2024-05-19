@@ -101,6 +101,12 @@ app.http("webhookCustomerUpdate", {
     context.log(
       `Customer Update, customerId = '${customerId}', active = '${active}', updated`
     );
+    /*
+    TODO:
+    should disable products?
+    should disable content metafields?
+    maybe use Shopify Flow?
+    */
     return { body: "" };
   },
 });

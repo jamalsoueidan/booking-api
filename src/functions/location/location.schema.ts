@@ -19,6 +19,7 @@ export const LocationMongooseSchema = new mongoose.Schema<
 >(
   {
     isDefault: { type: Boolean, default: false },
+    metafieldId: String,
     locationType: {
       type: String,
       enum: [LocationTypes.DESTINATION, LocationTypes.ORIGIN],
