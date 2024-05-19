@@ -1795,11 +1795,6 @@ components:
           type: number
         fullname:
           type: string
-        email:
-          type: string
-          format: email
-        phone:
-          type: string
         username:
           type: string
           pattern: '^[a-zA-Z0-9-_]+$'
@@ -1826,8 +1821,6 @@ components:
         - customerId
         - fullname
         - username
-        - email
-        - phone
         - professions
         - aboutMe
         - aboutMeHtml
