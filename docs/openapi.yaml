@@ -1938,6 +1938,10 @@ components:
           type: string
         fullAddress:
           type: string
+        city:
+          type: string
+        country:
+          type: string
       required:
         - metafieldId
         - locationType
@@ -1945,6 +1949,8 @@ components:
         - customerId
         - name
         - fullAddress
+        - city
+        - country
     CustomerLocation:
       type: object
       allOf:
