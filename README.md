@@ -11,7 +11,6 @@ For each user, we create a new collection that contains all their services. We a
 TODO:
 
 - We need to move the **booking time** to the browser, returning only the booked time range.
-- We need to determine if we can store user data in Shopify content metafields.
 
 ## Setup
 
