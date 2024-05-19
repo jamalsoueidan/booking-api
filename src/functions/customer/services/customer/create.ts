@@ -2,9 +2,17 @@ import { User, UserModel } from "~/functions/user";
 import { ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 
-export type CustomerServiceCreateBody = Omit<
+export type CustomerServiceCreateBody = Pick<
   User,
-  "_id" | "active" | "isBusiness"
+  | "customerId"
+  | "fullname"
+  | "username"
+  | "professions"
+  | "aboutMe"
+  | "aboutMeHtml"
+  | "shortDescription"
+  | "gender"
+  | "speaks"
 >;
 
 export const CustomerServiceCreate = async (
