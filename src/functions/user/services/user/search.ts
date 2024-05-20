@@ -66,6 +66,7 @@ export const UserServiceSearch = async (
       $match: {
         "locations.city": filters.location.city,
         "locations.locationType": filters.location.locationType,
+        "locations.deletedAt": null,
       },
     });
   }
@@ -94,6 +95,23 @@ export const UserServiceSearch = async (
   }
 
   pipeline.push({
+    $group: {
+      _id: "$_id",
+      name: { $first: "$name" },
+      customerId: { $first: "$customerId" },
+      username: { $first: "$username" },
+      fullname: { $first: "$fullname" },
+      specialties: { $first: "$specialties" },
+      shortDescription: { $first: "$shortDescription" },
+      images: { $first: "$images" },
+      speaks: { $first: "$speaks" },
+      createdAt: { $first: "$createdAt" },
+      locations: { $push: "$locations" },
+      schedules: { $push: "$schedules" },
+    },
+  });
+
+  pipeline.push({
     $project: {
       _id: "$_id",
       name: 1,
@@ -105,8 +123,8 @@ export const UserServiceSearch = async (
       images: 1,
       speaks: 1,
       createdAt: 1,
-      "locations.city": 1,
-      "locations.country": 1,
+      locations: 1,
+      schedules: 1,
     },
   });
 
@@ -134,7 +152,9 @@ export const UserServiceSearch = async (
   });
 
   const users = await UserModel.aggregate<{
-    results: Array<User & { locations: Pick<Location, "city" | "country"> }>;
+    results: Array<
+      User & { locations: Array<Pick<Location, "city" | "country">> }
+    >;
     totalCount: Array<{ count: number } | undefined>;
   }>(pipeline);
 

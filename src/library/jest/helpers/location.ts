@@ -25,6 +25,7 @@ export const getDumbLocationObject = (
 });
 
 export const getLocationObject = (props: Partial<Location> = {}): Location => ({
+  metafieldId: "1",
   name: faker.person.firstName(),
   customerId: faker.number.int({ min: 1, max: 100000 }),
   locationType: LocationTypes.ORIGIN,

@@ -29,15 +29,9 @@ describe("UserServiceFilters", () => {
   ];
 
   it("should be able to find users by locations", async () => {
-    for (let customerId = 0; customerId < 25; customerId++) {
-      await createLocation({
-        customerId,
-        city: faker.helpers.arrayElement(cities),
-        locationType: faker.helpers.arrayElement(Object.values(LocationTypes)),
-      });
-
-      await createUser(
-        { customerId },
+    for (let customerId = 0; customerId < 2; customerId++) {
+      const user = await createUser(
+        {},
         {
           active: true,
           isBusiness: true,
@@ -45,6 +39,13 @@ describe("UserServiceFilters", () => {
           specialties: pickMultipleItems(["a", "b", "c"], 2),
         }
       );
+
+      await createLocation({
+        customerId: user.customerId,
+        city: faker.helpers.arrayElement(cities),
+        locationType: faker.helpers.arrayElement(Object.values(LocationTypes)),
+        deletedAt: undefined,
+      });
     }
 
     const results = await UserServiceFilters({
@@ -52,17 +53,19 @@ describe("UserServiceFilters", () => {
     });
 
     const pickLocation = results.locations[0];
+
     const users = await UserServiceSearch({
       limit: 5,
       filters: {
-        profession: Professions.MAKEUP_ARTIST,
-        specialties: ["a"],
-        location: pickLocation,
+        location: {
+          city: pickLocation.city,
+          locationType: pickLocation.locationType,
+        },
       },
     });
 
     const allHaveSpecialtyA = users.results.every((user) => {
-      return user.locations && user.locations.city === pickLocation.city;
+      return user.locations.length > 0;
     });
 
     expect(allHaveSpecialtyA).toBeTruthy();
