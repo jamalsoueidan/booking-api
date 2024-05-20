@@ -34,6 +34,11 @@ const locationsFacet = [
   },
   { $unwind: "$locations" },
   {
+    $match: {
+      "locations.deletedAt": null,
+    },
+  },
+  {
     $group: {
       _id: {
         city: "$locations.city",
