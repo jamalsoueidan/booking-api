@@ -13,9 +13,12 @@ properties:
         type: string
       locationType:
         type: string
+      originType:
+        type: string
     required:
       - city
       - locationType
+      - originType
   days:
     type: array
     items:
