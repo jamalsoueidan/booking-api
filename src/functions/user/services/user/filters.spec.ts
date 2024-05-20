@@ -60,6 +60,7 @@ describe("UserServiceFilters", () => {
         location: {
           city: pickLocation.city,
           locationType: pickLocation.locationType,
+          originType: pickLocation.originType,
         },
       },
     });

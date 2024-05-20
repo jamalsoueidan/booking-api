@@ -102,6 +102,7 @@ describe("UserServiceSearch", () => {
         location: {
           city: location!.city,
           locationType: location!.locationType,
+          originType: location!.originType,
         },
       },
     });
