@@ -63,10 +63,10 @@ export const CustomerLocationServiceUpdate = async (
     ])
   );
 
-  if (body.metafieldId) {
+  if (updateLocation.metafieldId) {
     await shopifyAdmin.request(UPDATE_LOCATION_METAOBJECT, {
       variables: {
-        id: updateLocation.metafieldId || "",
+        id: updateLocation.metafieldId,
         fields: [
           {
             key: "location_type",

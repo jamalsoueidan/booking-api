@@ -27,6 +27,7 @@ export const ScheduleMongooseSchema = new Schema<
       type: Number,
       index: true,
     },
+    metafieldId: String,
     slots: [SlotSchema],
     products: [ProductSchema],
   },

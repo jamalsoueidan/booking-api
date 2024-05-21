@@ -217,6 +217,7 @@ export const ScheduleSlotsZodSchema = z
 export const ScheduleZodSchema = z.object({
   _id: StringOrObjectId,
   name: z.string(),
+  metafieldId: z.string().optional(),
   customerId: GidFormat,
   slots: ScheduleSlotsZodSchema,
   products: z.array(ScheduleProductZodSchema),
