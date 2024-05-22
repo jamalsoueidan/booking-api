@@ -7,7 +7,10 @@ import {
 } from "~/library/jest/azure";
 
 import { SlotWeekDays } from "~/functions/schedule";
+import { ensureType } from "~/library/jest/helpers/mock";
 import { createSchedule } from "~/library/jest/helpers/schedule";
+import { shopifyAdmin } from "~/library/shopify";
+import { UpdateScheduleMetaobjectMutation } from "~/types/admin.generated";
 import {
   CustomerScheduleSlotControllerUpdate,
   CustomerScheduleSlotControllerUpdateRequest,
@@ -15,6 +18,14 @@ import {
 } from "./update";
 
 require("~/library/jest/mongoose/mongodb.jest");
+
+jest.mock("@shopify/admin-api-client", () => ({
+  createAdminApiClient: () => ({
+    request: jest.fn(),
+  }),
+}));
+
+const mockRequest = shopifyAdmin.request as jest.Mock;
 
 describe("CustomerScheduleSlotControllerUpdate", () => {
   let context: InvocationContext;
@@ -44,6 +55,25 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
           },
         ],
       };
+
+    mockRequest.mockResolvedValueOnce({
+      data: ensureType<UpdateScheduleMetaobjectMutation>({
+        metaobjectUpdate: {
+          metaobject: {
+            fields: [
+              {
+                value: newSchedule.name,
+                key: "name",
+              },
+              {
+                value: JSON.stringify(updatedScheduleData.slots),
+                key: "slots",
+              },
+            ],
+          },
+        },
+      }),
+    });
 
     request =
       await createHttpRequest<CustomerScheduleSlotControllerUpdateRequest>({
