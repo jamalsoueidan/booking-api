@@ -2,7 +2,7 @@ import { SlotWeekDays } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
 import { arrayElements, createUser } from "~/library/jest/helpers";
 import { getDumbLocationObject } from "~/library/jest/helpers/location";
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import { UserScheduleServiceGetWithCustomer } from "./get-with-customer";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -15,7 +15,7 @@ describe("UserScheduleServiceGetWithCustomer", () => {
     await createUser({ customerId });
 
     // test with one known productId and one unknown
-    const schedule1 = await createSchedule(
+    const schedule1 = await createScheduleWithProducts(
       {
         customerId,
       },
@@ -39,7 +39,7 @@ describe("UserScheduleServiceGetWithCustomer", () => {
     ).rejects.toThrow(NotFoundError);
 
     // test with real productIds
-    const schedule2 = await createSchedule(
+    const schedule2 = await createScheduleWithProducts(
       {
         customerId,
       },

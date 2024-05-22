@@ -8,7 +8,7 @@ import {
 } from "~/library/jest/azure";
 
 import { getProductObject } from "~/library/jest/helpers/product";
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import {
   CustomerProductControllerDestroy,
@@ -47,7 +47,7 @@ describe("CustomerProductControllerDestroy", () => {
   });
 
   it("should be able to destroy schedule", async () => {
-    const newSchedule = await createSchedule({
+    const newSchedule = await createScheduleWithProducts({
       name: "adsasd",
       customerId: 123,
       products: [product],

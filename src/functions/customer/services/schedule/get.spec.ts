@@ -1,5 +1,5 @@
 import { NotFoundError } from "~/library/handler";
-import { CustomerScheduleServiceCreate } from "./create";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { CustomerScheduleServiceGet } from "./get";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -9,7 +9,7 @@ describe("CustomerScheduleServiceGet", () => {
   const name = "Test Schedule";
 
   it("should return a specific schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name,
       customerId,
     });
@@ -24,7 +24,7 @@ describe("CustomerScheduleServiceGet", () => {
   });
 
   it("should throw NotFoundError when trying to get schedule that is not found", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name,
       customerId,
     });

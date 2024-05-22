@@ -8,7 +8,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import {
   CustomerProductControllerGet,
   CustomerProductControllerGetRequest,
@@ -39,7 +39,7 @@ describe("CustomerProductControllerGet", () => {
   });
 
   it("should be able to get schedule", async () => {
-    const newSchedule = await createSchedule({
+    const newSchedule = await createScheduleWithProducts({
       name: "asd",
       customerId: 123,
       products: [product],

@@ -1,6 +1,6 @@
 import { TimeUnit } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import { CustomerProductsServiceList } from "./list";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -23,7 +23,7 @@ describe("CustomerProductsServiceList", () => {
       },
     });
 
-    await createSchedule({
+    await createScheduleWithProducts({
       name: "ab",
       customerId,
       products: [
@@ -32,7 +32,7 @@ describe("CustomerProductsServiceList", () => {
       ],
     });
 
-    await createSchedule({
+    await createScheduleWithProducts({
       name: "ab2",
       customerId,
       products: [

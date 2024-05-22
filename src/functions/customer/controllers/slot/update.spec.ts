@@ -7,7 +7,7 @@ import {
 } from "~/library/jest/azure";
 
 import { SlotWeekDays } from "~/functions/schedule";
-import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import {
   CustomerScheduleSlotControllerUpdate,
   CustomerScheduleSlotControllerUpdateRequest,
@@ -25,7 +25,7 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
   });
 
   it("should be able to update slots schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "asd",
       customerId: 123,
     });
@@ -62,7 +62,7 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
   });
 
   it("should throw error with duplcaited days within slots", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "asd",
       customerId: 123,
     });
@@ -110,7 +110,7 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
   });
 
   it("should throw error with incorrect intervals within slots", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "asd",
       customerId: 123,
     });
@@ -149,7 +149,7 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
   });
 
   it("should throw error with intervals overlapping within slots", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "asd",
       customerId: 123,
     });

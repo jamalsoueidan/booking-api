@@ -9,6 +9,7 @@ import {
 import mongoose from "mongoose";
 import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import { createUser } from "~/library/jest/helpers";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
 import {
@@ -17,7 +18,6 @@ import {
   ProductUpdateMutation,
 } from "~/types/admin.generated";
 import { PRODUCT_UPDATE } from "../../services/product/update";
-import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
 import {
   CustomerProductControllerAdd,
   CustomerProductControllerAddRequest,
@@ -121,7 +121,7 @@ describe("CustomerProductControllerAdd", () => {
   it("should be able to add slots schedule", async () => {
     const user = await createUser({ customerId });
 
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "asd",
       customerId,
     });

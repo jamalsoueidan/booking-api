@@ -11,7 +11,7 @@ import {
   createLocation,
   getDumbLocationObject,
 } from "~/library/jest/helpers/location";
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import { pickMultipleItems } from "~/library/jest/utils/utils";
 import { Professions } from "../../user.types";
 
@@ -38,7 +38,7 @@ describe("UserServiceSearch", () => {
         locationType: faker.helpers.arrayElement(Object.values(LocationTypes)),
       });
 
-      await createSchedule(
+      await createScheduleWithProducts(
         { customerId },
         {
           days: [

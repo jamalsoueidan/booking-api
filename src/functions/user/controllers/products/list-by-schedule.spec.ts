@@ -10,7 +10,7 @@ import {
 
 import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import {
   UserProductsControllerListBySchedule,
   UserProductsControllerListByScheduleRequest,
@@ -43,13 +43,13 @@ describe("UserProductsControllerListBySchedule", () => {
       { username: "jamalsoueidan", isBusiness: true, active: true }
     );
 
-    const newSchedule = await createSchedule({
+    const newSchedule = await createScheduleWithProducts({
       name: "vagtplan",
       customerId: user.customerId,
       products: [{ ...newProduct, productId: 1000 }],
     });
 
-    const newSchedule2 = await createSchedule({
+    const newSchedule2 = await createScheduleWithProducts({
       name: "vagtplan2",
       customerId: user.customerId,
       products: [
@@ -77,13 +77,13 @@ describe("UserProductsControllerListBySchedule", () => {
       { username: "jamalsoueidan", isBusiness: true, active: true }
     );
 
-    const newSchedule = await createSchedule({
+    const newSchedule = await createScheduleWithProducts({
       name: "vagtplan",
       customerId: user.customerId,
       products: [{ ...newProduct, productId: 1000 }],
     });
 
-    const newSchedule2 = await createSchedule({
+    const newSchedule2 = await createScheduleWithProducts({
       name: "vagtplan2",
       customerId: user.customerId,
       products: [

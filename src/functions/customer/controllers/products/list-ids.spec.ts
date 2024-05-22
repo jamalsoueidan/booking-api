@@ -8,7 +8,7 @@ import {
 } from "~/library/jest/azure";
 import { getProductObject } from "~/library/jest/helpers/product";
 
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import {
   CustomerProductsControllerListIds,
   CustomerProductsControllerListIdsRequest,
@@ -37,13 +37,13 @@ describe("CustomerProductsServiceListIds", () => {
       },
     });
 
-    const newSchedule = await createSchedule({
+    const newSchedule = await createScheduleWithProducts({
       name: "adsasd",
       customerId,
       products: [{ ...newProduct, productId: 1000 }],
     });
 
-    const newSchedule2 = await createSchedule({
+    const newSchedule2 = await createScheduleWithProducts({
       name: "ads3sd",
       customerId,
       products: [

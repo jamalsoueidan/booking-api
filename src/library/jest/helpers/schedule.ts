@@ -49,10 +49,31 @@ export const getScheduleObject = (
   };
 };
 
-export const createSchedule = (
+export const createScheduleWithProducts = (
   props: Partial<Omit<Schedule, "_id">> = {},
   choices: Choices = {}
 ) => {
   const schedule = new ScheduleModel(getScheduleObject(props, choices));
+  return schedule.save();
+};
+
+export const createSchedule = (props: Partial<Omit<Schedule, "_id">> = {}) => {
+  const schedule = new ScheduleModel({
+    name: faker.word.sample(),
+    customerId: faker.number.int(),
+    slots: [
+      {
+        day: "monday",
+        intervals: [
+          {
+            from: "08:00",
+            to: "16:00",
+          },
+        ],
+      },
+    ],
+    products: [],
+    ...props,
+  });
   return schedule.save();
 };

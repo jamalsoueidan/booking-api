@@ -6,7 +6,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
-import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import {
   CustomerScheduleControllerUpdate,
   CustomerScheduleControllerUpdateRequest,
@@ -24,7 +24,7 @@ describe("CustomerScheduleControllerUpdate", () => {
   });
 
   it("should be able to update slots schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "asd",
       customerId: 123,
     });

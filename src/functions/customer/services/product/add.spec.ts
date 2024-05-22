@@ -3,13 +3,13 @@ import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import { ScheduleProduct } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
 import { getDumbLocationObject } from "~/library/jest/helpers/location";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import {
   ProductDuplicateMutation,
   ProductPricepdateMutation,
   ProductUpdateMutation,
 } from "~/types/admin.generated";
-import { CustomerScheduleServiceCreate } from "../schedule/create";
 import { GidFormat } from "./../../../../library/zod/index";
 import { CustomerProductServiceAdd, PRODUCT_DUPLCATE } from "./add";
 import { PRODUCT_PRICE_UPDATE, PRODUCT_UPDATE } from "./update";
@@ -142,7 +142,7 @@ describe("CustomerProductServiceAdd", () => {
     const customerId = 123;
     const user = await createUser({ customerId });
 
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "Test Schedule",
       customerId,
     });

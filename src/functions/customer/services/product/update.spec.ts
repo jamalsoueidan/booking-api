@@ -1,7 +1,7 @@
 import { TimeUnit } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import { BooleanOrString, GidFormat } from "~/library/zod";
 import {
@@ -133,7 +133,7 @@ describe("CustomerProductServiceUpdate", () => {
   it("should update an existing product in the schedule", async () => {
     const user = await createUser({ customerId });
 
-    const newSchedule = await createSchedule({
+    const newSchedule = await createScheduleWithProducts({
       name,
       customerId,
       products: [

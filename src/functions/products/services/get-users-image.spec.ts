@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { UserProductsServiceGetUsersImage } from "./get-users-image";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -14,7 +14,7 @@ describe("UserProductsServiceGetUsersImage", () => {
 
     const user1 = await createUser({ customerId: 1 });
 
-    await CustomerScheduleServiceCreate({
+    await createSchedule({
       name: faker.person.firstName(),
       customerId: user1.customerId,
       products: [product1, product2],
@@ -22,7 +22,7 @@ describe("UserProductsServiceGetUsersImage", () => {
 
     const user2 = await createUser({ customerId: 2 });
 
-    await CustomerScheduleServiceCreate({
+    await createSchedule({
       name: faker.person.firstName(),
       customerId: user2.customerId,
       products: [product1, product2],
@@ -55,7 +55,7 @@ describe("UserProductsServiceGetUsersImage", () => {
 
     const user1 = await createUser({ customerId: 1 });
 
-    await CustomerScheduleServiceCreate({
+    await createSchedule({
       name: faker.person.firstName(),
       customerId: user1.customerId,
       products: [product1, product2],
@@ -63,7 +63,7 @@ describe("UserProductsServiceGetUsersImage", () => {
 
     const user2 = await createUser({ customerId: 2 });
 
-    await CustomerScheduleServiceCreate({
+    await createSchedule({
       name: faker.person.firstName(),
       customerId: user2.customerId,
       products: [product1, product2],
@@ -71,7 +71,7 @@ describe("UserProductsServiceGetUsersImage", () => {
 
     const user3 = await createUser({ customerId: 3 });
 
-    await CustomerScheduleServiceCreate({
+    await createSchedule({
       name: faker.person.firstName(),
       customerId: user3.customerId,
       products: [product1, product2],
@@ -79,7 +79,7 @@ describe("UserProductsServiceGetUsersImage", () => {
 
     const user4 = await createUser({ customerId: 4 });
 
-    await CustomerScheduleServiceCreate({
+    await createSchedule({
       name: faker.person.firstName(),
       customerId: user4.customerId,
       products: [product2],
@@ -87,7 +87,7 @@ describe("UserProductsServiceGetUsersImage", () => {
 
     const user5 = await createUser({ customerId: 5 });
 
-    await CustomerScheduleServiceCreate({
+    await createSchedule({
       name: faker.person.firstName(),
       customerId: user5.customerId,
       products: [product2],
@@ -95,7 +95,7 @@ describe("UserProductsServiceGetUsersImage", () => {
 
     const user6 = await createUser({ customerId: 6 });
 
-    await CustomerScheduleServiceCreate({
+    await createSchedule({
       name: faker.person.firstName(),
       customerId: user6.customerId,
       products: [product2],
@@ -103,7 +103,7 @@ describe("UserProductsServiceGetUsersImage", () => {
 
     const user7 = await createUser({ customerId: 7 });
 
-    await CustomerScheduleServiceCreate({
+    await createSchedule({
       name: faker.person.firstName(),
       customerId: user7.customerId,
       products: [product2],

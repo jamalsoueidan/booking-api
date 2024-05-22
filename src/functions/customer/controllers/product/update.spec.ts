@@ -9,7 +9,7 @@ import {
 import { TimeUnit } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import {
   ProductPricepdateMutation,
@@ -46,7 +46,7 @@ describe("CustomerProductControllerUpdate", () => {
     const user = await createUser({ customerId });
 
     const product = getProductObject({ productId });
-    const newSchedule = await createSchedule({
+    const newSchedule = await createScheduleWithProducts({
       name: "adsasd",
       customerId,
       products: [product],
