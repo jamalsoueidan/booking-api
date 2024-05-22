@@ -1,4 +1,4 @@
-import { CustomerScheduleServiceCreate } from "./create";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { CustomerScheduleServiceDestroy } from "./destroy";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -8,7 +8,7 @@ describe("CustomerScheduleServiceDestroy", () => {
   const name = "Test Schedule";
 
   it("should delete an existing schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name,
       customerId,
     });

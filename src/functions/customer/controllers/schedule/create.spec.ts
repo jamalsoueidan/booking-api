@@ -4,6 +4,9 @@ import {
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
+import { ensureType } from "~/library/jest/helpers/mock";
+import { shopifyAdmin } from "~/library/shopify";
+import { CreateScheduleMetaobjectMutation } from "~/types/admin.generated";
 import {
   CustomerScheduleControllerCreate,
   CustomerScheduleControllerCreateRequest,
@@ -11,6 +14,14 @@ import {
 } from "./create";
 
 require("~/library/jest/mongoose/mongodb.jest");
+
+jest.mock("@shopify/admin-api-client", () => ({
+  createAdminApiClient: () => ({
+    request: jest.fn(),
+  }),
+}));
+
+const mockRequest = shopifyAdmin.request as jest.Mock;
 
 describe("CustomerScheduleControllerCreate", () => {
   let context: InvocationContext;
@@ -21,6 +32,37 @@ describe("CustomerScheduleControllerCreate", () => {
   });
 
   it("should be able to create schedule", async () => {
+    mockRequest.mockResolvedValueOnce({
+      data: ensureType<CreateScheduleMetaobjectMutation>({
+        metaobjectCreate: {
+          metaobject: {
+            id: "gid://shopify/Metaobject/77850968391",
+            type: "schedule",
+            fields: [
+              {
+                value: "test",
+                key: "name",
+              },
+              {
+                value: JSON.stringify([
+                  {
+                    day: "monday",
+                    intervals: [
+                      {
+                        to: "16:00",
+                        from: "08:00",
+                      },
+                    ],
+                  },
+                ]),
+                key: "slots",
+              },
+            ],
+          },
+        },
+      }),
+    });
+
     request = await createHttpRequest<CustomerScheduleControllerCreateRequest>({
       query: {
         customerId: 123,

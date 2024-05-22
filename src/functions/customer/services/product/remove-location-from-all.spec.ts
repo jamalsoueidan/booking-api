@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import { getDumbLocationObject } from "~/library/jest/helpers/location";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import { CustomerScheduleServiceGet } from "../schedule/get";
 import { CustomerProductServiceRemoveLocationFromAll } from "./remove-location-from-all";
 
@@ -15,7 +15,7 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
   it("should be able to remove one location from all products", async () => {
     const locationRemoveId = new mongoose.Types.ObjectId().toString();
 
-    const newSchedule1 = await createSchedule({
+    const newSchedule1 = await createScheduleWithProducts({
       name: "test",
       customerId,
       products: [
@@ -54,7 +54,7 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
       ],
     });
 
-    const newSchedule2 = await createSchedule({
+    const newSchedule2 = await createScheduleWithProducts({
       name: "test2",
       customerId,
       products: [

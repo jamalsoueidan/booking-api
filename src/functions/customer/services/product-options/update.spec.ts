@@ -1,6 +1,6 @@
 import { ScheduleModel } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
 import { ProductOptionUpdateMutation } from "~/types/admin.generated";
@@ -69,7 +69,7 @@ describe("CustomerProductOptionsAddService", () => {
       ],
     });
 
-    const newSchedule = await createSchedule({
+    const newSchedule = await createScheduleWithProducts({
       name: "Test Schedule",
       customerId,
       products: [product],

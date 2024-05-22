@@ -4,7 +4,7 @@ import {
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
-import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import {
   CustomerScheduleControllerDestroy,
   CustomerScheduleControllerDestroyRequest,
@@ -22,7 +22,7 @@ describe("CustomerScheduleControllerDestroy", () => {
   });
 
   it("should be able to destroy schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "asd",
       customerId: 123,
     });

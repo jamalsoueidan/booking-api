@@ -6,7 +6,10 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
-import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
+import { ensureType } from "~/library/jest/helpers/mock";
+import { createSchedule } from "~/library/jest/helpers/schedule";
+import { shopifyAdmin } from "~/library/shopify";
+import { UpdateScheduleMetaobjectMutation } from "~/types/admin.generated";
 import {
   CustomerScheduleControllerUpdate,
   CustomerScheduleControllerUpdateRequest,
@@ -14,6 +17,14 @@ import {
 } from "./update";
 
 require("~/library/jest/mongoose/mongodb.jest");
+
+jest.mock("@shopify/admin-api-client", () => ({
+  createAdminApiClient: () => ({
+    request: jest.fn(),
+  }),
+}));
+
+const mockRequest = shopifyAdmin.request as jest.Mock;
 
 describe("CustomerScheduleControllerUpdate", () => {
   let context: InvocationContext;
@@ -24,7 +35,7 @@ describe("CustomerScheduleControllerUpdate", () => {
   });
 
   it("should be able to update slots schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "asd",
       customerId: 123,
     });
@@ -34,6 +45,35 @@ describe("CustomerScheduleControllerUpdate", () => {
       {
         name: updatedScheduleName,
       };
+
+    mockRequest.mockResolvedValueOnce({
+      data: ensureType<UpdateScheduleMetaobjectMutation>({
+        metaobjectUpdate: {
+          metaobject: {
+            fields: [
+              {
+                value: updatedScheduleName,
+                key: "name",
+              },
+              {
+                value: JSON.stringify([
+                  {
+                    day: "monday",
+                    intervals: [
+                      {
+                        to: "16:00",
+                        from: "08:00",
+                      },
+                    ],
+                  },
+                ]),
+                key: "slots",
+              },
+            ],
+          },
+        },
+      }),
+    });
 
     request = await createHttpRequest<CustomerScheduleControllerUpdateRequest>({
       query: {

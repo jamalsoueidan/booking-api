@@ -7,7 +7,7 @@ import {
   createLocation,
   getDumbLocationObject,
 } from "~/library/jest/helpers/location";
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import { pickMultipleItems } from "~/library/jest/utils/utils";
 import { Professions } from "../../user.types";
 import { UserServiceFilters } from "./filters";
@@ -108,7 +108,7 @@ describe("UserServiceFilters", () => {
 
   it("should include specified days in the results", async () => {
     for (let customerId = 0; customerId < totalCount; customerId++) {
-      await createSchedule(
+      await createScheduleWithProducts(
         { customerId },
         {
           days: [faker.helpers.arrayElement(expectedDays)],
@@ -152,7 +152,7 @@ describe("UserServiceFilters", () => {
         locationType: faker.helpers.arrayElement(Object.values(LocationTypes)),
       });
 
-      await createSchedule(
+      await createScheduleWithProducts(
         { customerId },
         {
           days: [faker.helpers.arrayElement(expectedDays)],

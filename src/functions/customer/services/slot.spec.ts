@@ -1,25 +1,26 @@
-import { ScheduleModel, SlotWeekDays } from "~/functions/schedule";
+import { SlotWeekDays } from "~/functions/schedule";
+import { ensureType } from "~/library/jest/helpers/mock";
+import { createSchedule } from "~/library/jest/helpers/schedule";
+import { shopifyAdmin } from "~/library/shopify";
+import { UpdateScheduleMetaobjectMutation } from "~/types/admin.generated";
 import {
   CustomerScheduleSlotServiceUpdate,
   CustomerScheduleSlotServiceUpdateBody,
 } from "./slots";
 
 require("~/library/jest/mongoose/mongodb.jest");
-// Utility function to create a schedule for testing purposes
-async function createTestSchedule(customerId: number) {
-  const schedule = new ScheduleModel({
-    name: "Test Schedule",
-    customerId,
-    slots: [],
-    products: [],
-  });
 
-  return schedule.save();
-}
+jest.mock("@shopify/admin-api-client", () => ({
+  createAdminApiClient: () => ({
+    request: jest.fn(),
+  }),
+}));
+
+const mockRequest = shopifyAdmin.request as jest.Mock;
 
 describe("CustomerScheduleSlotService", () => {
   it("should update a slots", async () => {
-    const schedule = await createTestSchedule(2);
+    const schedule = await createSchedule();
 
     const newSlot: CustomerScheduleSlotServiceUpdateBody = [
       {
@@ -32,6 +33,25 @@ describe("CustomerScheduleSlotService", () => {
         ],
       },
     ];
+
+    mockRequest.mockResolvedValueOnce({
+      data: ensureType<UpdateScheduleMetaobjectMutation>({
+        metaobjectUpdate: {
+          metaobject: {
+            fields: [
+              {
+                value: schedule.name,
+                key: "name",
+              },
+              {
+                value: JSON.stringify(newSlot),
+                key: "slots",
+              },
+            ],
+          },
+        },
+      }),
+    });
 
     const newSchedule = await CustomerScheduleSlotServiceUpdate(
       {
@@ -57,6 +77,25 @@ describe("CustomerScheduleSlotService", () => {
       },
     ];
 
+    mockRequest.mockResolvedValueOnce({
+      data: ensureType<UpdateScheduleMetaobjectMutation>({
+        metaobjectUpdate: {
+          metaobject: {
+            fields: [
+              {
+                value: schedule.name,
+                key: "name",
+              },
+              {
+                value: JSON.stringify(updatedSlot),
+                key: "slots",
+              },
+            ],
+          },
+        },
+      }),
+    });
+
     const updatedSchedule = await CustomerScheduleSlotServiceUpdate(
       {
         scheduleId: schedule._id,
@@ -72,11 +111,8 @@ describe("CustomerScheduleSlotService", () => {
     );
   });
 
-  // ...
-  // (keep the existing test case)
-
   it("should only allow the 7 valid days", async () => {
-    const schedule = await createTestSchedule(3);
+    const schedule = await createSchedule();
 
     const invalidSlot: CustomerScheduleSlotServiceUpdateBody = [
       {
@@ -102,7 +138,7 @@ describe("CustomerScheduleSlotService", () => {
   });
 
   it("should not allow duplicate days", async () => {
-    const schedule = await createTestSchedule(4);
+    const schedule = await createSchedule();
 
     const duplicateDaySlot: CustomerScheduleSlotServiceUpdateBody = [
       {
@@ -137,7 +173,7 @@ describe("CustomerScheduleSlotService", () => {
   });
 
   it("should not allow overlapping time intervals within a day", async () => {
-    const schedule = await createTestSchedule(5);
+    const schedule = await createSchedule();
 
     const overlappingIntervalsSlot: CustomerScheduleSlotServiceUpdateBody = [
       {

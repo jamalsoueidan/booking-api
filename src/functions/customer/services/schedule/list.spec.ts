@@ -1,4 +1,4 @@
-import { CustomerScheduleServiceCreate } from "./create";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { CustomerScheduleServiceList } from "./list";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -8,8 +8,8 @@ describe("CustomerScheduleServiceList", () => {
   const name = "Test Schedule";
 
   it("should return all schedules for a customerId", async () => {
-    await CustomerScheduleServiceCreate({ name, customerId });
-    await CustomerScheduleServiceCreate({ name: "asd", customerId: 123 });
+    await createSchedule({ name, customerId });
+    await createSchedule({ name: "asd", customerId: 123 });
 
     const schedules = await CustomerScheduleServiceList({ customerId });
 

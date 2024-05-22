@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker";
-import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { LocationTypes } from "~/functions/location";
 import { createUser } from "~/library/jest/helpers";
 import {
@@ -7,6 +6,7 @@ import {
   getDumbLocationObject,
 } from "~/library/jest/helpers/location";
 import { getProductObject } from "~/library/jest/helpers/product";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { UserScheduleServiceLocationsList } from "./locations-list";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -24,7 +24,7 @@ describe("UserScheduleServiceLocationsList", () => {
       locationType: LocationTypes.DESTINATION,
     });
 
-    const schedule1 = await CustomerScheduleServiceCreate({
+    const schedule1 = await createSchedule({
       name: faker.person.lastName(),
       customerId,
       products: [
@@ -51,7 +51,7 @@ describe("UserScheduleServiceLocationsList", () => {
       ],
     });
 
-    const schedule2 = await CustomerScheduleServiceCreate({
+    const schedule2 = await createSchedule({
       name: faker.person.firstName(),
       customerId,
       products: [
@@ -74,7 +74,7 @@ describe("UserScheduleServiceLocationsList", () => {
       ],
     });
 
-    await CustomerScheduleServiceCreate({
+    await createSchedule({
       name: faker.person.fullName(),
       customerId,
       products: [],
@@ -101,7 +101,7 @@ describe("UserScheduleServiceLocationsList", () => {
   });
 
   it("should return none schedules when schedule does not contain any products", async () => {
-    await CustomerScheduleServiceCreate({
+    await createSchedule({
       name: faker.person.firstName(),
       customerId,
       products: [],

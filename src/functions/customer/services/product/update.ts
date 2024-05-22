@@ -196,7 +196,7 @@ export const CustomerProductServiceUpdate = async (
           ...metafields,
           {
             id: oldProduct?.scheduleIdMetafieldId,
-            value: schedule._id.toString(),
+            value: schedule.metafieldId,
           },
         ],
         tags: [

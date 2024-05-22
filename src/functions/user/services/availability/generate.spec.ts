@@ -20,7 +20,7 @@ import {
 } from "~/library/jest/helpers/location";
 import { getOrderObject } from "~/library/jest/helpers/order";
 import {
-  createSchedule,
+  createScheduleWithProducts,
   getScheduleObject,
 } from "~/library/jest/helpers/schedule";
 import { createShipping } from "~/library/jest/helpers/shipping";
@@ -31,7 +31,7 @@ require("~/library/jest/mongoose/mongodb.jest");
 describe("UserAvailabilityServiceGenerate", () => {
   const customerId = 1;
   let user: Awaited<ReturnType<typeof createUser>>;
-  let schedule: Awaited<ReturnType<typeof createSchedule>>;
+  let schedule: Awaited<ReturnType<typeof createScheduleWithProducts>>;
   let locationOrigin: Awaited<ReturnType<typeof createLocation>>;
   let locationDestination: Awaited<ReturnType<typeof createLocation>>;
   let days: SlotWeekDays[] = [];
@@ -79,7 +79,7 @@ describe("UserAvailabilityServiceGenerate", () => {
       locationType: LocationTypes.DESTINATION,
     });
 
-    schedule = await createSchedule(
+    schedule = await createScheduleWithProducts(
       { customerId },
       {
         totalProducts: 2,

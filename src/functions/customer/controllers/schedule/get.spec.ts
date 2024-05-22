@@ -5,7 +5,7 @@ import {
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
-import { CustomerScheduleServiceCreate } from "../../services/schedule/create";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import {
   CustomerScheduleControllerGet,
   CustomerScheduleControllerGetRequest,
@@ -24,7 +24,7 @@ describe("CustomerScheduleControllerGet", () => {
   });
 
   it("should be able to create schedule", async () => {
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "Test Schedule 2",
       customerId,
     });

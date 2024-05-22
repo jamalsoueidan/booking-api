@@ -1,6 +1,6 @@
 import { TimeUnit } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
-import { createSchedule } from "~/library/jest/helpers/schedule";
+import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import { CustomerProductServiceGet } from "./get";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -25,7 +25,7 @@ describe("CustomerProductsService", () => {
   });
 
   it("should find a product", async () => {
-    const newSchedule = await createSchedule({
+    const newSchedule = await createScheduleWithProducts({
       name,
       customerId,
       products: [newProduct],

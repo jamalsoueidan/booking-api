@@ -3,13 +3,13 @@ import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import { ScheduleProduct } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
 import { getDumbLocationObject } from "~/library/jest/helpers/location";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import {
   ProductDuplicateMutation,
   ProductPricepdateMutation,
   ProductUpdateMutation,
 } from "~/types/admin.generated";
-import { CustomerScheduleServiceCreate } from "../schedule/create";
 import { GidFormat } from "./../../../../library/zod/index";
 import { CustomerProductServiceAdd, PRODUCT_DUPLCATE } from "./add";
 import { PRODUCT_PRICE_UPDATE, PRODUCT_UPDATE } from "./update";
@@ -142,9 +142,10 @@ describe("CustomerProductServiceAdd", () => {
     const customerId = 123;
     const user = await createUser({ customerId });
 
-    const newSchedule = await CustomerScheduleServiceCreate({
+    const newSchedule = await createSchedule({
       name: "Test Schedule",
       customerId,
+      metafieldId: "gid://shopify/Metafield/533232",
     });
 
     const tags = [
@@ -191,7 +192,7 @@ describe("CustomerProductServiceAdd", () => {
           },
           scheduleId: {
             id: mockProduct.productDuplicate?.newProduct?.scheduleId?.id!,
-            value: "schedule",
+            value: newSchedule.metafieldId || "",
           },
           locations: {
             id: mockProduct.productDuplicate?.newProduct?.locations?.id!,
@@ -346,7 +347,7 @@ describe("CustomerProductServiceAdd", () => {
           },
           {
             id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,
-            value: newSchedule._id.toString(),
+            value: newSchedule.metafieldId,
           },
         ],
         tags: tags.join(", "),

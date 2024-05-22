@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker";
-import { CustomerScheduleServiceCreate } from "~/functions/customer/services/schedule/create";
 import { LocationTypes } from "~/functions/location";
 import { createUser } from "~/library/jest/helpers";
 import {
@@ -7,6 +6,7 @@ import {
   getDumbLocationObject,
 } from "~/library/jest/helpers/location";
 import { getProductObject } from "~/library/jest/helpers/product";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { UserScheduleServiceGetByLocation } from "./get-by-location";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -24,7 +24,7 @@ describe("UserScheduleServiceGetByLocation", () => {
       locationType: LocationTypes.DESTINATION,
     });
 
-    const schedule = await CustomerScheduleServiceCreate({
+    const schedule = await createSchedule({
       name: faker.person.firstName(),
       customerId,
       products: [
