@@ -136,6 +136,7 @@ describe("CustomerProductServiceUpdate", () => {
     const newSchedule = await createScheduleWithProducts({
       name,
       customerId,
+      metafieldId: "gid://shopify/Metafield/533232",
       products: [
         getProductObject({
           parentId: GidFormat.parse(
@@ -247,7 +248,7 @@ describe("CustomerProductServiceUpdate", () => {
           },
           {
             id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,
-            value: newSchedule._id.toString(),
+            value: newSchedule.metafieldId,
           },
         ],
         tags: tags.join(", "),

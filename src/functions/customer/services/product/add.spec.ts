@@ -145,6 +145,7 @@ describe("CustomerProductServiceAdd", () => {
     const newSchedule = await createSchedule({
       name: "Test Schedule",
       customerId,
+      metafieldId: "gid://shopify/Metafield/533232",
     });
 
     const tags = [
@@ -191,7 +192,7 @@ describe("CustomerProductServiceAdd", () => {
           },
           scheduleId: {
             id: mockProduct.productDuplicate?.newProduct?.scheduleId?.id!,
-            value: "schedule",
+            value: newSchedule.metafieldId || "",
           },
           locations: {
             id: mockProduct.productDuplicate?.newProduct?.locations?.id!,
@@ -346,7 +347,7 @@ describe("CustomerProductServiceAdd", () => {
           },
           {
             id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,
-            value: newSchedule._id.toString(),
+            value: newSchedule.metafieldId,
           },
         ],
         tags: tags.join(", "),
