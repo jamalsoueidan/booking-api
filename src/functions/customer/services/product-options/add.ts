@@ -183,7 +183,7 @@ export const PRODUCT_OPTION_FRAGMENT = `#graphql
 export const PRODUCT_OPTION_DUPLCATE = `#graphql
   ${PRODUCT_OPTION_FRAGMENT}
   mutation productOptionDuplicate($productId: ID!, $title: String!) {
-    productDuplicate(newTitle: $title, productId: $productId) {
+    productDuplicate(newTitle: $title, productId: $productId, includeImages: true) {
       newProduct {
         ...ProductOptionFragment
       }
