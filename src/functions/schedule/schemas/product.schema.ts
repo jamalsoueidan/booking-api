@@ -17,6 +17,10 @@ export const OptionMongooseSchema = new mongoose.Schema<ScheduleProductOption>(
       index: true,
       required: true,
     },
+    required: {
+      type: Boolean,
+      default: true,
+    },
     title: String,
     variants: [
       {

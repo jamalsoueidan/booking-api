@@ -60,6 +60,7 @@ describe("generateAvailability", () => {
           {
             productId: 1,
             title: "a",
+            required: true,
             variants: [
               {
                 variantId: 15,

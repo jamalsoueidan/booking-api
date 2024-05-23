@@ -87,7 +87,7 @@ export type UpdateLocationMetaobjectMutation = { metaobjectUpdate?: AdminTypes.M
 
 export type ProductOptionFragmentFragment = (
   Pick<AdminTypes.Product, 'id' | 'title' | 'handle' | 'tags'>
-  & { parentId?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, variants: { nodes: Array<(
+  & { required?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, parentId?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, variants: { nodes: Array<(
       Pick<AdminTypes.ProductVariant, 'id' | 'title' | 'price'>
       & { duration?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>> }
     )> } }
@@ -101,7 +101,7 @@ export type ProductOptionDuplicateMutationVariables = AdminTypes.Exact<{
 
 export type ProductOptionDuplicateMutation = { productDuplicate?: AdminTypes.Maybe<{ newProduct?: AdminTypes.Maybe<(
       Pick<AdminTypes.Product, 'id' | 'title' | 'handle' | 'tags'>
-      & { parentId?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, variants: { nodes: Array<(
+      & { required?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, parentId?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, variants: { nodes: Array<(
           Pick<AdminTypes.ProductVariant, 'id' | 'title' | 'price'>
           & { duration?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>> }
         )> } }
@@ -116,7 +116,7 @@ export type ProductOptionAddMutationVariables = AdminTypes.Exact<{
 
 export type ProductOptionAddMutation = { productUpdate?: AdminTypes.Maybe<{ product?: AdminTypes.Maybe<(
       Pick<AdminTypes.Product, 'id' | 'title' | 'handle' | 'tags'>
-      & { parentId?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, variants: { nodes: Array<(
+      & { required?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, parentId?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>>, variants: { nodes: Array<(
           Pick<AdminTypes.ProductVariant, 'id' | 'title' | 'price'>
           & { duration?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, 'id' | 'value'>> }
         )> } }
@@ -254,8 +254,8 @@ interface GeneratedMutationTypes {
   "#graphql\n  mutation UpdateUserMetaobject($id: ID!, $fields: [MetaobjectFieldInput!]!) {\n    metaobjectUpdate(id: $id, metaobject: {fields: $fields}) {\n      metaobject {\n        fields {\n          value\n          key\n        }\n      }\n    }\n  }\n": {return: UpdateUserMetaobjectMutation, variables: UpdateUserMetaobjectMutationVariables},
   "#graphql\n  mutation CreateLocationMetaobject($handle: String!, $fields: [MetaobjectFieldInput!]) {\n    metaobjectCreate(\n      metaobject: {type: \"location\", fields: $fields, handle: $handle, capabilities: {publishable: {status: ACTIVE}}}\n    ) {\n      metaobject {\n        id\n        type\n        fields {\n          value\n          key\n        }\n      }\n    }\n  }\n": {return: CreateLocationMetaobjectMutation, variables: CreateLocationMetaobjectMutationVariables},
   "#graphql\n  mutation UpdateLocationMetaobject($id: ID!, $fields: [MetaobjectFieldInput!]!) {\n    metaobjectUpdate(id: $id, metaobject: {fields: $fields}) {\n      metaobject {\n        fields {\n          value\n          key\n        }\n      }\n    }\n  }\n": {return: UpdateLocationMetaobjectMutation, variables: UpdateLocationMetaobjectMutationVariables},
-  "#graphql\n  #graphql\n  fragment ProductOptionFragment on Product {\n    id\n    title\n    handle\n    tags\n    parentId: metafield(key: \"parentId\", namespace: \"booking\") {\n      id\n      value\n    }\n    variants(first: 5) {\n      nodes {\n        id\n        title\n        price\n        duration: metafield(key: \"duration\", namespace: \"booking\") {\n          id\n          value\n        }\n      }\n    }\n  }\n\n  mutation productOptionDuplicate($productId: ID!, $title: String!) {\n    productDuplicate(newTitle: $title, productId: $productId) {\n      newProduct {\n        ...ProductOptionFragment\n      }\n    }\n  }\n": {return: ProductOptionDuplicateMutation, variables: ProductOptionDuplicateMutationVariables},
-  "#graphql\n  #graphql\n  fragment ProductOptionFragment on Product {\n    id\n    title\n    handle\n    tags\n    parentId: metafield(key: \"parentId\", namespace: \"booking\") {\n      id\n      value\n    }\n    variants(first: 5) {\n      nodes {\n        id\n        title\n        price\n        duration: metafield(key: \"duration\", namespace: \"booking\") {\n          id\n          value\n        }\n      }\n    }\n  }\n\n  mutation ProductOptionAdd($id: ID!, $metafields: [MetafieldInput!]!, $tags: [String!]!) {\n    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags}) {\n      product {\n        ...ProductOptionFragment\n      }\n    }\n  }\n": {return: ProductOptionAddMutation, variables: ProductOptionAddMutationVariables},
+  "#graphql\n  #graphql\n  fragment ProductOptionFragment on Product {\n    id\n    title\n    handle\n    tags\n    required: metafield(key: \"required\", namespace: \"system\") {\n      id\n      value\n    }\n    parentId: metafield(key: \"parentId\", namespace: \"booking\") {\n      id\n      value\n    }\n    variants(first: 5) {\n      nodes {\n        id\n        title\n        price\n        duration: metafield(key: \"duration\", namespace: \"booking\") {\n          id\n          value\n        }\n      }\n    }\n  }\n\n  mutation productOptionDuplicate($productId: ID!, $title: String!) {\n    productDuplicate(newTitle: $title, productId: $productId) {\n      newProduct {\n        ...ProductOptionFragment\n      }\n    }\n  }\n": {return: ProductOptionDuplicateMutation, variables: ProductOptionDuplicateMutationVariables},
+  "#graphql\n  #graphql\n  fragment ProductOptionFragment on Product {\n    id\n    title\n    handle\n    tags\n    required: metafield(key: \"required\", namespace: \"system\") {\n      id\n      value\n    }\n    parentId: metafield(key: \"parentId\", namespace: \"booking\") {\n      id\n      value\n    }\n    variants(first: 5) {\n      nodes {\n        id\n        title\n        price\n        duration: metafield(key: \"duration\", namespace: \"booking\") {\n          id\n          value\n        }\n      }\n    }\n  }\n\n  mutation ProductOptionAdd($id: ID!, $metafields: [MetafieldInput!]!, $tags: [String!]!) {\n    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags}) {\n      product {\n        ...ProductOptionFragment\n      }\n    }\n  }\n": {return: ProductOptionAddMutation, variables: ProductOptionAddMutationVariables},
   "#graphql\n  mutation ProductParentUpdate($id: ID, $metafields: [MetafieldInput!]) {\n    productUpdate(input: {id: $id, metafields: $metafields}) {\n      product {\n        options: metafield(key: \"options\", namespace: \"booking\") {\n          id\n        }\n      }\n    }\n  }\n": {return: ProductParentUpdateMutation, variables: ProductParentUpdateMutationVariables},
   "#graphql\n  mutation productOptionDestroy($productId: ID!) {\n    productDelete(input: {id: $productId}) {\n      deletedProductId\n    }\n  }\n": {return: ProductOptionDestroyMutation, variables: ProductOptionDestroyMutationVariables},
   "#graphql\n  mutation productDestroyMetafield($metafieldId: ID!){\n    metafieldDelete(input: {id: $metafieldId}) {\n      deletedId\n    }\n  }\n": {return: ProductDestroyMetafieldMutation, variables: ProductDestroyMetafieldMutationVariables},

@@ -53,6 +53,10 @@ describe("CustomerProductOptionsAddService", () => {
           title: "New Product Title",
           handle: "ikadsk",
           tags: [],
+          required: {
+            id: "gid://shopify/Metafield/12",
+            value: "true",
+          },
           parentId: {
             id: "gid://shopify/Metafield/44499605258567",
             value: "",
@@ -108,6 +112,10 @@ describe("CustomerProductOptionsAddService", () => {
           title: "New Product Title",
           handle: "ikadsk",
           tags,
+          required: {
+            id: "gid://shopify/Metafield/12",
+            value: "true",
+          },
           parentId: {
             id: "gid://shopify/Metafield/44499605258567",
             value: `gid://shopify/Product/${product.productId}`,
@@ -238,6 +246,7 @@ describe("CustomerProductOptionsAddService", () => {
         mockProductOptionDuplicate.productDuplicate?.newProduct?.id
       )
     );
+    expect(options.required).toEqual(true);
     expect(options.variants).toHaveLength(3);
     const variant = options.variants[0];
     expect(variant.duration.metafieldId).toBe(3);
