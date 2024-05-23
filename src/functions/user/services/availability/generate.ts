@@ -48,7 +48,7 @@ export const UserAvailabilityServiceGenerate = async (
     schedule.products = schedule.products.reduce((products, parentProduct) => {
       parentProduct.options?.forEach((productOption) => {
         const option = optionIds[parentProduct.productId];
-        if (!option) {
+        if (!option && productOption.required) {
           throw new NotFoundError([
             {
               path: ["optionIds", parentProduct.productId],
@@ -59,7 +59,7 @@ export const UserAvailabilityServiceGenerate = async (
         }
 
         const variantId = option[productOption.productId];
-        if (!variantId) {
+        if (!variantId && productOption.required) {
           throw new NotFoundError([
             {
               path: [
@@ -77,7 +77,7 @@ export const UserAvailabilityServiceGenerate = async (
           (v) => v.variantId === variantId
         );
 
-        if (!variant) {
+        if (!variant && productOption.required) {
           throw new NotFoundError([
             {
               path: [

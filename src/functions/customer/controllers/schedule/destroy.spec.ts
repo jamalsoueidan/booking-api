@@ -4,7 +4,10 @@ import {
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
+import { ensureType } from "~/library/jest/helpers/mock";
 import { createSchedule } from "~/library/jest/helpers/schedule";
+import { shopifyAdmin } from "~/library/shopify";
+import { DestroyScheduleMetafieldMutation } from "~/types/admin.generated";
 import {
   CustomerScheduleControllerDestroy,
   CustomerScheduleControllerDestroyRequest,
@@ -12,6 +15,14 @@ import {
 } from "./destroy";
 
 require("~/library/jest/mongoose/mongodb.jest");
+
+jest.mock("@shopify/admin-api-client", () => ({
+  createAdminApiClient: () => ({
+    request: jest.fn(),
+  }),
+}));
+
+const mockRequest = shopifyAdmin.request as jest.Mock;
 
 describe("CustomerScheduleControllerDestroy", () => {
   let context: InvocationContext;
@@ -25,6 +36,14 @@ describe("CustomerScheduleControllerDestroy", () => {
     const newSchedule = await createSchedule({
       name: "asd",
       customerId: 123,
+    });
+
+    mockRequest.mockResolvedValueOnce({
+      data: ensureType<DestroyScheduleMetafieldMutation>({
+        metafieldDelete: {
+          deletedId: "gid://shopify/Metaobject/77850968391",
+        },
+      }),
     });
 
     request = await createHttpRequest<CustomerScheduleControllerDestroyRequest>(

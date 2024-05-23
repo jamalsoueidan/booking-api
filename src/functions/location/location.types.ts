@@ -4,12 +4,14 @@ import { BooleanOrString, GidFormat, NumberOrString } from "~/library/zod";
 export enum LocationTypes {
   ORIGIN = "origin",
   DESTINATION = "destination",
+  ONLINE = "online",
 }
 
 export enum LocationOriginTypes {
   HOME = "home",
   COMMERCIAL = "commercial",
 }
+
 export const LocationZodSchema = z.object({
   isDefault: BooleanOrString,
   metafieldId: z.string().optional(),

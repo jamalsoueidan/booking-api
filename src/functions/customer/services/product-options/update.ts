@@ -105,6 +105,7 @@ export async function CustomerProductOptionsServiceUpdate(
           productId: props.optionProductId,
           title: data.productVariantsBulkUpdate.product.title,
           variants: updatedOption,
+          required: option.required,
         },
       ],
       "productId"

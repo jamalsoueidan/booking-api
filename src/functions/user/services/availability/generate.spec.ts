@@ -342,6 +342,7 @@ describe("UserAvailabilityServiceGenerate", () => {
       {
         productId: 1,
         title: "a",
+        required: true,
         variants: [
           {
             variantId: 12,
@@ -360,18 +361,13 @@ describe("UserAvailabilityServiceGenerate", () => {
       {
         productId: 2,
         title: "af",
+        required: false,
         variants: [
           {
             variantId: 14,
             price: 1,
             title: "af",
             duration: { metafieldId: 1, value: 30 },
-          },
-          {
-            variantId: 15,
-            price: 1,
-            title: "af",
-            duration: { metafieldId: 2, value: 45 },
           },
         ],
       },
@@ -396,13 +392,11 @@ describe("UserAvailabilityServiceGenerate", () => {
         optionIds: {
           [scheduleObject.products[0].productId]: {
             1: 12,
-            2: 14,
           },
         },
       }
     );
 
-    console.log(JSON.stringify(result, null, 2));
-    //expect(result[0].slots[0].products).toHaveLength(4);
+    expect(result[0].slots[0].products).toHaveLength(3);
   });
 });

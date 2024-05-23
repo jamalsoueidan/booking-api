@@ -22,7 +22,11 @@ export const LocationMongooseSchema = new mongoose.Schema<
     metafieldId: String,
     locationType: {
       type: String,
-      enum: [LocationTypes.DESTINATION, LocationTypes.ORIGIN],
+      enum: [
+        LocationTypes.DESTINATION,
+        LocationTypes.ORIGIN,
+        LocationTypes.ONLINE,
+      ],
       required: true,
     },
     customerId: {

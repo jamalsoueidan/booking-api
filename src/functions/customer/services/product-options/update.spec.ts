@@ -36,6 +36,7 @@ describe("CustomerProductOptionsAddService", () => {
         {
           productId: optionProductId,
           title: "new",
+          required: true,
           variants: [
             {
               variantId: 1,

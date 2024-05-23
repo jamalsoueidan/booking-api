@@ -55,6 +55,7 @@ describe("CustomerProductOptionsDestroyService", () => {
             productId: optionProductId,
             title: "asd",
             variants: [],
+            required: true,
           },
         ],
       }),

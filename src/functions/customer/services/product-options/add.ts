@@ -1,4 +1,8 @@
-import { ScheduleModel, ScheduleProduct } from "~/functions/schedule";
+import {
+  ScheduleModel,
+  ScheduleProduct,
+  ScheduleProductOption,
+} from "~/functions/schedule";
 import { UserModel } from "~/functions/user";
 import { NotFoundError, ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
@@ -77,9 +81,12 @@ export async function CustomerProductOptionsServiceAdd({
     },
   });
 
-  const newOption = {
+  const newOption: ScheduleProductOption = {
     productId: newProductId,
     title: data.productDuplicate.newProduct.title,
+    required:
+      !data.productDuplicate.newProduct.required ||
+      data.productDuplicate.newProduct.required?.value.toLowerCase() === "true",
     variants:
       data.productDuplicate?.newProduct?.variants.nodes.map((variant) => ({
         variantId: GidFormat.parse(variant.id),
@@ -151,6 +158,10 @@ export const PRODUCT_OPTION_FRAGMENT = `#graphql
     title
     handle
     tags
+    required: metafield(key: "required", namespace: "system") {
+      id
+      value
+    }
     parentId: metafield(key: "parentId", namespace: "booking") {
       id
       value
