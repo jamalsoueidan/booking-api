@@ -46,5 +46,6 @@ export const CustomerProductServiceGet = async (
     ...product,
     scheduleId: schedule._id,
     scheduleName: schedule.name,
+    scheduleMetafieldId: schedule.metafieldId,
   };
 };

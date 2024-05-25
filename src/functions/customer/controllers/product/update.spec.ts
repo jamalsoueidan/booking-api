@@ -8,6 +8,10 @@ import {
 
 import { TimeUnit } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
+import {
+  createLocation,
+  getDumbLocationObject,
+} from "~/library/jest/helpers/location";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
@@ -44,8 +48,18 @@ describe("CustomerProductControllerUpdate", () => {
 
   it("should be able to update product inside schedule", async () => {
     const user = await createUser({ customerId });
+    const location = await createLocation({ customerId: user.customerId });
 
-    const product = getProductObject({ productId });
+    const product = getProductObject({
+      productId,
+      locations: [
+        getDumbLocationObject({
+          ...location,
+          location: location._id,
+        }),
+      ],
+    });
+
     const newSchedule = await createScheduleWithProducts({
       name: "adsasd",
       customerId,
@@ -76,6 +90,7 @@ describe("CustomerProductControllerUpdate", () => {
             `product-${product.productHandle}`,
             `scheduleid-${newSchedule._id}`,
             `locationid-${product.locations[0].location}`,
+            `city-${location.city.replace(/ /g, "-").toLowerCase()}`,
           ],
           parentId: {
             id: "gid://shopify/Metafield/44429081510215",

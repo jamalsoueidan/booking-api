@@ -1,9 +1,11 @@
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
-import { UserModel } from "~/functions/user";
 import { NotFoundError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { MetafieldInput } from "~/types/admin.types";
+import { CustomerServiceGet } from "../customer/get";
+import { LocationModel } from "./../../../location/location.model";
 import { PRODUCT_FRAGMENT } from "./add";
+import { CustomerProductServiceGet } from "./get";
 
 export type CustomerProductServiceUpdate = {
   customerId: Schedule["customerId"];
@@ -18,46 +20,15 @@ export const CustomerProductServiceUpdate = async (
   { customerId, productId }: CustomerProductServiceUpdate,
   body: CustomerProductServiceUpdateBody
 ) => {
-  const user = await UserModel.findOne({
+  const user = await CustomerServiceGet({
     customerId,
-  })
-    .orFail(
-      new NotFoundError([
-        {
-          path: ["customerId"],
-          message: "NOT_FOUND",
-          code: "custom",
-        },
-      ])
-    )
-    .lean();
+  });
 
-  const schedule = await ScheduleModel.findOne({
-    customerId,
-    "products.productId": productId,
-  })
-    .orFail(
-      new NotFoundError([
-        {
-          code: "custom",
-          message: "PRODUCT_NOT_FOUND",
-          path: ["productId"],
-        },
-      ])
-    )
-    .lean();
-
-  const oldProduct = schedule.products.find((p) => p.productId === productId);
-
-  if (!oldProduct) {
-    throw new NotFoundError([
-      {
-        code: "custom",
-        message: "PRODUCT_NOT_FOUND",
-        path: ["productId"],
-      },
-    ]);
-  }
+  const { scheduleId, scheduleMetafieldId, scheduleName, ...oldProduct } =
+    await CustomerProductServiceGet({
+      customerId,
+      productId,
+    });
 
   const metafields: MetafieldInput[] = [
     ...(body.hasOwnProperty("hideFromProfile")
@@ -141,14 +112,28 @@ export const CustomerProductServiceUpdate = async (
     });
   }
 
-  const locations = oldProduct.locations.concat(
+  const bodyLocations = oldProduct.locations.concat(
     (body.locations || [])?.filter(
       (item2) =>
         !oldProduct.locations.some(
-          (item1) => item1.location.toString() === item2.location.toString() // must use toString since location is type of objectId
+          (item1) => item1.location.toString() === item2.location.toString() // must use toString since location could be type of objectId
         )
     )
   );
+
+  const locations = await LocationModel.find({
+    _id: { $in: bodyLocations.map((l) => l.location) },
+  });
+
+  if (locations.length !== bodyLocations.length) {
+    throw new NotFoundError([
+      {
+        path: ["customerId", "locations"],
+        message: "LOCATIONS_ERROR",
+        code: "custom",
+      },
+    ]);
+  }
 
   const newProduct = {
     ...oldProduct,
@@ -174,7 +159,12 @@ export const CustomerProductServiceUpdate = async (
       ...oldProduct.price,
       ...body.price,
     },
-    locations: locations,
+    locations: locations.map((l) => ({
+      metafieldId: l.metafieldId,
+      locationType: l.locationType,
+      originType: l.originType,
+      location: l._id,
+    })),
     options: mergeArraysUnique(
       oldProduct?.options || [],
       body?.options || [],
@@ -196,7 +186,7 @@ export const CustomerProductServiceUpdate = async (
           ...metafields,
           {
             id: oldProduct?.scheduleIdMetafieldId,
-            value: schedule.metafieldId,
+            value: scheduleMetafieldId,
           },
         ],
         tags: [
@@ -207,9 +197,14 @@ export const CustomerProductServiceUpdate = async (
           `parentid-${oldProduct.parentId}`,
           `productid-${oldProduct.productId}`,
           `product-${oldProduct.productHandle}`,
-          `scheduleid-${schedule._id}`,
+          `scheduleid-${scheduleId}`,
         ]
-          .concat(newProduct.locations.map((l) => `locationid-${l.location}`))
+          .concat(locations.map((l) => `locationid-${l._id}`))
+          .concat(
+            locations.map(
+              (l) => `city-${l.city.replace(/ /g, "-").toLowerCase()}`
+            )
+          )
           .join(", "),
       },
     });
@@ -244,8 +239,8 @@ export const CustomerProductServiceUpdate = async (
 
   return {
     ...newProduct,
-    scheduleId: schedule._id.toString(),
-    scheduleName: schedule.name,
+    scheduleId: scheduleId.toString(),
+    scheduleName,
   };
 };
 

@@ -1,5 +1,9 @@
 import { TimeUnit } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
+import {
+  createLocation,
+  getDumbLocationObject,
+} from "~/library/jest/helpers/location";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
@@ -132,6 +136,7 @@ describe("CustomerProductServiceUpdate", () => {
 
   it("should update an existing product in the schedule", async () => {
     const user = await createUser({ customerId });
+    const location = await createLocation({ customerId: user.customerId });
 
     const newSchedule = await createScheduleWithProducts({
       name,
@@ -139,6 +144,9 @@ describe("CustomerProductServiceUpdate", () => {
       metafieldId: "gid://shopify/Metafield/533232",
       products: [
         getProductObject({
+          locations: [
+            getDumbLocationObject({ ...location, location: location._id }),
+          ],
           parentId: GidFormat.parse(
             mockProductUpdate.productUpdate?.product?.parentId?.value
           ),
@@ -225,6 +233,7 @@ describe("CustomerProductServiceUpdate", () => {
       `product-${product.productHandle}`,
       `scheduleid-${newSchedule._id}`,
       `locationid-${product.locations[0].location}`,
+      `city-${location.city.replace(/ /g, "-").toLowerCase()}`,
     ];
 
     expect(shopifyAdmin.request).toHaveBeenCalledTimes(2);

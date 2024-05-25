@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import { ScheduleProduct } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
-import { getDumbLocationObject } from "~/library/jest/helpers/location";
+import {
+  createLocation,
+  getDumbLocationObject,
+} from "~/library/jest/helpers/location";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import {
@@ -141,6 +144,13 @@ describe("CustomerProductServiceAdd", () => {
   it("should add a new product to the schedule", async () => {
     const customerId = 123;
     const user = await createUser({ customerId });
+    const location = await createLocation({ customerId: user.customerId });
+    productBody = {
+      ...productBody,
+      locations: [
+        getDumbLocationObject({ ...location, location: location._id }),
+      ],
+    };
 
     const newSchedule = await createSchedule({
       name: "Test Schedule",
@@ -160,6 +170,7 @@ describe("CustomerProductServiceAdd", () => {
       `product-${mockProduct.productDuplicate?.newProduct?.handle}`,
       `scheduleid-${newSchedule._id}`,
       `locationid-${productBody.locations[0].location}`,
+      `city-${location.city.replace(/ /g, "-").toLowerCase()}`,
     ];
 
     const mockProductUpdate: ProductUpdateMutation = {
