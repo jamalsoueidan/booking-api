@@ -6,9 +6,11 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
-import mongoose from "mongoose";
-import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import { createUser } from "~/library/jest/helpers";
+import {
+  createLocation,
+  getDumbLocationObject,
+} from "~/library/jest/helpers/location";
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
@@ -126,14 +128,13 @@ describe("CustomerProductControllerAdd", () => {
       customerId,
       metafieldId: "gid://shopify/Metafield/533232",
     });
+    const location = await createLocation({ customerId: user.customerId });
 
     const locations = [
-      {
-        metafieldId: "1",
-        location: new mongoose.Types.ObjectId(),
-        locationType: LocationTypes.DESTINATION,
-        originType: LocationOriginTypes.COMMERCIAL,
-      },
+      getDumbLocationObject({
+        ...location,
+        location: location._id,
+      }),
     ];
 
     const body: CustomerProductControllerAddRequest["body"] = {
@@ -167,6 +168,7 @@ describe("CustomerProductControllerAdd", () => {
       `product-${mockProduct.productDuplicate?.newProduct?.handle}`,
       `scheduleid-${newSchedule._id}`,
       `locationid-${body.locations[0].location}`,
+      `city-${location.city.replace(/ /g, "-").toLowerCase()}`,
     ];
 
     const mockProductUpdate: ProductUpdateMutation = {
