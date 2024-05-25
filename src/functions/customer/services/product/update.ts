@@ -201,8 +201,12 @@ export const CustomerProductServiceUpdate = async (
         ]
           .concat(locations.map((l) => `locationid-${l._id}`))
           .concat(
-            locations.map(
-              (l) => `city-${l.city.replace(/ /g, "-").toLowerCase()}`
+            Array.from(
+              new Set(
+                locations.map(
+                  (l) => `city-${l.city.replace(/ /g, "-").toLowerCase()}`
+                )
+              )
             )
           )
           .join(", "),
