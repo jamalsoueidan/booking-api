@@ -249,7 +249,7 @@ describe("CustomerProductUpdateOrchestration", () => {
           },
           {
             id: product?.scheduleIdMetafieldId,
-            value: product?.scheduleIdMetafieldId,
+            value: newSchedule.metafieldId,
           },
         ],
         tags: tags.join(", "),

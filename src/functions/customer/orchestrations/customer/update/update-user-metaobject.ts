@@ -68,10 +68,6 @@ export const UPDATE_USER_METAOBJECT = `#graphql
           key
         }
       }
-      userErrors {
-        code
-        message
-      }
     }
   }
 ` as const;

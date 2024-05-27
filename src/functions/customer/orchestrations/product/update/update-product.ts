@@ -16,7 +16,7 @@ export const updateProduct = async ({
     customerId,
   });
 
-  const product = await CustomerProductServiceGet({
+  const { scheduleMetafieldId, ...product } = await CustomerProductServiceGet({
     customerId,
     productId,
   });
@@ -33,83 +33,85 @@ export const updateProduct = async ({
     ])
   );
 
-  const { data } = await shopifyAdmin.request(PRODUCT_UPDATE, {
-    variables: {
-      title: product.title,
-      descriptionHtml: product.descriptionHtml,
-      id: `gid://shopify/Product/${product.productId}`,
-      metafields: [
-        {
-          id: product?.hideFromProfileMetafieldId,
-          value: String(product.hideFromProfile),
-        },
-        {
-          id: product?.hideFromCombineMetafieldId,
-          value: String(product.hideFromCombine),
-        },
-        {
-          id: product?.breakTimeMetafieldId,
-          value: String(product.breakTime),
-        },
-        {
-          id: product?.durationMetafieldId,
-          value: String(product.duration),
-        },
-        {
-          id: product?.bookingPeriod.valueMetafieldId,
-          value: String(product.bookingPeriod.value),
-        },
-        {
-          id: product?.bookingPeriod.unitMetafieldId,
-          value: String(product.bookingPeriod.unit),
-        },
-        {
-          id: product?.noticePeriod.valueMetafieldId,
-          value: String(product.noticePeriod?.value),
-        },
-        {
-          id: product?.noticePeriod.unitMetafieldId,
-          value: String(product.noticePeriod?.unit),
-        },
-        {
-          id: product?.locationsMetafieldId,
-          value: JSON.stringify(locations.map((p) => p.metafieldId)),
-        },
-        {
-          id: product?.user?.metaobjectId,
-          value: product.user?.value,
-        },
-        {
-          id: product.activeMetafieldId,
-          value: user.active.toString(),
-        },
-        {
-          id: product?.scheduleIdMetafieldId,
-          value: product?.scheduleIdMetafieldId,
-        },
-      ],
-      tags: [
-        "user",
-        `user-${user.username}`,
-        `userid-${user.customerId}`,
-        "treatments",
-        `parentid-${product.parentId}`,
-        `productid-${product.productId}`,
-        `product-${product.productHandle}`,
-        `scheduleid-${product.scheduleId}`,
-      ]
-        .concat(locations.map((l) => `locationid-${l._id}`))
-        .concat(
-          Array.from(
-            new Set(
-              locations.map(
-                (l) => `city-${l.city.replace(/ /g, "-").toLowerCase()}`
-              )
+  const variables = {
+    title: product.title,
+    descriptionHtml: product.descriptionHtml || "ads",
+    id: `gid://shopify/Product/${product.productId}`,
+    metafields: [
+      {
+        id: product?.hideFromProfileMetafieldId,
+        value: String(product.hideFromProfile),
+      },
+      {
+        id: product?.hideFromCombineMetafieldId,
+        value: String(product.hideFromCombine),
+      },
+      {
+        id: product?.breakTimeMetafieldId,
+        value: String(product.breakTime),
+      },
+      {
+        id: product?.durationMetafieldId,
+        value: String(product.duration),
+      },
+      {
+        id: product?.bookingPeriod.valueMetafieldId,
+        value: String(product.bookingPeriod.value),
+      },
+      {
+        id: product?.bookingPeriod.unitMetafieldId,
+        value: String(product.bookingPeriod.unit),
+      },
+      {
+        id: product?.noticePeriod.valueMetafieldId,
+        value: String(product.noticePeriod?.value),
+      },
+      {
+        id: product?.noticePeriod.unitMetafieldId,
+        value: String(product.noticePeriod?.unit),
+      },
+      {
+        id: product?.locationsMetafieldId,
+        value: JSON.stringify(locations.map((p) => p.metafieldId)),
+      },
+      {
+        id: product?.user?.metaobjectId,
+        value: product.user?.value,
+      },
+      {
+        id: product.activeMetafieldId,
+        value: user.active.toString(),
+      },
+      {
+        id: product?.scheduleIdMetafieldId,
+        value: scheduleMetafieldId, //reference to scheduleModel.metafieldId, product.scheduleIdMetafieldId reference to product-schedule-metafieldId
+      },
+    ],
+    tags: [
+      "user",
+      `user-${user.username}`,
+      `userid-${user.customerId}`,
+      "treatments",
+      `parentid-${product.parentId}`,
+      `productid-${product.productId}`,
+      `product-${product.productHandle}`,
+      `scheduleid-${product.scheduleId}`,
+    ]
+      .concat(locations.map((l) => `locationid-${l._id}`))
+      .concat(
+        Array.from(
+          new Set(
+            locations.map(
+              (l) => `city-${l.city.replace(/ /g, "-").toLowerCase()}`
             )
           )
         )
-        .join(", "),
-    },
+      )
+      .join(", "),
+  };
+
+  const { data } = await shopifyAdmin.request(PRODUCT_UPDATE, {
+    variables,
   });
 
   if (!data?.productUpdate?.product) {
