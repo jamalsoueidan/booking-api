@@ -1,4 +1,4 @@
-import { HttpRequest, InvocationContext } from "@azure/functions";
+import { InvocationContext } from "@azure/functions";
 import { z } from "zod";
 import { UserZodSchema } from "~/functions/user";
 import { _ } from "~/library/handler";
@@ -7,7 +7,6 @@ import { CustomerServiceCreate } from "../../services/customer/create";
 
 export type CustomerControllerCreateRequest = {
   body: CustomerControllerCreteBody;
-  request: HttpRequest;
   context: InvocationContext;
 };
 
