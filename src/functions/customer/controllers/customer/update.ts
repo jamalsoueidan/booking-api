@@ -1,11 +1,14 @@
+import { InvocationContext } from "@azure/functions";
 import { z } from "zod";
 import { UserZodSchema } from "~/functions/user";
 import { _ } from "~/library/handler";
+import { CustomerUpdateOrchestration } from "../../orchestrations/customer/update";
 import { CustomerServiceUpdate } from "../../services/customer/update";
 
 export type CustomerControllerUpdateRequest = {
   query: CustomerControllerUpdateQuery;
   body: CustomerControllerUpdateBody;
+  context: InvocationContext;
 };
 
 export const CustomerControllerUpdateQuerySchema = UserZodSchema.pick({
@@ -36,9 +39,13 @@ export type CustomerControllerUpdateResponse = Awaited<
 >;
 
 export const CustomerControllerUpdate = _(
-  ({ query, body }: CustomerControllerUpdateRequest) => {
+  async ({ query, body, context }: CustomerControllerUpdateRequest) => {
     const validateQuery = CustomerControllerUpdateQuerySchema.parse(query);
     const validateBody = CustomerControllerUpdateSchema.parse(body);
-    return CustomerServiceUpdate(validateQuery, validateBody);
+    const user = await CustomerServiceUpdate(validateQuery, validateBody);
+
+    await CustomerUpdateOrchestration(user, context);
+
+    return user;
   }
 );
