@@ -33,10 +33,6 @@ const orchestrator: df.OrchestrationHandler = function* (
       })
     );
 
-  yield context.df.createTimer(
-    new Date(context.df.currentUtcDateTime.getTime() + 1000)
-  );
-
   const userMetaobject: Awaited<ReturnType<typeof createUserMetaobject>> =
     yield context.df.callActivity(
       createUserMetaobjectName,
@@ -46,10 +42,6 @@ const orchestrator: df.OrchestrationHandler = function* (
       })
     );
 
-  yield context.df.createTimer(
-    new Date(context.df.currentUtcDateTime.getTime() + 1000)
-  );
-
   const publish: Awaited<ReturnType<typeof publishCollection>> =
     yield context.df.callActivity(
       publishCollectionName,
@@ -57,10 +49,6 @@ const orchestrator: df.OrchestrationHandler = function* (
         collectionId: collectionMetaobject.id,
       })
     );
-
-  yield context.df.createTimer(
-    new Date(context.df.currentUtcDateTime.getTime() + 1000)
-  );
 
   const userUpdated: Awaited<ReturnType<typeof updateUser>> =
     yield context.df.callActivity(

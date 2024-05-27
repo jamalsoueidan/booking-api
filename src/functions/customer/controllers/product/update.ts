@@ -1,13 +1,16 @@
 import { z } from "zod";
 import { ScheduleProductZodSchema } from "~/functions/schedule/schedule.types";
 
+import { InvocationContext } from "@azure/functions";
 import { _ } from "~/library/handler";
 import { GidFormat } from "~/library/zod";
+import { CustomerProductUpdateOrchestration } from "../../orchestrations/product/update";
 import { CustomerProductServiceUpdate } from "../../services/product/update";
 
 export type CustomerProductControllerUpdateRequest = {
   query: z.infer<typeof CustomerProductControllerUpdateQuerySchema>;
   body: z.infer<typeof CustomerProductControllerUpdateBodySchema>;
+  context: InvocationContext;
 };
 
 const CustomerProductControllerUpdateQuerySchema = z.object({
@@ -29,11 +32,18 @@ export type CustomerProductControllerUpdateResponse = Awaited<
 >;
 
 export const CustomerProductControllerUpdate = _(
-  ({ query, body }: CustomerProductControllerUpdateRequest) => {
+  async ({ query, body, context }: CustomerProductControllerUpdateRequest) => {
     const validateQuery =
       CustomerProductControllerUpdateQuerySchema.parse(query);
     const validateBody = CustomerProductControllerUpdateBodySchema.parse(body);
 
-    return CustomerProductServiceUpdate(validateQuery, validateBody);
+    const response = await CustomerProductServiceUpdate(
+      validateQuery,
+      validateBody
+    );
+
+    await CustomerProductUpdateOrchestration(query, context);
+
+    return response;
   }
 );

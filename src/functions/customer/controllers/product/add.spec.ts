@@ -14,12 +14,7 @@ import {
 import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat } from "~/library/zod";
-import {
-  ProductDuplicateMutation,
-  ProductPricepdateMutation,
-  ProductUpdateMutation,
-} from "~/types/admin.generated";
-import { PRODUCT_UPDATE } from "../../services/product/update";
+import { ProductDuplicateMutation } from "~/types/admin.generated";
 import {
   CustomerProductControllerAdd,
   CustomerProductControllerAddRequest,
@@ -27,6 +22,12 @@ import {
 } from "./add";
 
 require("~/library/jest/mongoose/mongodb.jest");
+
+jest.mock("../../orchestrations/product/update", () => ({
+  CustomerProductUpdateOrchestration: () => ({
+    request: jest.fn(),
+  }),
+}));
 
 jest.mock("@shopify/admin-api-client", () => ({
   createAdminApiClient: () => ({
@@ -156,207 +157,25 @@ describe("CustomerProductControllerAdd", () => {
       },
     };
 
-    const tags = [
-      `user`,
-      `user-${user.username}`,
-      `userid-${user.customerId}`,
-      `treatments`,
-      `parentid-${body.parentId}`,
-      `productid-${GidFormat.parse(
-        mockProduct.productDuplicate?.newProduct?.id
-      )}`,
-      `product-${mockProduct.productDuplicate?.newProduct?.handle}`,
-      `scheduleid-${newSchedule._id}`,
-      `locationid-${body.locations[0].location}`,
-      `city-${location.city.replace(/ /g, "-").toLowerCase()}`,
-    ];
-
-    const mockProductUpdate: ProductUpdateMutation = {
-      productUpdate: {
-        product: {
-          id: `gid://shopify/Product/${GidFormat.parse(
-            mockProduct.productDuplicate?.newProduct?.id
-          )}}`,
-          title,
-          variants: {
-            nodes: mockProduct.productDuplicate?.newProduct?.variants.nodes!,
-          },
-          handle: "testerne-new-product",
-          tags,
-          user: {
-            id: `gid://shopify/Metafield/44429081510215`,
-            value: `gid://shopify/Metafield/44429081510215`,
-          },
-          hideFromProfile: {
-            id: `gid://shopify/Metafield/44429081510215`,
-            value: "true",
-          },
-          hideFromCombine: {
-            id: `gid://shopify/Metafield/233`,
-            value: "false",
-          },
-          active: {
-            id: mockProduct.productDuplicate?.newProduct?.active?.id!,
-            value: "False",
-          },
-          parentId: {
-            id: mockProduct.productDuplicate?.newProduct?.parentId?.id!,
-            value: `gid://shopify/Product/${body.parentId}`,
-          },
-          scheduleId: {
-            id: mockProduct.productDuplicate?.newProduct?.scheduleId?.id!,
-            value: newSchedule.metafieldId || "",
-          },
-          locations: {
-            id: mockProduct.productDuplicate?.newProduct?.locations?.id!,
-            value: JSON.stringify(locations.map((l) => l.metafieldId)),
-          },
-          bookingPeriodValue: {
-            id: mockProduct.productDuplicate?.newProduct?.bookingPeriodValue
-              ?.id!,
-            value: "1",
-          },
-          bookingPeriodUnit: {
-            id: mockProduct.productDuplicate?.newProduct?.bookingPeriodUnit
-              ?.id!,
-            value: "months",
-          },
-          noticePeriodValue: {
-            id: mockProduct.productDuplicate?.newProduct?.noticePeriodValue
-              ?.id!,
-            value: "1",
-          },
-          noticePeriodUnit: {
-            id: mockProduct.productDuplicate?.newProduct?.noticePeriodUnit?.id!,
-            value: "hours",
-          },
-          duration: {
-            id: mockProduct.productDuplicate?.newProduct?.duration?.id!,
-            value: "60",
-          },
-          breaktime: {
-            id: mockProduct.productDuplicate?.newProduct?.breaktime?.id!,
-            value: "10",
-          },
-        },
-      },
-    };
-
-    const mockProductPriceUpdate: ProductPricepdateMutation = {
-      productVariantsBulkUpdate: {
-        product: {
-          id: `gid://shopify/Product/${GidFormat.parse(
-            mockProduct.productDuplicate?.newProduct?.id
-          )}}`,
-          variants: {
-            nodes: [
-              {
-                id: mockProduct.productDuplicate?.newProduct?.variants.nodes[0]
-                  .id!,
-                compareAtPrice: body.compareAtPrice.amount,
-                price: body.price.amount,
-              },
-            ],
-          },
-        },
-      },
-    };
-
-    mockRequest
-      .mockResolvedValueOnce({
-        data: mockProduct,
-      })
-      .mockResolvedValueOnce({
-        data: mockProductUpdate,
-      })
-      .mockResolvedValueOnce({
-        data: mockProductPriceUpdate,
-      });
+    mockRequest.mockResolvedValueOnce({
+      data: mockProduct,
+    });
 
     request = await createHttpRequest<CustomerProductControllerAddRequest>({
       query: {
         customerId,
       },
       body,
+      context,
     });
 
     const res: HttpSuccessResponse<CustomerProductControllerAddResponse> =
       await CustomerProductControllerAdd(request, context);
 
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(2, PRODUCT_UPDATE, {
-      variables: {
-        id: mockProduct.productDuplicate?.newProduct?.id,
-        title,
-        descriptionHtml: body.descriptionHtml,
-        metafields: [
-          {
-            id: mockProductUpdate.productUpdate?.product?.hideFromProfile?.id,
-            value: "true",
-          },
-          {
-            id: mockProductUpdate.productUpdate?.product?.hideFromCombine?.id,
-            value:
-              mockProductUpdate.productUpdate?.product?.hideFromCombine?.value,
-          },
-          {
-            id: mockProductUpdate.productUpdate?.product?.breaktime?.id,
-            value: mockProductUpdate.productUpdate?.product?.breaktime?.value,
-          },
-          {
-            id: mockProductUpdate.productUpdate?.product?.duration?.id,
-            value: mockProductUpdate.productUpdate?.product?.duration?.value,
-          },
-          {
-            id: mockProductUpdate.productUpdate?.product?.bookingPeriodValue
-              ?.id,
-            value: "3",
-          },
-          {
-            id: mockProductUpdate.productUpdate?.product?.bookingPeriodUnit?.id,
-            value:
-              mockProductUpdate.productUpdate?.product?.bookingPeriodUnit
-                ?.value,
-          },
-          {
-            id: mockProductUpdate.productUpdate?.product?.noticePeriodValue?.id,
-            value:
-              mockProductUpdate.productUpdate?.product?.noticePeriodValue
-                ?.value,
-          },
-          {
-            id: mockProductUpdate.productUpdate?.product?.noticePeriodUnit?.id,
-            value:
-              mockProductUpdate.productUpdate?.product?.noticePeriodUnit?.value,
-          },
-          {
-            id: mockProductUpdate.productUpdate?.product?.locations?.id,
-            value: JSON.stringify(locations.map((l) => l.metafieldId)),
-          },
-          {
-            id: mockProductUpdate.productUpdate?.product?.user?.id,
-            value: user.userMetaobjectId,
-          },
-          {
-            id: mockProductUpdate.productUpdate?.product?.active?.id,
-            value: "true",
-          },
-          {
-            id: mockProductUpdate.productUpdate?.product?.scheduleId?.id,
-            value: newSchedule.metafieldId,
-          },
-        ],
-        tags: tags.join(", "),
-      },
-    });
-
     expect(res.jsonBody?.success).toBeTruthy();
 
-    expect(res.jsonBody?.payload).toEqual(
-      expect.objectContaining({
-        productId: GidFormat.parse(
-          mockProduct.productDuplicate?.newProduct?.id
-        ),
-      })
+    expect(res.jsonBody?.payload.productId).toEqual(
+      GidFormat.parse(mockProduct.productDuplicate?.newProduct?.id)
     );
   });
 });

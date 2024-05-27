@@ -7,7 +7,6 @@ import {
 import { ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat, StringOrObjectIdType } from "~/library/zod";
-import { CustomerProductServiceUpdate } from "./update";
 
 export type CustomerProductServiceAdd = {
   customerId: Schedule["customerId"];
@@ -111,10 +110,7 @@ export const CustomerProductServiceAdd = async (
     { new: true }
   );
 
-  return CustomerProductServiceUpdate(
-    { customerId, productId: shopifyProductId },
-    newProduct
-  );
+  return newProduct;
 };
 
 export const PRODUCT_FRAGMENT = `#graphql
