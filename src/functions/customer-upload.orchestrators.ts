@@ -17,10 +17,6 @@ import {
 import { updateCustomerHandler } from "./customer/controllers/upload/update-customer";
 import { updateArticle } from "./customer/orchestrations/customer/update/update-article";
 
-df.app.activity("updateImageInArticle", {
-  handler: updateArticle,
-});
-
 df.app.activity("fileCreate", {
   handler: fileCreateHandler,
 });
@@ -70,7 +66,7 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
         });
 
       return yield context.df.callActivity(
-        "updateImageInArticle",
+        "updateArticle",
         activityType<typeof updateArticle>({
           user,
         })
