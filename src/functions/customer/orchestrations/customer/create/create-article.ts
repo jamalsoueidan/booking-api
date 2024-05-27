@@ -50,6 +50,8 @@ export const createArticle = async ({
     tags.push(`speak-${user.speaks.join(", speak-")}`);
   }
 
+  tags.push(`gender-${user.gender}`);
+
   console.log(
     JSON.stringify(
       {
