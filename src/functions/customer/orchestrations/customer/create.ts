@@ -3,6 +3,7 @@ import * as df from "durable-functions";
 import { OrchestrationContext } from "durable-functions";
 import { User } from "~/functions/user";
 import { activityType } from "~/library/orchestration";
+import { createArticle } from "./create/create-article";
 import { createCollection } from "./create/create-collection";
 import { createUserMetaobject } from "./create/create-user-metaobject";
 import { publishCollection } from "./create/publish-collection";
@@ -13,6 +14,9 @@ df.app.activity(createCollectionName, { handler: createCollection });
 
 const createUserMetaobjectName = "createUserMetaobject";
 df.app.activity(createUserMetaobjectName, { handler: createUserMetaobject });
+
+const createArticleName = "createArticle";
+df.app.activity(createArticleName, { handler: createArticle });
 
 const publishCollectionName = "publishCollection";
 df.app.activity(publishCollectionName, { handler: publishCollection });
@@ -42,6 +46,13 @@ const orchestrator: df.OrchestrationHandler = function* (
       })
     );
 
+  const article: Awaited<ReturnType<typeof createArticle>> =
+    yield context.df.callActivity(
+      createArticleName,
+      activityType<typeof createArticle>({
+        user,
+      })
+    );
   const publish: Awaited<ReturnType<typeof publishCollection>> =
     yield context.df.callActivity(
       publishCollectionName,
@@ -57,10 +68,17 @@ const orchestrator: df.OrchestrationHandler = function* (
         collectionMetaobjectId: collectionMetaobject.id,
         userId: user._id,
         userMetaobjectId: userMetaobject.id,
+        articleId: article.article.id,
       })
     );
 
-  return { collectionMetaobject, userMetaobject, publish, userUpdated };
+  return {
+    collectionMetaobject,
+    userMetaobject,
+    publish,
+    userUpdated,
+    article,
+  };
 };
 
 df.app.orchestration("createUserShopify", orchestrator);
