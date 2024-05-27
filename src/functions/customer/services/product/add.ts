@@ -29,7 +29,7 @@ export type CustomerProductServiceAddBody = Pick<
 
 export const CustomerProductServiceAdd = async (
   { customerId }: CustomerProductServiceAdd,
-  body: CustomerProductServiceAddBody
+  { scheduleId, ...body }: CustomerProductServiceAddBody
 ) => {
   const { data } = await shopifyAdmin.request(PRODUCT_DUPLCATE, {
     variables: {
@@ -99,7 +99,7 @@ export const CustomerProductServiceAdd = async (
 
   await ScheduleModel.updateOne(
     {
-      _id: body.scheduleId,
+      _id: scheduleId,
       customerId,
     },
     {
