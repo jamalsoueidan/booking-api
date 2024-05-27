@@ -15,8 +15,3 @@ export const CustomerProductsServiceListIds = async (
     schedule.products.map((product) => product.productId)
   );
 };
-
-type CustomerProductsServiceListProps = {
-  customerId: Schedule["customerId"];
-  scheduleId?: Schedule["_id"];
-};
