@@ -1,4 +1,4 @@
-import { InvocationContext } from "@azure/functions";
+import { HttpRequest, InvocationContext } from "@azure/functions";
 import { z } from "zod";
 import { UserZodSchema } from "~/functions/user";
 import { _ } from "~/library/handler";
@@ -8,6 +8,7 @@ import { CustomerServiceCreate } from "../../services/customer/create";
 export type CustomerControllerCreateRequest = {
   body: CustomerControllerCreteBody;
   context: InvocationContext;
+  request: HttpRequest;
 };
 
 export const CustomerControllerCreateSchema = UserZodSchema.pick({
@@ -31,10 +32,12 @@ export type CustomerControllerCreateResponse = Awaited<
 >;
 
 export const CustomerControllerCreate = _(
-  async ({ body, context }: CustomerControllerCreateRequest) => {
+  async ({ body, request, context }: CustomerControllerCreateRequest) => {
     const validateBody = CustomerControllerCreateSchema.parse(body);
     const user = await CustomerServiceCreate(validateBody);
+
     await CustomerCreateOrchestration(user, context);
+
     return user;
   }
 );

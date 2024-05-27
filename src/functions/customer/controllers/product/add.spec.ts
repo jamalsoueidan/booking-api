@@ -121,7 +121,7 @@ describe("CustomerProductControllerAdd", () => {
     };
   });
 
-  it("should be able to add slots schedule", async () => {
+  it("should be able to add product", async () => {
     const user = await createUser({ customerId });
 
     const newSchedule = await createSchedule({
@@ -167,6 +167,7 @@ describe("CustomerProductControllerAdd", () => {
       },
       body,
       context,
+      request,
     });
 
     const res: HttpSuccessResponse<CustomerProductControllerAddResponse> =

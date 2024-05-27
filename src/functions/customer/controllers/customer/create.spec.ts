@@ -34,6 +34,7 @@ describe("CustomerControllerCreate", () => {
     request = await createHttpRequest<CustomerControllerCreateRequest>({
       body: userData,
       context,
+      request,
     });
 
     const res: HttpSuccessResponse<CustomerControllerCreateResponse> =

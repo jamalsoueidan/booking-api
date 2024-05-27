@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { InvocationContext } from "@azure/functions";
+import { HttpRequest, InvocationContext } from "@azure/functions";
 import { ScheduleProductZodSchema } from "~/functions/schedule";
 import { _ } from "~/library/handler";
 import { GidFormat, StringOrObjectId } from "~/library/zod";
@@ -10,6 +10,7 @@ import { CustomerProductServiceAdd } from "../../services/product/add";
 export type CustomerProductControllerAddRequest = {
   query: z.infer<typeof CustomerProductControllerAddQuerySchema>;
   body: z.infer<typeof CustomerProductControllerAddBodySchema>;
+  request: HttpRequest;
   context: InvocationContext;
 };
 
@@ -38,7 +39,12 @@ export type CustomerProductControllerAddResponse = Awaited<
 >;
 
 export const CustomerProductControllerAdd = _(
-  async ({ query, body, context }: CustomerProductControllerAddRequest) => {
+  async ({
+    query,
+    body,
+    request,
+    context,
+  }: CustomerProductControllerAddRequest) => {
     const validateQuery = CustomerProductControllerAddQuerySchema.parse(query);
     const validateBody = CustomerProductControllerAddBodySchema.parse(body);
 
@@ -48,7 +54,7 @@ export const CustomerProductControllerAdd = _(
     );
 
     await CustomerProductUpdateOrchestration(
-      { productId: product.productId, customerId: query.customerId },
+      { productId: product.productId, customerId: validateQuery.customerId },
       context
     );
 
