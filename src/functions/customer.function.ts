@@ -14,6 +14,7 @@ app.http("customerUpdate", {
   methods: ["PUT"],
   authLevel: "anonymous",
   route: "customer/{customerId?}",
+  extraInputs: [df.input.durableClient()],
   handler: CustomerControllerUpdate,
 });
 

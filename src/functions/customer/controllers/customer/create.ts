@@ -32,7 +32,7 @@ export type CustomerControllerCreateResponse = Awaited<
 >;
 
 export const CustomerControllerCreate = _(
-  async ({ body, request, context }: CustomerControllerCreateRequest) => {
+  async ({ body, context }: CustomerControllerCreateRequest) => {
     const validateBody = CustomerControllerCreateSchema.parse(body);
     const user = await CustomerServiceCreate(validateBody);
 
