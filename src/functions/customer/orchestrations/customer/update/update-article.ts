@@ -3,33 +3,7 @@ import { ScheduleModel } from "~/functions/schedule";
 import { User } from "~/functions/user";
 import { shopifyRest } from "~/library/shopify/rest";
 
-interface RootObject {
-  article: Article;
-}
-interface Article {
-  id: number;
-  title: string;
-  created_at: string;
-  body_html: string;
-  blog_id: number;
-  author: string;
-  user_id?: any;
-  published_at: string;
-  updated_at: string;
-  summary_html: string;
-  template_suffix?: any;
-  handle: string;
-  tags: string;
-  admin_graphql_api_id: string;
-  image: Image;
-}
-interface Image {
-  created_at: string;
-  alt: string;
-  width: number;
-  height: number;
-  src: string;
-}
+export const updateArticleName = "updateArticle";
 
 export const updateArticle = async ({
   user,
@@ -101,3 +75,31 @@ export const updateArticle = async ({
 
   return await response.json();
 };
+
+interface RootObject {
+  article: Article;
+}
+interface Article {
+  id: number;
+  title: string;
+  created_at: string;
+  body_html: string;
+  blog_id: number;
+  author: string;
+  user_id?: any;
+  published_at: string;
+  updated_at: string;
+  summary_html: string;
+  template_suffix?: any;
+  handle: string;
+  tags: string;
+  admin_graphql_api_id: string;
+  image: Image;
+}
+interface Image {
+  created_at: string;
+  alt: string;
+  width: number;
+  height: number;
+  src: string;
+}
