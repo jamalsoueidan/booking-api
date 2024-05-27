@@ -10,6 +10,7 @@ export const getProductObject = (
   parentId: faker.number.int({ min: 1, max: 10000000 }),
   productHandle: faker.internet.url(),
   productId: faker.number.int({ min: 1, max: 10000000 }),
+  scheduleIdMetafieldId: String(faker.number.int({ min: 1, max: 10000000 })),
   variantId: faker.number.int({
     min: 10000000,
     max: 99999999,

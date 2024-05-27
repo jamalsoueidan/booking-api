@@ -1,6 +1,6 @@
-import "module-alias/register";
-
 import { app } from "@azure/functions";
+import * as df from "durable-functions";
+import "module-alias/register";
 
 import {
   CustomerControllerCreate,
@@ -21,6 +21,7 @@ app.http("customerCreate", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "customer",
+  extraInputs: [df.input.durableClient()],
   handler: CustomerControllerCreate,
 });
 

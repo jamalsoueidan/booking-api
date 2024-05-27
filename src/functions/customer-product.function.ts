@@ -1,17 +1,16 @@
-import "module-alias/register";
-import { CustomerProductOptionsControllerList } from "./customer/controllers/product-options/list";
-import { CustomerProductsControllerList } from "./customer/controllers/products/list";
-
 import { app } from "@azure/functions";
-
+import * as df from "durable-functions";
+import "module-alias/register";
 import { CustomerProductOptionsControllerAdd } from "./customer/controllers/product-options/add";
 import { CustomerProductOptionsControllerDestroy } from "./customer/controllers/product-options/destroy";
+import { CustomerProductOptionsControllerList } from "./customer/controllers/product-options/list";
 import { CustomerProductOptionsControllerUpdate } from "./customer/controllers/product-options/update";
 import { CustomerProductControllerAdd } from "./customer/controllers/product/add";
 import { CustomerProductControllerDestroy } from "./customer/controllers/product/destroy";
 import { CustomerProductControllerGet } from "./customer/controllers/product/get";
 import { CustomerProductControllerUpdate } from "./customer/controllers/product/update";
 import { CustomerProductsControllerListIds } from "./customer/controllers/products";
+import { CustomerProductsControllerList } from "./customer/controllers/products/list";
 
 app.http("customerProductsListIds", {
   methods: ["GET"],
@@ -32,6 +31,7 @@ app.http("customerProductUpdate", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/product/{productId?}",
   handler: CustomerProductControllerUpdate,
+  extraInputs: [df.input.durableClient()],
 });
 
 app.http("customerProductOptionsAdd", {
@@ -69,6 +69,7 @@ app.http("customerProductAdd", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/product",
   handler: CustomerProductControllerAdd,
+  extraInputs: [df.input.durableClient()],
 });
 
 app.http("customerProductGet", {

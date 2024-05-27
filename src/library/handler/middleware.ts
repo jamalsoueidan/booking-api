@@ -42,9 +42,7 @@ export const _ =
           );
         }
 
-        //if (response) {
         return { jsonBody: { payload: response, success: true } };
-        //}
       }
     } catch (err: unknown) {
       context.error("Error: ", JSON.stringify(err));
@@ -106,6 +104,9 @@ const executeControllerWithParams = async (
 
   context.log("Request (" + request.url + ")", params);
 
+  params.context = context;
+  params.request = request;
+
   return handler(params);
 };
 
@@ -135,5 +136,9 @@ const parameterExists = (
   paramName: string
 ): boolean => {
   const functionParameters = getFunctionParameters(functionToCheck);
-  return functionParameters.includes(paramName);
+  return (
+    functionParameters.includes(paramName) &&
+    !functionParameters.includes("body") &&
+    !functionParameters.includes("query")
+  );
 };

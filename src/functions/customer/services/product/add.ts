@@ -7,7 +7,6 @@ import {
 import { ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat, StringOrObjectIdType } from "~/library/zod";
-import { CustomerProductServiceUpdate } from "./update";
 
 export type CustomerProductServiceAdd = {
   customerId: Schedule["customerId"];
@@ -30,7 +29,7 @@ export type CustomerProductServiceAddBody = Pick<
 
 export const CustomerProductServiceAdd = async (
   { customerId }: CustomerProductServiceAdd,
-  body: CustomerProductServiceAddBody
+  { scheduleId, ...body }: CustomerProductServiceAddBody
 ) => {
   const { data } = await shopifyAdmin.request(PRODUCT_DUPLCATE, {
     variables: {
@@ -100,7 +99,7 @@ export const CustomerProductServiceAdd = async (
 
   await ScheduleModel.updateOne(
     {
-      _id: body.scheduleId,
+      _id: scheduleId,
       customerId,
     },
     {
@@ -111,10 +110,7 @@ export const CustomerProductServiceAdd = async (
     { new: true }
   );
 
-  return CustomerProductServiceUpdate(
-    { customerId, productId: shopifyProductId },
-    newProduct
-  );
+  return newProduct;
 };
 
 export const PRODUCT_FRAGMENT = `#graphql
