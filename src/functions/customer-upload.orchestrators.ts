@@ -7,6 +7,7 @@ import {
 } from "@azure/functions";
 import * as df from "durable-functions";
 import { OrchestrationContext } from "durable-functions";
+import { activityType } from "~/library/orchestration";
 import { fileCreateHandler } from "./customer/controllers/upload/file-create";
 import { fileGetHandler } from "./customer/controllers/upload/file-get";
 import {
@@ -14,6 +15,11 @@ import {
   fileInputSchema,
 } from "./customer/controllers/upload/types";
 import { updateCustomerHandler } from "./customer/controllers/upload/update-customer";
+import { updateArticle } from "./customer/orchestrations/customer/update/update-article";
+
+df.app.activity("updateImageInArticle", {
+  handler: updateArticle,
+});
 
 df.app.activity("fileCreate", {
   handler: fileCreateHandler,
@@ -56,11 +62,19 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
     if (profile) {
       fileUploaded = true;
       context.info(`Data for ${body.customerId} not available after retries.`);
-      return yield context.df.callActivity("updateCustomer", {
-        customerId: zodParse.data.customerId,
-        profile,
-        metaobjectId: response.id,
-      });
+      const user: Awaited<ReturnType<typeof updateCustomerHandler>> =
+        yield context.df.callActivity("updateCustomer", {
+          customerId: zodParse.data.customerId,
+          profile,
+          metaobjectId: response.id,
+        });
+
+      return yield context.df.callActivity(
+        "updateImageInArticle",
+        activityType<typeof updateArticle>({
+          user,
+        })
+      );
     }
 
     attemptCount++;
