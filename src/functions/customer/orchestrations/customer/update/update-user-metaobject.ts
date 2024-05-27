@@ -6,52 +6,54 @@ export const updateUserMetaobject = async ({
 }: {
   user: Omit<User, "_id">;
 }) => {
+  const variables = {
+    id: user.userMetaobjectId || "",
+    fields: [
+      {
+        key: "fullname",
+        value: user.fullname,
+      },
+      {
+        key: "short_description",
+        value: user.shortDescription || "",
+      },
+      {
+        key: "about_me",
+        value: user.aboutMeHtml || "",
+      },
+      {
+        key: "professions",
+        value: JSON.stringify(user.professions || []),
+      },
+      {
+        key: "social",
+        value: JSON.stringify(user.social || []),
+      },
+      {
+        key: "active",
+        value: String(user.active),
+      },
+      {
+        key: "theme",
+        value: user.theme?.color || "pink",
+      },
+      ...(user.images?.profile?.metaobjectId
+        ? [
+            {
+              key: "image",
+              value: user.images?.profile?.metaobjectId,
+            },
+          ]
+        : []),
+    ],
+  };
+
   const { data } = await shopifyAdmin.request(UPDATE_USER_METAOBJECT, {
-    variables: {
-      id: user.userMetaobjectId || "",
-      fields: [
-        {
-          key: "fullname",
-          value: user.fullname,
-        },
-        {
-          key: "short_description",
-          value: user.shortDescription || "",
-        },
-        {
-          key: "about_me",
-          value: user.aboutMeHtml || "",
-        },
-        {
-          key: "professions",
-          value: JSON.stringify(user.professions || []),
-        },
-        {
-          key: "social",
-          value: JSON.stringify(user.social),
-        },
-        {
-          key: "active",
-          value: String(user.active),
-        },
-        {
-          key: "theme",
-          value: user.theme?.color || "pink",
-        },
-        ...(user.images?.profile?.metaobjectId
-          ? [
-              {
-                key: "image",
-                value: user.images?.profile?.metaobjectId,
-              },
-            ]
-          : []),
-      ],
-    },
+    variables,
   });
 
   if (!data?.metaobjectUpdate?.metaobject) {
-    throw new Error(`Failed to create collection for user ${user.username}`);
+    throw new Error(`Failed to update user metaobject ${user.username}`);
   }
 
   return data?.metaobjectUpdate?.metaobject;
@@ -65,6 +67,10 @@ export const UPDATE_USER_METAOBJECT = `#graphql
           value
           key
         }
+      }
+      userErrors {
+        code
+        message
       }
     }
   }

@@ -25,7 +25,11 @@ export const updateArticle = async ({
   const tags = [user.username];
 
   if (user.professions) {
-    tags.push(user.professions?.join(","));
+    tags.push(`profession-${user.professions.join(", profession-")}`);
+  }
+
+  if (user.speaks) {
+    tags.push(`speak-${user.speaks.join(", speak-")}`);
   }
 
   if (parentIds.length > 0) {
