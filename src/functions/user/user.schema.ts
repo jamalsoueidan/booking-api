@@ -23,6 +23,7 @@ export const UserMongooseSchema = new mongoose.Schema<
     },
     userMetaobjectId: String,
     collectionMetaobjectId: String,
+    articleId: Number,
     professions: {
       type: [String],
       index: true,

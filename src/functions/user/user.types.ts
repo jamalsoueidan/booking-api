@@ -47,6 +47,7 @@ export const UserZodSchema = z.object({
   customerId: GidFormat,
   userMetaobjectId: z.string().optional(),
   collectionMetaobjectId: z.string().optional(),
+  articleId: z.number().optional(),
   isBusiness: z.boolean(),
   yearsExperience: NumberOrString.optional(),
   professions: z
