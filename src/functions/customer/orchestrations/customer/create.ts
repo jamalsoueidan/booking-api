@@ -50,9 +50,14 @@ const orchestrator: df.OrchestrationHandler = function* (
     yield context.df.callActivity(
       createArticleName,
       activityType<typeof createArticle>({
-        user,
+        user: {
+          ...user,
+          collectionMetaobjectId: collectionMetaobject.id,
+          userMetaobjectId: userMetaobject.id,
+        },
       })
     );
+
   const publish: Awaited<ReturnType<typeof publishCollection>> =
     yield context.df.callActivity(
       publishCollectionName,

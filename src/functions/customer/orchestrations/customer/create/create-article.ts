@@ -34,13 +34,61 @@ export const createArticle = async ({
 }: {
   user: User;
 }): Promise<RootObject> => {
+  if (!user.collectionMetaobjectId || !user.userMetaobjectId) {
+    throw new Error(
+      `Failed to create article without collectionMetaobjectId or userMetaobjectId for ${user.username}`
+    );
+  }
+
+  const tags = []; //user.username
+
+  if (user.professions) {
+    tags.push(`profession-${user.professions.join(", profession-")}`);
+  }
+
+  if (user.speaks) {
+    tags.push(`speak-${user.speaks.join(", speak-")}`);
+  }
+
+  console.log(
+    JSON.stringify(
+      {
+        data: {
+          article: {
+            blog_id: 105364226375,
+            title: user.username,
+            author: "System",
+            tags: tags.join(", "),
+            body_html: user.aboutMeHtml,
+            metafields: [
+              {
+                key: "user",
+                value: user.userMetaobjectId,
+                namespace: "booking",
+              },
+              {
+                key: "collection",
+                value: user.collectionMetaobjectId,
+                namespace: "booking",
+              },
+            ],
+            summary_html: user.shortDescription,
+            published_at: user.active ? user.createdAt : null,
+          },
+        },
+      },
+      null,
+      2
+    )
+  );
+
   const response = await shopifyRest.post("blogs/105364226375/articles", {
     data: {
       article: {
         blog_id: 105364226375,
         title: user.username,
         author: "System",
-        tags: `${user.username}, ${user.professions?.join(", ")}`,
+        tags: tags.join(", "),
         body_html: user.aboutMeHtml,
         metafields: [
           {
@@ -55,14 +103,6 @@ export const createArticle = async ({
           },
         ],
         summary_html: user.shortDescription,
-        ...(user.images?.profile
-          ? {
-              image: {
-                src: user.images?.profile.url,
-                alt: user.username,
-              },
-            }
-          : {}),
         published_at: user.active ? user.createdAt : null,
       },
     },

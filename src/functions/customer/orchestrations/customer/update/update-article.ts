@@ -22,7 +22,7 @@ export const updateArticle = async ({
     schedule.slots.map((slot) => slot.day.toLowerCase())
   );
 
-  const tags = [user.username];
+  const tags = []; //user.username
 
   if (user.professions) {
     tags.push(`profession-${user.professions.join(", profession-")}`);
