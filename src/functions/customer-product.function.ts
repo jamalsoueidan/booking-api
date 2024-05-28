@@ -39,6 +39,7 @@ app.http("customerProductOptionsAdd", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/product/{productId?}/options",
   handler: CustomerProductOptionsControllerAdd,
+  extraInputs: [df.input.durableClient()],
 });
 
 app.http("customerProductOptionsList", {
@@ -54,6 +55,7 @@ app.http("customerProductOptionsDestroy", {
   route:
     "customer/{customerId?}/product/{productId?}/options/{optionProductId?}",
   handler: CustomerProductOptionsControllerDestroy,
+  extraInputs: [df.input.durableClient()],
 });
 
 app.http("customerProductOptionsUpdate", {
