@@ -7,6 +7,7 @@ import {
 import { ShopifyError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 import { GidFormat, StringOrObjectIdType } from "~/library/zod";
+import { CustomerServiceGet } from "../customer/get";
 
 export type CustomerProductServiceAdd = {
   customerId: Schedule["customerId"];
@@ -31,6 +32,10 @@ export const CustomerProductServiceAdd = async (
   { customerId }: CustomerProductServiceAdd,
   { scheduleId, ...body }: CustomerProductServiceAddBody
 ) => {
+  const user = await CustomerServiceGet({
+    customerId,
+  });
+
   const { data } = await shopifyAdmin().request(PRODUCT_DUPLCATE, {
     variables: {
       productId: `gid://shopify/Product/${body.parentId}`,
@@ -55,7 +60,7 @@ export const CustomerProductServiceAdd = async (
   const newProduct: ScheduleProduct = {
     ...body,
     parentId: body.parentId,
-    productHandle: shopifyProduct.handle,
+    productHandle: shopifyProduct.handle + "-by-" + user.username,
     productId: shopifyProductId,
     variantId: GidFormat.parse(variant.id),
     price: {
