@@ -57,7 +57,7 @@ export const createArticle = async ({
     )
   );
 
-  const response = await shopifyRest.post("blogs/105364226375/articles", {
+  const response = await shopifyRest().post("blogs/105364226375/articles", {
     data: {
       article: {
         blog_id: 105364226375,

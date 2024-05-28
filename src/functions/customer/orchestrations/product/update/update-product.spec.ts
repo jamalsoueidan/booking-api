@@ -14,13 +14,13 @@ import { PRODUCT_UPDATE, updateProduct } from "./update-product";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("@shopify/admin-api-client", () => ({
-  createAdminApiClient: () => ({
+jest.mock("~/library/shopify", () => ({
+  shopifyAdmin: jest.fn().mockReturnValue({
     request: jest.fn(),
   }),
 }));
 
-const mockRequest = shopifyAdmin.request as jest.Mock;
+const mockRequest = shopifyAdmin().request as jest.Mock;
 
 const mockProductUpdate: ProductUpdateMutation = {
   productUpdate: {
@@ -196,8 +196,8 @@ describe("CustomerProductUpdateOrchestration", () => {
       `city-${location.city.replace(/ /g, "-").toLowerCase()}`,
     ];
 
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(1);
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(1, PRODUCT_UPDATE, {
+    expect(mockRequest).toHaveBeenCalledTimes(1);
+    expect(mockRequest).toHaveBeenNthCalledWith(1, PRODUCT_UPDATE, {
       variables: {
         id: mockProductUpdate.productUpdate?.product?.id,
         title: product.title,

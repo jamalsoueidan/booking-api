@@ -31,7 +31,7 @@ export const CustomerProductServiceAdd = async (
   { customerId }: CustomerProductServiceAdd,
   { scheduleId, ...body }: CustomerProductServiceAddBody
 ) => {
-  const { data } = await shopifyAdmin.request(PRODUCT_DUPLCATE, {
+  const { data } = await shopifyAdmin().request(PRODUCT_DUPLCATE, {
     variables: {
       productId: `gid://shopify/Product/${body.parentId}`,
       title: body.title,

@@ -9,13 +9,13 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("@shopify/admin-api-client", () => ({
-  createAdminApiClient: () => ({
+jest.mock("~/library/shopify", () => ({
+  shopifyAdmin: jest.fn().mockReturnValue({
     request: jest.fn(),
   }),
 }));
 
-const mockRequest = shopifyAdmin.request as jest.Mock;
+const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerCreateOrchestration", () => {
   beforeAll(async () => {
@@ -59,12 +59,12 @@ describe("CustomerCreateOrchestration", () => {
       collectionId,
     });
 
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(8);
+    expect(mockRequest).toHaveBeenCalledTimes(8);
 
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(1, PUBLICATIONS);
+    expect(mockRequest).toHaveBeenNthCalledWith(1, PUBLICATIONS);
 
     mockPublications.map((p, index) => {
-      expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
+      expect(mockRequest).toHaveBeenNthCalledWith(
         2 + index,
         PUBLISH_COLLECTION,
         {

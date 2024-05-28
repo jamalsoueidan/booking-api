@@ -18,18 +18,17 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("@shopify/admin-api-client", () => ({
-  createAdminApiClient: () => ({
+jest.mock("~/library/shopify", () => ({
+  shopifyAdmin: jest.fn().mockReturnValue({
     request: jest.fn(),
   }),
 }));
 
-const mockRequest = shopifyAdmin.request as jest.Mock;
+const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerProductOptionsAddService", () => {
   beforeEach(() => {
-    // Clear all mocks before each test
-    (shopifyAdmin.request as jest.Mock).mockClear();
+    jest.clearAllMocks();
   });
 
   it("should be able to add 1 or more options to a product", async () => {
@@ -184,53 +183,40 @@ describe("CustomerProductOptionsAddService", () => {
     });
 
     //expect(result).toHaveLength(1);
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(3);
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
-      1,
-      PRODUCT_OPTION_DUPLCATE,
-      {
-        variables: {
-          productId: `gid://shopify/Product/${cloneId}`,
-          title:
-            mockProductOptionDuplicate.productDuplicate?.newProduct?.title!,
-        },
-      }
-    );
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
-      2,
-      PRODUCT_OPTION_ADD,
-      {
-        variables: {
-          id: mockProductOptionDuplicate.productDuplicate?.newProduct?.id,
-          metafields: [
-            {
-              id: mockProductOptionDuplicate.productDuplicate?.newProduct
-                ?.parentId?.id,
-              value: `gid://shopify/Product/${product.productId}`,
-            },
-          ],
-          tags: tags.join(", "),
-        },
-      }
-    );
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
-      3,
-      PRODUCT_PARENT_UPDATE,
-      {
-        variables: {
-          id: `gid://shopify/Product/${product.productId}`,
-          metafields: [
-            {
-              key: "options",
-              namespace: "booking",
-              value: JSON.stringify([
-                mockProductOptionDuplicate.productDuplicate?.newProduct?.id,
-              ]),
-            },
-          ],
-        },
-      }
-    );
+    expect(mockRequest).toHaveBeenCalledTimes(3);
+    expect(mockRequest).toHaveBeenNthCalledWith(1, PRODUCT_OPTION_DUPLCATE, {
+      variables: {
+        productId: `gid://shopify/Product/${cloneId}`,
+        title: mockProductOptionDuplicate.productDuplicate?.newProduct?.title!,
+      },
+    });
+    expect(mockRequest).toHaveBeenNthCalledWith(2, PRODUCT_OPTION_ADD, {
+      variables: {
+        id: mockProductOptionDuplicate.productDuplicate?.newProduct?.id,
+        metafields: [
+          {
+            id: mockProductOptionDuplicate.productDuplicate?.newProduct
+              ?.parentId?.id,
+            value: `gid://shopify/Product/${product.productId}`,
+          },
+        ],
+        tags: tags.join(", "),
+      },
+    });
+    expect(mockRequest).toHaveBeenNthCalledWith(3, PRODUCT_PARENT_UPDATE, {
+      variables: {
+        id: `gid://shopify/Product/${product.productId}`,
+        metafields: [
+          {
+            key: "options",
+            namespace: "booking",
+            value: JSON.stringify([
+              mockProductOptionDuplicate.productDuplicate?.newProduct?.id,
+            ]),
+          },
+        ],
+      },
+    });
 
     let schedule = await ScheduleModel.findOne(newSchedule._id).orFail();
     expect(schedule).not.toBeNull();

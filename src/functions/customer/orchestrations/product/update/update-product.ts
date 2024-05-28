@@ -111,7 +111,7 @@ export const updateProduct = async ({
       .join(", "),
   };
 
-  const { data } = await shopifyAdmin.request(PRODUCT_UPDATE, {
+  const { data } = await shopifyAdmin().request(PRODUCT_UPDATE, {
     variables,
   });
 

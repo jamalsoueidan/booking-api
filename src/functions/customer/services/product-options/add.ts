@@ -42,7 +42,7 @@ export async function CustomerProductOptionsServiceAdd({
     productId,
   });
 
-  const { data } = await shopifyAdmin.request(PRODUCT_OPTION_DUPLCATE, {
+  const { data } = await shopifyAdmin().request(PRODUCT_OPTION_DUPLCATE, {
     variables: {
       productId: `gid://shopify/Product/${cloneId}`,
       title, //Afrensning - XXX
@@ -61,7 +61,7 @@ export async function CustomerProductOptionsServiceAdd({
 
   const newProductId = GidFormat.parse(data.productDuplicate.newProduct.id);
 
-  await shopifyAdmin.request(PRODUCT_OPTION_ADD, {
+  await shopifyAdmin().request(PRODUCT_OPTION_ADD, {
     variables: {
       id: `gid://shopify/Product/${newProductId}`,
       metafields: [
@@ -114,7 +114,7 @@ export async function CustomerProductOptionsServiceAdd({
         namespace: "booking",
       };
 
-  const { data: parentProductData } = await shopifyAdmin.request(
+  const { data: parentProductData } = await shopifyAdmin().request(
     PRODUCT_PARENT_UPDATE,
     {
       variables: {

@@ -22,7 +22,7 @@ const orchestrator: df.OrchestrationHandler = function* (
       })
     );
 
-    const nextExecution = addSeconds(context.df.currentUtcDateTime, 10);
+    const nextExecution = addSeconds(context.df.currentUtcDateTime, 5);
     yield context.df.createTimer(nextExecution);
   }
 

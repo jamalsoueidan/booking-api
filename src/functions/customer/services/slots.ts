@@ -30,7 +30,7 @@ export const CustomerScheduleSlotServiceUpdate = async (
   const data = await schedule.updateSlots(updatedSlot);
 
   if (schedule.metafieldId) {
-    await shopifyAdmin.request(UPDATE_SCHEDULE_METAOBJECT, {
+    await shopifyAdmin().request(UPDATE_SCHEDULE_METAOBJECT, {
       variables: {
         id: schedule.metafieldId,
         fields: [

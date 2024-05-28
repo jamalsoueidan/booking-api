@@ -13,13 +13,13 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("@shopify/admin-api-client", () => ({
-  createAdminApiClient: () => ({
+jest.mock("~/library/shopify", () => ({
+  shopifyAdmin: jest.fn().mockReturnValue({
     request: jest.fn(),
   }),
 }));
 
-const mockRequest = shopifyAdmin.request as jest.Mock;
+const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerScheduleServiceUpdate", () => {
   const customerId = 123;
@@ -85,23 +85,19 @@ describe("CustomerScheduleServiceUpdate", () => {
       }
     );
 
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(1);
+    expect(mockRequest).toHaveBeenCalledTimes(1);
 
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
-      1,
-      UPDATE_SCHEDULE_METAOBJECT,
-      {
-        variables: ensureType<UpdateScheduleMetaobjectMutationVariables>({
-          id: newSchedule.metafieldId || "",
-          fields: [
-            {
-              value: updatedScheduleName,
-              key: "name",
-            },
-          ],
-        }),
-      }
-    );
+    expect(mockRequest).toHaveBeenNthCalledWith(1, UPDATE_SCHEDULE_METAOBJECT, {
+      variables: ensureType<UpdateScheduleMetaobjectMutationVariables>({
+        id: newSchedule.metafieldId || "",
+        fields: [
+          {
+            value: updatedScheduleName,
+            key: "name",
+          },
+        ],
+      }),
+    });
 
     expect(updatedSchedule).toMatchObject({
       name: updatedScheduleName,

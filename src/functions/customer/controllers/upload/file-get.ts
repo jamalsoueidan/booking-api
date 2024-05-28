@@ -1,7 +1,7 @@
 import { shopifyAdmin } from "~/library/shopify";
 
 export async function fileGetHandler(metaobjectId: string) {
-  const { data } = await shopifyAdmin.request(FILE_GET, {
+  const { data } = await shopifyAdmin().request(FILE_GET, {
     variables: {
       id: metaobjectId,
     },

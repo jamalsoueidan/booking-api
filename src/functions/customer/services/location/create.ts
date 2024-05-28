@@ -16,7 +16,7 @@ export const CustomerLocationServiceCreate = async (
   location.country = result.country;
   const savedLocation = await location.save();
 
-  const { data } = await shopifyAdmin.request(CREATE_LOCATION_METAOBJECT, {
+  const { data } = await shopifyAdmin().request(CREATE_LOCATION_METAOBJECT, {
     variables: {
       handle: location._id,
       fields: [

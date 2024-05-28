@@ -50,9 +50,6 @@ const orchestrator: df.OrchestrationHandler = function* (
       })
     );
 
-  let nextExecution = addSeconds(context.df.currentUtcDateTime, 5);
-  yield context.df.createTimer(nextExecution);
-
   const article: Awaited<ReturnType<typeof createArticle>> =
     yield context.df.callActivity(
       createArticleName,
@@ -65,9 +62,6 @@ const orchestrator: df.OrchestrationHandler = function* (
       })
     );
 
-  nextExecution = addSeconds(context.df.currentUtcDateTime, 5);
-  yield context.df.createTimer(nextExecution);
-
   const userUpdated: Awaited<ReturnType<typeof updateUserMetafields>> =
     yield context.df.callActivity(
       updateUserMetafieldsName,
@@ -79,7 +73,7 @@ const orchestrator: df.OrchestrationHandler = function* (
       })
     );
 
-  nextExecution = addSeconds(context.df.currentUtcDateTime, 5);
+  const nextExecution = addSeconds(context.df.currentUtcDateTime, 5);
   yield context.df.createTimer(nextExecution);
 
   const publish: Awaited<ReturnType<typeof publishCollection>> =

@@ -1,5 +1,4 @@
 import { InvocationContext } from "@azure/functions";
-import { addSeconds } from "date-fns";
 import * as df from "durable-functions";
 import { OrchestrationContext } from "durable-functions";
 import { User } from "~/functions/user";
@@ -30,9 +29,6 @@ const orchestrator: df.OrchestrationHandler = function* (
         user,
       })
     );
-
-  const nextExecution = addSeconds(context.df.currentUtcDateTime, 5);
-  yield context.df.createTimer(nextExecution);
 
   const article: Awaited<ReturnType<typeof updateArticle>> =
     yield context.df.callActivity(

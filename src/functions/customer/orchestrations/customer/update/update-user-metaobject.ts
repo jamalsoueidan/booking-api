@@ -49,7 +49,7 @@ export const updateUserMetaobject = async ({
     ],
   };
 
-  const { data } = await shopifyAdmin.request(UPDATE_USER_METAOBJECT, {
+  const { data } = await shopifyAdmin().request(UPDATE_USER_METAOBJECT, {
     variables,
   });
 

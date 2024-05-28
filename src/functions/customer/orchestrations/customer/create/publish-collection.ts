@@ -6,7 +6,7 @@ export const publishCollection = async ({
 }: {
   collectionId: string;
 }) => {
-  const { data } = await shopifyAdmin.request(PUBLICATIONS);
+  const { data } = await shopifyAdmin().request(PUBLICATIONS);
 
   if (!data?.publications.nodes) {
     throw new Error(`Failed to find any publichations for ${collectionId}`);
@@ -14,7 +14,7 @@ export const publishCollection = async ({
 
   await Promise.all(
     data.publications.nodes.map(async (pub) => {
-      return shopifyAdmin.request(PUBLISH_COLLECTION, {
+      return shopifyAdmin().request(PUBLISH_COLLECTION, {
         variables: {
           collectionId: collectionId,
           publicationId: pub.id,

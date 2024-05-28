@@ -61,8 +61,8 @@ export const UserZodSchema = z.object({
   isBusiness: z.boolean(),
   yearsExperience: NumberOrString.optional(),
   professions: z
-    .array(z.nativeEnum(Professions))
-    .or(z.nativeEnum(Professions))
+    .array(z.string())
+    .or(z.string())
     .transform((value) => (Array.isArray(value) ? value : [value]))
     .transform((array) => array.filter((value) => value.trim() !== ""))
     .transform((array) => [...new Set(array)])

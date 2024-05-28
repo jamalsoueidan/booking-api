@@ -14,18 +14,18 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("@shopify/admin-api-client", () => ({
-  createAdminApiClient: () => ({
+jest.mock("~/library/shopify", () => ({
+  shopifyAdmin: jest.fn().mockReturnValue({
     request: jest.fn(),
   }),
 }));
 
-const mockRequest = shopifyAdmin.request as jest.Mock;
+const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerProductOptionsDestroyService", () => {
   beforeEach(() => {
     // Clear all mocks before each test
-    (shopifyAdmin.request as jest.Mock).mockClear();
+    (shopifyAdmin().request as jest.Mock).mockClear();
   });
 
   it("should be able to destroy product option", async () => {
@@ -84,25 +84,17 @@ describe("CustomerProductOptionsDestroyService", () => {
 
     expect(result).toHaveLength(0);
 
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(2);
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
-      1,
-      PRODUCT_OPTION_DESTROY,
-      {
-        variables: {
-          productId: `gid://shopify/Product/${optionProductId}`,
-        },
-      }
-    );
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
-      2,
-      PRODUCT_DESTROY_METAFIELD,
-      {
-        variables: {
-          metafieldId: metafieldDelete.metafieldDelete?.deletedId,
-        },
-      }
-    );
+    expect(mockRequest).toHaveBeenCalledTimes(2);
+    expect(mockRequest).toHaveBeenNthCalledWith(1, PRODUCT_OPTION_DESTROY, {
+      variables: {
+        productId: `gid://shopify/Product/${optionProductId}`,
+      },
+    });
+    expect(mockRequest).toHaveBeenNthCalledWith(2, PRODUCT_DESTROY_METAFIELD, {
+      variables: {
+        metafieldId: metafieldDelete.metafieldDelete?.deletedId,
+      },
+    });
 
     let schedule = await ScheduleModel.findOne(newSchedule._id).orFail();
     expect(schedule.products).toHaveLength(1);

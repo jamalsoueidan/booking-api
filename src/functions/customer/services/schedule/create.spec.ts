@@ -11,13 +11,13 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("@shopify/admin-api-client", () => ({
-  createAdminApiClient: () => ({
+jest.mock("~/library/shopify", () => ({
+  shopifyAdmin: jest.fn().mockReturnValue({
     request: jest.fn(),
   }),
 }));
 
-const mockRequest = shopifyAdmin.request as jest.Mock;
+const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerScheduleServiceCreate", () => {
   const customerId = 123;
@@ -60,37 +60,33 @@ describe("CustomerScheduleServiceCreate", () => {
       customerId,
     });
 
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(1);
+    expect(mockRequest).toHaveBeenCalledTimes(1);
 
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
-      1,
-      CREATE_SCHEDULE_METAOBJECT,
-      {
-        variables: ensureType<CreateScheduleMetaobjectMutationVariables>({
-          handle: newSchedule._id,
-          fields: [
-            {
-              value: newSchedule.name,
-              key: "name",
-            },
-            {
-              value: JSON.stringify([
-                {
-                  day: "monday",
-                  intervals: [
-                    {
-                      to: "16:00",
-                      from: "08:00",
-                    },
-                  ],
-                },
-              ]),
-              key: "slots",
-            },
-          ],
-        }),
-      }
-    );
+    expect(mockRequest).toHaveBeenNthCalledWith(1, CREATE_SCHEDULE_METAOBJECT, {
+      variables: ensureType<CreateScheduleMetaobjectMutationVariables>({
+        handle: newSchedule._id,
+        fields: [
+          {
+            value: newSchedule.name,
+            key: "name",
+          },
+          {
+            value: JSON.stringify([
+              {
+                day: "monday",
+                intervals: [
+                  {
+                    to: "16:00",
+                    from: "08:00",
+                  },
+                ],
+              },
+            ]),
+            key: "slots",
+          },
+        ],
+      }),
+    });
 
     expect(newSchedule.name).toEqual(name);
     expect(newSchedule.metafieldId).toEqual(

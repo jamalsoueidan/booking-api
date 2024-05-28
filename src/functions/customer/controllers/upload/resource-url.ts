@@ -21,7 +21,7 @@ export const CustomerUploadControllerResourceURL = _(
   async ({ query }: CustomerUploadControllerResourceURLRequest) => {
     const validateData =
       CustomerUploadControllerResourceURLQuerySchema.parse(query);
-    const { data } = await shopifyAdmin.request(UPLOAD_CREATE, {
+    const { data } = await shopifyAdmin().request(UPLOAD_CREATE, {
       variables: {
         input: [
           {

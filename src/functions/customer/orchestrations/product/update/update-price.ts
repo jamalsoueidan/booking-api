@@ -14,7 +14,7 @@ export const updatePrice = async ({
     productId,
   });
 
-  const { data } = await shopifyAdmin.request(PRODUCT_PRICE_UPDATE, {
+  const { data } = await shopifyAdmin().request(PRODUCT_PRICE_UPDATE, {
     variables: {
       id: `gid://shopify/Product/${productId}`,
       variants: [
