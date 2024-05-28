@@ -18,7 +18,6 @@ export enum Professions {
   SKINCARE_SPECIALIST = "skincare_specialist",
   HAIR_COLORIST = "hair_colorist",
   BRIDAL_STYLIST = "bridal_stylist",
-  IMAGE_CONSULTANT = "image_consultant",
 }
 
 export enum Specialties {

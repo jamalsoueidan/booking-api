@@ -25,10 +25,19 @@ async function MetaProfessions(
     brow_technician: "Bryn tekniker",
     massage_therapist: "Massage terapeut",
     esthetician: "Kosmetolog",
+    barber: "barber",
+    cosmetologist: "cosmetologist",
+    spa_therapist: "spa_therapist",
+    tattoo_artist: "tattoo_artist",
+    piercing_technician: "piercing_technician",
+    aromatherapist: "aromatherapist",
+    skincare_specialist: "skincare_specialist",
+    hair_colorist: "hair_colorist",
+    bridal_stylist: "bridal_stylist",
   };
 
   const list = professions.map((profession) => ({
-    label: translate[profession],
+    label: translate[profession] || "",
     value: profession,
   }));
 
