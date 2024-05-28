@@ -59,30 +59,9 @@ export async function CustomerProductOptionsServiceAdd({
     ]);
   }
 
-  const newProductId = GidFormat.parse(data.productDuplicate.newProduct.id);
-
-  await shopifyAdmin().request(PRODUCT_OPTION_ADD, {
-    variables: {
-      id: `gid://shopify/Product/${newProductId}`,
-      metafields: [
-        {
-          id: data.productDuplicate.newProduct.parentId?.id,
-          value: `gid://shopify/Product/${productId}`,
-        },
-      ],
-      tags: [
-        `user`,
-        `user-${user.username}`,
-        `userid-${customerId}`,
-        `options`,
-        `parentid-${rootProduct.productId}`,
-        `parent-${rootProduct.productHandle}`,
-      ].join(", "),
-    },
-  });
-
   const newOption: ScheduleProductOption = {
-    productId: newProductId,
+    parentIdMetafieldId: data.productDuplicate.newProduct.parentId?.id,
+    productId: GidFormat.parse(data.productDuplicate.newProduct.id),
     title: data.productDuplicate.newProduct.title,
     required:
       !data.productDuplicate.newProduct.required ||
@@ -99,42 +78,13 @@ export async function CustomerProductOptionsServiceAdd({
       })) || [],
   };
 
-  const options = mergeArraysUnique(
-    rootProduct?.options || [],
-    [newOption],
-    "productId"
-  );
-
-  const optionMetafield = rootProduct.optionsMetafieldId
-    ? {
-        id: rootProduct.optionsMetafieldId,
-      }
-    : {
-        key: "options",
-        namespace: "booking",
-      };
-
-  const { data: parentProductData } = await shopifyAdmin().request(
-    PRODUCT_PARENT_UPDATE,
-    {
-      variables: {
-        id: `gid://shopify/Product/${productId}`,
-        metafields: [
-          {
-            ...optionMetafield,
-            value: JSON.stringify(
-              options.map((o) => `gid://shopify/Product/${o.productId}`)
-            ),
-          },
-        ],
-      },
-    }
-  );
-
   const newProduct: ScheduleProduct = {
     ...rootProduct,
-    optionsMetafieldId: parentProductData?.productUpdate?.product?.options?.id,
-    options,
+    options: mergeArraysUnique(
+      rootProduct?.options || [],
+      [newOption],
+      "productId"
+    ),
   };
 
   await ScheduleModel.updateOne(
@@ -186,29 +136,6 @@ export const PRODUCT_OPTION_DUPLCATE = `#graphql
     productDuplicate(newTitle: $title, productId: $productId, includeImages: true) {
       newProduct {
         ...ProductOptionFragment
-      }
-    }
-  }
-` as const;
-
-export const PRODUCT_OPTION_ADD = `#graphql
-  ${PRODUCT_OPTION_FRAGMENT}
-  mutation ProductOptionAdd($id: ID!, $metafields: [MetafieldInput!]!, $tags: [String!]!) {
-    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags}) {
-      product {
-        ...ProductOptionFragment
-      }
-    }
-  }
-` as const;
-
-export const PRODUCT_PARENT_UPDATE = `#graphql
-  mutation ProductParentUpdate($id: ID, $metafields: [MetafieldInput!]) {
-    productUpdate(input: {id: $id, metafields: $metafields}) {
-      product {
-        options: metafield(key: "options", namespace: "booking") {
-          id
-        }
       }
     }
   }

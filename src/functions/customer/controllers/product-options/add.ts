@@ -1,12 +1,15 @@
 import { z } from "zod";
 
+import { InvocationContext } from "@azure/functions";
 import { _ } from "~/library/handler";
 import { GidFormat } from "~/library/zod";
+import { CustomerProductOptionsAddOrchestration } from "../../orchestrations/product-options/add";
 import { CustomerProductOptionsServiceAdd } from "../../services/product-options/add";
 
 export type CustomerProductOptionsControllerAddRequest = {
   query: z.infer<typeof CustomerProductOptionsControllerAddSchema>;
   body: z.infer<typeof CustomerProductOptionsControllerAddBodySchema>;
+  context: InvocationContext;
 };
 
 const CustomerProductOptionsControllerAddSchema = z.object({
@@ -20,15 +23,26 @@ const CustomerProductOptionsControllerAddBodySchema = z.object({
 });
 
 export const CustomerProductOptionsControllerAdd = _(
-  ({ query, body }: CustomerProductOptionsControllerAddRequest) => {
+  async ({
+    query,
+    body,
+    context,
+  }: CustomerProductOptionsControllerAddRequest) => {
     const validateQuery =
       CustomerProductOptionsControllerAddSchema.parse(query);
     const validateBody =
       CustomerProductOptionsControllerAddBodySchema.parse(body);
 
-    return CustomerProductOptionsServiceAdd({
+    const productOption = await CustomerProductOptionsServiceAdd({
       ...validateQuery,
       ...validateBody,
     });
+
+    await CustomerProductOptionsAddOrchestration(
+      { productOptionId: productOption.productId, ...validateQuery },
+      context
+    );
+
+    return context;
   }
 );

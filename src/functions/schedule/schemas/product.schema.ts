@@ -12,6 +12,7 @@ import {
 
 export const OptionMongooseSchema = new mongoose.Schema<ScheduleProductOption>(
   {
+    parentIdMetafieldId: String,
     productId: {
       type: Number,
       index: true,
