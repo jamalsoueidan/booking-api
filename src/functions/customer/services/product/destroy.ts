@@ -9,7 +9,7 @@ export type CustomerProductServiceDestroyFilter = {
 export const CustomerProductServiceDestroy = async (
   filter: CustomerProductServiceDestroyFilter
 ) => {
-  await shopifyAdmin.request(PRODUCT_DESTROY, {
+  await shopifyAdmin().request(PRODUCT_DESTROY, {
     variables: {
       productId: `gid://shopify/Product/${filter.productId}`,
     },

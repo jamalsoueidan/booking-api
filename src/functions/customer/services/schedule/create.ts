@@ -26,7 +26,7 @@ export const CustomerScheduleServiceCreate = async (
   });
   const scheduleModel = await newSchedule.save();
 
-  const { data } = await shopifyAdmin.request(CREATE_SCHEDULE_METAOBJECT, {
+  const { data } = await shopifyAdmin().request(CREATE_SCHEDULE_METAOBJECT, {
     variables: {
       handle: scheduleModel._id,
       fields: [

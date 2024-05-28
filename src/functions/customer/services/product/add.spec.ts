@@ -14,13 +14,13 @@ import { CustomerProductServiceAdd, PRODUCT_DUPLCATE } from "./add";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("@shopify/admin-api-client", () => ({
-  createAdminApiClient: () => ({
+jest.mock("~/library/shopify", () => ({
+  shopifyAdmin: jest.fn().mockReturnValue({
     request: jest.fn(),
   }),
 }));
 
-const mockRequest = shopifyAdmin.request as jest.Mock;
+const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerProductServiceAdd", () => {
   let mockProduct: ProductDuplicateMutation;
@@ -61,7 +61,7 @@ describe("CustomerProductServiceAdd", () => {
 
   beforeEach(() => {
     // Clear all mocks before each test
-    (shopifyAdmin.request as jest.Mock).mockClear();
+    jest.clearAllMocks();
 
     mockProduct = {
       productDuplicate: {
@@ -168,9 +168,9 @@ describe("CustomerProductServiceAdd", () => {
       }
     );
 
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(1);
+    expect(mockRequest).toHaveBeenCalledTimes(1);
 
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(1, PRODUCT_DUPLCATE, {
+    expect(mockRequest).toHaveBeenNthCalledWith(1, PRODUCT_DUPLCATE, {
       variables: {
         productId: `gid://shopify/Product/${productBody.parentId}`,
         title,

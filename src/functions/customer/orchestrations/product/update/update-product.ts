@@ -5,6 +5,7 @@ import { LocationModel } from "~/functions/location";
 import { NotFoundError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 
+export const updateProductName = "updateProduct";
 export const updateProduct = async ({
   customerId,
   productId,
@@ -110,7 +111,7 @@ export const updateProduct = async ({
       .join(", "),
   };
 
-  const { data } = await shopifyAdmin.request(PRODUCT_UPDATE, {
+  const { data } = await shopifyAdmin().request(PRODUCT_UPDATE, {
     variables,
   });
 

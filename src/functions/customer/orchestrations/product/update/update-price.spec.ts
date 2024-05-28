@@ -12,13 +12,13 @@ import { PRODUCT_PRICE_UPDATE, updatePrice } from "./update-price";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("@shopify/admin-api-client", () => ({
-  createAdminApiClient: () => ({
+jest.mock("~/library/shopify", () => ({
+  shopifyAdmin: jest.fn().mockReturnValue({
     request: jest.fn(),
   }),
 }));
 
-const mockRequest = shopifyAdmin.request as jest.Mock;
+const mockRequest = shopifyAdmin().request as jest.Mock;
 
 const mockProductPriceUpdate: ProductPricepdateMutation = {
   productVariantsBulkUpdate: {
@@ -91,23 +91,19 @@ describe("CustomerProductUpdateOrchestration", () => {
       productId: product.productId,
     });
 
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(1);
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
-      1,
-      PRODUCT_PRICE_UPDATE,
-      {
-        variables: {
-          id: mockProductPriceUpdate.productVariantsBulkUpdate?.product?.id,
-          variants: [
-            {
-              id: mockProductPriceUpdate.productVariantsBulkUpdate?.product
-                ?.variants.nodes[0].id,
-              price: product.price?.amount,
-              compareAtPrice: product.compareAtPrice?.amount,
-            },
-          ],
-        },
-      }
-    );
+    expect(mockRequest).toHaveBeenCalledTimes(1);
+    expect(mockRequest).toHaveBeenNthCalledWith(1, PRODUCT_PRICE_UPDATE, {
+      variables: {
+        id: mockProductPriceUpdate.productVariantsBulkUpdate?.product?.id,
+        variants: [
+          {
+            id: mockProductPriceUpdate.productVariantsBulkUpdate?.product
+              ?.variants.nodes[0].id,
+            price: product.price?.amount,
+            compareAtPrice: product.compareAtPrice?.amount,
+          },
+        ],
+      },
+    });
   });
 });

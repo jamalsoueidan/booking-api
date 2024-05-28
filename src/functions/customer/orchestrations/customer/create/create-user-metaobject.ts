@@ -1,6 +1,7 @@
 import { User } from "~/functions/user";
 import { shopifyAdmin } from "~/library/shopify";
 
+export const createUserMetaobjectName = "createUserMetaobject";
 export const createUserMetaobject = async ({
   user,
   collectionId,
@@ -8,7 +9,7 @@ export const createUserMetaobject = async ({
   user: Omit<User, "_id">;
   collectionId: string;
 }) => {
-  const { data } = await shopifyAdmin.request(CREATE_USER_METAOBJECT, {
+  const { data } = await shopifyAdmin().request(CREATE_USER_METAOBJECT, {
     variables: {
       handle: user.username,
       fields: [
@@ -39,6 +40,10 @@ export const createUserMetaobject = async ({
         {
           key: "theme",
           value: "pink",
+        },
+        {
+          key: "active",
+          value: "False",
         },
       ],
     },

@@ -19,13 +19,13 @@ jest.mock("~/functions/location/services/get-coordinates", () => ({
   LocationServiceGetCoordinates: jest.fn(),
 }));
 
-jest.mock("@shopify/admin-api-client", () => ({
-  createAdminApiClient: () => ({
+jest.mock("~/library/shopify", () => ({
+  shopifyAdmin: jest.fn().mockReturnValue({
     request: jest.fn(),
   }),
 }));
 
-const mockRequest = shopifyAdmin.request as jest.Mock;
+const mockRequest = shopifyAdmin().request as jest.Mock;
 
 type LocationServiceGetCoordinatesMock = jest.Mock<
   Promise<{
@@ -132,67 +132,63 @@ describe("CustomerLocationServiceCreate", () => {
 
     const response = await CustomerLocationServiceCreate(location);
 
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(1);
+    expect(mockRequest).toHaveBeenCalledTimes(1);
 
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
-      1,
-      CREATE_LOCATION_METAOBJECT,
-      {
-        variables: ensureType<CreateLocationMetaobjectMutationVariables>({
-          handle: response._id,
-          fields: [
-            {
-              value: response.locationType,
-              key: "location_type",
-            },
-            {
-              value: response.name,
-              key: "name",
-            },
-            {
-              value: response.fullAddress,
-              key: "full_address",
-            },
-            {
-              value: response.city,
-              key: "city",
-            },
-            {
-              value: response.country,
-              key: "country",
-            },
-            {
-              value: response.originType,
-              key: "origin_type",
-            },
-            {
-              value: response.distanceForFree.toString(),
-              key: "distance_for_free",
-            },
-            {
-              value: response.distanceHourlyRate.toString(),
-              key: "distance_hourly_rate",
-            },
-            {
-              value: response.fixedRatePerKm.toString(),
-              key: "fixed_rate_per_km",
-            },
-            {
-              value: response.minDriveDistance.toString(),
-              key: "min_drive_distance",
-            },
-            {
-              value: response.maxDriveDistance.toString(),
-              key: "max_drive_distance",
-            },
-            {
-              value: response.startFee.toString(),
-              key: "start_fee",
-            },
-          ],
-        }),
-      }
-    );
+    expect(mockRequest).toHaveBeenNthCalledWith(1, CREATE_LOCATION_METAOBJECT, {
+      variables: ensureType<CreateLocationMetaobjectMutationVariables>({
+        handle: response._id,
+        fields: [
+          {
+            value: response.locationType,
+            key: "location_type",
+          },
+          {
+            value: response.name,
+            key: "name",
+          },
+          {
+            value: response.fullAddress,
+            key: "full_address",
+          },
+          {
+            value: response.city,
+            key: "city",
+          },
+          {
+            value: response.country,
+            key: "country",
+          },
+          {
+            value: response.originType,
+            key: "origin_type",
+          },
+          {
+            value: response.distanceForFree.toString(),
+            key: "distance_for_free",
+          },
+          {
+            value: response.distanceHourlyRate.toString(),
+            key: "distance_hourly_rate",
+          },
+          {
+            value: response.fixedRatePerKm.toString(),
+            key: "fixed_rate_per_km",
+          },
+          {
+            value: response.minDriveDistance.toString(),
+            key: "min_drive_distance",
+          },
+          {
+            value: response.maxDriveDistance.toString(),
+            key: "max_drive_distance",
+          },
+          {
+            value: response.startFee.toString(),
+            key: "start_fee",
+          },
+        ],
+      }),
+    });
 
     expect(omitObjectIdProps(response.toObject())).toEqual(
       expect.objectContaining({

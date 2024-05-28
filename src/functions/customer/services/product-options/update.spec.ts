@@ -11,18 +11,17 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("@shopify/admin-api-client", () => ({
-  createAdminApiClient: () => ({
+jest.mock("~/library/shopify", () => ({
+  shopifyAdmin: jest.fn().mockReturnValue({
     request: jest.fn(),
   }),
 }));
 
-const mockRequest = shopifyAdmin.request as jest.Mock;
+const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerProductOptionsAddService", () => {
   beforeEach(() => {
-    // Clear all mocks before each test
-    (shopifyAdmin.request as jest.Mock).mockClear();
+    jest.clearAllMocks();
   });
 
   it("should be able to add 1 or more options to a product", async () => {
@@ -139,29 +138,25 @@ describe("CustomerProductOptionsAddService", () => {
     );
 
     //expect(result).toHaveLength(1);
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(1);
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
-      1,
-      PRODUCT_OPTION_UPDATE,
-      {
-        variables: {
-          productId: `gid://shopify/Product/${optionProductId}`,
-          variants: [
-            {
-              id: `gid://shopify/ProductVariant/3`,
-              price: newDurationPrice.toString(),
-              metafields: [
-                {
-                  id: `gid://shopify/Metafield/33`,
-                  value: newDurationValue.toString(),
-                  type: "number_integer",
-                },
-              ],
-            },
-          ],
-        },
-      }
-    );
+    expect(mockRequest).toHaveBeenCalledTimes(1);
+    expect(mockRequest).toHaveBeenNthCalledWith(1, PRODUCT_OPTION_UPDATE, {
+      variables: {
+        productId: `gid://shopify/Product/${optionProductId}`,
+        variants: [
+          {
+            id: `gid://shopify/ProductVariant/3`,
+            price: newDurationPrice.toString(),
+            metafields: [
+              {
+                id: `gid://shopify/Metafield/33`,
+                value: newDurationValue.toString(),
+                type: "number_integer",
+              },
+            ],
+          },
+        ],
+      },
+    });
 
     let schedule = await ScheduleModel.findOne(newSchedule._id).orFail();
     expect(schedule).not.toBeNull();

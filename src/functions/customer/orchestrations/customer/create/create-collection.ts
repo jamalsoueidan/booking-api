@@ -1,12 +1,13 @@
 import { User } from "~/functions/user";
 import { shopifyAdmin } from "~/library/shopify";
 
+export const createCollectionName = "createCollection";
 export const createCollection = async ({
   user,
 }: {
   user: Pick<User, "username">;
 }) => {
-  const { data } = await shopifyAdmin.request(COLLECTION_CREATE, {
+  const { data } = await shopifyAdmin().request(COLLECTION_CREATE, {
     variables: {
       input: {
         handle: user.username,

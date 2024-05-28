@@ -1,34 +1,7 @@
 import { User } from "~/functions/user";
 import { shopifyRest } from "~/library/shopify/rest";
 
-interface RootObject {
-  article: Article;
-}
-interface Article {
-  id: number;
-  title: string;
-  created_at: string;
-  body_html: string;
-  blog_id: number;
-  author: string;
-  user_id?: any;
-  published_at: string;
-  updated_at: string;
-  summary_html: string;
-  template_suffix?: any;
-  handle: string;
-  tags: string;
-  admin_graphql_api_id: string;
-  image: Image;
-}
-interface Image {
-  created_at: string;
-  alt: string;
-  width: number;
-  height: number;
-  src: string;
-}
-
+export const createArticleName = "createArticle";
 export const createArticle = async ({
   user,
 }: {
@@ -84,7 +57,7 @@ export const createArticle = async ({
     )
   );
 
-  const response = await shopifyRest.post("blogs/105364226375/articles", {
+  const response = await shopifyRest().post("blogs/105364226375/articles", {
     data: {
       article: {
         blog_id: 105364226375,
@@ -116,3 +89,31 @@ export const createArticle = async ({
 
   return await response.json();
 };
+
+interface RootObject {
+  article: Article;
+}
+interface Article {
+  id: number;
+  title: string;
+  created_at: string;
+  body_html: string;
+  blog_id: number;
+  author: string;
+  user_id?: any;
+  published_at: string;
+  updated_at: string;
+  summary_html: string;
+  template_suffix?: any;
+  handle: string;
+  tags: string;
+  admin_graphql_api_id: string;
+  image: Image;
+}
+interface Image {
+  created_at: string;
+  alt: string;
+  width: number;
+  height: number;
+  src: string;
+}

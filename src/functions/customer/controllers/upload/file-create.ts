@@ -2,7 +2,7 @@ import { shopifyAdmin } from "~/library/shopify";
 import { FileInputProps, getFilenameFromUrl } from "./types";
 
 export async function fileCreateHandler(input: FileInputProps) {
-  const { data } = await shopifyAdmin.request(FILE_CREATE, {
+  const { data } = await shopifyAdmin().request(FILE_CREATE, {
     variables: {
       files: {
         alt: getFilenameFromUrl(input.resourceUrl),

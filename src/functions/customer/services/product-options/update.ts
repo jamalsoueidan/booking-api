@@ -67,7 +67,7 @@ export async function CustomerProductOptionsServiceUpdate(
     };
   });
 
-  const { data } = await shopifyAdmin.request(PRODUCT_OPTION_UPDATE, {
+  const { data } = await shopifyAdmin().request(PRODUCT_OPTION_UPDATE, {
     variables: {
       productId: `gid://shopify/Product/${props.optionProductId}`,
       variants,

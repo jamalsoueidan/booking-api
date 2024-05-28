@@ -9,13 +9,13 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("@shopify/admin-api-client", () => ({
-  createAdminApiClient: () => ({
+jest.mock("~/library/shopify", () => ({
+  shopifyAdmin: jest.fn().mockReturnValue({
     request: jest.fn(),
   }),
 }));
 
-const mockRequest = shopifyAdmin.request as jest.Mock;
+const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerCreateOrchestration", () => {
   beforeAll(async () => {
@@ -76,46 +76,46 @@ describe("CustomerCreateOrchestration", () => {
       collectionId: "gid://shopify/Collection/625094558023",
     });
 
-    expect(shopifyAdmin.request).toHaveBeenCalledTimes(1);
+    expect(mockRequest).toHaveBeenCalledTimes(1);
 
-    expect(shopifyAdmin.request).toHaveBeenNthCalledWith(
-      1,
-      CREATE_USER_METAOBJECT,
-      {
-        variables: {
-          handle: userData.username,
-          fields: [
-            {
-              key: "username",
-              value: userData.username,
-            },
-            {
-              key: "fullname",
-              value: userData.fullname,
-            },
-            {
-              key: "short_description",
-              value: userData.shortDescription || "",
-            },
-            {
-              key: "about_me",
-              value: userData.aboutMeHtml || "",
-            },
-            {
-              key: "professions",
-              value: JSON.stringify(userData.professions || []),
-            },
-            {
-              key: "collection",
-              value: collectionMetaobjectId,
-            },
-            {
-              key: "theme",
-              value: "pink",
-            },
-          ],
-        },
-      }
-    );
+    expect(mockRequest).toHaveBeenNthCalledWith(1, CREATE_USER_METAOBJECT, {
+      variables: {
+        handle: userData.username,
+        fields: [
+          {
+            key: "username",
+            value: userData.username,
+          },
+          {
+            key: "fullname",
+            value: userData.fullname,
+          },
+          {
+            key: "short_description",
+            value: userData.shortDescription || "",
+          },
+          {
+            key: "about_me",
+            value: userData.aboutMeHtml || "",
+          },
+          {
+            key: "professions",
+            value: JSON.stringify(userData.professions || []),
+          },
+          {
+            key: "collection",
+            value: collectionMetaobjectId,
+          },
+          {
+            key: "theme",
+            value: "pink",
+          },
+          {
+            key: "active",
+            value: "False",
+          },
+        ],
+      },
+    });
   });
 });

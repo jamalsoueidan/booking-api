@@ -15,7 +15,7 @@ export const CustomerScheduleServiceDestroy = async (
   });
 
   if (schedule && schedule.metafieldId) {
-    await shopifyAdmin.request(DESTROY_SCHEDULE_METAFIELD, {
+    await shopifyAdmin().request(DESTROY_SCHEDULE_METAFIELD, {
       variables: {
         metafieldId: schedule.metafieldId,
       },

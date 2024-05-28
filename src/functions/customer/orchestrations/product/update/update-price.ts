@@ -1,6 +1,7 @@
 import { CustomerProductServiceGet } from "~/functions/customer/services/product/get";
 import { shopifyAdmin } from "~/library/shopify";
 
+export const updatePriceName = "updatePrice";
 export const updatePrice = async ({
   customerId,
   productId,
@@ -13,7 +14,7 @@ export const updatePrice = async ({
     productId,
   });
 
-  const { data } = await shopifyAdmin.request(PRODUCT_PRICE_UPDATE, {
+  const { data } = await shopifyAdmin().request(PRODUCT_PRICE_UPDATE, {
     variables: {
       id: `gid://shopify/Product/${productId}`,
       variants: [

@@ -35,7 +35,7 @@ describe("UserServiceFilters", () => {
         {
           active: true,
           isBusiness: true,
-          professions: [Professions.LASH, Professions.MAKEUP_ARTIST],
+          professions: [Professions.LASH_TECHNICIAN, Professions.MAKEUP_ARTIST],
           specialties: pickMultipleItems(["a", "b", "c"], 2),
         }
       );
@@ -49,7 +49,7 @@ describe("UserServiceFilters", () => {
     }
 
     const results = await UserServiceFilters({
-      profession: Professions.LASH,
+      profession: Professions.LASH_TECHNICIAN,
     });
 
     const pickLocation = results.locations[0];
@@ -122,13 +122,13 @@ describe("UserServiceFilters", () => {
         {
           active: true,
           isBusiness: true,
-          professions: [Professions.LASH, Professions.MAKEUP_ARTIST],
+          professions: [Professions.LASH_TECHNICIAN, Professions.MAKEUP_ARTIST],
         }
       );
     }
 
     const results = await UserServiceFilters({
-      profession: Professions.LASH,
+      profession: Professions.LASH_TECHNICIAN,
     });
 
     const resultDays = results.availableDays.map((result) => result.day);
@@ -172,7 +172,7 @@ describe("UserServiceFilters", () => {
     }
 
     const results = await UserServiceFilters({
-      profession: Professions.LASH,
+      profession: Professions.LASH_TECHNICIAN,
     });
 
     expect(results).toBeDefined();

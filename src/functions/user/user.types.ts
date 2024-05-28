@@ -4,11 +4,21 @@ import { GidFormat, NumberOrString } from "~/library/zod";
 export enum Professions {
   MAKEUP_ARTIST = "makeup_artist",
   HAIR_STYLIST = "hair_stylist",
-  NAIL = "nail_technician",
-  LASH = "lash_technician",
-  BROW = "brow_technician",
-  MASSAGE = "massage_therapist",
+  NAIL_TECHNICIAN = "nail_technician",
+  LASH_TECHNICIAN = "lash_technician",
+  BROW_TECHNICIAN = "brow_technician",
+  MASSAGE_THERAPIST = "massage_therapist",
   ESTHETICIAN = "esthetician",
+  BARBER = "barber",
+  COSMETOLOGIST = "cosmetologist",
+  SPA_THERAPIST = "spa_therapist",
+  TATTOO_ARTIST = "tattoo_artist",
+  PIERCING_TECHNICIAN = "piercing_technician",
+  AROMATHERAPIST = "aromatherapist",
+  SKINCARE_SPECIALIST = "skincare_specialist",
+  HAIR_COLORIST = "hair_colorist",
+  BRIDAL_STYLIST = "bridal_stylist",
+  IMAGE_CONSULTANT = "image_consultant",
 }
 
 export enum Specialties {
@@ -51,8 +61,8 @@ export const UserZodSchema = z.object({
   isBusiness: z.boolean(),
   yearsExperience: NumberOrString.optional(),
   professions: z
-    .array(z.nativeEnum(Professions))
-    .or(z.nativeEnum(Professions))
+    .array(z.string())
+    .or(z.string())
     .transform((value) => (Array.isArray(value) ? value : [value]))
     .transform((array) => array.filter((value) => value.trim() !== ""))
     .transform((array) => [...new Set(array)])

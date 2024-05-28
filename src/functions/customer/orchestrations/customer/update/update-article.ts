@@ -4,7 +4,6 @@ import { User } from "~/functions/user";
 import { shopifyRest } from "~/library/shopify/rest";
 
 export const updateArticleName = "updateArticle";
-
 export const updateArticle = async ({
   user,
 }: {
@@ -52,7 +51,7 @@ export const updateArticle = async ({
 
   tags.push(`gender-${user.gender}`);
 
-  const response = await shopifyRest.put(
+  const response = await shopifyRest().put(
     `blogs/105364226375/articles/${user.articleId}`,
     {
       data: {

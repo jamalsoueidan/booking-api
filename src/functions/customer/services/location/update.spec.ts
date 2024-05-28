@@ -12,13 +12,12 @@ jest.mock("~/functions/location/services/get-coordinates", () => ({
   LocationServiceGetCoordinates: jest.fn(),
 }));
 
-jest.mock("@shopify/admin-api-client", () => ({
-  createAdminApiClient: () => ({
+jest.mock("~/library/shopify", () => ({
+  shopifyAdmin: jest.fn().mockReturnValue({
     request: jest.fn(),
   }),
 }));
-
-const mockRequest = shopifyAdmin.request as jest.Mock;
+const mockRequest = shopifyAdmin().request as jest.Mock;
 
 type LocationServiceGetCoordinatesMock = jest.Mock<
   Promise<{

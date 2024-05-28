@@ -4,9 +4,11 @@ import { OrchestrationContext } from "durable-functions";
 import { User } from "~/functions/user";
 import { activityType } from "~/library/orchestration";
 import { updateArticle, updateArticleName } from "./update/update-article";
-import { updateUserMetaobject } from "./update/update-user-metaobject";
+import {
+  updateUserMetaobject,
+  updateUserMetaobjectName,
+} from "./update/update-user-metaobject";
 
-const updateUserMetaobjectName = "updateUserMetaobject";
 df.app.activity(updateUserMetaobjectName, {
   handler: updateUserMetaobject,
 });

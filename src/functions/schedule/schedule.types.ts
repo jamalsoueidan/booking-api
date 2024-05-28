@@ -59,6 +59,7 @@ const LocationZodSchema = z.object({
 export type ScheduleProductLocation = z.infer<typeof LocationZodSchema>;
 
 export const ScheduleProductOptionZodSchema = z.object({
+  parentIdMetafieldId: z.string().optional(),
   productId: GidFormat,
   title: z.string(),
   required: z.boolean(),
