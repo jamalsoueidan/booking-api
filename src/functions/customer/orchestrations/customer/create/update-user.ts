@@ -1,6 +1,7 @@
 import { UserModel } from "~/functions/user";
 
-export const updateUser = async ({
+export const updateUserMetafieldsName = "updateUserMetafields";
+export const updateUserMetafields = async ({
   userId,
   collectionMetaobjectId,
   userMetaobjectId,

@@ -1,5 +1,6 @@
 import { shopifyAdmin } from "~/library/shopify";
 
+export const publishCollectionName = "publishCollection";
 export const publishCollection = async ({
   collectionId,
 }: {

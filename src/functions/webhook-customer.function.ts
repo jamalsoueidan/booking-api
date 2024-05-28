@@ -1,12 +1,17 @@
 import "module-alias/register";
 
 import { HttpRequest, InvocationContext, app } from "@azure/functions";
+import * as df from "durable-functions";
 import { connect } from "~/library/mongoose";
 import { BlockedModel } from "./blocked/blocked.model";
+import { CustomerUpdateOrchestration } from "./customer/orchestrations/customer/update";
+import { CustomerServiceGet } from "./customer/services/customer/get";
 import { CustomerServiceUpdate } from "./customer/services/customer/update";
+import { CustomerProductsServiceListIds } from "./customer/services/product/list-ids";
 import { LocationModel } from "./location";
 import { ScheduleModel } from "./schedule";
 import { UserModel } from "./user";
+import { ActivateAllProductsOrchestration } from "./webhook/customer/update";
 
 export type Customer = {
   id: number;
@@ -84,29 +89,42 @@ app.http("webhookCustomerUpdate", {
   methods: ["POST"],
   authLevel: "anonymous",
   route: "webhooks/customer/update",
+  extraInputs: [df.input.durableClient()],
   handler: async (request: HttpRequest, context: InvocationContext) => {
     await connect();
-    const customer = (await request.json()) as unknown as Customer;
-    const active = customer.tags.includes("active");
-    const customerId = customer.id;
-    await CustomerServiceUpdate(
+    const shopifyCustomer = (await request.json()) as unknown as Customer;
+    const active = shopifyCustomer.tags.includes("active");
+    const customerId = shopifyCustomer.id;
+
+    const customer = await CustomerServiceGet({ customerId });
+
+    const newCustomer = await CustomerServiceUpdate(
       { customerId },
       {
         active,
-        email: customer.email,
-        fullname: `${customer.first_name} ${customer.last_name}`,
-        phone: customer.phone,
+        email: shopifyCustomer.email,
+        fullname: `${shopifyCustomer.first_name} ${shopifyCustomer.last_name}`,
+        phone: shopifyCustomer.phone,
       }
     );
+
     context.log(
       `Customer Update, customerId = '${customerId}', active = '${active}', updated`
     );
-    /*
-    TODO:
-    should disable products?
-    should disable content metafields?
-    maybe use Shopify Flow?
-    */
+
+    if (customer.active !== active) {
+      await CustomerUpdateOrchestration(newCustomer, context);
+
+      const productIds = await CustomerProductsServiceListIds({
+        customerId,
+      });
+
+      await ActivateAllProductsOrchestration(
+        { customerId, productIds },
+        context
+      );
+    }
+
     return { body: "" };
   },
 });

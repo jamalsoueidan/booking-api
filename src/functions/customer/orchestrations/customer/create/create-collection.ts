@@ -1,6 +1,7 @@
 import { User } from "~/functions/user";
 import { shopifyAdmin } from "~/library/shopify";
 
+export const createCollectionName = "createCollection";
 export const createCollection = async ({
   user,
 }: {

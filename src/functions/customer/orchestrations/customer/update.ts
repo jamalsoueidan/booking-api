@@ -1,12 +1,15 @@
 import { InvocationContext } from "@azure/functions";
+import { addSeconds } from "date-fns";
 import * as df from "durable-functions";
 import { OrchestrationContext } from "durable-functions";
 import { User } from "~/functions/user";
 import { activityType } from "~/library/orchestration";
 import { updateArticle, updateArticleName } from "./update/update-article";
-import { updateUserMetaobject } from "./update/update-user-metaobject";
+import {
+  updateUserMetaobject,
+  updateUserMetaobjectName,
+} from "./update/update-user-metaobject";
 
-const updateUserMetaobjectName = "updateUserMetaobject";
 df.app.activity(updateUserMetaobjectName, {
   handler: updateUserMetaobject,
 });
@@ -27,6 +30,9 @@ const orchestrator: df.OrchestrationHandler = function* (
         user,
       })
     );
+
+  const nextExecution = addSeconds(context.df.currentUtcDateTime, 5);
+  yield context.df.createTimer(nextExecution);
 
   const article: Awaited<ReturnType<typeof updateArticle>> =
     yield context.df.callActivity(

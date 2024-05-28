@@ -5,6 +5,7 @@ import { LocationModel } from "~/functions/location";
 import { NotFoundError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 
+export const updateProductName = "updateProduct";
 export const updateProduct = async ({
   customerId,
   productId,

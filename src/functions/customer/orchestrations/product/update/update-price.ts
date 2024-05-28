@@ -1,6 +1,7 @@
 import { CustomerProductServiceGet } from "~/functions/customer/services/product/get";
 import { shopifyAdmin } from "~/library/shopify";
 
+export const updatePriceName = "updatePrice";
 export const updatePrice = async ({
   customerId,
   productId,

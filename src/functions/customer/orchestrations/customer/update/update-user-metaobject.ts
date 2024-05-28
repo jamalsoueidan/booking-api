@@ -1,6 +1,7 @@
 import { User } from "~/functions/user";
 import { shopifyAdmin } from "~/library/shopify";
 
+export const updateUserMetaobjectName = "updateUserMetaobject";
 export const updateUserMetaobject = async ({
   user,
 }: {

@@ -2,13 +2,10 @@ import { InvocationContext } from "@azure/functions";
 import * as df from "durable-functions";
 import { OrchestrationContext } from "durable-functions";
 import { activityType } from "~/library/orchestration";
-import { updatePrice } from "./update/update-price";
-import { updateProduct } from "./update/update-product";
+import { updatePrice, updatePriceName } from "./update/update-price";
+import { updateProduct, updateProductName } from "./update/update-product";
 
-const updateProductName = "updateProduct";
 df.app.activity(updateProductName, { handler: updateProduct });
-
-const updatePriceName = "updatePrice";
 df.app.activity(updatePriceName, { handler: updatePrice });
 
 const orchestrator: df.OrchestrationHandler = function* (

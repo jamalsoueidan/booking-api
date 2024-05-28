@@ -4,7 +4,6 @@ import { User } from "~/functions/user";
 import { shopifyRest } from "~/library/shopify/rest";
 
 export const updateArticleName = "updateArticle";
-
 export const updateArticle = async ({
   user,
 }: {
