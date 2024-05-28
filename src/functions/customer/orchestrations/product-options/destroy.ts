@@ -7,6 +7,8 @@ import {
   destroyProductOptionName,
 } from "./destroy/destroy-option";
 
+df.app.activity(destroyProductOptionName, { handler: destroyProductOption });
+
 const orchestrator: df.OrchestrationHandler = function* (
   context: OrchestrationContext
 ) {
