@@ -39,7 +39,7 @@ export const CustomerProductServiceAdd = async (
   const { data } = await shopifyAdmin().request(PRODUCT_DUPLCATE, {
     variables: {
       productId: `gid://shopify/Product/${body.parentId}`,
-      title: body.title,
+      title: user.username + " " + body.title, // later we remove the username in update-product
     },
   });
 
@@ -60,7 +60,7 @@ export const CustomerProductServiceAdd = async (
   const newProduct: ScheduleProduct = {
     ...body,
     parentId: body.parentId,
-    productHandle: shopifyProduct.handle + "-by-" + user.username,
+    productHandle: shopifyProduct.handle,
     productId: shopifyProductId,
     variantId: GidFormat.parse(variant.id),
     price: {
@@ -81,7 +81,7 @@ export const CustomerProductServiceAdd = async (
       amount: body.compareAtPrice.amount,
       currencyCode: "DKK",
     },
-    title: shopifyProduct.title,
+    title: body.title,
     scheduleIdMetafieldId: shopifyProduct.scheduleId?.id,
     durationMetafieldId: shopifyProduct.duration?.id,
     duration: 60,

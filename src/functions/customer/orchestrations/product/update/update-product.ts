@@ -37,7 +37,6 @@ export const updateProduct = async ({
   const variables = {
     title: product.title,
     descriptionHtml: product.descriptionHtml || "ads",
-    handle: product.productHandle,
     id: `gid://shopify/Product/${product.productId}`,
     metafields: [
       {

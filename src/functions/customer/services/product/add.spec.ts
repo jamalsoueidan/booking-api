@@ -173,7 +173,7 @@ describe("CustomerProductServiceAdd", () => {
     expect(mockRequest).toHaveBeenNthCalledWith(1, PRODUCT_DUPLCATE, {
       variables: {
         productId: `gid://shopify/Product/${productBody.parentId}`,
-        title,
+        title: user.username + " " + title,
       },
     });
 
