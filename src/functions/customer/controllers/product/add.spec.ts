@@ -23,8 +23,8 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("../../orchestrations/product/update", () => ({
-  CustomerProductUpdateOrchestration: () => ({
+jest.mock("../../orchestrations/product/add", () => ({
+  CustomerProductAddOrchestration: () => ({
     request: jest.fn(),
   }),
 }));

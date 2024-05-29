@@ -1,5 +1,4 @@
 import { Schedule, ScheduleModel, ScheduleProduct } from "~/functions/schedule";
-import { shopifyAdmin } from "~/library/shopify";
 
 export type CustomerProductServiceDestroyFilter = {
   customerId: Schedule["customerId"];
@@ -9,12 +8,6 @@ export type CustomerProductServiceDestroyFilter = {
 export const CustomerProductServiceDestroy = async (
   filter: CustomerProductServiceDestroyFilter
 ) => {
-  await shopifyAdmin().request(PRODUCT_DESTROY, {
-    variables: {
-      productId: `gid://shopify/Product/${filter.productId}`,
-    },
-  });
-
   return ScheduleModel.updateOne(
     {
       customerId: filter.customerId,
@@ -26,13 +19,5 @@ export const CustomerProductServiceDestroy = async (
     },
     { $pull: { products: { productId: filter.productId } } },
     { new: true }
-  ).lean();
+  );
 };
-
-export const PRODUCT_DESTROY = `#graphql
-  mutation productDestroy($productId: ID!) {
-    productDelete(input: {id: $productId}) {
-      deletedProductId
-    }
-  }
-` as const;

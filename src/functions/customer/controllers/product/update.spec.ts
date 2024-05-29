@@ -73,7 +73,6 @@ describe("CustomerProductControllerUpdate", () => {
         description: "hej med dig",
       },
       context,
-      request,
     });
 
     const res: HttpSuccessResponse<CustomerProductControllerUpdateResponse> =

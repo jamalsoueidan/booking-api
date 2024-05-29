@@ -9,7 +9,6 @@ import {
 
 import { getProductObject } from "~/library/jest/helpers/product";
 import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
-import { shopifyAdmin } from "~/library/shopify";
 import {
   CustomerProductControllerDestroy,
   CustomerProductControllerDestroyRequest,
@@ -18,13 +17,11 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("~/library/shopify", () => ({
-  shopifyAdmin: jest.fn().mockReturnValue({
+jest.mock("../../orchestrations/product/destroy", () => ({
+  CustomerProductDestroyOrchestration: () => ({
     request: jest.fn(),
   }),
 }));
-
-const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerProductControllerDestroy", () => {
   let context: InvocationContext;
@@ -53,21 +50,12 @@ describe("CustomerProductControllerDestroy", () => {
       products: [product],
     });
 
-    mockRequest.mockResolvedValueOnce({
-      data: {
-        productDelete: {
-          deletedProductId: {
-            id: "123",
-          },
-        },
-      },
-    });
-
     request = await createHttpRequest<CustomerProductControllerDestroyRequest>({
       query: {
         customerId: newSchedule.customerId,
         productId: product.productId,
       },
+      context,
     });
 
     const res: HttpSuccessResponse<CustomerProductControllerDestroyResponse> =

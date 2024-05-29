@@ -202,6 +202,7 @@ describe("CustomerProductUpdateOrchestration", () => {
         id: mockProductUpdate.productUpdate?.product?.id,
         title: product.title,
         descriptionHtml: product.descriptionHtml,
+        handle: product.productHandle,
         metafields: [
           {
             id: product?.hideFromProfileMetafieldId,

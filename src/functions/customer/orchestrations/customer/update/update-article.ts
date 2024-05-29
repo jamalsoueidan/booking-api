@@ -1,14 +1,16 @@
+import { CustomerServiceGet } from "~/functions/customer/services/customer/get";
 import { CustomerLocationServiceList } from "~/functions/customer/services/location/list";
 import { ScheduleModel } from "~/functions/schedule";
-import { User } from "~/functions/user";
 import { shopifyRest } from "~/library/shopify/rest";
 
 export const updateArticleName = "updateArticle";
 export const updateArticle = async ({
-  user,
+  customerId,
 }: {
-  user: User;
+  customerId: number;
 }): Promise<RootObject> => {
+  const user = await CustomerServiceGet({ customerId });
+
   const schedules = await ScheduleModel.find({
     customerId: user.customerId,
   });
