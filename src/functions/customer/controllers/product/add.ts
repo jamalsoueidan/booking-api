@@ -39,12 +39,7 @@ export type CustomerProductControllerAddResponse = Awaited<
 >;
 
 export const CustomerProductControllerAdd = _(
-  async ({
-    query,
-    body,
-    request,
-    context,
-  }: CustomerProductControllerAddRequest) => {
+  async ({ query, body, context }: CustomerProductControllerAddRequest) => {
     const validateQuery = CustomerProductControllerAddQuerySchema.parse(query);
     const validateBody = CustomerProductControllerAddBodySchema.parse(body);
 

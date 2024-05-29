@@ -128,6 +128,7 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
     locations: {
       type: [
         {
+          metafieldId: String,
           location: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Location",
