@@ -86,4 +86,5 @@ app.http("customerProductDestroy", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/product/{productId?}",
   handler: CustomerProductControllerDestroy,
+  extraInputs: [df.input.durableClient()],
 });

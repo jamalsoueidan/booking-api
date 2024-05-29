@@ -4,7 +4,7 @@ import { HttpRequest, InvocationContext } from "@azure/functions";
 import { ScheduleProductZodSchema } from "~/functions/schedule";
 import { _ } from "~/library/handler";
 import { GidFormat, StringOrObjectId } from "~/library/zod";
-import { CustomerProductUpdateOrchestration } from "../../orchestrations/product/update";
+import { CustomerProductAddOrchestration } from "../../orchestrations/product/add";
 import { CustomerProductServiceAdd } from "../../services/product/add";
 
 export type CustomerProductControllerAddRequest = {
@@ -53,7 +53,7 @@ export const CustomerProductControllerAdd = _(
       validateBody
     );
 
-    await CustomerProductUpdateOrchestration(
+    await CustomerProductAddOrchestration(
       { productId: product.productId, customerId: validateQuery.customerId },
       context
     );

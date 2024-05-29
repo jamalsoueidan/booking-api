@@ -1,18 +1,9 @@
 import { TimeUnit } from "~/functions/schedule";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
-import { shopifyAdmin } from "~/library/shopify";
 import { CustomerProductServiceDestroy } from "./destroy";
 
 require("~/library/jest/mongoose/mongodb.jest");
-
-jest.mock("~/library/shopify", () => ({
-  shopifyAdmin: jest.fn().mockReturnValue({
-    request: jest.fn(),
-  }),
-}));
-
-const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerProductServiceDestroy", () => {
   const customerId = 123;
@@ -32,16 +23,6 @@ describe("CustomerProductServiceDestroy", () => {
   });
 
   it("should remove an existing product from the schedule", async () => {
-    mockRequest.mockResolvedValueOnce({
-      data: {
-        productDelete: {
-          deletedProductId: {
-            id: "123",
-          },
-        },
-      },
-    });
-
     const newSchedule = await createScheduleWithProducts({
       name,
       customerId,
