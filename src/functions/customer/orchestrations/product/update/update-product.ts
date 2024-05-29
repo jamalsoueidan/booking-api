@@ -2,6 +2,7 @@ import { CustomerServiceGet } from "~/functions/customer/services/customer/get";
 import { PRODUCT_FRAGMENT } from "~/functions/customer/services/product/add";
 import { CustomerProductServiceGet } from "~/functions/customer/services/product/get";
 import { LocationModel } from "~/functions/location";
+import { ScheduleModel } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 
@@ -21,6 +22,48 @@ export const updateProduct = async ({
     customerId,
     productId,
   });
+
+  const totalCountOfDefault = await ScheduleModel.aggregate([
+    {
+      $match: {
+        customerId,
+        products: {
+          $elemMatch: {
+            parentId: product.parentId,
+            default: true,
+          },
+        },
+      },
+    },
+    {
+      $unwind: {
+        path: "$products",
+        includeArrayIndex: "string",
+        preserveNullAndEmptyArrays: false,
+      },
+    },
+    {
+      $match: {
+        "products.parentId": product.parentId,
+        "products.default": true,
+        "products.productId": { $ne: product.productId },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalProducts: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        totalProducts: 1,
+      },
+    },
+  ]);
+
+  const totalProductsCount = totalCountOfDefault[0]?.totalProducts || 0;
 
   const locations = await LocationModel.find({
     _id: { $in: product.locations.map((l) => l.location) },
@@ -82,6 +125,10 @@ export const updateProduct = async ({
       {
         id: product.activeMetafieldId,
         value: user.active.toString(),
+      },
+      {
+        id: product.defaultMetafieldId,
+        value: (totalProductsCount === 0).toString(),
       },
       {
         id: product?.scheduleIdMetafieldId,

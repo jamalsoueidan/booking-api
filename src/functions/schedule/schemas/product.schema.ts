@@ -85,6 +85,8 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       metaobjectId: String,
       value: String,
     },
+    defaultMetafieldId: String,
+    default: Boolean,
     activeMetafieldId: String,
     active: Boolean,
     hideFromProfileMetafieldId: String,

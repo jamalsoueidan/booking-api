@@ -71,6 +71,8 @@ export const CustomerProductServiceAdd = async (
       metaobjectId: shopifyProduct.user?.id,
       value: user.userMetaobjectId,
     },
+    defaultMetafieldId: shopifyProduct.active?.id,
+    default: false,
     activeMetafieldId: shopifyProduct.active?.id,
     active: false,
     hideFromCombineMetafieldId: shopifyProduct.hideFromCombine?.id,
@@ -130,6 +132,10 @@ export const PRODUCT_FRAGMENT = `#graphql
         compareAtPrice
         price
       }
+    }
+    default: metafield(key: "default", namespace: "system") {
+      id
+      value
     }
     active: metafield(key: "active", namespace: "system") {
       id

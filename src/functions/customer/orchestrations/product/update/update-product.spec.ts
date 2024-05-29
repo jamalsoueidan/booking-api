@@ -42,6 +42,10 @@ const mockProductUpdate: ProductUpdateMutation = {
         id: `gid://shopify/Metafield/3333`,
         value: `False`,
       },
+      default: {
+        id: `gid://shopify/Metafield/423`,
+        value: `True`,
+      },
       user: {
         id: `gid://shopify/Metafield/44429081510215`,
         value: `gid://shopify/Metafield/123312`,
@@ -131,6 +135,10 @@ describe("CustomerProductUpdateOrchestration", () => {
       activeMetafieldId: mockProductUpdate.productUpdate?.product?.active?.id,
       active: BooleanOrString.parse(
         mockProductUpdate.productUpdate?.product?.active?.value
+      ),
+      defaultMetafieldId: mockProductUpdate.productUpdate?.product?.default?.id,
+      default: BooleanOrString.parse(
+        mockProductUpdate.productUpdate?.product?.default?.value
       ),
       hideFromProfileMetafieldId:
         mockProductUpdate.productUpdate?.product?.hideFromProfile?.id,
@@ -249,6 +257,10 @@ describe("CustomerProductUpdateOrchestration", () => {
           {
             id: product.activeMetafieldId,
             value: user.active.toString(),
+          },
+          {
+            id: product.defaultMetafieldId,
+            value: product.default?.toString() || "true",
           },
           {
             id: product?.scheduleIdMetafieldId,
