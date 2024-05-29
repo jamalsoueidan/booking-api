@@ -4,6 +4,10 @@ import { OrchestrationContext } from "durable-functions";
 import { ScheduleProduct } from "~/functions/schedule";
 import { activityType } from "~/library/orchestration";
 import {
+  updateArticle,
+  updateArticleName,
+} from "../customer/update/update-article";
+import {
   destroyProductOption,
   destroyProductOptionName,
 } from "../product-options/destroy/destroy-option";
@@ -31,13 +35,20 @@ const orchestrator: df.OrchestrationHandler = function* (
       activityType<typeof destroyProduct>(input.product)
     );
 
-  return { productDestroyed };
+  const article: Awaited<ReturnType<typeof updateArticle>> =
+    yield context.df.callActivity(
+      updateArticleName,
+      activityType<typeof updateArticle>(input)
+    );
+
+  return { productDestroyed, article };
 };
 
 df.app.orchestration("CustomerProductDestroyOrchestration", orchestrator);
 
 type Input = {
   product: ScheduleProduct;
+  customerId: number;
 };
 
 export const CustomerProductDestroyOrchestration = async (

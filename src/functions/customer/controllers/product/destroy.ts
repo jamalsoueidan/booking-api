@@ -31,7 +31,10 @@ export const CustomerProductControllerDestroy = _(
     // we must find the product before throwing it to durable function, since destroy may delete the product before
     // we can get hold of the product.options in the durable activate functions.
     const product = await CustomerProductServiceGet(validateQuery);
-    await CustomerProductDestroyOrchestration({ product }, context);
+    await CustomerProductDestroyOrchestration(
+      { product, customerId: validateQuery.customerId },
+      context
+    );
 
     return CustomerProductServiceDestroy(validateQuery);
   }
