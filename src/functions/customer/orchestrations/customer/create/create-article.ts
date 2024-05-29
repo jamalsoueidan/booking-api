@@ -25,38 +25,6 @@ export const createArticle = async ({
 
   tags.push(`gender-${user.gender}`);
 
-  console.log(
-    JSON.stringify(
-      {
-        data: {
-          article: {
-            blog_id: 105364226375,
-            title: user.username,
-            author: "System",
-            tags: tags.join(", "),
-            body_html: user.aboutMeHtml,
-            metafields: [
-              {
-                key: "user",
-                value: user.userMetaobjectId,
-                namespace: "booking",
-              },
-              {
-                key: "collection",
-                value: user.collectionMetaobjectId,
-                namespace: "booking",
-              },
-            ],
-            summary_html: user.shortDescription,
-            published_at: user.active ? user.createdAt : null,
-          },
-        },
-      },
-      null,
-      2
-    )
-  );
-
   const response = await shopifyRest().post("blogs/105364226375/articles", {
     data: {
       article: {

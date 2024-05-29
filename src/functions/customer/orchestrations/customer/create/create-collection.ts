@@ -20,11 +20,11 @@ export const createCollection = async ({
               relation: "EQUALS" as any,
               condition: `user-${user.username}`,
             },
-            {
+            /*{
               column: "TAG" as any,
               relation: "EQUALS" as any,
               condition: `treatments`,
-            },
+            },*/
           ],
         },
       },
