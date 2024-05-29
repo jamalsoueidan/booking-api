@@ -69,7 +69,7 @@ export const CustomerProductServiceAdd = async (
     },
     user: {
       metaobjectId: shopifyProduct.user?.id,
-      value: shopifyProduct.user?.value,
+      value: user.userMetaobjectId,
     },
     activeMetafieldId: shopifyProduct.active?.id,
     active: false,

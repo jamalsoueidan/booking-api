@@ -185,7 +185,7 @@ describe("CustomerProductServiceAdd", () => {
       ),
       user: {
         metaobjectId: mockProduct.productDuplicate?.newProduct?.user?.id!,
-        value: mockProduct.productDuplicate?.newProduct?.user?.value!,
+        value: user.userMetaobjectId,
       },
     });
   });

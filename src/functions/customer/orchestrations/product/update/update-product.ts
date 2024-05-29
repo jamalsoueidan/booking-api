@@ -77,7 +77,7 @@ export const updateProduct = async ({
       },
       {
         id: product?.user?.metaobjectId,
-        value: product.user?.value,
+        value: user.userMetaobjectId,
       },
       {
         id: product.activeMetafieldId,

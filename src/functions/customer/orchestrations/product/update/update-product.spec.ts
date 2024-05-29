@@ -103,7 +103,10 @@ describe("CustomerProductUpdateOrchestration", () => {
     const customerId = 123;
     const name = "Test Schedule";
 
-    const user = await createUser({ customerId });
+    const user = await createUser(
+      { customerId },
+      { userMetaobjectId: `gid://${faker.number.int({ min: 1, max: 5 })}` }
+    );
     const location = await createLocation({
       customerId: user.customerId,
       metafieldId: `gid://${faker.number.int({ min: 1, max: 5 })}`,
@@ -241,7 +244,7 @@ describe("CustomerProductUpdateOrchestration", () => {
           },
           {
             id: product?.user?.metaobjectId,
-            value: product.user?.value,
+            value: user.userMetaobjectId,
           },
           {
             id: product.activeMetafieldId,
