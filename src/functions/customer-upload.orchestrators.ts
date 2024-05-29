@@ -82,7 +82,7 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
       yield context.df.callActivity(
         updateArticleName,
         activityType<typeof updateArticle>({
-          user,
+          customerId: user.customerId,
         })
       );
     }
