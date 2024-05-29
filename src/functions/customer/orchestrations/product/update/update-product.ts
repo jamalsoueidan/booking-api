@@ -18,10 +18,11 @@ export const updateProduct = async ({
     customerId,
   });
 
-  const { scheduleMetafieldId, ...product } = await CustomerProductServiceGet({
-    customerId,
-    productId,
-  });
+  const { scheduleMetafieldId, scheduleName, scheduleId, ...product } =
+    await CustomerProductServiceGet({
+      customerId,
+      productId,
+    });
 
   const totalCountOfDefault = await ScheduleModel.aggregate([
     {
@@ -64,6 +65,18 @@ export const updateProduct = async ({
   ]);
 
   const totalProductsCount = totalCountOfDefault[0]?.totalProducts || 0;
+
+  await ScheduleModel.updateOne(
+    {
+      customerId,
+      "products.productId": productId,
+    },
+    {
+      $set: {
+        "products.$": { ...product, default: totalProductsCount === 0 },
+      },
+    }
+  );
 
   const locations = await LocationModel.find({
     _id: { $in: product.locations.map((l) => l.location) },
@@ -143,7 +156,7 @@ export const updateProduct = async ({
       `parentid-${product.parentId}`,
       `productid-${product.productId}`,
       `product-${product.productHandle}`,
-      `scheduleid-${product.scheduleId}`,
+      `scheduleid-${scheduleId}`,
     ]
       .concat(locations.map((l) => `locationid-${l._id}`))
       .concat(

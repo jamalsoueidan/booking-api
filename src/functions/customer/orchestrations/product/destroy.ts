@@ -20,6 +20,10 @@ const orchestrator: df.OrchestrationHandler = function* (
 ) {
   const input = context.df.getInput() as Input;
 
+  /*
+  /* TODO: Set default=true to the other parentId if exist
+  */
+
   for (const productOption of input.product.options || []) {
     yield context.df.callActivity(
       destroyProductOptionName,
