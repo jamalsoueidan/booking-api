@@ -8,6 +8,10 @@ import {
   updateArticleName,
 } from "../customer/update/update-article";
 import {
+  updateUserMetaobject,
+  updateUserMetaobjectName,
+} from "../customer/update/update-user-metaobject";
+import {
   destroyProductOption,
   destroyProductOptionName,
 } from "../product-options/destroy/destroy-option";
@@ -45,7 +49,13 @@ const orchestrator: df.OrchestrationHandler = function* (
       activityType<typeof updateArticle>(input)
     );
 
-  return { productDestroyed, article };
+  const userField: Awaited<ReturnType<typeof updateUserMetaobject>> =
+    yield context.df.callActivity(
+      updateUserMetaobjectName,
+      activityType<typeof updateUserMetaobject>(input)
+    );
+
+  return { productDestroyed, article, userField };
 };
 
 df.app.orchestration("CustomerProductDestroyOrchestration", orchestrator);

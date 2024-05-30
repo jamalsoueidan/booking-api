@@ -1,6 +1,12 @@
-import { getUserObject } from "~/library/jest/helpers";
-import { createLocation } from "~/library/jest/helpers/location";
+import { faker } from "@faker-js/faker";
+import { createUser } from "~/library/jest/helpers";
+import {
+  createLocation,
+  getDumbLocationObject,
+} from "~/library/jest/helpers/location";
 import { ensureType } from "~/library/jest/helpers/mock";
+import { getProductObject } from "~/library/jest/helpers/product";
+import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import { UpdateUserMetaobjectMutation } from "~/types/admin.generated";
 import {
@@ -24,8 +30,27 @@ describe("CustomerUpdateOrchestration", () => {
   });
 
   it("updateUserMetaobject", async () => {
-    const user = getUserObject();
-    await createLocation({ customerId: user.customerId });
+    const customerId = 3;
+    const user = await createUser({ customerId });
+    const locationOrigin = await createLocation({
+      customerId,
+      metafieldId: "1",
+    });
+
+    await createSchedule({
+      name: faker.person.lastName(),
+      customerId,
+      products: [
+        getProductObject({
+          locations: [
+            getDumbLocationObject({
+              location: locationOrigin._id,
+              ...locationOrigin,
+            }),
+          ],
+        }),
+      ],
+    });
 
     mockRequest.mockResolvedValueOnce({
       data: ensureType<UpdateUserMetaobjectMutation>({
@@ -42,7 +67,7 @@ describe("CustomerUpdateOrchestration", () => {
       }),
     });
 
-    await updateUserMetaobject({ user });
+    await updateUserMetaobject(user);
 
     expect(mockRequest).toHaveBeenCalledTimes(1);
 

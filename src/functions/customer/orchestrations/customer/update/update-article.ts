@@ -1,7 +1,7 @@
 import { CustomerServiceGet } from "~/functions/customer/services/customer/get";
-import { CustomerLocationServiceList } from "~/functions/customer/services/location/list";
 import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import { ScheduleModel } from "~/functions/schedule";
+import { UserScheduleServiceLocationsList } from "~/functions/user/services/schedule/locations-list";
 import { shopifyRest } from "~/library/shopify/rest";
 
 export const updateArticleName = "updateArticle";
@@ -42,9 +42,11 @@ export const updateArticle = async ({
     tags.push(`day-${days.join(", day-")}`);
   }
 
-  const locations = await CustomerLocationServiceList({
-    customerId: user.customerId,
+  const schedule = await UserScheduleServiceLocationsList({
+    customerId,
   });
+
+  const locations = schedule.map((item) => item.locations).flat();
 
   if (locations.length > 0) {
     tags.push(

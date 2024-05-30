@@ -44,7 +44,7 @@ export const CustomerControllerUpdate = _(
     const validateBody = CustomerControllerUpdateSchema.parse(body);
     const user = await CustomerServiceUpdate(validateQuery, validateBody);
 
-    await CustomerUpdateOrchestration(user, context);
+    await CustomerUpdateOrchestration(validateQuery, context);
 
     return user;
   }

@@ -1,7 +1,6 @@
 import { InvocationContext } from "@azure/functions";
 import * as df from "durable-functions";
 import { OrchestrationContext } from "durable-functions";
-import { User } from "~/functions/user";
 import { activityType } from "~/library/orchestration";
 import { updateArticle, updateArticleName } from "./update/update-article";
 import {
@@ -20,22 +19,18 @@ df.app.activity(updateArticleName, {
 const orchestrator: df.OrchestrationHandler = function* (
   context: OrchestrationContext
 ) {
-  const user = context.df.getInput() as User;
+  const input = context.df.getInput() as Input;
 
   const userField: Awaited<ReturnType<typeof updateUserMetaobject>> =
     yield context.df.callActivity(
       updateUserMetaobjectName,
-      activityType<typeof updateUserMetaobject>({
-        user,
-      })
+      activityType<typeof updateUserMetaobject>(input)
     );
 
   const article: Awaited<ReturnType<typeof updateArticle>> =
     yield context.df.callActivity(
       updateArticleName,
-      activityType<typeof updateArticle>({
-        customerId: user.customerId,
-      })
+      activityType<typeof updateArticle>(input)
     );
 
   return {
@@ -44,10 +39,12 @@ const orchestrator: df.OrchestrationHandler = function* (
   };
 };
 
+type Input = { customerId: number };
+
 df.app.orchestration("updateUserShopify", orchestrator);
 
 export const CustomerUpdateOrchestration = async (
-  input: User,
+  input: Input,
   context: InvocationContext
 ): Promise<string> => {
   const client = df.getClient(context);

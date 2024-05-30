@@ -1,16 +1,20 @@
-import { CustomerLocationServiceList } from "~/functions/customer/services/location/list";
-import { User } from "~/functions/user";
+import { UserScheduleServiceLocationsList } from "~/functions//user/services/schedule/locations-list";
+import { CustomerServiceGet } from "~/functions/customer/services/customer/get";
 import { shopifyAdmin } from "~/library/shopify";
 
 export const updateUserMetaobjectName = "updateUserMetaobject";
 export const updateUserMetaobject = async ({
-  user,
+  customerId,
 }: {
-  user: Omit<User, "_id">;
+  customerId: number;
 }) => {
-  const locations = await CustomerLocationServiceList({
-    customerId: user.customerId,
+  const user = await CustomerServiceGet({ customerId });
+
+  const schedule = await UserScheduleServiceLocationsList({
+    customerId,
   });
+
+  const locations = schedule.map((item) => item.locations).flat();
 
   const variables = {
     id: user.userMetaobjectId || "",

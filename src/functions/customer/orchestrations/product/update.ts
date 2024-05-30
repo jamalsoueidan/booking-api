@@ -2,6 +2,10 @@ import { InvocationContext } from "@azure/functions";
 import * as df from "durable-functions";
 import { OrchestrationContext } from "durable-functions";
 import { activityType } from "~/library/orchestration";
+import {
+  updateUserMetaobject,
+  updateUserMetaobjectName,
+} from "../customer/update/update-user-metaobject";
 import { updatePrice, updatePriceName } from "./update/update-price";
 import { updateProduct, updateProductName } from "./update/update-product";
 
@@ -23,6 +27,12 @@ const orchestrator: df.OrchestrationHandler = function* (
     yield context.df.callActivity(
       updatePriceName,
       activityType<typeof updatePrice>(input)
+    );
+
+  const userField: Awaited<ReturnType<typeof updateUserMetaobject>> =
+    yield context.df.callActivity(
+      updateUserMetaobjectName,
+      activityType<typeof updateUserMetaobject>(input)
     );
 
   return { productUpdated, priceUpdated };

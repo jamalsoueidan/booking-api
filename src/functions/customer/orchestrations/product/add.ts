@@ -6,6 +6,10 @@ import {
   updateArticle,
   updateArticleName,
 } from "../customer/update/update-article";
+import {
+  updateUserMetaobject,
+  updateUserMetaobjectName,
+} from "../customer/update/update-user-metaobject";
 import { updatePrice, updatePriceName } from "./update/update-price";
 import { updateProduct, updateProductName } from "./update/update-product";
 
@@ -32,7 +36,13 @@ const orchestrator: df.OrchestrationHandler = function* (
       activityType<typeof updateArticle>(input)
     );
 
-  return { article, productUpdated, priceUpdated };
+  const userField: Awaited<ReturnType<typeof updateUserMetaobject>> =
+    yield context.df.callActivity(
+      updateUserMetaobjectName,
+      activityType<typeof updateUserMetaobject>(input)
+    );
+
+  return { article, productUpdated, priceUpdated, userField };
 };
 
 df.app.orchestration("CustomerProductAddOrchestration", orchestrator);
