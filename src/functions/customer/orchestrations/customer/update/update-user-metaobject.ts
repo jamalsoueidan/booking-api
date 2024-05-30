@@ -49,7 +49,7 @@ export const updateUserMetaobject = async ({
       },
       {
         key: "schedules",
-        value: JSON.stringify(schedules.map((p) => p.metafieldId)),
+        value: JSON.stringify(schedules.map((p) => p.metafieldId).sort()), //sort is for jest testing
       },
       {
         key: "active",
