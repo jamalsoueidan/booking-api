@@ -35,7 +35,7 @@ const orchestrator: df.OrchestrationHandler = function* (
       activityType<typeof updateUserMetaobject>(input)
     );
 
-  return { productUpdated, priceUpdated };
+  return { productUpdated, priceUpdated, userField };
 };
 
 df.app.orchestration("updateProductShopify", orchestrator);

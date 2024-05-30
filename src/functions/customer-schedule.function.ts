@@ -1,6 +1,6 @@
-import "module-alias/register";
-
 import { app } from "@azure/functions";
+import * as df from "durable-functions";
+import "module-alias/register";
 
 import {
   CustomerScheduleControllerCreate,
@@ -23,6 +23,7 @@ app.http("customerScheduleCreate", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/schedule",
   handler: CustomerScheduleControllerCreate,
+  extraInputs: [df.input.durableClient()],
 });
 
 app.http("customerScheduleUpdate", {
@@ -30,6 +31,7 @@ app.http("customerScheduleUpdate", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/schedule/{scheduleId?}",
   handler: CustomerScheduleControllerUpdate,
+  extraInputs: [df.input.durableClient()],
 });
 
 app.http("customerScheduleGet", {
@@ -51,4 +53,5 @@ app.http("customerScheduleSlotUpdate", {
   authLevel: "anonymous",
   route: "customer/{customerId?}/schedule/{scheduleId?}/slots",
   handler: CustomerScheduleSlotControllerUpdate,
+  extraInputs: [df.input.durableClient()],
 });
