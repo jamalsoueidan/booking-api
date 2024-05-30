@@ -55,19 +55,20 @@ export const updateArticle = async ({
     );
     if (destination) {
       tags.push("location-destination");
-    }
-    const originTypeHome = locations.find(
-      (l) => l.originType === LocationOriginTypes.HOME
-    );
-    if (originTypeHome) {
-      tags.push("location-home");
-    }
+    } else {
+      const originTypeHome = locations.find(
+        (l) => l.originType === LocationOriginTypes.HOME
+      );
+      if (originTypeHome) {
+        tags.push("location-home");
+      }
 
-    const originTypeSalon = locations.find(
-      (l) => l.originType === LocationOriginTypes.COMMERCIAL
-    );
-    if (originTypeSalon) {
-      tags.push("location-salon");
+      const originTypeSalon = locations.find(
+        (l) => l.originType === LocationOriginTypes.COMMERCIAL
+      );
+      if (originTypeSalon) {
+        tags.push("location-salon");
+      }
     }
   }
 
