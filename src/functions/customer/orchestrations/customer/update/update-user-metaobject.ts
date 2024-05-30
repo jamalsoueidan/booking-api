@@ -1,4 +1,4 @@
-import { LocationModel } from "~/functions/location";
+import { CustomerLocationServiceList } from "~/functions/customer/services/location/list";
 import { User } from "~/functions/user";
 import { shopifyAdmin } from "~/library/shopify";
 
@@ -8,7 +8,7 @@ export const updateUserMetaobject = async ({
 }: {
   user: Omit<User, "_id">;
 }) => {
-  const locations = await LocationModel.find({
+  const locations = await CustomerLocationServiceList({
     customerId: user.customerId,
   });
 

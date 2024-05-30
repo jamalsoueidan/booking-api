@@ -1,7 +1,7 @@
 import "module-alias/register";
 
 import { app } from "@azure/functions";
-
+import * as df from "durable-functions";
 import {
   CustomerLocationControllerCreate,
   CustomerLocationControllerGetAll,
@@ -45,6 +45,7 @@ app.http("customerLocationCreate", {
   authLevel: "anonymous",
   route: "customer/{customerId}/locations",
   handler: CustomerLocationControllerCreate,
+  extraInputs: [df.input.durableClient()],
 });
 
 app.http("customerLocationRemove", {

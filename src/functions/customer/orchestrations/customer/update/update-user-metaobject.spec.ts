@@ -1,4 +1,5 @@
 import { getUserObject } from "~/library/jest/helpers";
+import { createLocation } from "~/library/jest/helpers/location";
 import { ensureType } from "~/library/jest/helpers/mock";
 import { shopifyAdmin } from "~/library/shopify";
 import { UpdateUserMetaobjectMutation } from "~/types/admin.generated";
@@ -24,6 +25,7 @@ describe("CustomerUpdateOrchestration", () => {
 
   it("updateUserMetaobject", async () => {
     const user = getUserObject();
+    await createLocation({ customerId: user.customerId });
 
     mockRequest.mockResolvedValueOnce({
       data: ensureType<UpdateUserMetaobjectMutation>({
@@ -70,7 +72,7 @@ describe("CustomerUpdateOrchestration", () => {
           },
           {
             key: "locations",
-            value: JSON.stringify([]),
+            value: JSON.stringify(["1"]),
           },
           {
             key: "active",

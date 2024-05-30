@@ -1,12 +1,15 @@
 import { z } from "zod";
 import { LocationZodSchema } from "~/functions/location/location.types";
 
+import { InvocationContext } from "@azure/functions";
 import { _ } from "~/library/handler";
+import { CustomerLocationCreateOrchestration } from "../../orchestrations/location/create";
 import { CustomerLocationServiceCreate } from "../../services/location/create";
 
 export type CustomerLocationControllerCreateRequest = {
   query: z.infer<typeof CustomerLocationControllerCreateQuerySchema>;
   body: z.infer<typeof LocationZodSchema>;
+  context: InvocationContext;
 };
 
 export const CustomerLocationControllerCreateBodySchema =
@@ -25,15 +28,22 @@ export type CustomerLocationControllerCreateResponse = Awaited<
 >;
 
 export const CustomerLocationControllerCreate = _(
-  ({ query, body }: CustomerLocationControllerCreateRequest) => {
+  async ({ query, body, context }: CustomerLocationControllerCreateRequest) => {
     const validateData =
       CustomerLocationControllerCreateQuerySchema.parse(query);
 
     const validateBody = CustomerLocationControllerCreateBodySchema.parse(body);
 
-    return CustomerLocationServiceCreate({
+    const location = await CustomerLocationServiceCreate({
       ...validateData,
       ...validateBody,
     });
+
+    await CustomerLocationCreateOrchestration(
+      { locationId: location._id },
+      context
+    );
+
+    return location;
   }
 );
