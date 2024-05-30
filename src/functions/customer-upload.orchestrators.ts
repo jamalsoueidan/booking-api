@@ -74,9 +74,7 @@ df.app.orchestration("upload", function* (context: OrchestrationContext) {
 
       yield context.df.callActivity(
         updateUserMetaobjectName,
-        activityType<typeof updateUserMetaobject>({
-          user,
-        })
+        activityType<typeof updateUserMetaobject>(user)
       );
 
       yield context.df.callActivity(
