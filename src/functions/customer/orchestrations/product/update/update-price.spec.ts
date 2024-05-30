@@ -49,9 +49,7 @@ describe("CustomerProductUpdateOrchestration", () => {
     const location = await createLocation({ customerId });
 
     const product = getProductObject({
-      locations: [
-        getDumbLocationObject({ ...location, location: location._id }),
-      ],
+      locations: [getDumbLocationObject({ location: location._id })],
       description: "test test",
       descriptionHtml: "<p>test test</p>",
       hideFromProfile: false,

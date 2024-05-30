@@ -133,7 +133,6 @@ describe("CustomerProductControllerAdd", () => {
 
     const locations = [
       getDumbLocationObject({
-        ...location,
         location: location._id,
       }),
     ];

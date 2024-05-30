@@ -1,7 +1,5 @@
 import { Schedule, ScheduleModel, ScheduleSlot } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
-import { shopifyAdmin } from "~/library/shopify";
-import { UPDATE_SCHEDULE_METAOBJECT } from "./schedule/update";
 
 export type CustomerScheduleSlotServiceUpdateFilter = {
   scheduleId: Schedule["_id"];
@@ -27,21 +25,5 @@ export const CustomerScheduleSlotServiceUpdate = async (
     ])
   );
 
-  const data = await schedule.updateSlots(updatedSlot);
-
-  if (schedule.metafieldId) {
-    await shopifyAdmin().request(UPDATE_SCHEDULE_METAOBJECT, {
-      variables: {
-        id: schedule.metafieldId,
-        fields: [
-          {
-            key: "slots",
-            value: JSON.stringify(data.slots),
-          },
-        ],
-      },
-    });
-  }
-
-  return data;
+  return await schedule.updateSlots(updatedSlot);
 };

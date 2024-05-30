@@ -37,7 +37,8 @@ describe("CustomerUpdateOrchestration", () => {
       metafieldId: "1",
     });
 
-    await createSchedule({
+    const schedule = await createSchedule({
+      metafieldId: "2",
       name: faker.person.lastName(),
       customerId,
       products: [
@@ -45,7 +46,23 @@ describe("CustomerUpdateOrchestration", () => {
           locations: [
             getDumbLocationObject({
               location: locationOrigin._id,
-              ...locationOrigin,
+              metafieldId: locationOrigin.metafieldId,
+            }),
+          ],
+        }),
+      ],
+    });
+
+    const schedule2 = await createSchedule({
+      metafieldId: "3",
+      name: faker.person.lastName(),
+      customerId,
+      products: [
+        getProductObject({
+          locations: [
+            getDumbLocationObject({
+              location: locationOrigin._id,
+              metafieldId: locationOrigin.metafieldId,
             }),
           ],
         }),
@@ -98,6 +115,12 @@ describe("CustomerUpdateOrchestration", () => {
           {
             key: "locations",
             value: JSON.stringify(["1"]),
+          },
+          {
+            key: "schedules",
+            value: JSON.stringify(
+              [schedule2.metafieldId, schedule.metafieldId].sort()
+            ),
           },
           {
             key: "active",

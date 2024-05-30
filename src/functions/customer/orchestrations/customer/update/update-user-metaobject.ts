@@ -10,11 +10,15 @@ export const updateUserMetaobject = async ({
 }) => {
   const user = await CustomerServiceGet({ customerId });
 
-  const schedule = await UserScheduleServiceLocationsList({
+  const schedules = await UserScheduleServiceLocationsList({
     customerId,
   });
 
-  const locations = schedule.map((item) => item.locations).flat();
+  // save unqiue locations across all schedule in user metafield
+  const locations = schedules
+    .map((item) => item.locations)
+    .flat()
+    .map((p) => p.metafieldId);
 
   const variables = {
     id: user.userMetaobjectId || "",
@@ -41,7 +45,11 @@ export const updateUserMetaobject = async ({
       },
       {
         key: "locations",
-        value: JSON.stringify(locations.map((p) => p.metafieldId)),
+        value: JSON.stringify([...new Set(locations)]),
+      },
+      {
+        key: "schedules",
+        value: JSON.stringify(schedules.map((p) => p.metafieldId).sort()), //sort is for jest testing
       },
       {
         key: "active",

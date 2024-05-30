@@ -1,25 +1,8 @@
 import { ScheduleModel } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
-import { ensureType } from "~/library/jest/helpers/mock";
-import { shopifyAdmin } from "~/library/shopify";
-import {
-  UpdateScheduleMetaobjectMutation,
-  UpdateScheduleMetaobjectMutationVariables,
-} from "~/types/admin.generated";
-import {
-  CustomerScheduleServiceUpdate,
-  UPDATE_SCHEDULE_METAOBJECT,
-} from "./update";
+import { CustomerScheduleServiceUpdate } from "./update";
 
 require("~/library/jest/mongoose/mongodb.jest");
-
-jest.mock("~/library/shopify", () => ({
-  shopifyAdmin: jest.fn().mockReturnValue({
-    request: jest.fn(),
-  }),
-}));
-
-const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerScheduleServiceUpdate", () => {
   const customerId = 123;
@@ -46,35 +29,6 @@ describe("CustomerScheduleServiceUpdate", () => {
 
     const updatedScheduleName = "Updated Test Schedule";
 
-    mockRequest.mockResolvedValueOnce({
-      data: ensureType<UpdateScheduleMetaobjectMutation>({
-        metaobjectUpdate: {
-          metaobject: {
-            fields: [
-              {
-                value: name,
-                key: "name",
-              },
-              {
-                value: JSON.stringify([
-                  {
-                    day: "monday",
-                    intervals: [
-                      {
-                        to: "16:00",
-                        from: "08:00",
-                      },
-                    ],
-                  },
-                ]),
-                key: "slots",
-              },
-            ],
-          },
-        },
-      }),
-    });
-
     const updatedSchedule = await CustomerScheduleServiceUpdate(
       {
         scheduleId: newSchedule._id,
@@ -84,20 +38,6 @@ describe("CustomerScheduleServiceUpdate", () => {
         name: updatedScheduleName,
       }
     );
-
-    expect(mockRequest).toHaveBeenCalledTimes(1);
-
-    expect(mockRequest).toHaveBeenNthCalledWith(1, UPDATE_SCHEDULE_METAOBJECT, {
-      variables: ensureType<UpdateScheduleMetaobjectMutationVariables>({
-        id: newSchedule.metafieldId || "",
-        fields: [
-          {
-            value: updatedScheduleName,
-            key: "name",
-          },
-        ],
-      }),
-    });
 
     expect(updatedSchedule).toMatchObject({
       name: updatedScheduleName,

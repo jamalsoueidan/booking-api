@@ -1,22 +1,11 @@
 import { SlotWeekDays } from "~/functions/schedule";
-import { ensureType } from "~/library/jest/helpers/mock";
 import { createSchedule } from "~/library/jest/helpers/schedule";
-import { shopifyAdmin } from "~/library/shopify";
-import { UpdateScheduleMetaobjectMutation } from "~/types/admin.generated";
 import {
   CustomerScheduleSlotServiceUpdate,
   CustomerScheduleSlotServiceUpdateBody,
 } from "./slots";
 
 require("~/library/jest/mongoose/mongodb.jest");
-
-jest.mock("~/library/shopify", () => ({
-  shopifyAdmin: jest.fn().mockReturnValue({
-    request: jest.fn(),
-  }),
-}));
-
-const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerScheduleSlotService", () => {
   it("should update a slots", async () => {
@@ -33,25 +22,6 @@ describe("CustomerScheduleSlotService", () => {
         ],
       },
     ];
-
-    mockRequest.mockResolvedValueOnce({
-      data: ensureType<UpdateScheduleMetaobjectMutation>({
-        metaobjectUpdate: {
-          metaobject: {
-            fields: [
-              {
-                value: schedule.name,
-                key: "name",
-              },
-              {
-                value: JSON.stringify(newSlot),
-                key: "slots",
-              },
-            ],
-          },
-        },
-      }),
-    });
 
     const newSchedule = await CustomerScheduleSlotServiceUpdate(
       {
@@ -76,25 +46,6 @@ describe("CustomerScheduleSlotService", () => {
         ],
       },
     ];
-
-    mockRequest.mockResolvedValueOnce({
-      data: ensureType<UpdateScheduleMetaobjectMutation>({
-        metaobjectUpdate: {
-          metaobject: {
-            fields: [
-              {
-                value: schedule.name,
-                key: "name",
-              },
-              {
-                value: JSON.stringify(updatedSlot),
-                key: "slots",
-              },
-            ],
-          },
-        },
-      }),
-    });
 
     const updatedSchedule = await CustomerScheduleSlotServiceUpdate(
       {

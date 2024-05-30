@@ -7,10 +7,7 @@ import {
 } from "~/library/jest/azure";
 
 import { SlotWeekDays } from "~/functions/schedule";
-import { ensureType } from "~/library/jest/helpers/mock";
 import { createSchedule } from "~/library/jest/helpers/schedule";
-import { shopifyAdmin } from "~/library/shopify";
-import { UpdateScheduleMetaobjectMutation } from "~/types/admin.generated";
 import {
   CustomerScheduleSlotControllerUpdate,
   CustomerScheduleSlotControllerUpdateRequest,
@@ -19,13 +16,11 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("~/library/shopify", () => ({
-  shopifyAdmin: jest.fn().mockReturnValue({
+jest.mock("../../orchestrations/schedule/update", () => ({
+  CustomerScheduleUpdateOrchestration: () => ({
     request: jest.fn(),
   }),
 }));
-
-const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerScheduleSlotControllerUpdate", () => {
   let context: InvocationContext;
@@ -56,25 +51,6 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
         ],
       };
 
-    mockRequest.mockResolvedValueOnce({
-      data: ensureType<UpdateScheduleMetaobjectMutation>({
-        metaobjectUpdate: {
-          metaobject: {
-            fields: [
-              {
-                value: newSchedule.name,
-                key: "name",
-              },
-              {
-                value: JSON.stringify(updatedScheduleData.slots),
-                key: "slots",
-              },
-            ],
-          },
-        },
-      }),
-    });
-
     request =
       await createHttpRequest<CustomerScheduleSlotControllerUpdateRequest>({
         query: {
@@ -82,6 +58,7 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
           scheduleId: newSchedule._id,
         },
         body: updatedScheduleData,
+        context,
       });
 
     const res: HttpSuccessResponse<CustomerScheduleSlotControllerUpdateResponse> =
@@ -128,6 +105,7 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
           scheduleId: newSchedule._id,
         },
         body: updatedScheduleData,
+        context,
       });
 
     const res: HttpErrorResponse = await CustomerScheduleSlotControllerUpdate(
@@ -167,6 +145,7 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
           scheduleId: newSchedule._id,
         },
         body: updatedScheduleData,
+        context,
       });
 
     const res: HttpErrorResponse = await CustomerScheduleSlotControllerUpdate(
@@ -210,6 +189,7 @@ describe("CustomerScheduleSlotControllerUpdate", () => {
           scheduleId: newSchedule._id,
         },
         body: updatedScheduleData,
+        context,
       });
 
     const res: HttpErrorResponse = await CustomerScheduleSlotControllerUpdate(

@@ -2,12 +2,15 @@ import { z } from "zod";
 
 import { ScheduleZodSchema } from "~/functions/schedule";
 
+import { InvocationContext } from "@azure/functions";
 import { _ } from "~/library/handler";
-import { CustomerScheduleSlotServiceUpdate } from "../../services/slots";
+import { CustomerScheduleUpdateOrchestration } from "../../orchestrations/schedule/update";
+import { CustomerScheduleSlotServiceUpdate } from "../../services/schedule/slots";
 
 export type CustomerScheduleSlotControllerUpdateRequest = {
   query: z.infer<typeof CustomerScheduleSlotControllerUpdateQuerySchema>;
   body: z.infer<typeof CustomerScheduleSlotControllerUpdateBodySchema>;
+  context: InvocationContext;
 };
 
 const CustomerScheduleSlotControllerUpdateQuerySchema = z.object({
@@ -24,11 +27,23 @@ export type CustomerScheduleSlotControllerUpdateResponse = Awaited<
 >;
 
 export const CustomerScheduleSlotControllerUpdate = _(
-  ({ query, body }: CustomerScheduleSlotControllerUpdateRequest) => {
+  async ({
+    query,
+    body,
+    context,
+  }: CustomerScheduleSlotControllerUpdateRequest) => {
     const validateQuery =
       CustomerScheduleSlotControllerUpdateQuerySchema.parse(query);
     const validateBody =
       CustomerScheduleSlotControllerUpdateBodySchema.parse(body);
-    return CustomerScheduleSlotServiceUpdate(validateQuery, validateBody.slots);
+
+    const scheduleUpdated = await CustomerScheduleSlotServiceUpdate(
+      validateQuery,
+      validateBody.slots
+    );
+
+    await CustomerScheduleUpdateOrchestration(validateQuery, context);
+
+    return scheduleUpdated;
   }
 );

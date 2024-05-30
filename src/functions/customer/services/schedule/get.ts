@@ -12,17 +12,15 @@ export const CustomerScheduleServiceGet = async (
   const schedule = await ScheduleModel.findOne({
     _id: filter.scheduleId,
     customerId: filter.customerId,
-  })
-    .lean()
-    .orFail(
-      new NotFoundError([
-        {
-          code: "custom",
-          message: "SCHEDULE_NOT_FOUND",
-          path: ["schedule"],
-        },
-      ])
-    );
+  }).orFail(
+    new NotFoundError([
+      {
+        code: "custom",
+        message: "SCHEDULE_NOT_FOUND",
+        path: ["schedule"],
+      },
+    ])
+  );
 
   return schedule;
 };
