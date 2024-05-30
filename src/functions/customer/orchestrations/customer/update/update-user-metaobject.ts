@@ -1,3 +1,4 @@
+import { LocationModel } from "~/functions/location";
 import { User } from "~/functions/user";
 import { shopifyAdmin } from "~/library/shopify";
 
@@ -7,6 +8,10 @@ export const updateUserMetaobject = async ({
 }: {
   user: Omit<User, "_id">;
 }) => {
+  const locations = await LocationModel.find({
+    customerId: user.customerId,
+  });
+
   const variables = {
     id: user.userMetaobjectId || "",
     fields: [
@@ -29,6 +34,10 @@ export const updateUserMetaobject = async ({
       {
         key: "social",
         value: JSON.stringify(user.social || []),
+      },
+      {
+        key: "locations",
+        value: JSON.stringify(locations.map((p) => p.metafieldId)),
       },
       {
         key: "active",

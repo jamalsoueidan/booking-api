@@ -69,6 +69,10 @@ describe("CustomerUpdateOrchestration", () => {
             value: JSON.stringify(user.social),
           },
           {
+            key: "locations",
+            value: JSON.stringify([]),
+          },
+          {
             key: "active",
             value: String(user.active),
           },
