@@ -25,14 +25,7 @@ export const CustomerProductServiceUpdate = async (
       productId,
     });
 
-  const locations = oldProduct.locations.concat(
-    (body.locations || [])?.filter(
-      (item2) =>
-        !oldProduct.locations.some(
-          (item1) => item1.location.toString() === item2.location.toString() // must use toString since location could be type of objectId
-        )
-    )
-  );
+  const locations = !body.locations ? oldProduct.locations : body.locations;
 
   const newProduct = {
     ...oldProduct,
