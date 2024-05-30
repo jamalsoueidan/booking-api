@@ -15,6 +15,9 @@ import {
 
 df.app.activity(updateProductName, { handler: updateProduct });
 df.app.activity(updatePriceName, { handler: updatePrice });
+df.app.activity(updateScheduleLocationsFieldName, {
+  handler: updateScheduleLocationsField,
+});
 
 const orchestrator: df.OrchestrationHandler = function* (
   context: OrchestrationContext
@@ -49,7 +52,7 @@ const orchestrator: df.OrchestrationHandler = function* (
   return { productUpdated, priceUpdated, userField, scheduleLocationsField };
 };
 
-df.app.orchestration("updateProductShopify", orchestrator);
+df.app.orchestration("CustomerProductUpdateOrchestration", orchestrator);
 
 type Input = { productId: number; customerId: number };
 
@@ -58,9 +61,12 @@ export const CustomerProductUpdateOrchestration = async (
   context: InvocationContext
 ): Promise<string> => {
   const client = df.getClient(context);
-  const instanceId: string = await client.startNew("updateProductShopify", {
-    input,
-  });
+  const instanceId: string = await client.startNew(
+    "CustomerProductUpdateOrchestration",
+    {
+      input,
+    }
+  );
 
   context.log(`Started orchestration with ID = '${instanceId}'.`);
 
