@@ -39,6 +39,7 @@ export const UserScheduleServiceLocationsList = async ({
         locations: { $addToSet: "$products.locations" },
         name: { $first: "$name" },
         slots: { $first: "$slots" },
+        metafieldId: { $first: "$metafieldId" },
         createdAt: { $first: "$createdAt" },
         updatedAt: { $first: "$updatedAt" },
       },
@@ -52,6 +53,7 @@ export const UserScheduleServiceLocationsList = async ({
         locations: { $addToSet: "$locations" },
         createdAt: { $first: "$createdAt" },
         updatedAt: { $first: "$updatedAt" },
+        metafieldId: { $first: "$metafieldId" },
       },
     },
     {

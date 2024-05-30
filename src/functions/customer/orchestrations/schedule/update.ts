@@ -4,12 +4,12 @@ import { OrchestrationContext } from "durable-functions";
 import { activityType } from "~/library/orchestration";
 import { StringOrObjectIdType } from "~/library/zod";
 import {
-  createScheduleMetafield,
-  createScheduleMetafieldName,
-} from "./create/create-schedule-metafield";
+  updateScheduleMetafield,
+  updateScheduleMetafieldName,
+} from "./update/update-schedule-metafield";
 
-df.app.activity(createScheduleMetafieldName, {
-  handler: createScheduleMetafield,
+df.app.activity(updateScheduleMetafieldName, {
+  handler: updateScheduleMetafield,
 });
 
 const orchestrator: df.OrchestrationHandler = function* (
@@ -17,10 +17,10 @@ const orchestrator: df.OrchestrationHandler = function* (
 ) {
   const input = context.df.getInput() as Input;
 
-  const metafield: Awaited<ReturnType<typeof createScheduleMetafield>> =
+  const metafield: Awaited<ReturnType<typeof updateScheduleMetafield>> =
     yield context.df.callActivity(
-      createScheduleMetafieldName,
-      activityType<typeof createScheduleMetafield>(input)
+      updateScheduleMetafieldName,
+      activityType<typeof updateScheduleMetafield>(input)
     );
 
   return { metafield };

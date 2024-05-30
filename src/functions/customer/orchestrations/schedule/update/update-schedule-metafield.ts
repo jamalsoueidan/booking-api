@@ -18,15 +18,6 @@ export const updateScheduleMetafield = async ({
     );
   }
 
-  const locations = schedule.products.reduce((locations, product) => {
-    product.locations.forEach((location) => {
-      if (location.metafieldId && !locations.includes(location.metafieldId)) {
-        locations.push(location.metafieldId);
-      }
-    });
-    return locations;
-  }, [] as string[]);
-
   const { data } = await shopifyAdmin().request(UPDATE_SCHEDULE_METAOBJECT, {
     variables: {
       id: schedule.metafieldId,
@@ -38,10 +29,6 @@ export const updateScheduleMetafield = async ({
         {
           key: "slots",
           value: JSON.stringify(schedule.slots),
-        },
-        {
-          key: "locations",
-          value: JSON.stringify(locations),
         },
       ],
     },

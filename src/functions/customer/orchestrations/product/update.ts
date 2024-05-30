@@ -8,6 +8,10 @@ import {
 } from "../customer/update/update-user-metaobject";
 import { updatePrice, updatePriceName } from "./update/update-price";
 import { updateProduct, updateProductName } from "./update/update-product";
+import {
+  updateScheduleLocationsField,
+  updateScheduleLocationsFieldName,
+} from "./update/update-schedule-locations-field";
 
 df.app.activity(updateProductName, { handler: updateProduct });
 df.app.activity(updatePriceName, { handler: updatePrice });
@@ -35,7 +39,14 @@ const orchestrator: df.OrchestrationHandler = function* (
       activityType<typeof updateUserMetaobject>(input)
     );
 
-  return { productUpdated, priceUpdated, userField };
+  const scheduleLocationsField: Awaited<
+    ReturnType<typeof updateScheduleLocationsField>
+  > = yield context.df.callActivity(
+    updateScheduleLocationsFieldName,
+    activityType<typeof updateScheduleLocationsField>(input)
+  );
+
+  return { productUpdated, priceUpdated, userField, scheduleLocationsField };
 };
 
 df.app.orchestration("updateProductShopify", orchestrator);
