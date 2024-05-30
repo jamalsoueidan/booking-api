@@ -6,10 +6,7 @@ import {
   createHttpRequest,
 } from "~/library/jest/azure";
 
-import { ensureType } from "~/library/jest/helpers/mock";
 import { createSchedule } from "~/library/jest/helpers/schedule";
-import { shopifyAdmin } from "~/library/shopify";
-import { UpdateScheduleMetaobjectMutation } from "~/types/admin.generated";
 import {
   CustomerScheduleControllerUpdate,
   CustomerScheduleControllerUpdateRequest,
@@ -18,13 +15,11 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("~/library/shopify", () => ({
-  shopifyAdmin: jest.fn().mockReturnValue({
+jest.mock("../../orchestrations/schedule/update", () => ({
+  CustomerScheduleUpdateOrchestration: () => ({
     request: jest.fn(),
   }),
 }));
-
-const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerScheduleControllerUpdate", () => {
   let context: InvocationContext;
@@ -46,41 +41,13 @@ describe("CustomerScheduleControllerUpdate", () => {
         name: updatedScheduleName,
       };
 
-    mockRequest.mockResolvedValueOnce({
-      data: ensureType<UpdateScheduleMetaobjectMutation>({
-        metaobjectUpdate: {
-          metaobject: {
-            fields: [
-              {
-                value: updatedScheduleName,
-                key: "name",
-              },
-              {
-                value: JSON.stringify([
-                  {
-                    day: "monday",
-                    intervals: [
-                      {
-                        to: "16:00",
-                        from: "08:00",
-                      },
-                    ],
-                  },
-                ]),
-                key: "slots",
-              },
-            ],
-          },
-        },
-      }),
-    });
-
     request = await createHttpRequest<CustomerScheduleControllerUpdateRequest>({
       query: {
         customerId: 123,
         scheduleId: newSchedule._id,
       },
       body: updatedScheduleData,
+      context,
     });
 
     const res: HttpSuccessResponse<CustomerScheduleControllerUpdateResponse> =

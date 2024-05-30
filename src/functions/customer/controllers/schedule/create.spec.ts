@@ -4,9 +4,6 @@ import {
   createContext,
   createHttpRequest,
 } from "~/library/jest/azure";
-import { ensureType } from "~/library/jest/helpers/mock";
-import { shopifyAdmin } from "~/library/shopify";
-import { CreateScheduleMetaobjectMutation } from "~/types/admin.generated";
 import {
   CustomerScheduleControllerCreate,
   CustomerScheduleControllerCreateRequest,
@@ -15,13 +12,11 @@ import {
 
 require("~/library/jest/mongoose/mongodb.jest");
 
-jest.mock("~/library/shopify", () => ({
-  shopifyAdmin: jest.fn().mockReturnValue({
+jest.mock("../../orchestrations/schedule/create", () => ({
+  CustomerScheduleCreateOrchestration: () => ({
     request: jest.fn(),
   }),
 }));
-
-const mockRequest = shopifyAdmin().request as jest.Mock;
 
 describe("CustomerScheduleControllerCreate", () => {
   let context: InvocationContext;
@@ -32,37 +27,6 @@ describe("CustomerScheduleControllerCreate", () => {
   });
 
   it("should be able to create schedule", async () => {
-    mockRequest.mockResolvedValueOnce({
-      data: ensureType<CreateScheduleMetaobjectMutation>({
-        metaobjectCreate: {
-          metaobject: {
-            id: "gid://shopify/Metaobject/77850968391",
-            type: "schedule",
-            fields: [
-              {
-                value: "test",
-                key: "name",
-              },
-              {
-                value: JSON.stringify([
-                  {
-                    day: "monday",
-                    intervals: [
-                      {
-                        to: "16:00",
-                        from: "08:00",
-                      },
-                    ],
-                  },
-                ]),
-                key: "slots",
-              },
-            ],
-          },
-        },
-      }),
-    });
-
     request = await createHttpRequest<CustomerScheduleControllerCreateRequest>({
       query: {
         customerId: 123,
@@ -70,6 +34,7 @@ describe("CustomerScheduleControllerCreate", () => {
       body: {
         name: "test",
       },
+      context,
     });
 
     const res: HttpSuccessResponse<CustomerScheduleControllerCreateResponse> =
