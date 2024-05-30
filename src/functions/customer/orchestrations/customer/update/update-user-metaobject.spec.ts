@@ -119,8 +119,8 @@ describe("CustomerUpdateOrchestration", () => {
           {
             key: "schedules",
             value: JSON.stringify([
-              schedule.metafieldId,
               schedule2.metafieldId,
+              schedule.metafieldId,
             ]),
           },
           {
