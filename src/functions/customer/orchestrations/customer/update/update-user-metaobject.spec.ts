@@ -45,7 +45,7 @@ describe("CustomerUpdateOrchestration", () => {
           locations: [
             getDumbLocationObject({
               location: locationOrigin._id,
-              ...locationOrigin,
+              metafieldId: locationOrigin.metafieldId,
             }),
           ],
         }),

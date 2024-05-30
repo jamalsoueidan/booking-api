@@ -47,7 +47,6 @@ describe("CustomerProductControllerUpdate", () => {
       productId,
       locations: [
         getDumbLocationObject({
-          ...location,
           location: location._id,
         }),
       ],

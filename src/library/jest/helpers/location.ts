@@ -16,13 +16,15 @@ export const getDumbLocationObject = (
       location: any;
     }
   > = {}
-) => ({
-  metafieldId:
-    props.metafieldId || `gid://${faker.number.int({ min: 1, max: 5 })}`,
-  location: props.location || new mongoose.Types.ObjectId(),
-  locationType: props.locationType || LocationTypes.DESTINATION,
-  originType: props.originType || LocationOriginTypes.COMMERCIAL,
-});
+) => {
+  return {
+    metafieldId:
+      props.metafieldId || `gid://${faker.number.int({ min: 1, max: 5 })}`,
+    location: props.location || new mongoose.Types.ObjectId(),
+    locationType: props.locationType || LocationTypes.DESTINATION,
+    originType: props.originType || LocationOriginTypes.COMMERCIAL,
+  };
+};
 
 export const getLocationObject = (props: Partial<Location> = {}): Location => ({
   metafieldId: "1",
