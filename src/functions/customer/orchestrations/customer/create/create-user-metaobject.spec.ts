@@ -105,11 +105,11 @@ describe("CustomerCreateOrchestration", () => {
           },
           {
             key: "specialties",
-            value: JSON.stringify(userData.specialties),
+            value: JSON.stringify({ specialties: userData.specialties || [] }),
           },
           {
             key: "professions",
-            value: JSON.stringify(userData.professions || []),
+            value: JSON.stringify({ professions: userData.professions || [] }),
           },
           {
             key: "collection",

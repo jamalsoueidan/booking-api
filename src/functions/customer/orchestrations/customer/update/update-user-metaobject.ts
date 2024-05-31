@@ -37,11 +37,11 @@ export const updateUserMetaobject = async ({
       },
       {
         key: "specialties",
-        value: JSON.stringify(user.specialties || []),
+        value: JSON.stringify({ specialties: user.specialties || [] }),
       },
       {
         key: "professions",
-        value: JSON.stringify(user.professions || []),
+        value: JSON.stringify({ professions: user.professions || [] }),
       },
       {
         key: "social",
