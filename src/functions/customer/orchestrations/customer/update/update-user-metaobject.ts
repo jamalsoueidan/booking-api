@@ -36,6 +36,10 @@ export const updateUserMetaobject = async ({
         value: user.aboutMeHtml || "",
       },
       {
+        key: "specialties",
+        value: JSON.stringify(user.specialties || []),
+      },
+      {
         key: "professions",
         value: JSON.stringify(user.professions || []),
       },

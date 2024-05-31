@@ -25,6 +25,7 @@ describe("CustomerCreateOrchestration", () => {
   it("createUserMetaobject", async () => {
     const userData = getUserObject({
       userMetaobjectId: "ok",
+      specialties: [],
     });
 
     const collectionMetaobjectId = "gid://shopify/Collection/625094558023";
@@ -51,6 +52,10 @@ describe("CustomerCreateOrchestration", () => {
               {
                 key: "about_me",
                 value: userData.aboutMeHtml,
+              },
+              {
+                key: "specialties",
+                value: JSON.stringify(userData.specialties),
               },
               {
                 key: "professions",
@@ -97,6 +102,10 @@ describe("CustomerCreateOrchestration", () => {
           {
             key: "about_me",
             value: userData.aboutMeHtml || "",
+          },
+          {
+            key: "specialties",
+            value: JSON.stringify(userData.specialties),
           },
           {
             key: "professions",

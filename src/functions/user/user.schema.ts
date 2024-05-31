@@ -26,6 +26,7 @@ export const UserMongooseSchema = new mongoose.Schema<
     articleId: Number,
     professions: {
       type: [String],
+      default: [],
       index: true,
     },
     isBusiness: {
@@ -35,6 +36,7 @@ export const UserMongooseSchema = new mongoose.Schema<
     },
     specialties: {
       type: [String],
+      default: [],
       index: true,
     },
     yearsExperience: Number,
