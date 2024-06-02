@@ -1,5 +1,8 @@
 import { Types } from "mongoose";
-import { UserScheduleServiceGetWithCustomer } from "~/functions/user/services/schedule/get-with-customer";
+import {
+  UserScheduleServiceGetWithCustomer,
+  UserScheduleServiceGetWithCustomerResponse,
+} from "~/functions/user/services/schedule/get-with-customer";
 
 import { CustomerBlockedServiceRange } from "~/functions/customer/services/blocked/range";
 import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
@@ -47,8 +50,7 @@ export const UserAvailabilityServiceGenerate = async (
   if (optionIds) {
     schedule.products = schedule.products.reduce(
       (products, parentProduct, currentIndex) => {
-        let tempProducts = [...products];
-
+        products.push(parentProduct);
         parentProduct.options?.forEach((productOption) => {
           const option = optionIds[parentProduct.productId];
           if (!option && productOption.required) {
@@ -96,8 +98,7 @@ export const UserAvailabilityServiceGenerate = async (
           }
 
           if (variant) {
-            const insertIndex = tempProducts.length; // Append to the end initially
-            tempProducts.splice(insertIndex, 0, {
+            products.push({
               variantId: variant.variantId,
               duration: variant.duration.value,
               productId: productOption.productId,
@@ -114,9 +115,9 @@ export const UserAvailabilityServiceGenerate = async (
             });
           }
         });
-        return tempProducts;
+        return products;
       },
-      schedule.products
+      [] as UserScheduleServiceGetWithCustomerResponse["products"]
     );
   }
 
