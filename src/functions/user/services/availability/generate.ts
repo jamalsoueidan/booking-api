@@ -45,73 +45,79 @@ export const UserAvailabilityServiceGenerate = async (
 
   const optionIds = body.optionIds ? body.optionIds : null;
   if (optionIds) {
-    schedule.products = schedule.products.reduce((products, parentProduct) => {
-      parentProduct.options?.forEach((productOption) => {
-        const option = optionIds[parentProduct.productId];
-        if (!option && productOption.required) {
-          throw new NotFoundError([
-            {
-              path: ["optionIds", parentProduct.productId],
-              message: "MISSING_PARENT_ID",
-              code: "custom",
-            },
-          ]);
-        }
+    schedule.products = schedule.products.reduce(
+      (products, parentProduct, currentIndex) => {
+        let tempProducts = [...products];
 
-        const variantId = option[productOption.productId];
-        if (!variantId && productOption.required) {
-          throw new NotFoundError([
-            {
-              path: [
-                "optionIds",
-                parentProduct.productId,
-                productOption.productId,
-              ],
-              message: `MISSING_PRODUCT_ID ${productOption.productId} in ${parentProduct.productId}`,
-              code: "custom",
-            },
-          ]);
-        }
+        parentProduct.options?.forEach((productOption) => {
+          const option = optionIds[parentProduct.productId];
+          if (!option && productOption.required) {
+            throw new NotFoundError([
+              {
+                path: ["optionIds", parentProduct.productId],
+                message: "MISSING_PARENT_ID",
+                code: "custom",
+              },
+            ]);
+          }
 
-        const variant = productOption.variants.find(
-          (v) => v.variantId === variantId
-        );
+          const variantId = option[productOption.productId];
+          if (!variantId && productOption.required) {
+            throw new NotFoundError([
+              {
+                path: [
+                  "optionIds",
+                  parentProduct.productId,
+                  productOption.productId,
+                ],
+                message: `MISSING_PRODUCT_ID ${productOption.productId} in ${parentProduct.productId}`,
+                code: "custom",
+              },
+            ]);
+          }
 
-        if (!variant && productOption.required) {
-          throw new NotFoundError([
-            {
-              path: [
-                "optionIds",
-                parentProduct.productId,
-                productOption.productId,
-                variantId,
-              ],
-              message: "INCORRECT_VARIANT_ID",
-              code: "custom",
-            },
-          ]);
-        }
+          const variant = productOption.variants.find(
+            (v) => v.variantId === variantId
+          );
 
-        if (variant) {
-          products.push({
-            variantId: variant.variantId,
-            duration: variant.duration.value,
-            productId: productOption.productId,
-            breakTime: 0,
-            bookingPeriod: {
-              unit: TimeUnit.MONTHS,
-              value: 12,
-            },
-            noticePeriod: {
-              unit: TimeUnit.HOURS,
-              value: 1,
-            },
-            parentId: parentProduct.productId,
-          });
-        }
-      });
-      return products;
-    }, schedule.products);
+          if (!variant && productOption.required) {
+            throw new NotFoundError([
+              {
+                path: [
+                  "optionIds",
+                  parentProduct.productId,
+                  productOption.productId,
+                  variantId,
+                ],
+                message: "INCORRECT_VARIANT_ID",
+                code: "custom",
+              },
+            ]);
+          }
+
+          if (variant) {
+            const insertIndex = tempProducts.length; // Append to the end initially
+            tempProducts.splice(insertIndex, 0, {
+              variantId: variant.variantId,
+              duration: variant.duration.value,
+              productId: productOption.productId,
+              breakTime: 0,
+              bookingPeriod: {
+                unit: TimeUnit.MONTHS,
+                value: 12,
+              },
+              noticePeriod: {
+                unit: TimeUnit.HOURS,
+                value: 1,
+              },
+              parentId: parentProduct.productId,
+            });
+          }
+        });
+        return tempProducts;
+      },
+      schedule.products
+    );
   }
 
   let shipping: Awaited<ReturnType<typeof ShippingServiceGet>> | undefined;
