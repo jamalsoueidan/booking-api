@@ -80,5 +80,22 @@ export const UserScheduleServiceGetWithCustomer = async (
     ]);
   }
 
+  const sortedSchedules = schedules.map((schedule) => {
+    schedule.products.sort((a, b) => {
+      return (
+        props.productIds.indexOf(a.productId) -
+        props.productIds.indexOf(b.productId)
+      );
+    });
+    return schedule;
+  });
+
+  schedules[0].products.sort((a, b) => {
+    return (
+      props.productIds.indexOf(a.productId) -
+      props.productIds.indexOf(b.productId)
+    );
+  });
+
   return schedules[0];
 };
