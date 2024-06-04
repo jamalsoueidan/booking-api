@@ -1,4 +1,5 @@
 import { CustomerProductServiceGet } from "~/functions/customer/services/product/get";
+import { LocationTypes } from "~/functions/location";
 import { shopifyAdmin } from "~/library/shopify";
 
 export const updatePriceName = "updatePrice";
@@ -9,10 +10,15 @@ export const updatePrice = async ({
   customerId: number;
   productId: number;
 }) => {
-  const { variantId, price, compareAtPrice } = await CustomerProductServiceGet({
-    customerId,
-    productId,
-  });
+  const { variantId, price, compareAtPrice, locations } =
+    await CustomerProductServiceGet({
+      customerId,
+      productId,
+    });
+
+  const isDestination = locations.some(
+    (l) => l.locationType === LocationTypes.DESTINATION
+  );
 
   const { data } = await shopifyAdmin().request(PRODUCT_PRICE_UPDATE, {
     variables: {
@@ -22,6 +28,13 @@ export const updatePrice = async ({
           id: `gid://shopify/ProductVariant/${variantId}`,
           price: price.amount,
           compareAtPrice: compareAtPrice.amount,
+          ...(isDestination
+            ? {
+                inventoryItem: {
+                  requiresShipping: false,
+                },
+              }
+            : {}),
         },
       ],
     },
