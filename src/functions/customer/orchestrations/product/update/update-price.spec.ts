@@ -99,6 +99,9 @@ describe("CustomerProductUpdateOrchestration", () => {
               ?.variants.nodes[0].id,
             price: product.price?.amount,
             compareAtPrice: product.compareAtPrice?.amount,
+            inventoryItem: {
+              requiresShipping: false,
+            },
           },
         ],
       },
