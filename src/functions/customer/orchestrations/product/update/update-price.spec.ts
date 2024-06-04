@@ -100,7 +100,7 @@ describe("CustomerProductUpdateOrchestration", () => {
             price: product.price?.amount,
             compareAtPrice: product.compareAtPrice?.amount,
             inventoryItem: {
-              requiresShipping: false,
+              requiresShipping: true,
             },
           },
         ],

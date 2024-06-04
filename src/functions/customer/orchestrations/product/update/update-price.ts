@@ -31,7 +31,7 @@ export const updatePrice = async ({
           ...(isDestination
             ? {
                 inventoryItem: {
-                  requiresShipping: false,
+                  requiresShipping: true,
                 },
               }
             : {}),
