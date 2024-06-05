@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { ILocation, LocationModel } from "~/functions/location";
 import { LocationServiceGetCoordinates } from "~/functions/location/services/get-coordinates";
 import { NotFoundError } from "~/library/handler";
-import { shopifyAdmin } from "~/library/shopify";
 import { StringOrObjectIdType } from "~/library/zod";
 
 export type CustomerLocationUpdateFilterProps = {
@@ -46,7 +45,7 @@ export const CustomerLocationServiceUpdate = async (
     };
   }
 
-  const updateLocation = await LocationModel.findOneAndUpdate(
+  return await LocationModel.findOneAndUpdate(
     {
       _id: new mongoose.Types.ObjectId(filter.locationId),
       customerId: filter.customerId,
@@ -62,77 +61,4 @@ export const CustomerLocationServiceUpdate = async (
       },
     ])
   );
-
-  if (updateLocation.metafieldId) {
-    await shopifyAdmin().request(UPDATE_LOCATION_METAOBJECT, {
-      variables: {
-        id: updateLocation.metafieldId,
-        fields: [
-          {
-            key: "location_type",
-            value: updateLocation.locationType,
-          },
-          {
-            key: "name",
-            value: updateLocation.name,
-          },
-          {
-            key: "full_address",
-            value: updateLocation.fullAddress,
-          },
-          {
-            key: "city",
-            value: updateLocation.city,
-          },
-          {
-            key: "country",
-            value: updateLocation.country,
-          },
-          {
-            key: "origin_type",
-            value: updateLocation.originType,
-          },
-          {
-            key: "distance_for_free",
-            value: updateLocation.distanceForFree.toString(),
-          },
-          {
-            key: "distance_hourly_rate",
-            value: updateLocation.distanceHourlyRate.toString(),
-          },
-          {
-            key: "fixed_rate_per_km",
-            value: updateLocation.fixedRatePerKm.toString(),
-          },
-          {
-            key: "min_drive_distance",
-            value: updateLocation.minDriveDistance.toString(),
-          },
-          {
-            key: "max_drive_distance",
-            value: updateLocation.maxDriveDistance.toString(),
-          },
-          {
-            key: "start_fee",
-            value: updateLocation.startFee.toString(),
-          },
-        ],
-      },
-    });
-  }
-
-  return updateLocation;
 };
-
-export const UPDATE_LOCATION_METAOBJECT = `#graphql
-  mutation UpdateLocationMetaobject($id: ID!, $fields: [MetaobjectFieldInput!]!) {
-    metaobjectUpdate(id: $id, metaobject: {fields: $fields}) {
-      metaobject {
-        fields {
-          value
-          key
-        }
-      }
-    }
-  }
-` as const;

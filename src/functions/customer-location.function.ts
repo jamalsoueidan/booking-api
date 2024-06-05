@@ -38,6 +38,7 @@ app.http("customerLocationUpdate", {
   authLevel: "anonymous",
   route: "customer/{customerId}/location/{locationId?}",
   handler: CustomerLocationControllerUpdate,
+  extraInputs: [df.input.durableClient()],
 });
 
 app.http("customerLocationCreate", {
