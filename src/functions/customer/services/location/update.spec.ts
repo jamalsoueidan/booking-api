@@ -1,9 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { LocationServiceGetCoordinates } from "~/functions/location/services/get-coordinates";
 import { createLocation } from "~/library/jest/helpers/location";
-import { ensureType } from "~/library/jest/helpers/mock";
-import { shopifyAdmin } from "~/library/shopify";
-import { UpdateLocationMetaobjectMutation } from "~/types/admin.generated";
 import { CustomerLocationServiceUpdate } from "./update";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -11,13 +8,6 @@ require("~/library/jest/mongoose/mongodb.jest");
 jest.mock("~/functions/location/services/get-coordinates", () => ({
   LocationServiceGetCoordinates: jest.fn(),
 }));
-
-jest.mock("~/library/shopify", () => ({
-  shopifyAdmin: jest.fn().mockReturnValue({
-    request: jest.fn(),
-  }),
-}));
-const mockRequest = shopifyAdmin().request as jest.Mock;
 
 type LocationServiceGetCoordinatesMock = jest.Mock<
   Promise<{
@@ -51,65 +41,6 @@ describe("CustomerLocationServiceUpdate", () => {
     };
 
     mockGetCoordinates.mockResolvedValue(coordinates);
-
-    mockRequest.mockResolvedValueOnce({
-      data: ensureType<UpdateLocationMetaobjectMutation>({
-        metaobjectUpdate: {
-          metaobject: {
-            fields: [
-              {
-                value: document.locationType,
-                key: "location_type",
-              },
-              {
-                value: document.name,
-                key: "name",
-              },
-              {
-                value: coordinates.fullAddress,
-                key: "full_address",
-              },
-              {
-                value: coordinates.city,
-                key: "city",
-              },
-              {
-                value: coordinates.country,
-                key: "country",
-              },
-              {
-                value: document.originType,
-                key: "origin_type",
-              },
-              {
-                value: document.distanceForFree.toString(),
-                key: "distance_for_free",
-              },
-              {
-                value: document.distanceHourlyRate.toString(),
-                key: "distance_hourly_rate",
-              },
-              {
-                value: document.fixedRatePerKm.toString(),
-                key: "fixed_rate_per_km",
-              },
-              {
-                value: document.minDriveDistance.toString(),
-                key: "min_drive_distance",
-              },
-              {
-                value: document.maxDriveDistance.toString(),
-                key: "max_drive_distance",
-              },
-              {
-                value: document.startFee.toString(),
-                key: "start_fee",
-              },
-            ],
-          },
-        },
-      }),
-    });
 
     const update = await CustomerLocationServiceUpdate(
       { locationId: document._id, customerId },

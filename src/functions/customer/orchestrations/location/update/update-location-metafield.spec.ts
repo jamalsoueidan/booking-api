@@ -3,13 +3,13 @@ import { createLocation } from "~/library/jest/helpers/location";
 import { ensureType } from "~/library/jest/helpers/mock";
 import { shopifyAdmin } from "~/library/shopify";
 import {
-  CreateLocationMetaobjectMutation,
-  CreateLocationMetaobjectMutationVariables,
+  UpdateLocationMetaobjectMutation,
+  UpdateLocationMetaobjectMutationVariables,
 } from "~/types/admin.generated";
 import {
-  CREATE_LOCATION_METAOBJECT,
-  createLocationMetafield,
-} from "./create-location-metafield";
+  UPDATE_LOCATION_METAOBJECT,
+  updateLocationMetafield,
+} from "./update-location-metafield";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -21,12 +21,12 @@ jest.mock("~/library/shopify", () => ({
 
 const mockRequest = shopifyAdmin().request as jest.Mock;
 
-describe("CustomerLocationCreateOrchestration", () => {
+describe("CustomerLocationUpdateOrchestration", () => {
   beforeAll(async () => {
     jest.clearAllMocks();
   });
 
-  it("createLocationMetafield", async () => {
+  it("updateLocationMetafield", async () => {
     const coordinates = {
       longitude: 10.12961271,
       latitude: 56.15563438,
@@ -47,11 +47,9 @@ describe("CustomerLocationCreateOrchestration", () => {
     });
 
     mockRequest.mockResolvedValueOnce({
-      data: ensureType<CreateLocationMetaobjectMutation>({
-        metaobjectCreate: {
+      data: ensureType<UpdateLocationMetaobjectMutation>({
+        metaobjectUpdate: {
           metaobject: {
-            id: "gid://shopify/Metaobject/77850968391",
-            type: "location",
             fields: [
               {
                 value: location.locationType,
@@ -62,7 +60,7 @@ describe("CustomerLocationCreateOrchestration", () => {
                 key: "name",
               },
               {
-                value: location.fullAddress,
+                value: coordinates.fullAddress,
                 key: "full_address",
               },
               {
@@ -111,13 +109,13 @@ describe("CustomerLocationCreateOrchestration", () => {
       }),
     });
 
-    await createLocationMetafield({ locationId: location._id });
+    await updateLocationMetafield({ locationId: location._id });
 
     expect(mockRequest).toHaveBeenCalledTimes(1);
 
-    expect(mockRequest).toHaveBeenNthCalledWith(1, CREATE_LOCATION_METAOBJECT, {
-      variables: ensureType<CreateLocationMetaobjectMutationVariables>({
-        handle: location._id,
+    expect(mockRequest).toHaveBeenNthCalledWith(1, UPDATE_LOCATION_METAOBJECT, {
+      variables: ensureType<UpdateLocationMetaobjectMutationVariables>({
+        id: location.metafieldId || "",
         fields: [
           {
             value: location.locationType,

@@ -1,14 +1,16 @@
 import { z } from "zod";
 import { LocationZodSchema } from "~/functions/location/location.types";
 
+import { InvocationContext } from "@azure/functions";
 import { _ } from "~/library/handler";
 import { StringOrObjectId } from "~/library/zod";
+import { CustomerLocationUpdateOrchestration } from "../../orchestrations/location/update";
 import { CustomerLocationServiceUpdate } from "../../services/location/update";
 
-// should be PATCH and UPSERT
 export type CustomerLocationControllerUpdateRequest = {
   query: z.infer<typeof CustomerLocationControllerUpdateQuerySchema>;
   body: z.infer<typeof CustomerLocationControllerUpdateBodySchema>;
+  context: InvocationContext;
 };
 
 export const CustomerLocationControllerUpdateBodySchema =
@@ -30,12 +32,22 @@ export type CustomerLocationControllerUpdateResponse = Awaited<
 >;
 
 export const CustomerLocationControllerUpdate = _(
-  ({ query, body }: CustomerLocationControllerUpdateRequest) => {
+  async ({ query, body, context }: CustomerLocationControllerUpdateRequest) => {
     const validateData =
       CustomerLocationControllerUpdateQuerySchema.parse(query);
     const validateBody =
       CustomerLocationControllerUpdateBodySchema.parse(body) || {};
 
-    return CustomerLocationServiceUpdate(validateData, validateBody);
+    const location = await CustomerLocationServiceUpdate(
+      validateData,
+      validateBody
+    );
+
+    await CustomerLocationUpdateOrchestration(
+      { locationId: location._id },
+      context
+    );
+
+    return location;
   }
 );

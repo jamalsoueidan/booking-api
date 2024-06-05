@@ -2,23 +2,23 @@ import { LocationModel } from "~/functions/location";
 import { shopifyAdmin } from "~/library/shopify";
 import { StringOrObjectIdType } from "~/library/zod";
 
-export const createLocationMetafieldName = "createLocationMetafield";
-export const createLocationMetafield = async ({
+export const updateLocationMetafieldName = "updateLocationMetafield";
+export const updateLocationMetafield = async ({
   locationId,
 }: {
   locationId: StringOrObjectIdType;
 }) => {
   const location = await LocationModel.findById(locationId);
 
-  if (!location) {
+  if (!location || !location.metafieldId) {
     throw new Error(
       `Failed to find locations to create metafield ${locationId}`
     );
   }
 
-  const { data } = await shopifyAdmin().request(CREATE_LOCATION_METAOBJECT, {
+  const { data } = await shopifyAdmin().request(UPDATE_LOCATION_METAOBJECT, {
     variables: {
-      handle: location._id,
+      id: location.metafieldId,
       fields: [
         {
           key: "location_type",
@@ -76,24 +76,17 @@ export const createLocationMetafield = async ({
     },
   });
 
-  if (!data?.metaobjectCreate?.metaobject) {
-    throw new Error(`Failed to create metafield for location ${location}`);
+  if (!data?.metaobjectUpdate?.metaobject) {
+    throw new Error(`Failed to update metafield for location ${location}`);
   }
 
-  location.metafieldId = data?.metaobjectCreate?.metaobject?.id;
-  await location.save();
-
-  return data.metaobjectCreate.metaobject;
+  return data?.metaobjectUpdate?.metaobject;
 };
 
-export const CREATE_LOCATION_METAOBJECT = `#graphql
-  mutation CreateLocationMetaobject($handle: String!, $fields: [MetaobjectFieldInput!]) {
-    metaobjectCreate(
-      metaobject: {type: "location", fields: $fields, handle: $handle, capabilities: {publishable: {status: ACTIVE}}}
-    ) {
+export const UPDATE_LOCATION_METAOBJECT = `#graphql
+  mutation UpdateLocationMetaobject($id: ID!, $fields: [MetaobjectFieldInput!]!) {
+    metaobjectUpdate(id: $id, metaobject: {fields: $fields}) {
       metaobject {
-        id
-        type
         fields {
           value
           key
