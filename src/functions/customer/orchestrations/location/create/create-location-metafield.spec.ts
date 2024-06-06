@@ -1,4 +1,4 @@
-import { LocationOriginTypes, LocationTypes } from "~/functions/location";
+import { LocationTypes } from "~/functions/location";
 import { createLocation } from "~/library/jest/helpers/location";
 import { ensureType } from "~/library/jest/helpers/mock";
 import { shopifyAdmin } from "~/library/shopify";
@@ -38,8 +38,7 @@ describe("CustomerLocationCreateOrchestration", () => {
     const location = await createLocation({
       name: "Falafel",
       fullAddress: "Sigridsvej 45, 1. th, 8220 Brabrand",
-      originType: LocationOriginTypes.COMMERCIAL,
-      locationType: LocationTypes.ORIGIN,
+      locationType: LocationTypes.HOME,
       customerId: 12,
       distanceHourlyRate: 1,
       fixedRatePerKm: 10,
@@ -72,10 +71,6 @@ describe("CustomerLocationCreateOrchestration", () => {
               {
                 value: coordinates.country,
                 key: "country",
-              },
-              {
-                value: location.originType,
-                key: "origin_type",
               },
               {
                 value: location.distanceForFree.toString(),
@@ -138,10 +133,6 @@ describe("CustomerLocationCreateOrchestration", () => {
           {
             value: location.country,
             key: "country",
-          },
-          {
-            value: location.originType,
-            key: "origin_type",
           },
           {
             value: location.distanceForFree.toString(),

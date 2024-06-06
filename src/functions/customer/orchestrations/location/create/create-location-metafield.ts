@@ -41,10 +41,6 @@ export const createLocationMetafield = async ({
           value: location.country,
         },
         {
-          key: "origin_type",
-          value: location.originType,
-        },
-        {
           key: "distance_for_free",
           value: location.distanceForFree.toString(),
         },

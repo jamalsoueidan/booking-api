@@ -1,6 +1,5 @@
 import { CustomerServiceGet } from "~/functions/customer/services/customer/get";
 import { PRODUCT_FRAGMENT } from "~/functions/customer/services/product/add";
-import { CustomerProductServiceGet } from "~/functions/customer/services/product/get";
 import { LocationModel } from "~/functions/location";
 import { ScheduleModel } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
@@ -18,12 +17,36 @@ export const updateProduct = async ({
     customerId,
   });
 
-  const { scheduleMetafieldId, scheduleName, scheduleId, ...product } =
-    await CustomerProductServiceGet({
-      customerId,
-      productId,
-    });
+  const schedule = await ScheduleModel.findOne({
+    customerId,
+    products: {
+      $elemMatch: {
+        productId,
+      },
+    },
+  }).orFail(
+    new NotFoundError([
+      {
+        code: "custom",
+        message: "PRODUCT_NOT_FOUND",
+        path: ["productId"],
+      },
+    ])
+  );
 
+  const product = schedule.products.find((p) => p.productId === productId);
+
+  if (!product) {
+    throw new NotFoundError([
+      {
+        code: "custom",
+        message: "PRODUCT_NOT_FOUND",
+        path: ["productId"],
+      },
+    ]);
+  }
+
+  // We dont want to show duplicate products in the treatment page, so we pick the one that are default to the visitor
   const totalCountOfDefault = await ScheduleModel.aggregate([
     {
       $match: {
@@ -90,6 +113,20 @@ export const updateProduct = async ({
     ])
   );
 
+  const tags = [];
+  if (locations.length > 0) {
+    tags.push(
+      `location_type-${locations
+        .map((l) => l.locationType)
+        .join(", location_type-")}`
+    );
+  }
+
+  const days = schedule.slots.map((slot) => slot.day.toLowerCase());
+  if (days.length > 0) {
+    tags.push(`day-${days.join(", day-")}`);
+  }
+
   const variables = {
     title: product.title,
     descriptionHtml: product.descriptionHtml || "ads",
@@ -129,7 +166,7 @@ export const updateProduct = async ({
       },
       {
         id: product?.locationsMetafieldId,
-        value: JSON.stringify(locations.map((p) => p.metafieldId)),
+        value: JSON.stringify(product.locations.map((p) => p.metafieldId)),
       },
       {
         id: product?.user?.metaobjectId,
@@ -145,7 +182,7 @@ export const updateProduct = async ({
       },
       {
         id: product?.scheduleIdMetafieldId,
-        value: scheduleMetafieldId, //reference to scheduleModel.metafieldId, product.scheduleIdMetafieldId reference to product-schedule-metafieldId
+        value: schedule.metafieldId,
       },
     ],
     tags: [
@@ -156,9 +193,10 @@ export const updateProduct = async ({
       `parentid-${product.parentId}`,
       `productid-${product.productId}`,
       `product-${product.productHandle}`,
-      `scheduleid-${scheduleId}`,
+      `scheduleid-${schedule._id}`,
     ]
-      .concat(locations.map((l) => `locationid-${l._id}`))
+      .concat(tags)
+      .concat(product.locations.map((l) => `locationid-${l.location}`))
       .concat(
         Array.from(
           new Set(

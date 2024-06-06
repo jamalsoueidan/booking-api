@@ -1,5 +1,4 @@
 import { CustomerServiceGet } from "~/functions/customer/services/customer/get";
-import { LocationOriginTypes, LocationTypes } from "~/functions/location";
 import { ScheduleModel } from "~/functions/schedule";
 import { UserScheduleServiceLocationsList } from "~/functions/user/services/schedule/locations-list";
 import { shopifyRest } from "~/library/shopify/rest";
@@ -52,26 +51,11 @@ export const updateArticle = async ({
     tags.push(
       `city-${locations.map((l) => l.city.toLowerCase()).join(", city-")}`
     );
-    const destination = locations.find(
-      (l) => l.locationType === LocationTypes.DESTINATION
+    tags.push(
+      `location_type-${locations
+        .map((l) => l.locationType)
+        .join(", location_type-")}`
     );
-    if (destination) {
-      tags.push("location-destination");
-    } else {
-      const originTypeHome = locations.find(
-        (l) => l.originType === LocationOriginTypes.HOME
-      );
-      if (originTypeHome) {
-        tags.push("location-home");
-      }
-
-      const originTypeSalon = locations.find(
-        (l) => l.originType === LocationOriginTypes.COMMERCIAL
-      );
-      if (originTypeSalon) {
-        tags.push("location-salon");
-      }
-    }
   }
 
   tags.push(`gender-${user.gender}`);
