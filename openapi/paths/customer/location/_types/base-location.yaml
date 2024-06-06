@@ -4,13 +4,10 @@ properties:
     type: string
   locationType:
     type: string
-    enum: [origin, destination]
+    enum: [home, commercial, destination, virtual]
   customerId:
     type: string
     format: gid
-  originType:
-    type: string
-    enum: [home, commercial]
   name:
     type: string
   fullAddress:
@@ -23,7 +20,6 @@ properties:
 required:
   - metafieldId
   - locationType
-  - originType
   - customerId
   - name
   - fullAddress

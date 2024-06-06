@@ -13,12 +13,10 @@ properties:
         type: string
       locationType:
         type: string
-      originType:
-        type: string
+        enum: [home, commercial, destination, virtual]
     required:
       - city
       - locationType
-      - originType
   days:
     type: array
     items:

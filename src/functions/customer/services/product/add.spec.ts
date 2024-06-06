@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { LocationOriginTypes, LocationTypes } from "~/functions/location";
+import { LocationTypes } from "~/functions/location";
 import { ScheduleProduct } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
 import {
@@ -44,7 +44,6 @@ describe("CustomerProductServiceAdd", () => {
       getDumbLocationObject({
         location: new mongoose.Types.ObjectId(),
         locationType: LocationTypes.DESTINATION,
-        originType: LocationOriginTypes.COMMERCIAL,
       }),
     ],
     price: {

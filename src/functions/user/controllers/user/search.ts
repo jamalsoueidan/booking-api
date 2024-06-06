@@ -33,7 +33,6 @@ export const UserControllerSearchBodySchema = z
     location: LocationZodSchema.pick({
       city: true,
       locationType: true,
-      originType: true,
     }).optional(),
     days: z.array(z.nativeEnum(SlotWeekDays)).optional(),
   })

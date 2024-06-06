@@ -53,7 +53,6 @@ export const bookingAggregation: PipelineStage[] = [
           $project: {
             name: 1,
             fullAddress: 1,
-            originType: 1,
             locationType: 1,
           },
         },

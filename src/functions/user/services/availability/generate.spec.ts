@@ -70,7 +70,7 @@ describe("UserAvailabilityServiceGenerate", () => {
 
     locationOrigin = await createLocation({
       customerId,
-      locationType: LocationTypes.ORIGIN,
+      locationType: LocationTypes.HOME,
     });
 
     locationDestination = await createLocation({
@@ -328,12 +328,10 @@ describe("UserAvailabilityServiceGenerate", () => {
           getDumbLocationObject({
             location: locationOrigin._id,
             locationType: locationOrigin.locationType,
-            originType: locationOrigin.originType,
           }),
           getDumbLocationObject({
             location: locationDestination._id,
             locationType: locationDestination.locationType,
-            originType: locationDestination.originType,
           }),
         ],
       }

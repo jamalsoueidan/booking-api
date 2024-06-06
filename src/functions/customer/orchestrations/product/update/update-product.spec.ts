@@ -115,10 +115,11 @@ describe("CustomerProductUpdateOrchestration", () => {
       customerId: user.customerId,
       metafieldId: `gid://${faker.number.int({ min: 1, max: 5 })}`,
     });
+
     const product = getProductObject({
       locations: [
         getDumbLocationObject({
-          ...location,
+          locationType: location.locationType,
           location: location._id,
           metafieldId: location.metafieldId,
         }),
@@ -187,6 +188,12 @@ describe("CustomerProductUpdateOrchestration", () => {
       data: mockProductUpdate,
     });
 
+    const tagDays = [];
+    const days = newSchedule.slots.map((slot) => slot.day.toLowerCase());
+    if (days.length > 0) {
+      tagDays.push(`day-${days.join(", day-")}`);
+    }
+
     await updateProduct({
       customerId,
       productId: product.productId,
@@ -203,6 +210,8 @@ describe("CustomerProductUpdateOrchestration", () => {
       )}`,
       `product-${product.productHandle}`,
       `scheduleid-${newSchedule._id}`,
+      `location_type-${location.locationType}`,
+      ...tagDays,
       `locationid-${product.locations[0].location}`,
       `city-${location.city.replace(/ /g, "-").toLowerCase()}`,
     ];

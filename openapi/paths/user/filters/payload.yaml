@@ -9,16 +9,12 @@ properties:
           type: string
         locationType:
           type: string
-          enum: [origin, destination]
-        originType:
-          type: string
-          enum: [home, commercial]
+          enum: [home, commercial, destination, virtual]
         count:
           type: integer
       required:
         - city
         - locationType
-        - originType
         - count
   availableDays:
     type: array

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { LocationOriginTypes, LocationTypes } from "~/functions/location";
+import { LocationTypes } from "~/functions/location";
 import {
   BooleanOrString,
   GidFormat,
@@ -53,7 +53,6 @@ const LocationZodSchema = z.object({
   metafieldId: z.string(),
   location: StringOrObjectId,
   locationType: z.nativeEnum(LocationTypes),
-  originType: z.nativeEnum(LocationOriginTypes),
 });
 
 export type ScheduleProductLocation = z.infer<typeof LocationZodSchema>;

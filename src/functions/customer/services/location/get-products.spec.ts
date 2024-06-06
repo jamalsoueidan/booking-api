@@ -26,7 +26,6 @@ describe("CustomerLocationServiceGetProducts", () => {
               getDumbLocationObject({
                 location: location1._id,
                 locationType: location1.locationType,
-                originType: location1.originType,
               }),
             ],
           }),
@@ -44,7 +43,6 @@ describe("CustomerLocationServiceGetProducts", () => {
               getDumbLocationObject({
                 location: location1._id,
                 locationType: location1.locationType,
-                originType: location1.originType,
               }),
             ],
           }),

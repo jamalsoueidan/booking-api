@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import mongoose from "mongoose";
-import { LocationOriginTypes, LocationTypes } from "~/functions/location";
+import { LocationTypes } from "~/functions/location";
 import { LocationServiceGet } from "~/functions/location/services/get";
 import { LocationServiceGetTravelTime } from "~/functions/location/services/get-travel-time";
 import { ShippingServiceCreate } from "~/functions/shipping/services/create";
@@ -23,8 +23,7 @@ jest.mock("~/functions/location/services/get", () => {
       _id: new mongoose.Types.ObjectId(),
       name: faker.person.firstName(),
       customerId: faker.number.int({ min: 1, max: 100000 }),
-      locationType: LocationTypes.ORIGIN,
-      originType: LocationOriginTypes.COMMERCIAL,
+      locationType: LocationTypes.HOME,
       fullAddress: faker.location.streetAddress(),
       distanceHourlyRate: faker.number.int({ min: 1, max: 5 }),
       fixedRatePerKm: faker.number.int({ min: 1, max: 5 }),

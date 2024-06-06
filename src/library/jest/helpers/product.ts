@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import mongoose from "mongoose";
-import { LocationOriginTypes, LocationTypes } from "~/functions/location";
+import { LocationTypes } from "~/functions/location";
 import { ScheduleProduct, TimeUnit } from "~/functions/schedule";
 import { getDumbLocationObject } from "./location";
 
@@ -40,7 +40,6 @@ export const getProductObject = (
     getDumbLocationObject({
       location: new mongoose.Types.ObjectId(),
       locationType: LocationTypes.DESTINATION,
-      originType: LocationOriginTypes.COMMERCIAL,
     }),
   ],
   ...props,

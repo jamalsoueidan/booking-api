@@ -1,18 +1,14 @@
 import { faker } from "@faker-js/faker";
 import mongoose from "mongoose";
 import { LocationModel } from "~/functions/location/location.model";
-import {
-  Location,
-  LocationOriginTypes,
-  LocationTypes,
-} from "~/functions/location/location.types";
+import { Location, LocationTypes } from "~/functions/location/location.types";
 import { User } from "~/functions/user";
 
 export const DEFAULT_GROUP = "all";
 
 export const getDumbLocationObject = (
   props: Partial<
-    Pick<Location, "metafieldId" | "locationType" | "originType"> & {
+    Pick<Location, "metafieldId" | "locationType"> & {
       location: any;
     }
   > = {}
@@ -22,7 +18,6 @@ export const getDumbLocationObject = (
       props.metafieldId || `gid://${faker.number.int({ min: 1, max: 5 })}`,
     location: props.location || new mongoose.Types.ObjectId(),
     locationType: props.locationType || LocationTypes.DESTINATION,
-    originType: props.originType || LocationOriginTypes.COMMERCIAL,
   };
 };
 
@@ -30,8 +25,7 @@ export const getLocationObject = (props: Partial<Location> = {}): Location => ({
   metafieldId: "1",
   name: faker.person.firstName(),
   customerId: faker.number.int({ min: 1, max: 100000 }),
-  locationType: LocationTypes.ORIGIN,
-  originType: LocationOriginTypes.COMMERCIAL,
+  locationType: LocationTypes.HOME,
   fullAddress: faker.location.streetAddress(),
   city: faker.location.city(),
   country: "Denmark",

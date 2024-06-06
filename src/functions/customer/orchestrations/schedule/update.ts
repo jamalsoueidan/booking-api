@@ -23,6 +23,9 @@ const orchestrator: df.OrchestrationHandler = function* (
       activityType<typeof updateScheduleMetafield>(input)
     );
 
+  // TODO:
+  // Since days could be changed, we might go through all products and update the days tags for them that are referenced to this schedule
+
   return { metafield };
 };
 

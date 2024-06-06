@@ -11,7 +11,7 @@ export type UserServiceSearchProps = {
   filters?: {
     profession?: string;
     specialties?: string[];
-    location?: Pick<Location, "city" | "locationType" | "originType">;
+    location?: Pick<Location, "city" | "locationType">;
     days?: Array<ScheduleSlot["day"]>;
     keyword?: string;
   };
@@ -66,7 +66,6 @@ export const UserServiceSearch = async (
       $match: {
         "locations.city": filters.location.city,
         "locations.locationType": filters.location.locationType,
-        "locations.originType": filters.location.originType,
         "locations.deletedAt": null,
       },
     });

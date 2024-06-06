@@ -8,12 +8,8 @@ items:
       type: string
     locationType:
       type: string
-      enum: [origin, destination]
-    originType:
-      type: string
-      enum: [home, commercial]
+      enum: [home, commercial, destination, virtual]
   required:
     - metafieldId
     - location
     - locationType
-    - originType
