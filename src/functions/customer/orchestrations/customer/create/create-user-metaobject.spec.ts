@@ -23,7 +23,7 @@ describe("CustomerCreateOrchestration", () => {
   });
 
   it("createUserMetaobject", async () => {
-    const userData = getUserObject({
+    const user = getUserObject({
       userMetaobjectId: "ok",
       specialties: [],
     });
@@ -34,32 +34,32 @@ describe("CustomerCreateOrchestration", () => {
       data: ensureType<CreateUserMetaobjectMutation>({
         metaobjectCreate: {
           metaobject: {
-            id: userData.userMetaobjectId!,
+            id: user.userMetaobjectId!,
             type: "user",
             fields: [
               {
                 key: "fullname",
-                value: userData.fullname,
+                value: user.fullname,
               },
               {
                 key: "username",
-                value: userData.username,
+                value: user.username,
               },
               {
                 key: "short_description",
-                value: userData.shortDescription,
+                value: user.shortDescription,
               },
               {
                 key: "about_me",
-                value: userData.aboutMeHtml,
+                value: user.aboutMeHtml,
               },
               {
                 key: "specialties",
-                value: JSON.stringify(userData.specialties),
+                value: JSON.stringify(user.specialties),
               },
               {
                 key: "professions",
-                value: JSON.stringify(userData.professions),
+                value: JSON.stringify(user.professions),
               },
               {
                 key: "collection",
@@ -77,7 +77,7 @@ describe("CustomerCreateOrchestration", () => {
     });
 
     await createUserMetaobject({
-      user: userData,
+      user: user,
       collectionId: "gid://shopify/Collection/625094558023",
     });
 
@@ -85,31 +85,35 @@ describe("CustomerCreateOrchestration", () => {
 
     expect(mockRequest).toHaveBeenNthCalledWith(1, CREATE_USER_METAOBJECT, {
       variables: {
-        handle: userData.username,
+        handle: user.username,
         fields: [
           {
             key: "username",
-            value: userData.username,
+            value: user.username,
           },
           {
             key: "fullname",
-            value: userData.fullname,
+            value: user.fullname,
           },
           {
             key: "short_description",
-            value: userData.shortDescription || "",
+            value: user.shortDescription || "",
           },
           {
             key: "about_me",
-            value: userData.aboutMeHtml || "",
+            value: user.aboutMeHtml || "",
           },
           {
             key: "specialties",
-            value: JSON.stringify({ specialties: userData.specialties || [] }),
+            value: JSON.stringify({ specialties: user.specialties || [] }),
           },
           {
             key: "professions",
-            value: JSON.stringify({ professions: userData.professions || [] }),
+            value: JSON.stringify({ professions: user.professions || [] }),
+          },
+          {
+            key: "speaks",
+            value: JSON.stringify({ speaks: user.speaks || [] }),
           },
           {
             key: "collection",

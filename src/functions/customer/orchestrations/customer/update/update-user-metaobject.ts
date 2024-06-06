@@ -44,6 +44,10 @@ export const updateUserMetaobject = async ({
         value: JSON.stringify({ professions: user.professions || [] }),
       },
       {
+        key: "speaks",
+        value: JSON.stringify({ speaks: user.speaks || [] }),
+      },
+      {
         key: "social",
         value: JSON.stringify(user.social || []),
       },

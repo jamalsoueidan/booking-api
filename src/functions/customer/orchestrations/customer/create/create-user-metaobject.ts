@@ -38,6 +38,10 @@ export const createUserMetaobject = async ({
           value: JSON.stringify({ professions: user.professions || [] }),
         },
         {
+          key: "speaks",
+          value: JSON.stringify({ speaks: user.speaks || [] }),
+        },
+        {
           key: "collection",
           value: collectionId,
         },
