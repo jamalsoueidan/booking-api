@@ -17,10 +17,7 @@ export type CustomerBookingServiceRangeAggregate = Order & {
   shippingId: string;
   title: string;
   shipping?: Shipping;
-  location: Pick<
-    Location,
-    "name" | "fullAddress" | "locationType" | "originType"
-  >;
+  location: Pick<Location, "name" | "fullAddress" | "locationType">;
 };
 
 export const CustomerBookingServiceRange = async ({

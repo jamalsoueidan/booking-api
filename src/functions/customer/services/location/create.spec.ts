@@ -1,4 +1,4 @@
-import { LocationOriginTypes, LocationTypes } from "~/functions/location";
+import { LocationTypes } from "~/functions/location";
 import { LocationServiceGetCoordinates } from "~/functions/location/services/get-coordinates";
 import { omitObjectIdProps } from "~/library/jest/helpers";
 import { getLocationObject } from "~/library/jest/helpers/location";
@@ -44,8 +44,7 @@ describe("CustomerLocationServiceCreate", () => {
     const location = getLocationObject({
       name: "Falafel",
       fullAddress: "Sigridsvej 45, 1. th, 8220 Brabrand",
-      originType: LocationOriginTypes.COMMERCIAL,
-      locationType: LocationTypes.ORIGIN,
+      locationType: LocationTypes.HOME,
       customerId,
       distanceHourlyRate: 1,
       fixedRatePerKm: 10,
@@ -56,7 +55,7 @@ describe("CustomerLocationServiceCreate", () => {
 
     expect(omitObjectIdProps(response.toObject())).toEqual(
       expect.objectContaining({
-        locationType: LocationTypes.ORIGIN,
+        locationType: LocationTypes.HOME,
         customerId: 1,
         fullAddress: "Sigridsvej 45, 1. th, 8220 Brabrand",
         geoLocation: { coordinates: [10.12961271, 56.15563438], type: "Point" },
@@ -79,7 +78,6 @@ describe("CustomerLocationServiceCreate", () => {
       name: "remote",
       fullAddress: "Sigridsvej 45 1, 8220 Brabrand",
       locationType: LocationTypes.DESTINATION,
-      originType: LocationOriginTypes.COMMERCIAL,
       distanceHourlyRate: 1,
       fixedRatePerKm: 10,
       distanceForFree: 10,

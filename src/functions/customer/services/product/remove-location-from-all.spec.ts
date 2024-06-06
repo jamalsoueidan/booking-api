@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import { LocationOriginTypes, LocationTypes } from "~/functions/location";
+import { LocationTypes } from "~/functions/location";
 import { getDumbLocationObject } from "~/library/jest/helpers/location";
 import { getProductObject } from "~/library/jest/helpers/product";
 import { createScheduleWithProducts } from "~/library/jest/helpers/schedule";
@@ -24,13 +24,11 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
             locations: [
               getDumbLocationObject({
                 location: locationRemoveId,
-                locationType: LocationTypes.ORIGIN,
-                originType: LocationOriginTypes.COMMERCIAL,
+                locationType: LocationTypes.DESTINATION,
               }),
               getDumbLocationObject({
                 location: new mongoose.Types.ObjectId(),
-                locationType: LocationTypes.ORIGIN,
-                originType: LocationOriginTypes.COMMERCIAL,
+                locationType: LocationTypes.HOME,
               }),
             ],
           }),
@@ -40,13 +38,11 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
             locations: [
               getDumbLocationObject({
                 location: locationRemoveId,
-                locationType: LocationTypes.ORIGIN,
-                originType: LocationOriginTypes.COMMERCIAL,
+                locationType: LocationTypes.DESTINATION,
               }),
               getDumbLocationObject({
                 location: new mongoose.Types.ObjectId(),
-                locationType: LocationTypes.ORIGIN,
-                originType: LocationOriginTypes.COMMERCIAL,
+                locationType: LocationTypes.HOME,
               }),
             ],
           }),
@@ -63,8 +59,7 @@ describe("CustomerProductServiceRemoveLocationFromAll", () => {
             locations: [
               getDumbLocationObject({
                 location: locationRemoveId,
-                locationType: LocationTypes.ORIGIN,
-                originType: LocationOriginTypes.COMMERCIAL,
+                locationType: LocationTypes.DESTINATION,
               }),
             ],
           }),

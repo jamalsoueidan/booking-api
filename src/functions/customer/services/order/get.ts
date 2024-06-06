@@ -11,10 +11,7 @@ export type CustomLineItems = OrderLineItem & {
     User,
     "customerId" | "username" | "fullname" | "images" | "shortDescription"
   >;
-  location: Pick<
-    Location,
-    "name" | "fullAddress" | "locationType" | "originType"
-  >;
+  location: Pick<Location, "name" | "fullAddress" | "locationType">;
   shipping?: Shipping;
 };
 
@@ -103,7 +100,6 @@ export const CustomerOrderServiceGet = async ({
             $project: {
               name: 1,
               fullAddress: 1,
-              originType: 1,
               locationType: 1,
             },
           },
