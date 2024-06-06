@@ -1,8 +1,4 @@
-import {
-  LocationModel,
-  LocationOriginTypes,
-  LocationTypes,
-} from "~/functions/location";
+import { LocationModel, LocationTypes } from "~/functions/location";
 import { ScheduleModel } from "~/functions/schedule";
 import { UserModel } from "../../user.model";
 
@@ -10,7 +6,6 @@ type UserAggregationResult = {
   locations: Array<{
     city: string;
     locationType: LocationTypes;
-    originType: LocationOriginTypes;
     count: number;
   }>;
   availableDays: Array<{
@@ -48,7 +43,6 @@ const locationsFacet = [
       _id: {
         city: "$locations.city",
         locationType: "$locations.locationType",
-        originType: "$locations.originType",
       },
       count: { $sum: 1 },
     },
@@ -58,7 +52,6 @@ const locationsFacet = [
       _id: 0,
       city: "$_id.city",
       locationType: "$_id.locationType",
-      originType: "$_id.originType",
       count: "$count",
     },
   },

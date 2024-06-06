@@ -2,14 +2,10 @@ import { z } from "zod";
 import { BooleanOrString, GidFormat, NumberOrString } from "~/library/zod";
 
 export enum LocationTypes {
-  ORIGIN = "origin",
-  DESTINATION = "destination",
-  ONLINE = "online",
-}
-
-export enum LocationOriginTypes {
   HOME = "home",
-  COMMERCIAL = "commercial",
+  SALON = "salon",
+  DESTINATION = "destination",
+  VIRTUAL = "virtual",
 }
 
 export const LocationZodSchema = z.object({
@@ -21,7 +17,6 @@ export const LocationZodSchema = z.object({
   fullAddress: z.string(),
   city: z.string(),
   country: z.string(),
-  originType: z.nativeEnum(LocationOriginTypes),
   distanceForFree: NumberOrString,
   distanceHourlyRate: NumberOrString,
   fixedRatePerKm: NumberOrString,

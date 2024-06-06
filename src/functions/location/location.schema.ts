@@ -1,5 +1,5 @@
 import mongoose, { Document, Model } from "mongoose";
-import { Location, LocationOriginTypes, LocationTypes } from "./location.types";
+import { Location, LocationTypes } from "./location.types";
 
 export interface ILocation extends Location {
   geoLocation: {
@@ -24,8 +24,9 @@ export const LocationMongooseSchema = new mongoose.Schema<
       type: String,
       enum: [
         LocationTypes.DESTINATION,
-        LocationTypes.ORIGIN,
-        LocationTypes.ONLINE,
+        LocationTypes.HOME,
+        LocationTypes.SALON,
+        LocationTypes.VIRTUAL,
       ],
       required: true,
     },
@@ -60,12 +61,6 @@ export const LocationMongooseSchema = new mongoose.Schema<
     },
     country: {
       type: String,
-      required: true,
-    },
-    originType: {
-      type: String,
-      enum: [LocationOriginTypes.HOME, LocationOriginTypes.COMMERCIAL],
-      default: LocationOriginTypes.COMMERCIAL,
       required: true,
     },
     distanceForFree: {

@@ -1,8 +1,5 @@
 import mongoose from "mongoose";
-import {
-  LocationOriginTypes,
-  LocationTypes,
-} from "~/functions/location/location.types";
+import { LocationTypes } from "~/functions/location/location.types";
 import { BadError } from "~/library/handler";
 import {
   ScheduleProduct,
@@ -138,13 +135,12 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
           },
           locationType: {
             type: String,
-            enum: [LocationTypes.ORIGIN, LocationTypes.DESTINATION],
-            required: true,
-          },
-          originType: {
-            type: String,
-            enum: [LocationOriginTypes.HOME, LocationOriginTypes.COMMERCIAL],
-            default: LocationOriginTypes.COMMERCIAL,
+            enum: [
+              LocationTypes.HOME,
+              LocationTypes.SALON,
+              LocationTypes.DESTINATION,
+              LocationTypes.VIRTUAL,
+            ],
             required: true,
           },
         },

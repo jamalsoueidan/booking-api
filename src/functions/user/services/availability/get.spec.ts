@@ -55,7 +55,7 @@ describe("UserAvailabilityServiceGet", () => {
 
     locationOrigin = await createLocation({
       customerId,
-      locationType: LocationTypes.ORIGIN,
+      locationType: LocationTypes.HOME,
     });
 
     locationDestination = await createLocation({
