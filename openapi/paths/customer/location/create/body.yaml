@@ -4,9 +4,6 @@ properties:
     type: string
   fullAddress:
     type: string
-  originType:
-    type: string
-    enum: [home, commercial]
   distanceForFree:
     type: number
   distanceHourlyRate:
@@ -21,11 +18,10 @@ properties:
     type: number
   locationType:
     type: string
-    enum: [origin, destination]
+    enum: [home, commercial, destination, virtual]
 required:
   - name
   - fullAddress
-  - originType
   - distanceForFree
   - distanceHourlyRate
   - fixedRatePerKm
