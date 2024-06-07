@@ -18,6 +18,6 @@ export const shopifyRest = () => {
   return createAdminRestApiClient({
     storeDomain: process.env["ShopifyStoreDomain"] || "",
     accessToken: process.env[randomKey] || "",
-    apiVersion: "2024-01",
+    apiVersion: "2024-04",
   });
 };

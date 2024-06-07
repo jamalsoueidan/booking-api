@@ -50,7 +50,6 @@ const NoticePeriodZodSchema = z.object({
 export type ScheduleProductNoticePeriod = z.infer<typeof NoticePeriodZodSchema>;
 
 const LocationZodSchema = z.object({
-  metafieldId: z.string(),
   location: StringOrObjectId,
   locationType: z.nativeEnum(LocationTypes),
 });

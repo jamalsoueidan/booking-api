@@ -1,4 +1,6 @@
+import { LocationModel } from "~/functions/location";
 import { ScheduleModel } from "~/functions/schedule";
+import { NotFoundError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
 
 export const updateScheduleLocationsFieldName = "updateScheduleLocationsField";
@@ -25,14 +27,23 @@ export const updateScheduleLocationsField = async ({
   }
 
   // save unique locations for this schedule metafield that are found in the current schedule model.
-  const locations = schedule.products.reduce((locations, product) => {
-    product.locations.forEach((location) => {
-      if (location.metafieldId && !locations.includes(location.metafieldId)) {
-        locations.push(location.metafieldId);
-      }
-    });
-    return locations;
-  }, [] as string[]);
+  const locationIds = schedule.products.flatMap((product) =>
+    product.locations.map((location) => location.location.toString())
+  );
+
+  console.log(locationIds);
+
+  const locations = await LocationModel.find({
+    _id: { $in: locationIds },
+  }).orFail(
+    new NotFoundError([
+      {
+        path: ["customerId", "locations"],
+        message: "LOCATIONS_ERROR",
+        code: "custom",
+      },
+    ])
+  );
 
   const { data } = await shopifyAdmin().request(
     UPDATE_SCHEDULE_LOCATIONS_FIELD,
@@ -42,7 +53,9 @@ export const updateScheduleLocationsField = async ({
         fields: [
           {
             key: "locations",
-            value: JSON.stringify(locations),
+            value: JSON.stringify(
+              locations.map((location) => location.metafieldId)
+            ),
           },
         ],
       },

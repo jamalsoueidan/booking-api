@@ -2,14 +2,11 @@ type: array
 items:
   type: object
   properties:
-    metafieldId:
-      type: string
     location:
       type: string
     locationType:
       type: string
       enum: [home, commercial, destination, virtual]
   required:
-    - metafieldId
     - location
     - locationType

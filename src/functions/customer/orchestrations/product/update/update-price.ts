@@ -16,7 +16,7 @@ export const updatePrice = async ({
       productId,
     });
 
-  const isDestination = locations.some(
+  const requiresShipping = locations.some(
     (l) => l.locationType === LocationTypes.DESTINATION
   );
 
@@ -28,13 +28,9 @@ export const updatePrice = async ({
           id: `gid://shopify/ProductVariant/${variantId}`,
           price: price.amount,
           compareAtPrice: compareAtPrice.amount,
-          ...(isDestination
-            ? {
-                inventoryItem: {
-                  requiresShipping: true,
-                },
-              }
-            : {}),
+          inventoryItem: {
+            requiresShipping,
+          },
         },
       ],
     },

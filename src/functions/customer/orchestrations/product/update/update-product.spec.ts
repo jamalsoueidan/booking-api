@@ -257,7 +257,7 @@ describe("CustomerProductUpdateOrchestration", () => {
           },
           {
             id: product?.locationsMetafieldId,
-            value: JSON.stringify(product.locations.map((p) => p.metafieldId)),
+            value: JSON.stringify([location.metafieldId]),
           },
           {
             id: product?.user?.metaobjectId,
