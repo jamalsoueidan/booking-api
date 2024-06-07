@@ -21,6 +21,6 @@ export const shopifyAdmin = () => {
   return createAdminApiClient({
     storeDomain: process.env["ShopifyStoreDomain"] || "",
     accessToken: process.env[randomKey] || "",
-    apiVersion: "2024-01",
+    apiVersion: "2024-04", // remember to change in rest.ts
   });
 };
