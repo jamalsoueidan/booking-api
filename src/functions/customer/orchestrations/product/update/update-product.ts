@@ -166,7 +166,7 @@ export const updateProduct = async ({
       },
       {
         id: product?.locationsMetafieldId,
-        value: JSON.stringify(product.locations.map((p) => p.metafieldId)),
+        value: JSON.stringify(locations.map((p) => p.metafieldId)),
       },
       {
         id: product?.user?.metaobjectId,

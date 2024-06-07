@@ -14,7 +14,7 @@
       "name": "Debug Jest Tests",
       "program": "${workspaceFolder}/node_modules/.bin/jest",
       "args": [
-        "${workspaceFolder}/src/functions/customer/orchestrations/schedule/update/update-schedule-metafield.spec.ts"
+        "${workspaceFolder}/src/functions/customer/orchestrations/product/update/update-schedule-locations-field.spec.ts"
       ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
