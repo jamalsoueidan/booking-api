@@ -3,7 +3,7 @@ import { BooleanOrString, GidFormat, NumberOrString } from "~/library/zod";
 
 export enum LocationTypes {
   HOME = "home",
-  SALON = "salon",
+  COMMERCIAL = "commercial",
   DESTINATION = "destination",
   VIRTUAL = "virtual",
 }

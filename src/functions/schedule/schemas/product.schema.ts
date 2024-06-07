@@ -137,7 +137,7 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
             type: String,
             enum: [
               LocationTypes.HOME,
-              LocationTypes.SALON,
+              LocationTypes.COMMERCIAL,
               LocationTypes.DESTINATION,
               LocationTypes.VIRTUAL,
             ],

@@ -38,7 +38,7 @@ describe("CustomerLocationUpdateOrchestration", () => {
     const location = await createLocation({
       name: "Falafel",
       fullAddress: "Sigridsvej 45, 1. th, 8220 Brabrand",
-      locationType: LocationTypes.SALON,
+      locationType: LocationTypes.COMMERCIAL,
       customerId: 12,
       distanceHourlyRate: 1,
       fixedRatePerKm: 10,

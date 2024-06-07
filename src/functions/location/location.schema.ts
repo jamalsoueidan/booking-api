@@ -25,7 +25,7 @@ export const LocationMongooseSchema = new mongoose.Schema<
       enum: [
         LocationTypes.DESTINATION,
         LocationTypes.HOME,
-        LocationTypes.SALON,
+        LocationTypes.COMMERCIAL,
         LocationTypes.VIRTUAL,
       ],
       required: true,
