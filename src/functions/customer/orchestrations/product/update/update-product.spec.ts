@@ -211,6 +211,7 @@ describe("CustomerProductUpdateOrchestration", () => {
       `product-${product.productHandle}`,
       `scheduleid-${newSchedule._id}`,
       `location_type-${location.locationType}`,
+      "active",
       ...tagDays,
       `locationid-${product.locations[0].location}`,
       `city-${location.city.replace(/ /g, "-").toLowerCase()}`,

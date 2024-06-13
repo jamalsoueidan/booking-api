@@ -66,10 +66,7 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       type: Number,
       index: true,
     },
-    scheduleIdMetafieldId: {
-      type: String,
-      index: true,
-    },
+    scheduleIdMetafieldId: String,
     price: {
       amount: String,
       currencyCode: String,

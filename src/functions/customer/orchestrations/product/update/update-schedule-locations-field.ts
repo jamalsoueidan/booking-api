@@ -31,8 +31,6 @@ export const updateScheduleLocationsField = async ({
     product.locations.map((location) => location.location.toString())
   );
 
-  console.log(locationIds);
-
   const locations = await LocationModel.find({
     _id: { $in: locationIds },
   }).orFail(

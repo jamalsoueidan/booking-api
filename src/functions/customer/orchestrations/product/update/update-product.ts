@@ -122,6 +122,17 @@ export const updateProduct = async ({
     );
   }
 
+  if (product.hideFromProfile) {
+    tags.push("hide-from-profile");
+  }
+  if (product.hideFromCombine) {
+    tags.push("hide-from-combine");
+  }
+
+  if (user.active) {
+    tags.push("active");
+  }
+
   const days = schedule.slots.map((slot) => slot.day.toLowerCase());
   if (days.length > 0) {
     tags.push(`day-${days.join(", day-")}`);
