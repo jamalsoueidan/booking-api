@@ -46,23 +46,24 @@ export const UserAvailabilityServiceGenerate = async (
     productIds: body.productIds,
   });
 
-  const optionIds = body.optionIds ? body.optionIds : null;
-  if (optionIds) {
-    schedule.products = schedule.products.reduce(
-      (products, parentProduct, currentIndex) => {
-        products.push(parentProduct);
-        parentProduct.options?.forEach((productOption) => {
-          const option = optionIds[parentProduct.productId];
-          if (!option && productOption.required) {
-            throw new NotFoundError([
-              {
-                path: ["optionIds", parentProduct.productId],
-                message: "MISSING_PARENT_ID",
-                code: "custom",
-              },
-            ]);
-          }
+  const optionIds = body?.optionIds || {};
 
+  schedule.products = schedule.products.reduce(
+    (products, parentProduct, currentIndex) => {
+      products.push(parentProduct);
+      parentProduct.options?.forEach((productOption) => {
+        const option = optionIds[parentProduct.productId];
+        if (!option && productOption.required) {
+          throw new NotFoundError([
+            {
+              path: ["optionIds", parentProduct.productId],
+              message: "MISSING_PARENT_ID",
+              code: "custom",
+            },
+          ]);
+        }
+
+        if (option) {
           const variantId = option[productOption.productId];
           if (!variantId && productOption.required) {
             throw new NotFoundError([
@@ -114,12 +115,12 @@ export const UserAvailabilityServiceGenerate = async (
               parentId: parentProduct.productId,
             });
           }
-        });
-        return products;
-      },
-      [] as UserScheduleServiceGetWithCustomerResponse["products"]
-    );
-  }
+        }
+      });
+      return products;
+    },
+    [] as UserScheduleServiceGetWithCustomerResponse["products"]
+  );
 
   let shipping: Awaited<ReturnType<typeof ShippingServiceGet>> | undefined;
   if (body.shippingId) {
