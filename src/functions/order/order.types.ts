@@ -28,20 +28,20 @@ const DiscountCodeZod = z.object({
 
 const AddressZod = z.object({
   customer_id: z.number().optional(),
-  first_name: z.string(),
-  address1: z.string(),
-  phone: z.string(),
-  city: z.string(),
-  zip: z.string(),
+  first_name: z.string().nullable(),
+  address1: z.string().nullable(),
+  phone: z.string().nullable(),
+  city: z.string().nullable(),
+  zip: z.string().nullable(),
   province: z.string().nullable(),
-  country: z.string(),
-  last_name: z.string(),
+  country: z.string().nullable(),
+  last_name: z.string().nullable(),
   address2: z.string().nullable(),
   company: z.string().nullable(),
   latitude: z.number().nullable().optional(),
   longitude: z.number().nullable().optional(),
-  name: z.string(),
-  country_code: z.string(),
+  name: z.string().nullable(),
+  country_code: z.string().nullable(),
   country_name: z.string().optional(),
   province_code: z.string().nullable(),
   default: z.boolean().optional(),
@@ -227,7 +227,7 @@ export const Order = z.object({
   total_weight: z.number(),
   updated_at: z.string(),
   user_id: z.number().nullable(),
-  billing_address: AddressZod,
+  billing_address: AddressZod.optional(),
   customer: CustomerZod,
   discount_applications: z.array(
     z.object({
@@ -237,12 +237,8 @@ export const Order = z.object({
   line_items: z
     .array(LineItemZod)
     .transform((items) => items.filter((item) => item.properties?.customerId)),
-  payment_terms: z
-    .object({
-      /* ... */
-    })
-    .nullable(),
-  shipping_address: AddressZod.nullable(),
+  payment_terms: z.any().optional(),
+  shipping_address: AddressZod.optional(),
   shipping_lines: z.array(ShippingLineZod),
 });
 

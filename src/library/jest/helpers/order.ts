@@ -187,7 +187,6 @@ export const getOrderObject = ({
     },
     discount_applications: [],
     line_items,
-    payment_terms: null,
     shipping_address: {
       first_name: "ja",
       address1: "Odensegade",
