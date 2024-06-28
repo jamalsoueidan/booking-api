@@ -34,6 +34,7 @@
     "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
     "mongoose": "^7.6.10",
+    "openai": "^4.52.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
