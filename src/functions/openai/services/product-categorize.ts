@@ -66,26 +66,19 @@ If you think the product fits multiply collections, it's fine, include them all 
   }
 };
 
-const COLLECTION_FRAGMENT = `#graphql
-  fragment CollectionFragment on Collection {
-    id
-    title
-    description
-    ruleSet {
-      rules {
-        column
-        condition
-      }
-    }
-  }
-` as const;
-
 export const COLLECTIONS = `#graphql
-  ${COLLECTION_FRAGMENT}
   query collections {
     collections(first: 250, query: "-Alle AND -Subcategory AND -User") {
       nodes {
-        ...CollectionFragment
+        id
+        title
+        description
+        ruleSet {
+          rules {
+            column
+            condition
+          }
+        }
       }
     }
   }
