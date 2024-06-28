@@ -233,23 +233,9 @@ export type DestroyScheduleMetafieldMutationVariables = AdminTypes.Exact<{
 
 export type DestroyScheduleMetafieldMutation = { metafieldDelete?: AdminTypes.Maybe<Pick<AdminTypes.MetafieldDeletePayload, 'deletedId'>> };
 
-export type CollectionFragmentFragment = (
-  Pick<AdminTypes.Collection, 'id' | 'title' | 'description'>
-  & { ruleSet?: AdminTypes.Maybe<{ rules: Array<Pick<AdminTypes.CollectionRule, 'column' | 'condition'>> }> }
-);
-
-export type CollectionsQueryVariables = AdminTypes.Exact<{ [key: string]: never; }>;
-
-
-export type CollectionsQuery = { collections: { nodes: Array<(
-      Pick<AdminTypes.Collection, 'id' | 'title' | 'description'>
-      & { ruleSet?: AdminTypes.Maybe<{ rules: Array<Pick<AdminTypes.CollectionRule, 'column' | 'condition'>> }> }
-    )> } };
-
 interface GeneratedQueryTypes {
   "#graphql\n  query FileGet($id: ID!) {\n    node(id: $id) {\n      ... on MediaImage {\n        preview {\n          image {\n            url\n            width\n            height\n          }\n        }\n      }\n    }\n  }\n": {return: FileGetQuery, variables: FileGetQueryVariables},
   "#graphql\n  query publications {\n    publications(first: 10, catalogType: APP) {\n      nodes {\n        id\n      }\n    }\n  }\n": {return: PublicationsQuery, variables: PublicationsQueryVariables},
-  "#graphql\n  #graphql\n  fragment CollectionFragment on Collection {\n    id\n    title\n    description\n    ruleSet {\n      rules {\n        column\n        condition\n      }\n    }\n  }\n\n  query collections {\n    collections(first: 250, query: \"-Alle AND -Subcategory AND -User\") {\n      nodes {\n        ...CollectionFragment\n      }\n    }\n  }\n": {return: CollectionsQuery, variables: CollectionsQueryVariables},
 }
 
 interface GeneratedMutationTypes {
