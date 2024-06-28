@@ -1,9 +1,11 @@
 import { CustomerServiceGet } from "~/functions/customer/services/customer/get";
 import { PRODUCT_FRAGMENT } from "~/functions/customer/services/product/add";
 import { LocationModel } from "~/functions/location";
+import { OpenAIServiceProductCategorize } from "~/functions/openai/services/product-categorize";
 import { ScheduleModel } from "~/functions/schedule";
 import { NotFoundError } from "~/library/handler";
 import { shopifyAdmin } from "~/library/shopify";
+import { GidFormat } from "~/library/zod";
 
 export const updateProductName = "updateProduct";
 export const updateProduct = async ({
@@ -46,61 +48,6 @@ export const updateProduct = async ({
     ]);
   }
 
-  // We dont want to show duplicate products in the treatment page, so we pick the one that are default to the visitor
-  const totalCountOfDefault = await ScheduleModel.aggregate([
-    {
-      $match: {
-        customerId,
-        products: {
-          $elemMatch: {
-            parentId: product.parentId,
-            default: true,
-          },
-        },
-      },
-    },
-    {
-      $unwind: {
-        path: "$products",
-        includeArrayIndex: "string",
-        preserveNullAndEmptyArrays: false,
-      },
-    },
-    {
-      $match: {
-        "products.parentId": product.parentId,
-        "products.default": true,
-        "products.productId": { $ne: product.productId },
-      },
-    },
-    {
-      $group: {
-        _id: null,
-        totalProducts: { $sum: 1 },
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-        totalProducts: 1,
-      },
-    },
-  ]);
-
-  const totalProductsCount = totalCountOfDefault[0]?.totalProducts || 0;
-
-  await ScheduleModel.updateOne(
-    {
-      customerId,
-      "products.productId": productId,
-    },
-    {
-      $set: {
-        "products.$": { ...product, default: totalProductsCount === 0 },
-      },
-    }
-  );
-
   const locations = await LocationModel.find({
     _id: { $in: product.locations.map((l) => l.location) },
   }).orFail(
@@ -125,6 +72,7 @@ export const updateProduct = async ({
   if (product.hideFromProfile) {
     tags.push("hide-from-profile");
   }
+
   if (product.hideFromCombine) {
     tags.push("hide-from-combine");
   }
@@ -138,9 +86,24 @@ export const updateProduct = async ({
     tags.push(`day-${days.join(", day-")}`);
   }
 
+  if (!product.hideFromProfile) {
+    const categories = await OpenAIServiceProductCategorize({
+      title: product.title,
+      description: product.description || "",
+    });
+
+    categories?.forEach((category) => {
+      tags.push(`collectionid-${GidFormat.parse(category.id)}`);
+
+      category.ruleSet?.rules.forEach((r) => {
+        tags.push(r.condition);
+      });
+    });
+  }
+
   const variables = {
     title: product.title,
-    descriptionHtml: product.descriptionHtml || "ads",
+    descriptionHtml: product.descriptionHtml || "",
     id: `gid://shopify/Product/${product.productId}`,
     metafields: [
       {
@@ -188,10 +151,6 @@ export const updateProduct = async ({
         value: user.active.toString(),
       },
       {
-        id: product.defaultMetafieldId,
-        value: (totalProductsCount === 0).toString(),
-      },
-      {
         id: product?.scheduleIdMetafieldId,
         value: schedule.metafieldId,
       },
@@ -201,7 +160,6 @@ export const updateProduct = async ({
       `user-${user.username}`,
       `userid-${user.customerId}`,
       "treatments",
-      `parentid-${product.parentId}`,
       `productid-${product.productId}`,
       `product-${product.productHandle}`,
       `scheduleid-${schedule._id}`,

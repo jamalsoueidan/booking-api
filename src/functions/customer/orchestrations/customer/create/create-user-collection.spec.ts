@@ -2,7 +2,10 @@ import { getUserObject } from "~/library/jest/helpers";
 import { ensureType } from "~/library/jest/helpers/mock";
 import { shopifyAdmin } from "~/library/shopify";
 import { CollectionCreateMutation } from "~/types/admin.generated";
-import { COLLECTION_CREATE, createCollection } from "./create-collection";
+import {
+  COLLECTION_CREATE,
+  createUserCollection,
+} from "./create-user-collection";
 
 require("~/library/jest/mongoose/mongodb.jest");
 
@@ -19,7 +22,7 @@ describe("CustomerCreateOrchestration", () => {
     jest.clearAllMocks();
   });
 
-  it("createCollection", async () => {
+  it("createUserCollection", async () => {
     const user = getUserObject();
 
     const collectionMetaobjectId = "gid://shopify/Collection/625094558023";
@@ -37,7 +40,7 @@ describe("CustomerCreateOrchestration", () => {
       }),
     });
 
-    await createCollection({ user });
+    await createUserCollection({ user });
 
     expect(mockRequest).toHaveBeenCalledTimes(1);
 

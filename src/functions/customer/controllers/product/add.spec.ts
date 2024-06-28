@@ -144,7 +144,6 @@ describe("CustomerProductControllerAdd", () => {
       description: "ok",
       descriptionHtml: "<b>test</b>",
       scheduleId: newSchedule._id,
-      parentId: 1,
       locations,
       price: {
         amount: "100",

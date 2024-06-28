@@ -26,7 +26,6 @@ describe("CustomerProductServiceAdd", () => {
   let mockProduct: ProductDuplicateMutation;
   let productBody: Pick<
     ScheduleProduct,
-    | "parentId"
     | "locations"
     | "price"
     | "compareAtPrice"
@@ -39,7 +38,6 @@ describe("CustomerProductServiceAdd", () => {
     descriptionHtml: "<p>test test</p>",
     hideFromCombine: false,
     hideFromProfile: true,
-    parentId: 8022089105682,
     locations: [
       getDumbLocationObject({
         location: new mongoose.Types.ObjectId(),
@@ -93,10 +91,6 @@ describe("CustomerProductServiceAdd", () => {
           hideFromCombine: {
             id: `gid://shopify/Metafield/233`,
             value: "false",
-          },
-          parentId: {
-            id: `gid://shopify/Metafield/44429081510215`,
-            value: `gid://shopify/Product/${productBody.parentId}`,
           },
           scheduleId: {
             id: "gid://shopify/Metafield/44429081542983",
@@ -171,13 +165,12 @@ describe("CustomerProductServiceAdd", () => {
 
     expect(mockRequest).toHaveBeenNthCalledWith(1, PRODUCT_DUPLCATE, {
       variables: {
-        productId: `gid://shopify/Product/${productBody.parentId}`,
+        productId: `gid://shopify/Product/8022089400594`,
         title: user.username + " " + title,
       },
     });
 
     expect(updateProduct).toMatchObject({
-      parentId: productBody.parentId,
       productId: GidFormat.parse(mockProduct.productDuplicate?.newProduct?.id),
       variantId: GidFormat.parse(
         mockProduct.productDuplicate?.newProduct?.variants.nodes[0].id

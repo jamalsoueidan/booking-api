@@ -17,7 +17,6 @@ export type CustomerProductServiceAddBody = Pick<
   ScheduleProduct,
   | "description"
   | "descriptionHtml"
-  | "parentId"
   | "locations"
   | "price"
   | "compareAtPrice"
@@ -38,8 +37,8 @@ export const CustomerProductServiceAdd = async (
 
   const { data } = await shopifyAdmin().request(PRODUCT_DUPLCATE, {
     variables: {
-      productId: `gid://shopify/Product/${body.parentId}`,
-      title: user.username + " " + body.title, // later we remove the username in update-product
+      productId: `gid://shopify/Product/8022089400594`,
+      title: user.username + " " + body.title, // later we remove the username in update-product, this is because of the custom handle
     },
   });
 
@@ -59,7 +58,7 @@ export const CustomerProductServiceAdd = async (
 
   const newProduct: ScheduleProduct = {
     ...body,
-    parentId: body.parentId,
+    collectionIds: [],
     productHandle: shopifyProduct.handle,
     productId: shopifyProductId,
     variantId: GidFormat.parse(variant.id),

@@ -19,7 +19,6 @@ const CustomerProductControllerAddQuerySchema = z.object({
 });
 
 const CustomerProductControllerAddBodySchema = ScheduleProductZodSchema.pick({
-  parentId: true,
   locations: true,
   price: true,
   compareAtPrice: true,
