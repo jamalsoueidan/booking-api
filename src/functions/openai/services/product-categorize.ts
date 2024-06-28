@@ -1,6 +1,5 @@
 import OpenAI from "openai";
 import { shopifyAdmin } from "~/library/shopify";
-import { CollectionsQuery } from "~/types/admin.generated";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -61,8 +60,7 @@ If you think the product fits multiply collections, it's fine, include them all 
       },
     });
 
-    return JSON.parse(response.choices[0].message.content as any)
-      .collections as CollectionsQuery["collections"]["nodes"];
+    return JSON.parse(response.choices[0].message.content as any);
   } catch (error) {
     console.error("Error:", error);
   }
