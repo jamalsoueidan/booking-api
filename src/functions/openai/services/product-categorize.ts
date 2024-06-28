@@ -1,5 +1,4 @@
 import OpenAI from "openai";
-import { shopifyAdmin } from "~/library/shopify";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -13,12 +12,8 @@ export const OpenAIServiceProductCategorize = async ({
   description?: string;
 }) => {
   try {
-    const { data } = await shopifyAdmin().request(COLLECTIONS);
-
-    const collections = data?.collections.nodes;
-
     // Prepare collections data as context
-    const collectionsContext = JSON.stringify(collections, null, 2);
+    const collectionsContext = JSON.stringify([], null, 2);
 
     const content = `
 Given the following product title and description, response with the collection titles that this product fits into. The JSON structure should be:
@@ -65,21 +60,3 @@ If you think the product fits multiply collections, it's fine, include them all 
     console.error("Error:", error);
   }
 };
-
-export const COLLECTIONS = `#graphql
-  query collections {
-    collections(first: 250, query: "-Alle AND -Subcategory AND -User") {
-      nodes {
-        id
-        title
-        description
-        ruleSet {
-          rules {
-            column
-            condition
-          }
-        }
-      }
-    }
-  }
-` as const;
