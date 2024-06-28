@@ -19,8 +19,7 @@
     "generate-docs": "npx @redocly/cli build-docs docs/openapi.yaml -o docs/index.html --title 'Booking Api Documentation'",
     "generate-ts": "npm run bundle && npx orval --config ./orval.config.js",
     "postprocess": "node postprocess.js",
-    "graphql:codegen": "npx graphql-codegen -- --watch && npm run postprocess",
-    "codegen": "npx graphql-codegen -- --watch && npm run postprocess"
+    "codegen": "npx graphql-codegen"
   },
   "dependencies": {
     "@azure/functions": "^4.3.0",

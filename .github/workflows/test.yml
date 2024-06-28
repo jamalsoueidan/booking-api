@@ -22,6 +22,6 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Generate GraphQL types
-        run: npm run graphql:codegen
+        run: npm run codegen
       - name: Run Tests
         run: npm run test
