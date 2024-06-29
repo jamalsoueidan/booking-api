@@ -16,13 +16,28 @@ export const OpenAIServiceProductCategorize = async ({
   try {
     const { data } = await shopifyAdmin().request(COLLECTIONS);
 
-    const collections = data?.collections.nodes;
+    const collections = data?.collections.nodes.filter(
+      (collection: any) => collection.ruleSet.rules.length == 1
+    );
 
     // Prepare collections data as context
     const collectionsContext = JSON.stringify(collections, null, 2);
 
     const content = `
-Given the following product title and description, response with the collection titles that this product fits into. The JSON structure should be:
+### Product Details:
+Product Title: ${title}
+Product Description: ${description}.
+
+Identify all collections that best fit the product title from the given collections. Consider the type of service or product described in the title and find all relevant collections. Avoid including collections that are not contextually relevant to the specific type of service.
+
+
+### Existing Collections:
+${collectionsContext}
+
+Given this context, identify all appropriate collections for the product titled "${title}". Respond with this JSON structure:
+
+
+Respond with this JSON structure:
 
 {
   "collections": [
@@ -37,20 +52,7 @@ Given the following product title and description, response with the collection 
       },
     },
   ],
-}
-
-Where:
-- "collections" includes the existing collections that the product fits into based on the given list of collections.
-
-### Existing Collections:
-${collectionsContext}
-
-### Product Details:
-Product Title: ${title}
-Product Description: ${description}
-
-If you think the product fits multiply collections, it's fine, include them all in the response.
-`;
+}`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o-2024-05-13",

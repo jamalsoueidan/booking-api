@@ -152,10 +152,6 @@ const PRODUCT_FRAGMENT = `#graphql
       id
       value
     }
-    parentId: metafield(key: "parentId", namespace: "booking") {
-      id
-      value
-    }
     scheduleId: metafield(key: "scheduleId", namespace: "booking") {
       id
       value

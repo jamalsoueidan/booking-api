@@ -177,10 +177,11 @@ export const updateProduct = async ({
       .join(", "),
   };
 
-  const { data } = await shopifyAdmin().request(PRODUCT_UPDATE, {
+  const { data, errors } = await shopifyAdmin().request(PRODUCT_UPDATE, {
     variables,
   });
 
+  console.log(errors);
   if (!data?.productUpdate?.product) {
     throw new Error(`Failed to update product ${product.productId}`);
   }

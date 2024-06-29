@@ -1,7 +1,5 @@
 type: object
 properties:
-  parentId:
-    type: string
   title:
     type: string
   description:
@@ -32,7 +30,6 @@ properties:
         type: string
 
 required:
-  - parentId
   - title
   - description
   - descriptionHtml

@@ -9,8 +9,6 @@ properties:
     items:
       type: object
       properties:
-        parentId:
-          type: number
         productId:
           type: number
         variantId:
