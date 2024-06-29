@@ -50,10 +50,11 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
   {
     optionsMetafieldId: String,
     options: [OptionMongooseSchema],
-    parentId: {
-      type: Number,
-      index: true,
-    },
+    collectionIds: [
+      {
+        type: Number,
+      },
+    ],
     productHandle: {
       type: String,
       index: true,

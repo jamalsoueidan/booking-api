@@ -15,8 +15,8 @@ export const updateArticle = async ({
     customerId: user.customerId,
   });
 
-  const parentIds = schedules.flatMap((schedule) =>
-    schedule.products.map((product) => product.parentId)
+  const collectionIds = schedules.flatMap((schedule) =>
+    schedule.products.map((product) => product.collectionIds)
   );
 
   const days = schedules.flatMap((schedule) =>
@@ -33,8 +33,8 @@ export const updateArticle = async ({
     tags.push(`speak-${user.speaks.join(", speak-")}`);
   }
 
-  if (parentIds.length > 0) {
-    tags.push(`parentid-${parentIds.join(", parentid-")}`);
+  if (collectionIds.length > 0) {
+    tags.push(`collection_id-${collectionIds.join(", collection_id-")}`);
   }
 
   if (days.length > 0) {

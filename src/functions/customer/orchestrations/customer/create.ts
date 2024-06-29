@@ -6,9 +6,9 @@ import { User } from "~/functions/user";
 import { activityType } from "~/library/orchestration";
 import { createArticle, createArticleName } from "./create/create-article";
 import {
-  createCollection,
-  createCollectionName,
-} from "./create/create-collection";
+  createUserCollection,
+  createUserCollectionName,
+} from "./create/create-user-collection";
 import {
   createUserMetaobject,
   createUserMetaobjectName,
@@ -22,7 +22,7 @@ import {
   updateUserMetafieldsName,
 } from "./create/update-user";
 
-df.app.activity(createCollectionName, { handler: createCollection });
+df.app.activity(createUserCollectionName, { handler: createUserCollection });
 df.app.activity(createUserMetaobjectName, { handler: createUserMetaobject });
 df.app.activity(createArticleName, { handler: createArticle });
 df.app.activity(publishCollectionName, { handler: publishCollection });
@@ -33,10 +33,10 @@ const orchestrator: df.OrchestrationHandler = function* (
 ) {
   const user = context.df.getInput() as User;
 
-  const collectionMetaobject: Awaited<ReturnType<typeof createCollection>> =
+  const collectionMetaobject: Awaited<ReturnType<typeof createUserCollection>> =
     yield context.df.callActivity(
-      createCollectionName,
-      activityType<typeof createCollection>({
+      createUserCollectionName,
+      activityType<typeof createUserCollection>({
         user,
       })
     );

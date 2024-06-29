@@ -1,8 +1,8 @@
 import { User } from "~/functions/user";
 import { shopifyAdmin } from "~/library/shopify";
 
-export const createCollectionName = "createCollection";
-export const createCollection = async ({
+export const createUserCollectionName = "createUserCollection";
+export const createUserCollection = async ({
   user,
 }: {
   user: Pick<User, "username">;

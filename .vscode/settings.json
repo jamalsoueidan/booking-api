@@ -6,5 +6,6 @@
   "debug.internalConsoleOptions": "neverOpen",
   "azureFunctions.projectLanguageModel": 4,
   "azureFunctions.preDeployTask": "npm prune (functions)",
-  "docify.commentService.programmingLanguage": "javascript"
+  "docify.commentService.programmingLanguage": "javascript",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
