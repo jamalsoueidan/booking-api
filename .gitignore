@@ -104,5 +104,3 @@ __azurite_db*__.json
 app/lib/api/model
 app/lib/api/*.ts
 app/lib/zod
-admin-2024-04.schema.json
-admin.types.d.ts

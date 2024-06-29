@@ -24,7 +24,7 @@
   "dependencies": {
     "@azure/functions": "^4.3.0",
     "@azure/storage-queue": "^12.16.0",
-    "@shopify/admin-api-client": "^0.2.8",
+    "@shopify/admin-api-client": "^0.2.9",
     "@types/jsonwebtoken": "^9.0.6",
     "applicationinsights": "^2.9.5",
     "axios": "^1.6.7",
