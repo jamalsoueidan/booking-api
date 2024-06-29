@@ -1,8 +1,7 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable eslint-comments/no-unlimited-disable */
 /* eslint-disable */
-import * as AdminTypes from "./admin.types.d";
-
+import * as AdminTypes from "./admin.types";
 export type FileCreateMutationVariables = AdminTypes.Exact<{
   files: Array<AdminTypes.FileCreateInput> | AdminTypes.FileCreateInput;
 }>;
@@ -235,6 +234,43 @@ export type ProductPricepdateMutation = {
       }
     >;
   }>;
+};
+
+export type UpdateProductFragmentFragment = Pick<
+  AdminTypes.Product,
+  "id" | "handle" | "tags" | "title"
+> & {
+  variants: {
+    nodes: Array<
+      Pick<AdminTypes.ProductVariant, "id" | "compareAtPrice" | "price">
+    >;
+  };
+  default?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, "id" | "value">>;
+  active?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, "id" | "value">>;
+  user?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, "id" | "value">>;
+  hideFromCombine?: AdminTypes.Maybe<
+    Pick<AdminTypes.Metafield, "id" | "value">
+  >;
+  hideFromProfile?: AdminTypes.Maybe<
+    Pick<AdminTypes.Metafield, "id" | "value">
+  >;
+  parentId?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, "id" | "value">>;
+  scheduleId?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, "id" | "value">>;
+  locations?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, "id" | "value">>;
+  bookingPeriodValue?: AdminTypes.Maybe<
+    Pick<AdminTypes.Metafield, "id" | "value">
+  >;
+  bookingPeriodUnit?: AdminTypes.Maybe<
+    Pick<AdminTypes.Metafield, "id" | "value">
+  >;
+  noticePeriodValue?: AdminTypes.Maybe<
+    Pick<AdminTypes.Metafield, "id" | "value">
+  >;
+  noticePeriodUnit?: AdminTypes.Maybe<
+    Pick<AdminTypes.Metafield, "id" | "value">
+  >;
+  duration?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, "id" | "value">>;
+  breaktime?: AdminTypes.Maybe<Pick<AdminTypes.Metafield, "id" | "value">>;
 };
 
 export type ProductUpdateMutationVariables = AdminTypes.Exact<{
@@ -602,7 +638,7 @@ interface GeneratedMutationTypes {
     return: ProductPricepdateMutation;
     variables: ProductPricepdateMutationVariables;
   };
-  '#graphql\n  #graphql\n  fragment ProductFragment on Product {\n    id\n    handle\n    tags\n    title\n    variants(first: 1) {\n      nodes {\n        id\n        compareAtPrice\n        price\n      }\n    }\n    default: metafield(key: "default", namespace: "system") {\n      id\n      value\n    }\n    active: metafield(key: "active", namespace: "system") {\n      id\n      value\n    }\n    user: metafield(key: "user", namespace: "booking") {\n      id\n      value\n    }\n    hideFromCombine: metafield(key: "hide_from_combine", namespace: "booking") {\n      id\n      value\n    }\n    hideFromProfile: metafield(key: "hide_from_profile", namespace: "booking") {\n      id\n      value\n    }\n    parentId: metafield(key: "parentId", namespace: "booking") {\n      id\n      value\n    }\n    scheduleId: metafield(key: "scheduleId", namespace: "booking") {\n      id\n      value\n    }\n    locations: metafield(key: "locations", namespace: "booking") {\n      id\n      value\n    }\n    bookingPeriodValue: metafield(key: "booking_period_value", namespace: "booking") {\n      id\n      value\n    }\n    bookingPeriodUnit: metafield(key: "booking_period_unit", namespace: "booking") {\n      id\n      value\n    }\n    noticePeriodValue: metafield(key: "notice_period_value", namespace: "booking") {\n      id\n      value\n    }\n    noticePeriodUnit: metafield(key: "notice_period_unit", namespace: "booking") {\n      id\n      value\n    }\n    duration: metafield(key: "duration", namespace: "booking") {\n      id\n      value\n    }\n    breaktime: metafield(key: "breaktime", namespace: "booking") {\n      id\n      value\n    }\n  }\n\n  mutation ProductUpdate($id: ID, $metafields: [MetafieldInput!], $tags: [String!], $title: String, $descriptionHtml: String) {\n    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags, title: $title, descriptionHtml: $descriptionHtml}) {\n      product {\n        ...ProductFragment\n      }\n    }\n  }\n': {
+  '#graphql\n  #graphql\n  fragment ProductFragment on Product {\n    id\n    handle\n    tags\n    title\n    variants(first: 1) {\n      nodes {\n        id\n        compareAtPrice\n        price\n      }\n    }\n    default: metafield(key: "default", namespace: "system") {\n      id\n      value\n    }\n    active: metafield(key: "active", namespace: "system") {\n      id\n      value\n    }\n    user: metafield(key: "user", namespace: "booking") {\n      id\n      value\n    }\n    hideFromCombine: metafield(key: "hide_from_combine", namespace: "booking") {\n      id\n      value\n    }\n    hideFromProfile: metafield(key: "hide_from_profile", namespace: "booking") {\n      id\n      value\n    }\n    parentId: metafield(key: "parentId", namespace: "booking") {\n      id\n      value\n    }\n    scheduleId: metafield(key: "scheduleId", namespace: "booking") {\n      id\n      value\n    }\n    locations: metafield(key: "locations", namespace: "booking") {\n      id\n      value\n    }\n    bookingPeriodValue: metafield(key: "booking_period_value", namespace: "booking") {\n      id\n      value\n    }\n    bookingPeriodUnit: metafield(key: "booking_period_unit", namespace: "booking") {\n      id\n      value\n    }\n    noticePeriodValue: metafield(key: "notice_period_value", namespace: "booking") {\n      id\n      value\n    }\n    noticePeriodUnit: metafield(key: "notice_period_unit", namespace: "booking") {\n      id\n      value\n    }\n    duration: metafield(key: "duration", namespace: "booking") {\n      id\n      value\n    }\n    breaktime: metafield(key: "breaktime", namespace: "booking") {\n      id\n      value\n    }\n  }\n\n  mutation ProductUpdate($id: ID, $metafields: [MetafieldInput!], $tags: [String!], $title: String, $descriptionHtml: String) {\n    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags, title: $title, descriptionHtml: $descriptionHtml}) {\n      product {\n        ...UpdateProductFragment\n      }\n    }\n  }\n': {
     return: ProductUpdateMutation;
     variables: ProductUpdateMutationVariables;
   };
