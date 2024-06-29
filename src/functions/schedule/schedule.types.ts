@@ -82,7 +82,7 @@ export const ScheduleProductZodSchema = z.object({
   optionsMetafieldId: z.string().optional(),
   options: z.array(ScheduleProductOptionZodSchema).optional(),
   productHandle: z.string(),
-  parentId: GidFormat,
+  collectionIds: z.array(GidFormat),
   productId: GidFormat,
   variantId: GidFormat,
   user: z
@@ -99,7 +99,7 @@ export const ScheduleProductZodSchema = z.object({
   hideFromProfile: BooleanOrString,
   hideFromCombineMetafieldId: z.string().optional(),
   hideFromCombine: BooleanOrString,
-  title: z.string().optional(),
+  title: z.string(),
   scheduleIdMetafieldId: z.string().optional(),
   locationsMetafieldId: z.string().optional(),
   locations: z.array(LocationZodSchema),

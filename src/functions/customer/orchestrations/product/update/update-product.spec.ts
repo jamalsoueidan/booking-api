@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { OpenAIServiceProductCategorize } from "~/functions/openai/services/product-categorize";
 import { TimeUnit } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
 import {
@@ -20,7 +21,14 @@ jest.mock("~/library/shopify", () => ({
   }),
 }));
 
+jest.mock("~/functions/openai/services/product-categorize", () => ({
+  OpenAIServiceProductCategorize: jest.fn(),
+}));
+
 const mockRequest = shopifyAdmin().request as jest.Mock;
+
+const mockOpenAIServiceProductCategorize =
+  OpenAIServiceProductCategorize as jest.Mock;
 
 const mockProductUpdate: ProductUpdateMutation = {
   productUpdate: {
@@ -104,6 +112,33 @@ describe("CustomerProductUpdateOrchestration", () => {
   });
 
   it("createCollection", async () => {
+    mockOpenAIServiceProductCategorize.mockResolvedValue([
+      {
+        id: "gid://shopify/Collection/428546752786",
+        title: "Hårklip",
+        ruleSet: {
+          rules: [
+            {
+              column: "TYPE",
+              condition: "hårklip",
+            },
+          ],
+        },
+      },
+      {
+        id: "gid://shopify/Collection/628614889799",
+        title: "Dameklip",
+        ruleSet: {
+          rules: [
+            {
+              column: "TAG",
+              condition: "dameklip",
+            },
+          ],
+        },
+      },
+    ]);
+
     const customerId = 123;
     const name = "Test Schedule";
 
@@ -124,9 +159,6 @@ describe("CustomerProductUpdateOrchestration", () => {
           metafieldId: location.metafieldId,
         }),
       ],
-      parentId: GidFormat.parse(
-        mockProductUpdate.productUpdate?.product?.parentId?.value
-      ),
       description: "test test",
       descriptionHtml: "<p>test test</p>",
       user: {
@@ -204,7 +236,6 @@ describe("CustomerProductUpdateOrchestration", () => {
       `user-${user.username}`,
       `userid-${user.customerId}`,
       `treatments`,
-      `parentid-${product.parentId}`,
       `productid-${GidFormat.parse(
         mockProductUpdate.productUpdate?.product?.id
       )}`,
@@ -213,6 +244,10 @@ describe("CustomerProductUpdateOrchestration", () => {
       `location_type-${location.locationType}`,
       "active",
       ...tagDays,
+      "collectionid-428546752786",
+      "hårklip",
+      "collectionid-628614889799",
+      "dameklip",
       `locationid-${product.locations[0].location}`,
       `city-${location.city.replace(/ /g, "-").toLowerCase()}`,
     ];
@@ -267,10 +302,6 @@ describe("CustomerProductUpdateOrchestration", () => {
           {
             id: product.activeMetafieldId,
             value: user.active.toString(),
-          },
-          {
-            id: product.defaultMetafieldId,
-            value: product.default?.toString() || "true",
           },
           {
             id: product?.scheduleIdMetafieldId,

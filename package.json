@@ -19,12 +19,12 @@
     "generate-docs": "npx @redocly/cli build-docs docs/openapi.yaml -o docs/index.html --title 'Booking Api Documentation'",
     "generate-ts": "npm run bundle && npx orval --config ./orval.config.js",
     "postprocess": "node postprocess.js",
-    "graphql:codegen": "npx graphql-codegen -- --watch && npm run postprocess"
+    "codegen": "npx graphql-codegen"
   },
   "dependencies": {
     "@azure/functions": "^4.3.0",
     "@azure/storage-queue": "^12.16.0",
-    "@shopify/admin-api-client": "^0.2.8",
+    "@shopify/admin-api-client": "^0.2.9",
     "@types/jsonwebtoken": "^9.0.6",
     "applicationinsights": "^2.9.5",
     "axios": "^1.6.7",
@@ -34,6 +34,7 @@
     "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
     "mongoose": "^7.6.10",
+    "openai": "^4.52.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {

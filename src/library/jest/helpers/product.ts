@@ -7,8 +7,9 @@ import { getDumbLocationObject } from "./location";
 export const getProductObject = (
   props: Partial<ScheduleProduct> = {}
 ): ScheduleProduct => ({
-  parentId: faker.number.int({ min: 1, max: 10000000 }),
-  productHandle: faker.internet.url(),
+  title: "test",
+  collectionIds: [],
+  productHandle: faker.internet.displayName(),
   productId: faker.number.int({ min: 1, max: 10000000 }),
   scheduleIdMetafieldId: String(faker.number.int({ min: 1, max: 10000000 })),
   variantId: faker.number.int({

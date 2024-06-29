@@ -28,7 +28,6 @@ describe("CustomerProductServiceUpdate", () => {
           locations: [
             getDumbLocationObject({ ...location, location: location._id }),
           ],
-          parentId: 1,
           description: "test test",
           descriptionHtml: "<p>test test</p>",
           hideFromProfile: false,
