@@ -3,6 +3,10 @@ import { addSeconds } from "date-fns";
 import * as df from "durable-functions";
 import { OrchestrationContext } from "durable-functions";
 import {
+  updateArticle,
+  updateArticleName,
+} from "~/functions/customer/orchestrations/customer/update/update-article";
+import {
   updateProduct,
   updateProductName,
 } from "~/functions/customer/orchestrations/product/update/update-product";
@@ -25,6 +29,12 @@ const orchestrator: df.OrchestrationHandler = function* (
     const nextExecution = addSeconds(context.df.currentUtcDateTime, 5);
     yield context.df.createTimer(nextExecution);
   }
+
+  const article: Awaited<ReturnType<typeof updateArticle>> =
+    yield context.df.callActivity(
+      updateArticleName,
+      activityType<typeof updateArticle>(input)
+    );
 
   return { done: true };
 };

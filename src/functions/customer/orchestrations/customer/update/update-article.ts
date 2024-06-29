@@ -16,49 +16,48 @@ export const updateArticle = async ({
   });
 
   const collectionIds = schedules.flatMap((schedule) =>
-    schedule.products.map((product) => product.collectionIds)
-  );
-
-  const days = schedules.flatMap((schedule) =>
-    schedule.slots.map((slot) => slot.day.toLowerCase())
+    schedule.products.flatMap((product) => product.collectionIds)
   );
 
   const tags = []; //user.username
+  if (collectionIds.length > 0 && user.active) {
+    const days = schedules.flatMap((schedule) =>
+      schedule.slots.map((slot) => slot.day.toLowerCase())
+    );
 
-  if (user.professions) {
-    tags.push(`profession-${user.professions.join(", profession-")}`);
-  }
+    if (user.professions) {
+      tags.push(`profession-${user.professions.join(", profession-")}`);
+    }
 
-  if (user.speaks) {
-    tags.push(`speak-${user.speaks.join(", speak-")}`);
-  }
+    if (user.speaks) {
+      tags.push(`speak-${user.speaks.join(", speak-")}`);
+    }
 
-  if (collectionIds.length > 0) {
     tags.push(`collectionid-${collectionIds.join(", collectionid-")}`);
+
+    if (days.length > 0) {
+      tags.push(`day-${days.join(", day-")}`);
+    }
+
+    const schedule = await UserScheduleServiceLocationsList({
+      customerId,
+    });
+
+    const locations = schedule.map((item) => item.locations).flat();
+
+    if (locations.length > 0) {
+      tags.push(
+        `city-${locations.map((l) => l.city.toLowerCase()).join(", city-")}`
+      );
+      tags.push(
+        `location_type-${locations
+          .map((l) => l.locationType)
+          .join(", location_type-")}`
+      );
+    }
+
+    tags.push(`gender-${user.gender}`);
   }
-
-  if (days.length > 0) {
-    tags.push(`day-${days.join(", day-")}`);
-  }
-
-  const schedule = await UserScheduleServiceLocationsList({
-    customerId,
-  });
-
-  const locations = schedule.map((item) => item.locations).flat();
-
-  if (locations.length > 0) {
-    tags.push(
-      `city-${locations.map((l) => l.city.toLowerCase()).join(", city-")}`
-    );
-    tags.push(
-      `location_type-${locations
-        .map((l) => l.locationType)
-        .join(", location_type-")}`
-    );
-  }
-
-  tags.push(`gender-${user.gender}`);
 
   const response = await shopifyRest().put(
     `blogs/105364226375/articles/${user.articleId}`,
