@@ -404,8 +404,6 @@ components:
     CustomerProductAddBody:
       type: object
       properties:
-        parentId:
-          type: string
         title:
           type: string
         description:
@@ -435,7 +433,6 @@ components:
             currencyCode:
               type: string
       required:
-        - parentId
         - title
         - description
         - descriptionHtml
@@ -2630,8 +2627,6 @@ components:
           items:
             type: object
             properties:
-              parentId:
-                type: number
               productId:
                 type: number
               variantId:
