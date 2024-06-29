@@ -34,7 +34,7 @@ export const updateArticle = async ({
   }
 
   if (collectionIds.length > 0) {
-    tags.push(`collection_id-${collectionIds.join(", collection_id-")}`);
+    tags.push(`collectionid-${collectionIds.join(", collectionid-")}`);
   }
 
   if (days.length > 0) {
