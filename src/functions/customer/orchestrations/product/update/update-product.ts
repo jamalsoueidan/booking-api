@@ -263,7 +263,7 @@ const PRODUCT_FRAGMENT = `#graphql
 export const PRODUCT_UPDATE = `#graphql
   ${PRODUCT_FRAGMENT}
   mutation ProductUpdate($id: ID, $metafields: [MetafieldInput!], $tags: [String!], $title: String, $descriptionHtml: String) {
-    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags, title: $title, descriptionHtml: $descriptionHtml}) {
+    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags, title: $title, descriptionHtml: $descriptionHtml, status: ACTIVE}) {
       product {
         ...UpdateProductFragment
       }

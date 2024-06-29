@@ -62,7 +62,7 @@ export const updateProductOption = async ({
 export const PRODUCT_OPTION_ADD = `#graphql
   ${PRODUCT_OPTION_FRAGMENT}
   mutation ProductOptionAdd($id: ID!, $metafields: [MetafieldInput!]!, $tags: [String!]!) {
-    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags}) {
+    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags, status: ACTIVE}) {
       product {
         ...ProductOptionFragment
       }
