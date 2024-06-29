@@ -16,7 +16,9 @@ export const updateArticle = async ({
   });
 
   const collectionIds = schedules.flatMap((schedule) =>
-    schedule.products.flatMap((product) => product.collectionIds)
+    schedule.products
+      .filter((p) => p.active)
+      .flatMap((product) => product.collectionIds)
   );
 
   const tags = []; //user.username

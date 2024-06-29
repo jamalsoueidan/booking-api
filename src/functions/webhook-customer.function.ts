@@ -1,6 +1,6 @@
 import "module-alias/register";
 
-import { HttpRequest, InvocationContext, app } from "@azure/functions";
+import { app, HttpRequest, InvocationContext } from "@azure/functions";
 import * as df from "durable-functions";
 import { connect } from "~/library/mongoose";
 import { BlockedModel } from "./blocked/blocked.model";
@@ -91,41 +91,45 @@ app.http("webhookCustomerUpdate", {
   route: "webhooks/customer/update",
   extraInputs: [df.input.durableClient()],
   handler: async (request: HttpRequest, context: InvocationContext) => {
-    await connect();
-    const shopifyCustomer = (await request.json()) as unknown as Customer;
-    const active = shopifyCustomer.tags.includes("active");
-    const customerId = shopifyCustomer.id;
+    try {
+      await connect();
+      const shopifyCustomer = (await request.json()) as unknown as Customer;
+      const active = shopifyCustomer.tags.includes("active");
+      const customerId = shopifyCustomer.id;
 
-    const customer = await CustomerServiceGet({ customerId });
+      const customer = await CustomerServiceGet({ customerId });
 
-    const newCustomer = await CustomerServiceUpdate(
-      { customerId },
-      {
-        active,
-        email: shopifyCustomer.email,
-        fullname: `${shopifyCustomer.first_name} ${shopifyCustomer.last_name}`,
-        phone: shopifyCustomer.phone,
-      }
-    );
-
-    context.log(
-      `Customer Update, customerId = '${customerId}', active = '${active}', updated`
-    );
-
-    if (customer.active !== active) {
-      await CustomerUpdateOrchestration(newCustomer, context);
-
-      const productIds = await CustomerProductsServiceListIds({
-        customerId,
-      });
-
-      await ActivateAllProductsOrchestration(
-        { customerId, productIds },
-        context
+      const newCustomer = await CustomerServiceUpdate(
+        { customerId },
+        {
+          active,
+          email: shopifyCustomer.email,
+          fullname: `${shopifyCustomer.first_name} ${shopifyCustomer.last_name}`,
+          phone: shopifyCustomer.phone,
+        }
       );
-    }
 
-    return { body: "" };
+      context.log(
+        `Customer Update, customerId = '${customerId}', active = '${active}', updated`
+      );
+
+      if (customer.active !== active) {
+        await CustomerUpdateOrchestration(newCustomer, context);
+
+        const productIds = await CustomerProductsServiceListIds({
+          customerId,
+        });
+
+        await ActivateAllProductsOrchestration(
+          { customerId, productIds },
+          context
+        );
+      }
+
+      return { body: "" };
+    } catch(err) {
+      return {body: ""}
+    }
   },
 });
 
