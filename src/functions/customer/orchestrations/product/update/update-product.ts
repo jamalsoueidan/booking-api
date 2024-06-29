@@ -1,4 +1,5 @@
 import { CustomerServiceGet } from "~/functions/customer/services/customer/get";
+import { CustomerProductServiceGet } from "~/functions/customer/services/product/get";
 import { LocationModel } from "~/functions/location";
 import { OpenAIServiceProductCategorize } from "~/functions/openai/services/product-categorize";
 import { ScheduleModel } from "~/functions/schedule";
@@ -98,6 +99,29 @@ export const updateProduct = async ({
         tags.push(r.condition);
       });
     });
+
+    const { scheduleId, scheduleMetafieldId, scheduleName, ...oldProduct } =
+      await CustomerProductServiceGet({
+        customerId,
+        productId,
+      });
+
+    await ScheduleModel.updateOne(
+      {
+        customerId,
+        "products.productId": productId,
+      },
+      {
+        $set: {
+          "products.$": {
+            ...oldProduct,
+            collectionIds:
+              categories?.map((c) => GidFormat.parse(c.id)) ||
+              oldProduct.collectionIds,
+          },
+        },
+      }
+    );
   }
 
   const variables = {

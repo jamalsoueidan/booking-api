@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { CustomerProductServiceGet } from "~/functions/customer/services/product/get";
 import { OpenAIServiceProductCategorize } from "~/functions/openai/services/product-categorize";
 import { TimeUnit } from "~/functions/schedule";
 import { createUser } from "~/library/jest/helpers";
@@ -230,6 +231,13 @@ describe("CustomerProductUpdateOrchestration", () => {
       customerId,
       productId: product.productId,
     });
+
+    const updatedProduct = await CustomerProductServiceGet({
+      customerId,
+      productId: product.productId,
+    });
+
+    expect(updatedProduct.collectionIds).toHaveLength(2);
 
     const tags = [
       `user`,
