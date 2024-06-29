@@ -119,7 +119,7 @@ export const CustomerProductServiceAdd = async (
   return newProduct;
 };
 
-export const PRODUCT_FRAGMENT = `#graphql
+const PRODUCT_FRAGMENT = `#graphql
   fragment ProductFragment on Product {
     id
     handle

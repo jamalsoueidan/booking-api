@@ -1,5 +1,4 @@
 import { CustomerServiceGet } from "~/functions/customer/services/customer/get";
-import { PRODUCT_FRAGMENT } from "~/functions/customer/services/product/add";
 import { LocationModel } from "~/functions/location";
 import { OpenAIServiceProductCategorize } from "~/functions/openai/services/product-categorize";
 import { ScheduleModel } from "~/functions/schedule";
@@ -189,12 +188,84 @@ export const updateProduct = async ({
   return data.productUpdate.product;
 };
 
+const PRODUCT_FRAGMENT = `#graphql
+  fragment UpdateProductFragment on Product {
+    id
+    handle
+    tags
+    title
+    variants(first: 1) {
+      nodes {
+        id
+        compareAtPrice
+        price
+      }
+    }
+    default: metafield(key: "default", namespace: "system") {
+      id
+      value
+    }
+    active: metafield(key: "active", namespace: "system") {
+      id
+      value
+    }
+    user: metafield(key: "user", namespace: "booking") {
+      id
+      value
+    }
+    hideFromCombine: metafield(key: "hide_from_combine", namespace: "booking") {
+      id
+      value
+    }
+    hideFromProfile: metafield(key: "hide_from_profile", namespace: "booking") {
+      id
+      value
+    }
+    parentId: metafield(key: "parentId", namespace: "booking") {
+      id
+      value
+    }
+    scheduleId: metafield(key: "scheduleId", namespace: "booking") {
+      id
+      value
+    }
+    locations: metafield(key: "locations", namespace: "booking") {
+      id
+      value
+    }
+    bookingPeriodValue: metafield(key: "booking_period_value", namespace: "booking") {
+      id
+      value
+    }
+    bookingPeriodUnit: metafield(key: "booking_period_unit", namespace: "booking") {
+      id
+      value
+    }
+    noticePeriodValue: metafield(key: "notice_period_value", namespace: "booking") {
+      id
+      value
+    }
+    noticePeriodUnit: metafield(key: "notice_period_unit", namespace: "booking") {
+      id
+      value
+    }
+    duration: metafield(key: "duration", namespace: "booking") {
+      id
+      value
+    }
+    breaktime: metafield(key: "breaktime", namespace: "booking") {
+      id
+      value
+    }
+  }
+` as const;
+
 export const PRODUCT_UPDATE = `#graphql
   ${PRODUCT_FRAGMENT}
   mutation ProductUpdate($id: ID, $metafields: [MetafieldInput!], $tags: [String!], $title: String, $descriptionHtml: String) {
     productUpdate(input: {id: $id, metafields: $metafields, tags: $tags, title: $title, descriptionHtml: $descriptionHtml}) {
       product {
-        ...ProductFragment
+        ...UpdateProductFragment
       }
     }
   }
