@@ -5505,3 +5505,54 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundResponse'
       security: []
+  /openai/products-title:
+    post:
+      tags:
+        - OpenAI
+      operationId: openAIProductTitle
+      summary: POST Correct any grammatical errors in title and description
+      description: This endpoint correct any grammatical errors in title and description
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+              required:
+                - title
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      description:
+                        type: string
+                    required:
+                      - title
+                      - description
+                required:
+                  - success
+                  - payload
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
