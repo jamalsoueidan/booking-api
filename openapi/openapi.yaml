@@ -532,3 +532,6 @@ paths:
     $ref: "./paths/user/search/index.yaml"
   /users/top:
     $ref: "./paths/user/top/index.yaml"
+
+  /openai/products-title:
+    $ref: "./paths/openai/product-title/index.yaml"

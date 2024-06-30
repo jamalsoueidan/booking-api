@@ -1,0 +1,28 @@
+post:
+  tags:
+    - OpenAI
+  operationId: openAIProductTitle
+  summary: POST Correct any grammatical errors in title and description
+  description: This endpoint correct any grammatical errors in title and description
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./body.yaml"
+
+  responses:
+    "200":
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: "./response.yaml"
+    "400":
+      $ref: "../../../responses/bad.yaml"
+    "401":
+      $ref: "../../../responses/unauthorized.yaml"
+    "403":
+      $ref: "../../../responses/forbidden.yaml"
+
+  security: []

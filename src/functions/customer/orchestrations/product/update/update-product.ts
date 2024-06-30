@@ -1,5 +1,4 @@
 import { CustomerServiceGet } from "~/functions/customer/services/customer/get";
-import { CustomerProductServiceGet } from "~/functions/customer/services/product/get";
 import { LocationModel } from "~/functions/location";
 import { OpenAIServiceProductCategorize } from "~/functions/openai/services/product-categorize";
 import { ScheduleModel } from "~/functions/schedule";
@@ -26,15 +25,17 @@ export const updateProduct = async ({
         productId,
       },
     },
-  }).orFail(
-    new NotFoundError([
-      {
-        code: "custom",
-        message: "PRODUCT_NOT_FOUND",
-        path: ["productId"],
-      },
-    ])
-  );
+  })
+    .lean()
+    .orFail(
+      new NotFoundError([
+        {
+          code: "custom",
+          message: "PRODUCT_NOT_FOUND",
+          path: ["productId"],
+        },
+      ])
+    );
 
   const product = schedule.products.find((p) => p.productId === productId);
 
@@ -100,12 +101,6 @@ export const updateProduct = async ({
       });
     });
 
-    const { scheduleId, scheduleMetafieldId, scheduleName, ...oldProduct } =
-      await CustomerProductServiceGet({
-        customerId,
-        productId,
-      });
-
     await ScheduleModel.updateOne(
       {
         customerId,
@@ -114,10 +109,10 @@ export const updateProduct = async ({
       {
         $set: {
           "products.$": {
-            ...oldProduct,
+            ...product,
             collectionIds:
               categories?.map((c) => GidFormat.parse(c.id)) ||
-              oldProduct.collectionIds,
+              product.collectionIds,
           },
         },
       }

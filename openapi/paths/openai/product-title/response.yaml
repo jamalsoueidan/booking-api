@@ -1,0 +1,19 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  payload:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+    required:
+      - title
+      - description
+
+required:
+  - success
+  - payload
