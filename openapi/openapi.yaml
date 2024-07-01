@@ -70,6 +70,8 @@ components:
       $ref: paths/customer/schedule/_types/product-notice-period.yaml
     CustomerProductNoticeUnit:
       $ref: paths/customer/schedule/_types/product-notice-unit.yaml
+    CustomerProductOption:
+      $ref: paths/customer/schedule/_types/product-options.yaml
     CustomerProductLocations:
       $ref: paths/customer/schedule/_types/product-locations.yaml
     CustomerProductUpdateResponse:
