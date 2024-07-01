@@ -84,6 +84,7 @@ export const ScheduleProductZodSchema = z.object({
   productHandle: z.string(),
   collectionIds: z.array(GidFormat),
   productId: GidFormat,
+  productType: z.string(),
   variantId: GidFormat,
   user: z
     .object({

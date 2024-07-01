@@ -156,6 +156,7 @@ describe("CustomerProductServiceAdd", () => {
       },
       {
         ...productBody,
+        productType: "Andet",
         scheduleId: newSchedule._id,
         title,
       }

@@ -1,9 +1,9 @@
 import { HttpRequest, InvocationContext } from "@azure/functions";
 
 import {
-  HttpSuccessResponse,
   createContext,
   createHttpRequest,
+  HttpSuccessResponse,
 } from "~/library/jest/azure";
 
 import { createUser } from "~/library/jest/helpers";
@@ -142,6 +142,7 @@ describe("CustomerProductControllerAdd", () => {
       hideFromProfile: true,
       title,
       description: "ok",
+      productType: "test",
       descriptionHtml: "<b>test</b>",
       scheduleId: newSchedule._id,
       locations,

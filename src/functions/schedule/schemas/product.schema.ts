@@ -59,6 +59,7 @@ export const ProductSchema = new mongoose.Schema<ScheduleProduct>(
       type: String,
       index: true,
     },
+    productType: String,
     productId: {
       type: Number,
       index: true,

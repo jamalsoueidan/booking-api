@@ -124,6 +124,7 @@ export const updateProduct = async ({
   const variables = {
     title: product.title,
     descriptionHtml: product.descriptionHtml || "",
+    productType: product.productType || "Andet",
     id: `gid://shopify/Product/${product.productId}`,
     metafields: [
       {
@@ -180,8 +181,6 @@ export const updateProduct = async ({
       `user-${user.username}`,
       `userid-${user.customerId}`,
       "treatments",
-      `productid-${product.productId}`,
-      `product-${product.productHandle}`,
       `scheduleid-${schedule._id}`,
     ]
       .concat(tags)

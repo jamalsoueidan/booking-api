@@ -57,7 +57,7 @@ Respond with this JSON structure:
           content,
         },
       ],
-      max_tokens: 300,
+      max_tokens: 20000,
       response_format: {
         type: "json_object",
       },
