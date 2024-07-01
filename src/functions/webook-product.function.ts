@@ -76,7 +76,7 @@ app.http("webhookProductUpdate", {
       const regex = /userid-(\d+)/;
       const match = shopifyProduct.tags.match(regex);
 
-      if (match && shouldProcessUpdate) {
+      if (match && shouldProcessUpdate && shopifyProduct.id) {
         // The user ID is in the first capturing group
         const customerId = match[1];
         console.log(`User ID: ${customerId}, - ${shopifyProduct.id}`);

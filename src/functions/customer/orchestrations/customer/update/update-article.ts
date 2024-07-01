@@ -61,26 +61,30 @@ export const updateArticle = async ({
     tags.push(`gender-${user.gender}`);
   }
 
+  const data = {
+    article: {
+      id: user.articleId,
+      body_html: user.aboutMeHtml,
+      tags: tags.join(", "),
+      summary_html: user.shortDescription,
+      ...(user.images?.profile?.url
+        ? {
+            image: {
+              src: user.images?.profile.url.includes("?")
+                ? user.images?.profile.url.split("?")[0]
+                : user.images?.profile.url,
+              alt: user.username,
+            },
+          }
+        : {}),
+      published_at: user.active ? user.createdAt : null,
+    },
+  };
+
   const response = await shopifyRest().put(
     `blogs/105364226375/articles/${user.articleId}`,
     {
-      data: {
-        article: {
-          id: user.articleId,
-          body_html: user.aboutMeHtml,
-          tags: tags.join(", "),
-          summary_html: user.shortDescription,
-          ...(user.images?.profile
-            ? {
-                image: {
-                  src: user.images?.profile.url,
-                  alt: user.username,
-                },
-              }
-            : {}),
-          published_at: user.active ? user.createdAt : null,
-        },
-      },
+      data,
     }
   );
 
