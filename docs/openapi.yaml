@@ -225,7 +225,9 @@ components:
         options:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerProductOptionsList/items'
+            $ref: '#/components/schemas/CustomerProductOption'
+        productType:
+          type: string
         description:
           type: string
         descriptionHtml:
@@ -325,6 +327,43 @@ components:
         - hours
         - days
         - weeks
+    CustomerProductOption:
+      type: object
+      properties:
+        productId:
+          type: number
+        title:
+          type: string
+        variants:
+          type: array
+          items:
+            type: object
+            properties:
+              variantId:
+                type: number
+              title:
+                type: string
+              price:
+                type: string
+              duration:
+                type: object
+                properties:
+                  value:
+                    type: number
+                  metafieldId:
+                    type: number
+                required:
+                  - value
+                  - metafieldId
+            required:
+              - variantId
+              - duration
+              - title
+              - price
+      required:
+        - productId
+        - variants
+        - title
     CustomerProductLocations:
       type: array
       items:
@@ -487,7 +526,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerProductOptionsList/items'
+          $ref: '#/components/schemas/CustomerProductOption'
       required:
         - success
         - payload
@@ -514,42 +553,7 @@ components:
     CustomerProductOptionsList:
       type: array
       items:
-        type: object
-        properties:
-          productId:
-            type: number
-          title:
-            type: string
-          variants:
-            type: array
-            items:
-              type: object
-              properties:
-                variantId:
-                  type: number
-                title:
-                  type: string
-                price:
-                  type: string
-                duration:
-                  type: object
-                  properties:
-                    value:
-                      type: number
-                    metafieldId:
-                      type: number
-                  required:
-                    - value
-                    - metafieldId
-              required:
-                - variantId
-                - duration
-                - title
-                - price
-        required:
-          - productId
-          - variants
-          - title
+        $ref: '#/components/schemas/CustomerProductOption'
     CustomerProductOptionsListResponse:
       type: object
       properties:
@@ -568,7 +572,7 @@ components:
           type: boolean
           example: true
         payload:
-          $ref: '#/components/schemas/CustomerProductOptionsList/items'
+          $ref: '#/components/schemas/CustomerProductOption'
       required:
         - success
         - payload
@@ -591,7 +595,7 @@ components:
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/CustomerProductOptionsList/items'
+            $ref: '#/components/schemas/CustomerProductOption'
       required:
         - success
         - payload
