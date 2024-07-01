@@ -214,6 +214,7 @@ const PRODUCT_FRAGMENT = `#graphql
     handle
     tags
     title
+    productType
     variants(first: 1) {
       nodes {
         id
@@ -238,10 +239,6 @@ const PRODUCT_FRAGMENT = `#graphql
       value
     }
     hideFromProfile: metafield(key: "hide_from_profile", namespace: "booking") {
-      id
-      value
-    }
-    parentId: metafield(key: "parentId", namespace: "booking") {
       id
       value
     }
@@ -282,8 +279,8 @@ const PRODUCT_FRAGMENT = `#graphql
 
 export const PRODUCT_UPDATE = `#graphql
   ${PRODUCT_FRAGMENT}
-  mutation ProductUpdate($id: ID, $metafields: [MetafieldInput!], $tags: [String!], $title: String, $descriptionHtml: String) {
-    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags, title: $title, descriptionHtml: $descriptionHtml, status: ACTIVE}) {
+  mutation ProductUpdate($id: ID, $metafields: [MetafieldInput!], $tags: [String!], $title: String, $productType: String, $descriptionHtml: String) {
+    productUpdate(input: {id: $id, metafields: $metafields, tags: $tags, title: $title, productType: $productType, descriptionHtml: $descriptionHtml, status: ACTIVE}) {
       product {
         ...UpdateProductFragment
       }

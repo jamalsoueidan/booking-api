@@ -38,13 +38,6 @@ Respond with this JSON structure:
   "collections": [
     {
       id: "gid://shopify/Collection/1111",
-      title: "example",
-      ruleSet: {
-        rules: [{
-          column
-          condition
-        }],
-      },
     },
   ],
 }`;
@@ -57,14 +50,21 @@ Respond with this JSON structure:
           content,
         },
       ],
-      max_tokens: 20000,
+      max_tokens: 4096,
       response_format: {
         type: "json_object",
       },
     });
 
-    return JSON.parse(response.choices[0].message.content as any)
-      .collections as CollectionsQuery["collections"]["nodes"];
+    const collections = JSON.parse(
+      response.choices[0].message.content as any
+    ).collections;
+
+    const newResponse: CollectionsQuery["collections"]["nodes"] =
+      collections.map(({ id }: { id: string }) => {
+        return data?.collections.nodes.find((c) => c.id === id);
+      });
+    return newResponse;
   } catch (error) {
     console.error("Error:", error);
   }
