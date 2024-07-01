@@ -21,14 +21,14 @@ export const OpenAIServiceProductTitle = async ({
     messages: [
       {
         role: "system",
-        content: `You are an expert in correcting treatment titles and descriptions. Please correct any grammatical errors in title and description. If the description is missing, add a short sentence that encourages customers to buy the product. Please responds with title, description json format and keep the language in danish.`,
+        content: `You are an expert in correcting treatment titles and descriptions. Please correct any grammatical errors in title and description. If the description is missing, add a short sentence that encourages customers to buy this treatment, the text should be from the indiviual beauty professional as seller of the treatment. Please responds with title, description json format and keep the language in danish.`,
       },
       {
         role: "user",
         content: `Title: ${title}\nDescription: ${description || ""}`,
       },
     ],
-    max_tokens: 100,
+    max_tokens: 500,
     response_format: {
       type: "json_object",
     },
