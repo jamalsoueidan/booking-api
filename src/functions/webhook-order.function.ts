@@ -1,13 +1,13 @@
 import "module-alias/register";
 
 import {
+  app,
   HttpRequest,
   HttpResponseInit,
   InvocationContext,
-  app,
   output,
 } from "@azure/functions";
-import { webhookOrderProcess } from "./webhook/order";
+import { webhookOrderProcess } from "./webhook/order/order";
 
 export const orderQueueName = "webhook-order";
 export const orderQueueOutput = output.storageQueue({

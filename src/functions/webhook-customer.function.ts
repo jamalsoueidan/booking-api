@@ -127,8 +127,8 @@ app.http("webhookCustomerUpdate", {
       }
 
       return { body: "" };
-    } catch(err) {
-      return {body: ""}
+    } catch (err) {
+      return { body: "" };
     }
   },
 });
@@ -150,6 +150,8 @@ app.http("webhookCustomerDelete", {
     });
 
     if (response.deletedCount > 0) {
+      //TODO:
+      //Delete also his content in shopify?
       ScheduleModel.deleteMany({
         customerId,
       });
