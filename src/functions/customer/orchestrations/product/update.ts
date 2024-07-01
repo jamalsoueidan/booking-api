@@ -3,6 +3,10 @@ import * as df from "durable-functions";
 import { OrchestrationContext } from "durable-functions";
 import { activityType } from "~/library/orchestration";
 import {
+  updateArticle,
+  updateArticleName,
+} from "../customer/update/update-article";
+import {
   updateUserMetaobject,
   updateUserMetaobjectName,
 } from "../customer/update/update-user-metaobject";
@@ -36,6 +40,12 @@ const orchestrator: df.OrchestrationHandler = function* (
       activityType<typeof updatePrice>(input)
     );
 
+  const article: Awaited<ReturnType<typeof updateArticle>> =
+    yield context.df.callActivity(
+      updateArticleName,
+      activityType<typeof updateArticle>(input)
+    );
+
   const userField: Awaited<ReturnType<typeof updateUserMetaobject>> =
     yield context.df.callActivity(
       updateUserMetaobjectName,
@@ -49,7 +59,13 @@ const orchestrator: df.OrchestrationHandler = function* (
     activityType<typeof updateScheduleLocationsField>(input)
   );
 
-  return { productUpdated, priceUpdated, userField, scheduleLocationsField };
+  return {
+    productUpdated,
+    priceUpdated,
+    article,
+    userField,
+    scheduleLocationsField,
+  };
 };
 
 df.app.orchestration("CustomerProductUpdateOrchestration", orchestrator);

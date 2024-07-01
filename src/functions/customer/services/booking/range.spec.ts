@@ -1,8 +1,8 @@
 import { addMinutes, subMinutes } from "date-fns";
 import { OrderModel } from "~/functions/order/order.models";
 import { Order } from "~/functions/order/order.types";
-import { orderWithShipping } from "~/functions/webhook/data-order-with-shipping";
-import { orderWithoutShipping } from "~/functions/webhook/data-order-with-without-shipping";
+import { orderWithShipping } from "~/functions/webhook/order/data-order-with-shipping";
+import { orderWithoutShipping } from "~/functions/webhook/order/data-order-with-without-shipping";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
 import { createShipping } from "~/library/jest/helpers/shipping";
