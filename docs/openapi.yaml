@@ -360,6 +360,8 @@ components:
           type: string
         hideFromCombine:
           type: string
+        productType:
+          type: string
         price:
           type: object
           properties:
@@ -406,6 +408,8 @@ components:
       properties:
         title:
           type: string
+        productType:
+          type: string
         description:
           type: string
         descriptionHtml:
@@ -434,6 +438,7 @@ components:
               type: string
       required:
         - title
+        - productType
         - description
         - descriptionHtml
         - scheduleId
@@ -5539,6 +5544,13 @@ paths:
                   payload:
                     type: object
                     properties:
+                      collection:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          title:
+                            type: string
                       title:
                         type: string
                       description:
