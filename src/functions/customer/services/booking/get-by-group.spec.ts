@@ -1,6 +1,6 @@
 import { OrderModel } from "~/functions/order/order.models";
 import { Order } from "~/functions/order/order.types";
-import { orderWithoutShipping } from "~/functions/webhook/data-order-with-without-shipping";
+import { orderWithoutShipping } from "~/functions/webhook/order/data-order-with-without-shipping";
 import { createUser } from "~/library/jest/helpers";
 import { createLocation } from "~/library/jest/helpers/location";
 import { CustomerBookingServiceGetByGroup } from "./get-by-group";

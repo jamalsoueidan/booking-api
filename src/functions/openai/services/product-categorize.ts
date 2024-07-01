@@ -16,12 +16,7 @@ export const OpenAIServiceProductCategorize = async ({
   try {
     const { data } = await shopifyAdmin().request(COLLECTIONS);
 
-    const collections = data?.collections.nodes.filter(
-      (collection: any) => collection.ruleSet.rules.length == 1
-    );
-
-    // Prepare collections data as context
-    const collectionsContext = JSON.stringify(collections, null, 2);
+    const collectionsContext = JSON.stringify(data?.collections.nodes, null, 2);
 
     const content = `
 ### Product Details:
