@@ -6,6 +6,13 @@ properties:
   payload:
     type: object
     properties:
+      collection:
+        type: object
+        properties:
+          id:
+            type: string
+          title:
+            type: string
       title:
         type: string
       description:

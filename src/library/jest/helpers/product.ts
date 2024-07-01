@@ -9,6 +9,7 @@ export const getProductObject = (
 ): ScheduleProduct => ({
   title: "test",
   collectionIds: [],
+  productType: "test",
   productHandle: faker.internet.displayName(),
   productId: faker.number.int({ min: 1, max: 10000000 }),
   scheduleIdMetafieldId: String(faker.number.int({ min: 1, max: 10000000 })),

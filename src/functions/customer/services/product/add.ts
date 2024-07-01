@@ -15,6 +15,7 @@ export type CustomerProductServiceAdd = {
 
 export type CustomerProductServiceAddBody = Pick<
   ScheduleProduct,
+  | "productType"
   | "description"
   | "descriptionHtml"
   | "locations"
@@ -62,6 +63,7 @@ export const CustomerProductServiceAdd = async (
     productHandle: shopifyProduct.handle,
     productId: shopifyProductId,
     variantId: GidFormat.parse(variant.id),
+    productType: body.productType,
     price: {
       amount: body.price.amount,
       currencyCode: "DKK",

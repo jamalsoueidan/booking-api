@@ -244,10 +244,6 @@ describe("CustomerProductUpdateOrchestration", () => {
       `user-${user.username}`,
       `userid-${user.customerId}`,
       `treatments`,
-      `productid-${GidFormat.parse(
-        mockProductUpdate.productUpdate?.product?.id
-      )}`,
-      `product-${product.productHandle}`,
       `scheduleid-${newSchedule._id}`,
       `location_type-${location.locationType}`,
       "active",
@@ -265,6 +261,7 @@ describe("CustomerProductUpdateOrchestration", () => {
       variables: {
         id: mockProductUpdate.productUpdate?.product?.id,
         title: product.title,
+        productType: product.productType,
         descriptionHtml: product.descriptionHtml,
         metafields: [
           {

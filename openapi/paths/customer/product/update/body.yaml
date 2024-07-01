@@ -4,6 +4,8 @@ properties:
     type: string
   hideFromCombine:
     type: string
+  productType:
+    type: string
   price:
     type: object
     properties:
