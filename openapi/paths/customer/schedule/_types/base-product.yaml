@@ -6,6 +6,8 @@ properties:
     type: array
     items:
       $ref: "./product-options.yaml"
+  productType:
+    type: string
   description:
     type: string
   descriptionHtml:

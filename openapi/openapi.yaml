@@ -68,6 +68,8 @@ components:
       $ref: paths/customer/schedule/_types/product-booking-unit.yaml
     CustomerProductNoticePeriod:
       $ref: paths/customer/schedule/_types/product-notice-period.yaml
+    CustomerProductOption:
+      $ref: paths/customer/schedule/_types/product-options.yaml
     CustomerProductNoticeUnit:
       $ref: paths/customer/schedule/_types/product-notice-unit.yaml
     CustomerProductLocations:
