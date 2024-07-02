@@ -31,8 +31,8 @@ export const updateArticle = async ({
       tags.push(`profession-${user.professions.join(", profession-")}`);
     }
 
-    if (user.speaks) {
-      tags.push(`speak-${user.speaks.join(", speak-")}`);
+    if (user.languages) {
+      tags.push(`language-${user.languages.join(", language-")}`);
     }
 
     tags.push(`collectionid-${collectionIds.join(", collectionid-")}`);

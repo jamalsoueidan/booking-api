@@ -100,7 +100,7 @@ export const UserZodSchema = z.object({
         .optional(),
     })
     .optional(),
-  speaks: z.array(z.string()).optional(),
+  languages: z.array(z.string()).optional(),
   fullname: z.string(),
   active: z.boolean(),
   email: z.string(),

@@ -3,8 +3,8 @@ import { ensureType } from "~/library/jest/helpers/mock";
 import { shopifyAdmin } from "~/library/shopify";
 import { CreateUserMetaobjectMutation } from "~/types/admin.generated";
 import {
-  CREATE_USER_METAOBJECT,
   createUserMetaobject,
+  CREATE_USER_METAOBJECT,
 } from "./create-user-metaobject";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -112,8 +112,8 @@ describe("CustomerCreateOrchestration", () => {
             value: JSON.stringify({ professions: user.professions || [] }),
           },
           {
-            key: "speaks",
-            value: JSON.stringify({ speaks: user.speaks || [] }),
+            key: "languages",
+            value: JSON.stringify({ languages: user.languages || [] }),
           },
           {
             key: "collection",

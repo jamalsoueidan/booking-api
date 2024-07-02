@@ -10,8 +10,8 @@ import { createSchedule } from "~/library/jest/helpers/schedule";
 import { shopifyAdmin } from "~/library/shopify";
 import { UpdateUserMetaobjectMutation } from "~/types/admin.generated";
 import {
-  UPDATE_USER_METAOBJECT,
   updateUserMetaobject,
+  UPDATE_USER_METAOBJECT,
 } from "./update-user-metaobject";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -113,8 +113,8 @@ describe("CustomerUpdateOrchestration", () => {
             value: JSON.stringify({ professions: user.professions || [] }),
           },
           {
-            key: "speaks",
-            value: JSON.stringify({ speaks: user.speaks || [] }),
+            key: "languages",
+            value: JSON.stringify({ languages: user.languages || [] }),
           },
           {
             key: "social",

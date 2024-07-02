@@ -37,15 +37,15 @@ export const UserMongooseSchema = new mongoose.Schema<
     specialties: {
       type: [String],
       default: [],
-      index: true,
     },
     yearsExperience: Number,
     username: {
       type: String,
+      required: true,
       unique: true,
       index: true,
     },
-    fullname: String,
+    fullname: String, //will be updated by shopify webhook
     email: String, //will be updated by shopify webhook
     phone: String,
     social: {
@@ -67,7 +67,7 @@ export const UserMongooseSchema = new mongoose.Schema<
         height: Number,
       },
     },
-    speaks: {
+    languages: {
       type: [String],
       default: [],
     },

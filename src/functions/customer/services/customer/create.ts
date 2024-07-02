@@ -2,15 +2,7 @@ import { User, UserModel } from "~/functions/user";
 
 export type CustomerServiceCreateBody = Pick<
   User,
-  | "customerId"
-  | "fullname"
-  | "username"
-  | "professions"
-  | "aboutMe"
-  | "aboutMeHtml"
-  | "shortDescription"
-  | "gender"
-  | "speaks"
+  "customerId" | "fullname" | "username" | "gender" | "languages"
 >;
 
 export const CustomerServiceCreate = async (

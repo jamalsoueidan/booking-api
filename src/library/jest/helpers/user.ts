@@ -37,7 +37,7 @@ export const getUserObject = (
       url: faker.image.avatar(),
     },
   },
-  speaks: [faker.location.countryCode()],
+  languages: [faker.location.countryCode()],
   customerId: faker.number.int({ min: 1, max: 10000000 }),
   ...props,
 });

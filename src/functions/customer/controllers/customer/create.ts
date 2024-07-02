@@ -15,12 +15,8 @@ export const CustomerControllerCreateSchema = UserZodSchema.pick({
   customerId: true,
   fullname: true,
   username: true,
-  professions: true,
-  aboutMe: true,
-  aboutMeHtml: true,
-  shortDescription: true,
   gender: true,
-  speaks: true,
+  language: true,
 }).strip();
 
 export type CustomerControllerCreteBody = z.infer<
