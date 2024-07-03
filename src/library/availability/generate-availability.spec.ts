@@ -4,8 +4,8 @@ import { SlotWeekDays } from "~/functions/schedule";
 import { UserModel } from "~/functions/user/user.model";
 import { getProductObject } from "../jest/helpers/product";
 import {
-  GenerateAvailabilityProps,
   generateAvailability,
+  GenerateAvailabilityProps,
 } from "./generate-availability";
 
 require("~/library/jest/mongoose/mongodb.jest");
@@ -102,6 +102,7 @@ describe("generateAvailability", () => {
     UserModel.create({
       customerId,
       fullname: "jamal soueidan",
+      username: "jamal",
     })
   );
 

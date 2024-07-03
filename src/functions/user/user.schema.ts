@@ -37,13 +37,13 @@ export const UserMongooseSchema = new mongoose.Schema<
     specialties: {
       type: [String],
       default: [],
-      index: true,
     },
     yearsExperience: Number,
     username: {
       type: String,
       unique: true,
       index: true,
+      required: true,
     },
     fullname: String,
     email: String, //will be updated by shopify webhook
