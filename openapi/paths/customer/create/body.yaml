@@ -6,7 +6,8 @@ properties:
     type: string
   username:
     type: string
-    pattern: ^[a-zA-Z0-9-_]+$
+    pattern: ^[a-zA-Z0-9\-_]*$
+    minItems: 3
   gender:
     type: string
   speaks:
