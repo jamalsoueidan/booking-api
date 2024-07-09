@@ -25,7 +25,7 @@ export const OpenAIServiceProductTitle = async ({
   const { data } = await shopifyAdmin().request(COLLECTIONS);
 
   const onlyRootcollections = data?.collections.nodes.filter(
-    (col: any) => col.ruleSet.rules.length > 1
+    (col: any) => col.ruleSet?.rules.length > 1
   );
 
   const collectionsContext = JSON.stringify(onlyRootcollections, null, 2);
@@ -37,7 +37,7 @@ export const OpenAIServiceProductTitle = async ({
         role: "system",
         content: `
 You are an expert in correcting treatment titles and descriptions.
-Please correct any grammatical errors in title and description. If the description is missing, add a short sentence that encourages customers to buy this treatment, the text should be from the indiviual beauty professional as seller of the treatment.
+Please correct any grammatical errors in title and description. If the description is missing, add a short sentence that encourages customers to buy this treatment, the text should be from the indiviual beauty professional as seller of the treatment, and choose an estimate price.
 Also figure out the collection the treatment belongs to.
 ### Collections
 ${collectionsContext}
@@ -50,6 +50,7 @@ Respond with this JSON structure, and choose danish language for title and descr
   },
   title: "example",
   description: "example",
+  price: "0"
 }`,
       },
       {
