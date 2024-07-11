@@ -529,3 +529,5 @@ paths:
 
   /openai/products-title:
     $ref: "./paths/openai/product-title/index.yaml"
+  /openai/profile:
+    $ref: "./paths/openai/profile/index.yaml"

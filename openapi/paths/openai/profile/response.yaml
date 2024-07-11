@@ -1,0 +1,29 @@
+type: object
+properties:
+  success:
+    type: boolean
+    example: true
+  payload:
+    type: object
+    properties:
+      professions:
+        type: array
+        items:
+          type: string
+      skills:
+        type: array
+        items:
+          type: string
+      aboutMe:
+        type: string
+      shortDescription:
+        type: string
+    required:
+      - professions
+      - skills
+      - aboutMe
+      - shortDescription
+
+required:
+  - success
+  - payload
