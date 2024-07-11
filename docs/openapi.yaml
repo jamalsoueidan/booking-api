@@ -5480,3 +5480,72 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenResponse'
       security: []
+  /openai/profile:
+    post:
+      tags:
+        - OpenAI
+      operationId: openAIProfile
+      summary: POST autofill profile forms
+      description: This endpoint autofill profile forms
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                professions:
+                  type: array
+                  items:
+                    type: string
+                skills:
+                  type: array
+                  items:
+                    type: string
+                userDetails:
+                  type: object
+              required:
+                - professions
+                - skills
+                - userDetails
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payload:
+                    type: object
+                    properties:
+                      professions:
+                        type: array
+                        items:
+                          type: string
+                      skills:
+                        type: array
+                        items:
+                          type: string
+                      aboutMe:
+                        type: string
+                      shortDescription:
+                        type: string
+                    required:
+                      - professions
+                      - skills
+                      - aboutMe
+                      - shortDescription
+                required:
+                  - success
+                  - payload
+        '400':
+          $ref: '#/components/responses/BadResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+      security: []
