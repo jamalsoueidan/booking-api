@@ -30,8 +30,6 @@ components:
   schemas:
     Errors:
       $ref: "./schemas/errors.yaml"
-    MetaItem:
-      $ref: paths/meta/_types/item.yaml
 
     # Upload
     CustomerUploadResourceURLResponse:
@@ -466,12 +464,6 @@ paths:
     $ref: "./paths/location/get-coordinates/index.yaml"
   /location/get-travel-time:
     $ref: "./paths/location/get-travel-time/index.yaml"
-
-  # Meta information endpoints
-  /meta/professions:
-    $ref: "./paths/meta/professions/index.yaml"
-  /meta/specialties:
-    $ref: "./paths/meta/specialties/index.yaml"
 
   # Orchestrator-related endpoints
   /orchestrators/upload:
