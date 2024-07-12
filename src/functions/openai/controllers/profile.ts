@@ -9,7 +9,8 @@ export type OpenAIControllerProfileRequest = {
 export const OpenAIControllerProfileSchema = z.object({
   professions: z.array(z.string()),
   skills: z.array(z.string()),
-  userDetails: z.object({}),
+  user: z.any(),
+  products: z.array(z.any()),
 });
 
 export type OpenaiProductCategorizeResponse = Awaited<

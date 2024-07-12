@@ -14,15 +14,17 @@ type OpenAIServiceProfile = {
 export const OpenAIServiceProfile = async ({
   professions,
   skills,
-  userDetails,
+  user,
+  products,
 }: {
-  professions: any;
-  skills: any;
-  userDetails: any;
+  professions: string[];
+  skills: string[];
+  user?: any;
+  products: Array<any>;
 }) => {
   try {
     const content = `
-You are an assistant helping to create a user profile for a beauty professional. Use the provided information about the user's profession, skills, and other details to fill out the profile in the specified JSON format. Ensure the information is concise, accurate, and professional.
+You are an assistant helping a beauty professional create a user profile on a beauty platform.
 
 ### Professions to choose from:
 ${JSON.stringify(professions, null, 2)}
@@ -31,12 +33,13 @@ ${JSON.stringify(professions, null, 2)}
 ${JSON.stringify(skills, null, 2)}
 
 ### User Details:
-${JSON.stringify(userDetails, null, 2)}
+${JSON.stringify(user, null, 2)}
 
-The profession and skills should be determined based on the products offered. For example:
-- If the products are related to hair styling, hair coloring, or bridal hair, select the profession as "hair_stylist" and relevant skills such as "balayage_specialist", "hair_coloring", and "bridal_makeup".
+### User products details:
+${JSON.stringify(products, null, 2)}
 
 Write a short description and an about me section in Danish.
+Choose user professions from the list above based on the user offering services. Only choose professions and skills related to the provided services.
 
 Respond with this JSON structure:
 
