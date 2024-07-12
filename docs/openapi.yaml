@@ -5502,12 +5502,17 @@ paths:
                   type: array
                   items:
                     type: string
-                userDetails:
+                user:
                   type: object
+                products:
+                  type: array
+                  items:
+                    type: object
               required:
                 - professions
                 - skills
-                - userDetails
+                - user
+                - products
       responses:
         '200':
           description: Response
