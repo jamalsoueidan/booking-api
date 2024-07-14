@@ -95,11 +95,6 @@ export const updateProduct = async ({
 
     categories?.forEach((category) => {
       tags.push(`collectionid-${GidFormat.parse(category.id)}`);
-      if (category.ruleSet?.rules.length === 1) {
-        category.ruleSet?.rules.forEach((r) => {
-          tags.push(r.condition);
-        });
-      }
     });
 
     await ScheduleModel.updateOne(

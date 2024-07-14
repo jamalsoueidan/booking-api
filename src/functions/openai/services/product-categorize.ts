@@ -21,26 +21,43 @@ export const OpenAIServiceProductCategorize = async ({
     const content = `
 ### Product Details:
 Product Title: ${title}
-Product Description: ${description}.
-
-Identify all collections that best fit the product title from the given collections. Consider the type of service or product described in the title and find all relevant collections. Avoid including collections that are not contextually relevant to the specific type of service.
-
+Product Description: ${description}
 
 ### Existing Collections:
 ${collectionsContext}
 
-Given this context, identify all appropriate collections for the product titled "${title}". Respond with this JSON structure:
+Subcollections (e.g., Helfarvning, Striber, Børneklip, etc.) are part of main collections (e.g., Makeup, Hårklip, Hårfarvning, etc.). Each main collection has relations to subcollections through rules specified in their conditions.
 
+For example, if a main collection has the following rule:
+{
+  "column": "TAG",
+  "condition": "collectionid-628615086407"
+}
+Then the main collection includes "Helfarvning" as a subcollection.
+
+Given this context, identify the subcollections that best fit the product title and description. Consider the type of service or product described and find all relevant subcollections. Avoid including subcollections that are not contextually relevant to the specific type of service.
+
+Additionally, for each identified subcollection, return all main collections it belongs to.
 
 Respond with this JSON structure:
 
 {
   "collections": [
     {
-      id: "gid://shopify/Collection/1111",
+      "id": "gid://shopify/Collection/1111",
+      "title": "...",
+      "mainCollections": [
+        {
+          "id": "gid://shopify/Collection/2222",
+          "title": "..."
+        },
+        // Additional main collections...
+      ]
     },
-  ],
-}`;
+    // Additional subcollections...
+  ]
+}
+`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o-2024-05-13",
@@ -56,14 +73,21 @@ Respond with this JSON structure:
       },
     });
 
-    const collections = JSON.parse(
-      response.choices[0].message.content as any
-    ).collections;
+    const collections: Array<
+      CollectionsQuery["collections"]["nodes"][0] & {
+        mainCollections: Array<CollectionsQuery["collections"]["nodes"][0]>;
+      }
+    > = JSON.parse(response.choices[0].message.content as any).collections;
 
     const newResponse: CollectionsQuery["collections"]["nodes"] =
-      collections.map(({ id }: { id: string }) => {
-        return data?.collections.nodes.find((c) => c.id === id);
-      });
+      collections.reduce((prev, current) => {
+        prev.push(current);
+        current.mainCollections.forEach((mc) => {
+          prev.push(mc);
+        });
+        return prev;
+      }, [] as Array<CollectionsQuery["collections"]["nodes"][0]>);
+
     return newResponse;
   } catch (error) {
     console.error("Error:", error);
