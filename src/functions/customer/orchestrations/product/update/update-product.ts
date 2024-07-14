@@ -90,7 +90,7 @@ export const updateProduct = async ({
   if (!product.hideFromProfile) {
     const categories = await OpenAIServiceProductCategorize({
       title: product.title,
-      description: product.description || "",
+      description: product.descriptionHtml || "",
     });
 
     categories?.forEach((category) => {

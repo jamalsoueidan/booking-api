@@ -87,7 +87,10 @@ app.http("webhookProductUpdate", {
             customerId: parseInt(customerId),
             productId: shopifyProduct.id,
           },
-          { title: shopifyProduct.title, description: shopifyProduct.body_html }
+          {
+            title: shopifyProduct.title,
+            descriptionHtml: shopifyProduct.body_html,
+          }
         );
 
         await WebhookUpdateProductOrchestration(
