@@ -3,6 +3,7 @@ import "module-alias/register";
 import { app, HttpRequest, InvocationContext } from "@azure/functions";
 import * as df from "durable-functions";
 import { connect } from "~/library/mongoose";
+import { CustomerProductServiceUpdate } from "./customer/services/product/update";
 import { WebhookUpdateProductOrchestration } from "./webhook/product/update";
 
 type Product = {
@@ -80,6 +81,14 @@ app.http("webhookProductUpdate", {
         // The user ID is in the first capturing group
         const customerId = match[1];
         console.log(`User ID: ${customerId}, - ${shopifyProduct.id}`);
+
+        await CustomerProductServiceUpdate(
+          {
+            customerId: parseInt(customerId),
+            productId: shopifyProduct.id,
+          },
+          { title: shopifyProduct.title, description: shopifyProduct.body_html }
+        );
 
         await WebhookUpdateProductOrchestration(
           {
