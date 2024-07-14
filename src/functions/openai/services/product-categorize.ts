@@ -15,8 +15,11 @@ export const OpenAIServiceProductCategorize = async ({
 }) => {
   try {
     const { data } = await shopifyAdmin().request(COLLECTIONS);
+    const subCollections = data?.collections.nodes.filter(
+      (p) => p.ruleSet?.rules && p.ruleSet.rules?.length === 1
+    );
 
-    const collectionsContext = JSON.stringify(data?.collections.nodes, null, 2);
+    const collectionsContext = JSON.stringify(subCollections, null, 2);
 
     const content = `
 ### Product Details:
@@ -26,18 +29,13 @@ Product Description: ${description}
 ### Existing Collections:
 ${collectionsContext}
 
-Subcollections (e.g., Helfarvning, Striber, Børneklip, etc.) are part of main collections (e.g., Makeup, Hårklip, Hårfarvning, etc.). Each main collection has relations to subcollections through rules specified in their conditions.
+Identify all collections that best fit the product title from the given collections. Consider the type of service or product described in the title and find all relevant collections. Avoid including collections that are not contextually relevant to the specific type of service.
 
-For example, if a main collection has the following rule:
-{
-  "column": "TAG",
-  "condition": "collectionid-628615086407"
-}
-Then the main collection includes "Helfarvning" as a subcollection.
+### Existing Collections:
+${collectionsContext}
 
-Given this context, identify the subcollections that best fit the product title and description. Consider the type of service or product described and find all relevant subcollections. Avoid including subcollections that are not contextually relevant to the specific type of service.
+Given this context, identify all appropriate collections for the product titled "${title}". Respond with this JSON structure, just id and title:
 
-Additionally, for each identified subcollection, return all main collections it belongs to.
 
 Respond with this JSON structure:
 
@@ -46,15 +44,7 @@ Respond with this JSON structure:
     {
       "id": "gid://shopify/Collection/1111",
       "title": "...",
-      "mainCollections": [
-        {
-          "id": "gid://shopify/Collection/2222",
-          "title": "..."
-        },
-        // Additional main collections...
-      ]
     },
-    // Additional subcollections...
   ]
 }
 `;
@@ -73,20 +63,32 @@ Respond with this JSON structure:
       },
     });
 
-    const collections: Array<
-      CollectionsQuery["collections"]["nodes"][0] & {
-        mainCollections: Array<CollectionsQuery["collections"]["nodes"][0]>;
-      }
+    const chatgptSubCollections: Array<
+      CollectionsQuery["collections"]["nodes"][0]
     > = JSON.parse(response.choices[0].message.content as any).collections;
 
-    const newResponse: CollectionsQuery["collections"]["nodes"] =
-      collections.reduce((prev, current) => {
-        prev.push(current);
-        current.mainCollections.forEach((mc) => {
-          prev.push(mc);
+    const rootCollections = data?.collections.nodes.filter(
+      (p) => p.ruleSet?.rules && p.ruleSet.rules?.length > 1
+    );
+
+    const newResponse: Array<{ id: string; title: string }> =
+      chatgptSubCollections.reduce((prev, current) => {
+        //find and add main collection
+        rootCollections?.forEach((collection) => {
+          if (collection.ruleSet?.rules?.length) {
+            const rule = collection.ruleSet?.rules.find((r) =>
+              r.condition.includes(current.id.split("/").pop() as any)
+            );
+            if (rule) {
+              prev.push({ id: collection.id, title: collection.title });
+            }
+          }
         });
+        //add sub collection
+        prev.push(current);
+
         return prev;
-      }, [] as Array<CollectionsQuery["collections"]["nodes"][0]>);
+      }, [] as Array<{ id: string; title: string }>);
 
     return newResponse;
   } catch (error) {
